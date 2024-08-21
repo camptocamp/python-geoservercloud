@@ -1,0 +1,5 @@
+publish:
+  pypi:
+    versions:
+      - version_tag
+      - version_branch
