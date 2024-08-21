@@ -1,0 +1,92 @@
+repos:
+  - repo: https://github.com/pre-commit/mirrors-prettier
+    rev: v4.0.0-alpha.8
+    hooks:
+      - id: prettier
+        additional_dependencies:
+          - prettier@2.8.4
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.6.0
+    hooks:
+      - id: detect-private-key
+      - id: check-merge-conflict
+      - id: check-ast
+      - id: debug-statements
+      - id: check-toml
+      - id: check-yaml
+        args: [--allow-multiple-documents]
+      - id: check-json
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+      - id: mixed-line-ending
+  - repo: https://github.com/codespell-project/codespell
+    rev: v2.3.0
+    hooks:
+      - id: codespell
+        exclude: |-
+          (?x)(
+            (.*/)?poetry\.lock
+            |.github/changelog-generator-cache/.*
+          )
+        args:
+          - --ignore-words=.github/spell-ignore-words.txt
+  - repo: https://github.com/shellcheck-py/shellcheck-py
+    rev: v0.10.0.1
+    hooks:
+      - id: shellcheck
+  - repo: https://github.com/python-jsonschema/check-jsonschema
+    rev: 0.28.5
+    hooks:
+      - id: check-github-actions
+      - id: check-github-workflows
+      - id: check-jsonschema
+        name: Check GitHub Workflows set timeout-minutes
+        files: ^\.github/workflows/[^/]+$
+        types:
+          - yaml
+        args:
+          - --builtin-schema
+          - github-workflows-require-timeout
+      - id: check-renovate
+        additional_dependencies:
+          - pyjson5==1.6.6 # pypi
+  - repo: https://github.com/sirwart/ripsecrets
+    rev: v0.1.8
+    hooks:
+      - id: ripsecrets
+  - repo: https://github.com/PyCQA/autoflake
+    rev: v2.3.1
+    hooks:
+      - id: autoflake
+  - repo: https://github.com/asottile/pyupgrade
+    rev: v3.16.0
+    hooks:
+      - id: pyupgrade
+        args:
+          - --py39-plus
+  - repo: https://github.com/PyCQA/isort
+    rev: 5.13.2
+    hooks:
+      - id: isort
+        args:
+          [
+            --profile,
+            "black",
+            --filter-files,
+            --line-length,
+            "110",
+            --skip-gitignore,
+            --multi-line,
+            "3",
+            --split-on-trailing-comma,
+          ]
+  - repo: https://github.com/psf/black
+    rev: 24.4.2
+    hooks:
+      - id: black
+ci:
+  autoupdate_schedule: quarterly
+  skip:
+    - copyright
+    - ripsecrets
+    - jsonschema-validator

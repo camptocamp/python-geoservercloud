@@ -1,0 +1,42 @@
+[tool.poetry]
+name = "geoservercloud"
+version = "0.0.0"
+description = "Lightweight Python client to interact with GeoServer Cloud REST API, GeoServer ACL and OGC services"
+authors = ["Camptocamp <info@camptocamp.com>"]
+license = "BSD-2-Clause"
+readme = "README.md"
+packages = [{include = "geoservercloud"}]
+
+[tool.poetry.dependencies]
+python = ">=3.9,<4.0"
+requests = "2.32.3"
+OWSLib = "0.31.0"
+xmltodict = "0.13.0"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "8.2.2"
+
+[build-system]
+requires = [
+  "poetry-core>=1.0.0",
+  "poetry-dynamic-versioning[plugin]",
+  "poetry-plugin-tweak-dependencies-version"
+]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry-dynamic-versioning]
+enable = true
+vcs = "git"
+pattern = "^(?P<base>\\d+(\\.\\d+)*)"
+format-jinja = """
+{%- if env.get("VERSION_TYPE") == "version_branch" -%}
+{{serialize_pep440(bump_version(base, 1 if env.get("IS_MASTER") == "TRUE" else 2), dev=distance)}}
+{%- elif distance == 0 -%}
+{{serialize_pep440(base)}}
+{%- else -%}
+{{serialize_pep440(bump_version(base), dev=distance)}}
+{%- endif -%}
+"""
+
+[tool.poetry-plugin-tweak-dependencies-version]
+default = "present"
