@@ -8,8 +8,8 @@ help: ## Display this help message
 
 .PHONY: install
 install: ## Install package
-	pip install .
+	poetry install
 
 .PHONY: tests
 tests: ## Run unit tests
-	pytest -vvv tests
+	poetry run pytest -vvv tests
