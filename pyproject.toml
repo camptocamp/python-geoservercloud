@@ -37,6 +37,7 @@ format-jinja = """
 {{serialize_pep440(bump_version(base), dev=distance)}}
 {%- endif -%}
 """
+fix-shallow-repository = true
 
 [tool.poetry-plugin-tweak-dependencies-version]
 default = "present"
