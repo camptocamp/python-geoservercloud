@@ -102,12 +102,14 @@ class GeoServerCloud:
 
     def recreate_workspace(
         self, workspace: str, set_default_workspace: bool = False
-    ) -> None:
+    ) -> Response:
         """
         Create a workspace in GeoServer, and first delete it if it already exists.
         """
         self.delete_workspace(workspace)
-        self.create_workspace(workspace, set_default_workspace=set_default_workspace)
+        return self.create_workspace(
+            workspace, set_default_workspace=set_default_workspace
+        )
 
     def publish_workspace(self, workspace) -> Response:
         path: str = f"{self.workspace_wms_settings_path(workspace)}"
@@ -204,11 +206,10 @@ class GeoServerCloud:
         workspace: str,
         name: str,
         capabilities: str,
-    ) -> Response | None:
+    ) -> Response:
         """
         Create a cascaded WMTS store, or update it if it already exist.
         """
-        response: None | Response = None
         path = f"/rest/workspaces/{workspace}/wmtsstores.json"
         resource_path = f"/rest/workspaces/{workspace}/wmtsstores/{name}.json"
         payload = Templates.wmts_store(workspace, name, capabilities)
@@ -226,7 +227,7 @@ class GeoServerCloud:
         abstract: str | dict = "Default abstract",
         attributes: dict = Templates.geom_point_attribute(),
         epsg: int = 4326,
-    ) -> Response | None:
+    ) -> Response:
         """
         Create a feature type or update it if it already exist.
         """
@@ -271,7 +272,7 @@ class GeoServerCloud:
         title: str | dict,
         abstract: str | dict,
         epsg: int = 4326,
-    ) -> Response | None:
+    ) -> Response:
         """
         Create a layer group if it does not already exist.
         """
@@ -319,7 +320,7 @@ class GeoServerCloud:
         )
         wgs84_bbox = self.get_wmts_layer_bbox(capabilities_url, native_layer)
 
-        path = f"/rest/workspaces/{workspace}/wmtsstores/{wmts_store}/layers"
+        path = f"/rest/workspaces/{workspace}/wmtsstores/{wmts_store}/layers.json"
         payload = Templates.wmts_layer(
             published_layer, native_layer, wgs84_bbox=wgs84_bbox, epsg=epsg
         )
@@ -333,7 +334,7 @@ class GeoServerCloud:
         self.post_request(
             "/gwc/rest/reload",
             headers={"Content-Type": "application/json"},
-            data="reload_configuration=1",
+            data="reload_configuration=1",  # type: ignore
         )
         payload = Templates.gwc_layer(workspace, layer, f"EPSG:{epsg}")
         return self.put_request(

@@ -8,12 +8,10 @@ help: ## Display this help message
 
 .PHONY: install
 install: ## Install package
+	poetry lock --no-update
 	poetry install
 
-.PHONY: build
-build: ## Build package
-	poetry build
-
 .PHONY: tests
-tests: ## Run unit tests
-	poetry run pytest -vvv tests --color=yes
+tests: ## Run unit tests with coverage
+	poetry run coverage run --source=geoservercloud -m pytest tests -vvv --color=yes
+	poetry run coverage report
