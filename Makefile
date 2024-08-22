@@ -10,6 +10,10 @@ help: ## Display this help message
 install: ## Install package
 	poetry install
 
+.PHONY: build
+build: ## Build package
+	poetry build
+
 .PHONY: tests
 tests: ## Run unit tests
-	poetry run pytest -vvv tests
+	poetry run pytest -vvv tests --color=yes
