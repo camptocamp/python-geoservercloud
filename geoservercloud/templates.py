@@ -3,7 +3,7 @@ from typing import Any
 EPSG_BBOX = {
     2056: {
         "nativeBoundingBox": {
-            "crs": {"$": f"EPSG:2056", "@class": "projected"},
+            "crs": {"$": "EPSG:2056", "@class": "projected"},
             "maxx": 2837016.9329778464,
             "maxy": 1299782.763494124,
             "minx": 2485014.052451379,
@@ -19,7 +19,7 @@ EPSG_BBOX = {
     },
     4326: {
         "nativeBoundingBox": {
-            "crs": {"$": f"EPSG:4326", "@class": "projected"},
+            "crs": {"$": "EPSG:4326", "@class": "projected"},
             "maxx": 180,
             "maxy": 90,
             "minx": -180,
