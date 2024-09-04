@@ -218,12 +218,16 @@ class Templates:
         title: str | dict[str, Any],
         abstract: str | dict[str, Any],
         epsg: int = 4326,
+        mode: str = "SINGLE",
     ) -> dict[str, dict[str, Any]]:
+        modes = ["SINGLE", "OPAQUE_CONTAINER", "NAMED", "CONTAINER", "EO"]
+        if not mode in modes:
+            raise ValueError(f"Invalid mode: {mode}, possible values are: {modes}")
         template = {
             "layerGroup": {
                 "name": group,
                 "workspace": {"name": workspace},
-                "mode": "SINGLE",
+                "mode": mode,
                 "publishables": {
                     "published": [
                         {"@type": "layer", "name": f"{workspace}:{layer}"}
