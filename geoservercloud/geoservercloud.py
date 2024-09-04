@@ -272,6 +272,7 @@ class GeoServerCloud:
         title: str | dict,
         abstract: str | dict,
         epsg: int = 4326,
+        mode: str = "SINGLE",
     ) -> Response:
         """
         Create a layer group if it does not already exist.
@@ -288,6 +289,7 @@ class GeoServerCloud:
             title=title,
             abstract=abstract,
             epsg=epsg,
+            mode=mode,
         )
         if not self.resource_exists(resource_path):
             return self.post_request(path, json=payload)
