@@ -220,6 +220,9 @@ class Templates:
         epsg: int = 4326,
         mode: str = "SINGLE",
     ) -> dict[str, dict[str, Any]]:
+        modes = ["SINGLE", "OPAQUE_CONTAINER", "NAMED", "CONTAINER", "EO"]
+        if not mode in modes:
+            raise ValueError(f"Invalid mode: {mode}, possible values are: {modes}")
         template = {
             "layerGroup": {
                 "name": group,
