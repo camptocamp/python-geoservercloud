@@ -119,14 +119,14 @@ class GeoServerCloud:
 
     def set_default_locale_for_service(
         self, workspace: str, locale: str | None
-    ) -> None:
+    ) -> Response:
         path: str = self.workspace_wms_settings_path(workspace)
         data: dict[str, dict[str, Any]] = {
             "wms": {
                 "defaultLocale": locale,
             }
         }
-        self.put_request(path, json=data)
+        return self.put_request(path, json=data)
 
     def unset_default_locale_for_service(self, workspace) -> None:
         self.set_default_locale_for_service(workspace, None)
@@ -525,11 +525,11 @@ class GeoServerCloud:
                 column=column,
             )
 
-    def create_role(self, role_name: str):
-        self.post_request(f"/rest/security/roles/role/{role_name}")
+    def create_role(self, role_name: str) -> Response:
+        return self.post_request(f"/rest/security/roles/role/{role_name}")
 
-    def delete_role(self, role_name: str):
-        self.delete_request(f"/rest/security/roles/role/{role_name}")
+    def delete_role(self, role_name: str) -> Response:
+        return self.delete_request(f"/rest/security/roles/role/{role_name}")
 
     def create_role_if_not_exists(self, role_name: str) -> Response | None:
         if self.role_exists(role_name):
