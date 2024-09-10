@@ -11,13 +11,14 @@ CAPABILITIES_URL = "http://wmts?request=GetCapabilities&service=WMTS&version=1.0
 LAYER = "test_layer"
 NATIVE_LAYER = "test_native_layer"
 CAPABILITIES = """<?xml version="1.0" encoding="UTF-8"?>
-<Capabilities xmlns="http://www.opengis.net/wmts/1.0" version="1.0.0">
+<Capabilities xmlns="http://www.opengis.net/wmts/1.0" version="1.0.0" xmlns:ows="http://www.opengis.net/ows/1.1">
     <Contents>
         <Layer>
-            <WGS84BoundingBox>
-                <LowerCorner>5.140242 45.398181</LowerCorner>
-                <UpperCorner>11.47757 48.230651</UpperCorner>
-            </WGS84BoundingBox>
+            <ows:Identifier>test_native_layer</ows:Identifier>
+            <ows:WGS84BoundingBox>
+                <ows:LowerCorner>5.140242 45.398181</ows:LowerCorner>
+                <ows:UpperCorner>11.47757 48.230651</ows:UpperCorner>
+            </ows:WGS84BoundingBox>
         </Layer>
     </Contents>
 </Capabilities>
@@ -58,7 +59,7 @@ def wmts_layer_payload() -> dict[str, dict[str, Any]]:
                 "maxy": 48.230651,
             },
             "nativeBoundingBox": {
-                "crs": {"$": "EPSG:4326", "@class": "projected"},
+                "crs": "EPSG:4326",
                 "minx": 5.140242,
                 "maxx": 11.47757,
                 "miny": 45.398181,
@@ -78,7 +79,7 @@ def test_create_wmts_store(
         )
         rsps.post(
             f"{geoserver.url}/rest/workspaces/{WORKSPACE}/wmtsstores.json",
-            json=wmts_store_payload,
+            match=[responses.matchers.json_params_matcher(wmts_store_payload)],
             status=201,
         )
         response = geoserver.create_wmts_store(
@@ -100,7 +101,7 @@ def test_update_wmts_store(
         )
         rsps.put(
             f"{geoserver.url}/rest/workspaces/{WORKSPACE}/wmtsstores/{STORE}.json",
-            json=wmts_store_payload,
+            match=[responses.matchers.json_params_matcher(wmts_store_payload)],
             status=200,
         )
         response = geoserver.create_wmts_store(
@@ -129,10 +130,11 @@ def test_create_wmts_layer(
             CAPABILITIES_URL,
             status=200,
             body=CAPABILITIES,
+            headers={"Content-Type": "application/xml"},
         )
         rsps.post(
             f"{geoserver.url}/rest/workspaces/{WORKSPACE}/wmtsstores/{STORE}/layers.json",
-            json=wmts_layer_payload,
+            match=[responses.matchers.json_params_matcher(wmts_layer_payload)],
             status=201,
         )
         response = geoserver.create_wmts_layer(
