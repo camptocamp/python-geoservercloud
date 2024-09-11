@@ -455,6 +455,7 @@ class GeoServerCloud:
                 **params,
                 timeout=120,
             )
+        return None
 
     def get_feature_info(
         self,
@@ -483,6 +484,7 @@ class GeoServerCloud:
             return self.wms.getfeatureinfo(
                 **params,
             )
+        return None
 
     def get_legend_graphic(
         self,
@@ -492,10 +494,11 @@ class GeoServerCloud:
         style: str | None = None,
         workspace: str | None = None,
     ) -> Response:
+        path: str
         if not workspace:
             path = "/wms"
         else:
-            path: str = f"/{workspace}/wms"
+            path = f"/{workspace}/wms"
         params: dict[str, Any] = {
             "service": "WMS",
             "version": "1.3.0",
@@ -524,6 +527,7 @@ class GeoServerCloud:
                 row=row,
                 column=column,
             )
+        return None
 
     def create_role(self, role_name: str) -> Response:
         return self.post_request(f"/rest/security/roles/role/{role_name}")
