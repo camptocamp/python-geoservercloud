@@ -43,3 +43,6 @@ fix-shallow-repository = true
 
 [tool.poetry-plugin-tweak-dependencies-version]
 default = "present"
+
+[tool.bandit]
+exclude_dirs = ["tests"]
