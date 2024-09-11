@@ -2,6 +2,8 @@ from typing import Any
 
 import requests
 
+TIMEOUT = 120
+
 
 class RestService:
     def __init__(self, url: str, auth: tuple[str, str]) -> None:
@@ -19,6 +21,7 @@ class RestService:
             params=params,
             headers=headers,
             auth=self.auth,
+            timeout=TIMEOUT,
         )
         if response.status_code != 404:
             response.raise_for_status()
@@ -40,6 +43,7 @@ class RestService:
             json=json,
             data=data,
             auth=self.auth,
+            timeout=TIMEOUT,
         )
         if response.status_code != 409:
             response.raise_for_status()
@@ -60,6 +64,7 @@ class RestService:
             json=json,
             data=data,
             auth=self.auth,
+            timeout=TIMEOUT,
         )
         response.raise_for_status()
         return response
@@ -75,6 +80,7 @@ class RestService:
             params=params,
             headers=headers,
             auth=self.auth,
+            timeout=TIMEOUT,
         )
         if response.status_code != 404:
             response.raise_for_status()

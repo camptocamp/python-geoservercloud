@@ -18,7 +18,7 @@ class GeoServerCloud:
         self,
         url: str = "http://localhost:9090/geoserver/cloud/",
         user: str = "admin",
-        password: str = "geoserver",
+        password: str = "geoserver",  # nosec
     ) -> None:
 
         self.url: str = url
