@@ -35,6 +35,10 @@ def test_publish_gwc_layer(geoserver: GeoServerCloud) -> None:
                 )
             ],
         )
+        rsps.get(
+            url=f"{geoserver.url}/gwc/rest/layers/{WORKSPACE}:{LAYER}.json",
+            status=404,
+        )
         rsps.put(
             url=f"{geoserver.url}/gwc/rest/layers/{WORKSPACE}:{LAYER}.json",
             status=200,
@@ -56,6 +60,27 @@ def test_publish_gwc_layer(geoserver: GeoServerCloud) -> None:
         response = geoserver.publish_gwc_layer(WORKSPACE, LAYER, EPSG)
         assert response
         assert response.status_code == 200
+
+
+def test_publish_gwc_layer_already_exists(geoserver: GeoServerCloud) -> None:
+    with responses.RequestsMock() as rsps:
+        rsps.post(
+            url=f"{geoserver.url}/gwc/rest/reload",
+            status=200,
+            match=[
+                responses.matchers.urlencoded_params_matcher(
+                    {"reload_configuration": "1"}
+                )
+            ],
+        )
+        rsps.get(
+            url=f"{geoserver.url}/gwc/rest/layers/{WORKSPACE}:{LAYER}.json",
+            status=200,
+            json={"GeoServerLayer": {"name": f"{WORKSPACE}:{LAYER}"}},
+        )
+
+        response = geoserver.publish_gwc_layer(WORKSPACE, LAYER, EPSG)
+        assert response is None
 
 
 def test_create_gridset(geoserver: GeoServerCloud) -> None:
