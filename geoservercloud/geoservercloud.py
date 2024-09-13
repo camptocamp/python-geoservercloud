@@ -329,6 +329,13 @@ class GeoServerCloud:
 
         return self.post_request(path, json=payload)
 
+    def get_gwc_layer(self, workspace: str, layer: str) -> dict[str, Any] | None:
+        path = f"/gwc/rest/layers/{workspace}:{layer}.json"
+        response = self.get_request(path)
+        if response.status_code == 404:
+            return None
+        return response.json()
+
     def publish_gwc_layer(
         self, workspace: str, layer: str, epsg: int = 4326
     ) -> Response | None:
@@ -338,6 +345,9 @@ class GeoServerCloud:
             headers={"Content-Type": "application/json"},
             data="reload_configuration=1",  # type: ignore
         )
+        # Do not re-publish an existing layer
+        if self.get_gwc_layer(workspace, layer):
+            return None
         payload = Templates.gwc_layer(workspace, layer, f"EPSG:{epsg}")
         return self.put_request(
             f"/gwc/rest/layers/{workspace}:{layer}.json",
