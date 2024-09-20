@@ -1,4 +1,5 @@
 import os.path
+from json import JSONDecodeError
 from pathlib import Path
 from typing import Any
 
@@ -539,6 +540,84 @@ class GeoServerCloud:
             )
         return None
 
+    def get_feature(
+        self,
+        workspace: str,
+        type_name: str,
+        feature_id: int | None = None,
+        max_feature: int | None = None,
+        format: str = "application/json",
+    ) -> dict[str, Any] | bytes:
+        """WFS GetFeature request
+        Return the feature(s) as dict if found, otherwise return the raw response content as bytes
+        """
+        path = f"/{workspace}/wfs"
+        params = {
+            "service": "WFS",
+            "version": "1.1.0",
+            "request": "GetFeature",
+            "typeName": type_name,
+            "outputFormat": format,
+        }
+        if feature_id:
+            params["featureID"] = str(feature_id)
+        if max_feature:
+            params["maxFeatures"] = str(max_feature)
+        response = self.get_request(path, params=params)
+        try:
+            return response.json()
+        except JSONDecodeError:
+            return response.content
+
+    def describe_feature_type(
+        self,
+        workspace: str,
+        type_name: str | None = None,
+        format: str = "application/json",
+    ) -> dict[str, Any] | bytes:
+        """WFS DescribeFeatureType request
+        Return the feature type(s) as dict if found, otherwise return the raw response content as bytes
+        """
+        path = f"/{workspace}/wfs"
+        params = {
+            "service": "WFS",
+            "version": "1.1.0",
+            "request": "DescribeFeatureType",
+            "outputFormat": format,
+        }
+        if type_name:
+            params["typeName"] = type_name
+        response = self.get_request(path, params=params)
+        try:
+            return response.json()
+        except JSONDecodeError:
+            return response.content
+
+    def get_property_value(
+        self,
+        workspace: str,
+        type_name: str,
+        property: str,
+    ) -> dict | list | bytes:
+        """WFS GetPropertyValue request
+        Return the properties as dict (if one feature was found), a list (if multiple features were found)
+        or an empty dict if no feature was found. Otherwise throw a requests.exceptions.HTTPError
+        """
+        path = f"/{workspace}/wfs"
+        params = {
+            "service": "WFS",
+            "version": "2.0.0",
+            "request": "GetPropertyValue",
+            "typeNames": type_name,
+            "valueReference": property,
+        }
+        response = self.get_request(path, params=params)
+        value_collection = xmltodict.parse(response.content).get("wfs:ValueCollection")
+        if not value_collection:
+            return response.content
+        else:
+            return value_collection.get("wfs:member", {})
+
     def create_role(self, role_name: str) -> Response:
         return self.post_request(f"/rest/security/roles/role/{role_name}")
 
@@ -585,25 +664,57 @@ class GeoServerCloud:
         path = "/acl/api/adminrules"
         return self.delete_request(path)
 
-    def create_acl_rule(
+    def get_acl_rules(self) -> dict[str, Any]:
+        path = "/acl/api/rules"
+        response = self.get_request(path)
+        return response.json()
+
+    def create_acl_rules_for_requests(
         self,
+        requests: list[str],
         priority: int = 0,
         access: str = "DENY",
         role: str | None = None,
         service: str | None = None,
         workspace: str | None = None,
+    ) -> list[Response]:
+        responses = []
+        for request in requests:
+            responses.append(
+                self.create_acl_rule(
+                    priority=priority,
+                    access=access,
+                    role=role,
+                    request=request,
+                    service=service,
+                    workspace=workspace,
+                )
+            )
+        return responses
+
+    def create_acl_rule(
+        self,
+        priority: int = 0,
+        access: str = "DENY",
+        role: str | None = None,
+        user: str | None = None,
+        service: str | None = None,
+        request: str | None = None,
+        workspace: str | None = None,
     ) -> Response:
         path = "/acl/api/rules"
-        return self.post_request(
-            path,
-            json={
-                "priority": priority,
-                "access": access,
-                "role": role,
-                "service": service,
-                "workspace": workspace,
-            },
-        )
+        json = {"priority": priority, "access": access}
+        if role:
+            json["role"] = role
+        if user:
+            json["user"] = user
+        if service:
+            json["service"] = service
+        if request:
+            json["request"] = request
+        if workspace:
+            json["workspace"] = workspace
+        return self.post_request(path, json=json)
 
     def delete_all_acl_rules(self) -> Response:
         path = "/acl/api/rules"

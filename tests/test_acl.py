@@ -60,6 +60,52 @@ def test_create_acl_rule(geoserver: GeoServerCloud) -> None:
         assert response.status_code == 201
 
 
+def test_create_acl_rule_for_requests(geoserver: GeoServerCloud) -> None:
+    with responses.RequestsMock() as rsps:
+        rsps.post(
+            url=f"{geoserver.url}/acl/api/rules",
+            status=201,
+            match=[
+                responses.matchers.json_params_matcher(
+                    {
+                        "priority": 1,
+                        "access": "ALLOW",
+                        "role": "TEST_ROLE",
+                        "workspace": "TEST_WORKSPACE",
+                        "service": "WMS",
+                        "request": "GetCapabilities",
+                    }
+                )
+            ],
+        )
+        rsps.post(
+            url=f"{geoserver.url}/acl/api/rules",
+            status=201,
+            match=[
+                responses.matchers.json_params_matcher(
+                    {
+                        "priority": 1,
+                        "access": "ALLOW",
+                        "role": "TEST_ROLE",
+                        "workspace": "TEST_WORKSPACE",
+                        "service": "WMS",
+                        "request": "GetMap",
+                    }
+                )
+            ],
+        )
+
+        response = geoserver.create_acl_rules_for_requests(
+            priority=1,
+            access="ALLOW",
+            role="TEST_ROLE",
+            workspace="TEST_WORKSPACE",
+            service="WMS",
+            requests=["GetCapabilities", "GetMap"],
+        )
+        assert [r.status_code for r in response] == [201, 201]
+
+
 def test_delete_acl_admin_rule(geoserver: GeoServerCloud) -> None:
     with responses.RequestsMock() as rsps:
         rsps.delete(
