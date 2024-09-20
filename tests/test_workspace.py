@@ -78,3 +78,63 @@ def test_recreate_workspace(geoserver: GeoServerCloud) -> None:
         response = geoserver.recreate_workspace(workspace)
 
         assert response.status_code == 201
+
+
+def test_publish_workspace(geoserver: GeoServerCloud) -> None:
+    workspace = "test_workspace"
+
+    with responses.RequestsMock() as rsps:
+        rsps.put(
+            url=f"{GEOSERVER_URL}/rest/services/wms/workspaces/{workspace}/settings.json",
+            status=200,
+            match=[
+                matchers.json_params_matcher(
+                    {
+                        "wms": {
+                            "workspace": {"name": workspace},
+                            "enabled": True,
+                            "name": "WMS",
+                            "versions": {
+                                "org.geotools.util.Version": [
+                                    {"version": "1.1.1"},
+                                    {"version": "1.3.0"},
+                                ]
+                            },
+                            "citeCompliant": False,
+                            "schemaBaseURL": "http://schemas.opengis.net",
+                            "verbose": False,
+                            "bboxForEachCRS": False,
+                            "watermark": {
+                                "enabled": False,
+                                "position": "BOT_RIGHT",
+                                "transparency": 100,
+                            },
+                            "interpolation": "Nearest",
+                            "getFeatureInfoMimeTypeCheckingEnabled": False,
+                            "getMapMimeTypeCheckingEnabled": False,
+                            "dynamicStylingDisabled": False,
+                            "featuresReprojectionDisabled": False,
+                            "maxBuffer": 0,
+                            "maxRequestMemory": 0,
+                            "maxRenderingTime": 0,
+                            "maxRenderingErrors": 0,
+                            "maxRequestedDimensionValues": 100,
+                            "cacheConfiguration": {
+                                "enabled": False,
+                                "maxEntries": 1000,
+                                "maxEntrySize": 51200,
+                            },
+                            "remoteStyleMaxRequestTime": 60000,
+                            "remoteStyleTimeout": 30000,
+                            "defaultGroupStyleEnabled": True,
+                            "transformFeatureInfoDisabled": False,
+                            "autoEscapeTemplateValues": False,
+                        }
+                    }
+                )
+            ],
+        )
+
+        response = geoserver.publish_workspace(workspace)
+
+        assert response.status_code == 200
