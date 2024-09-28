@@ -17,12 +17,12 @@ from geoservercloud.templates import Templates
 class GeoServerCloud:
     def __init__(
         self,
-        url: str = "http://localhost:9090/geoserver/cloud/",
+        url: str = "http://localhost:9090/geoserver/cloud",
         user: str = "admin",
         password: str = "geoserver",  # nosec
     ) -> None:
 
-        self.url: str = url
+        self.url: str = url.strip("/")
         self.user: str = user
         self.password: str = password
         self.auth: tuple[str, str] = (user, password)
