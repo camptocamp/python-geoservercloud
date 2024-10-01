@@ -12,11 +12,11 @@ python = ">=3.9,<4.0"
 requests = "2.32.3"
 OWSLib = "0.31.0"
 xmltodict = "0.13.0"
-types-requests = "2.32.0.20240907"
+types-requests = "2.32.0.20240914"
 types-xmltodict = "0.13.0.3"
 
 [tool.poetry.group.dev.dependencies]
-pytest = "8.3.2"
+pytest = "8.3.3"
 responses = "0.25.3"
 coverage = "7.6.1"
 
