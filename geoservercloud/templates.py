@@ -264,6 +264,8 @@ class Templates:
         native_name: str,
         epsg: int = 4326,
         wgs84_bbox: tuple[float, float, float, float] | None = None,
+        international_title: dict[str, str] | None = None,
+        international_abstract: dict[str, str] | None = None,
     ) -> dict[str, dict[str, Any]]:
         template = {
             "wmtsLayer": {
@@ -293,6 +295,10 @@ class Templates:
                     "miny": wgs84_bbox[1],
                     "maxy": wgs84_bbox[3],
                 }
+        if international_title:
+            template["wmtsLayer"]["internationalTitle"] = international_title
+        if international_abstract:
+            template["wmtsLayer"]["internationalAbstract"] = international_abstract
         return template
 
     @staticmethod

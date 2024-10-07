@@ -316,16 +316,17 @@ class GeoServerCloud:
         native_layer: str,
         published_layer: str | None = None,
         epsg: int = 4326,
-    ) -> Response | None:
+        international_title: dict[str, str] | None = None,
+        international_abstract: dict[str, str] | None = None,
+    ) -> Response:
         """
-        Publish a remote WMTS layer if it does not already exist.
+        Publish a remote WMTS layer (first delete it if it already exists)
         """
         if not published_layer:
             published_layer = native_layer
-        if self.resource_exists(
-            f"/rest/workspaces/{workspace}/wmtsstores/{wmts_store}/layers/{published_layer}.json"
-        ):
-            return None
+        resource_path = f"/rest/workspaces/{workspace}/wmtsstores/{wmts_store}/layers/{published_layer}.json"
+        if self.resource_exists(resource_path):
+            self.delete_request(resource_path, params={"recurse": "true"})
         wmts_store_path = f"/rest/workspaces/{workspace}/wmtsstores/{wmts_store}.json"
         capabilities_url = (
             self.get_request(wmts_store_path)
@@ -337,7 +338,12 @@ class GeoServerCloud:
 
         path = f"/rest/workspaces/{workspace}/wmtsstores/{wmts_store}/layers.json"
         payload = Templates.wmts_layer(
-            published_layer, native_layer, wgs84_bbox=wgs84_bbox, epsg=epsg
+            published_layer,
+            native_layer,
+            wgs84_bbox=wgs84_bbox,
+            epsg=epsg,
+            international_title=international_title,
+            international_abstract=international_abstract,
         )
 
         return self.post_request(path, json=payload)

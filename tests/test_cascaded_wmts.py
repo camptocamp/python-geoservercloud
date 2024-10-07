@@ -148,13 +148,35 @@ def test_create_wmts_layer(
         assert response.status_code == 201
 
 
-def test_create_wmts_layer_already_exists(geoserver: GeoServerCloud) -> None:
+def test_create_wmts_layer_already_exists(
+    geoserver: GeoServerCloud, wmts_layer_payload: dict[str, dict[str, Any]]
+) -> None:
     with responses.RequestsMock() as rsps:
         rsps.get(
             f"{geoserver.url}/rest/workspaces/{WORKSPACE}/wmtsstores/{STORE}/layers/{LAYER}.json",
             status=200,
         )
-
+        rsps.delete(
+            f"{geoserver.url}/rest/workspaces/{WORKSPACE}/wmtsstores/{STORE}/layers/{LAYER}.json",
+            status=200,
+            match=[responses.matchers.query_param_matcher({"recurse": "true"})],
+        )
+        rsps.get(
+            f"{geoserver.url}/rest/workspaces/{WORKSPACE}/wmtsstores/{STORE}.json",
+            status=200,
+            json={"wmtsStore": {"capabilitiesURL": CAPABILITIES_URL}},
+        )
+        rsps.get(
+            CAPABILITIES_URL,
+            status=200,
+            body=CAPABILITIES,
+            headers={"Content-Type": "application/xml"},
+        )
+        rsps.post(
+            f"{geoserver.url}/rest/workspaces/{WORKSPACE}/wmtsstores/{STORE}/layers.json",
+            match=[responses.matchers.json_params_matcher(wmts_layer_payload)],
+            status=201,
+        )
         response = geoserver.create_wmts_layer(
             workspace=WORKSPACE,
             wmts_store=STORE,
@@ -162,4 +184,42 @@ def test_create_wmts_layer_already_exists(geoserver: GeoServerCloud) -> None:
             published_layer=LAYER,
         )
 
-        assert response is None
+        assert response.status_code == 201
+
+
+def test_create_wmts_layer_international_title(
+    geoserver: GeoServerCloud, wmts_layer_payload: dict[str, dict[str, Any]]
+) -> None:
+    wmts_layer_payload["wmtsLayer"]["internationalTitle"] = {"en": "Title"}
+    wmts_layer_payload["wmtsLayer"]["internationalAbstract"] = {"en": "Abstract"}
+    with responses.RequestsMock() as rsps:
+        rsps.get(
+            f"{geoserver.url}/rest/workspaces/{WORKSPACE}/wmtsstores/{STORE}/layers/{LAYER}.json",
+            status=404,
+        )
+        rsps.get(
+            f"{geoserver.url}/rest/workspaces/{WORKSPACE}/wmtsstores/{STORE}.json",
+            status=200,
+            json={"wmtsStore": {"capabilitiesURL": CAPABILITIES_URL}},
+        )
+        rsps.get(
+            CAPABILITIES_URL,
+            status=200,
+            body=CAPABILITIES,
+            headers={"Content-Type": "application/xml"},
+        )
+        rsps.post(
+            f"{geoserver.url}/rest/workspaces/{WORKSPACE}/wmtsstores/{STORE}/layers.json",
+            match=[responses.matchers.json_params_matcher(wmts_layer_payload)],
+            status=201,
+        )
+        response = geoserver.create_wmts_layer(
+            workspace=WORKSPACE,
+            wmts_store=STORE,
+            native_layer=NATIVE_LAYER,
+            published_layer=LAYER,
+            international_title={"en": "Title"},
+            international_abstract={"en": "Abstract"},
+        )
+
+        assert response.status_code == 201
