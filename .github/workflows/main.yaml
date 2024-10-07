@@ -12,7 +12,6 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     if: "!startsWith(github.event.head_commit.message, '[skip ci] ')"
-
     steps:
       - uses: actions/checkout@v4
       - uses: camptocamp/initialise-gopass-summon-action@v2
@@ -23,8 +22,10 @@ jobs:
         if: env.HAS_SECRETS == 'HAS_SECRETS'
 
       - run: echo "${HOME}/.local/bin" >> ${GITHUB_PATH}
-      - run: python3 -m pip install --user --requirement=ci/requirements.txt
-
+      - run: python3 -m venv /tmp/venv
+      - run: echo /tmp/venv/bin >> ${GITHUB_PATH}
+      - run: python3 -m pip install --requirement=ci/requirements.txt
+        name: Install CI requirements
       - uses: actions/cache@v4
         with:
           path: ~/.cache/pre-commit
