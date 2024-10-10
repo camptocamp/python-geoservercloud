@@ -648,6 +648,44 @@ class GeoServerCloud:
         else:
             return value_collection.get("wfs:member", {})
 
+    def create_user(self, user: str, password: str, enabled: bool = True) -> Response:
+        """
+        Create a GeoServer user
+        """
+        headers: dict[str, str] = {"Content-Type": "application/json"}
+        payload: dict[str, dict[str, Any]] = {
+            "user": {
+                "userName": user,
+                "password": password,
+                "enabled": enabled,
+            }
+        }
+        return self.post_request(
+            "/rest/security/usergroup/users", json=payload, headers=headers
+        )
+
+    def update_user(
+        self, user: str, password: str | None = None, enabled: bool | None = None
+    ) -> Response:
+        """
+        Update a GeoServer user
+        """
+        headers: dict[str, str] = {"Content-Type": "application/json"}
+        payload: dict[str, dict[str, Any]] = {"user": {}}
+        if password:
+            payload["user"]["password"] = password
+        if enabled is not None:
+            payload["user"]["enabled"] = enabled
+        return self.post_request(
+            f"/rest/security/usergroup/user/{user}", json=payload, headers=headers
+        )
+
+    def delete_user(self, user: str) -> Response:
+        """
+        Delete a GeoServer user
+        """
+        return self.delete_request(f"/rest/security/usergroup/user/{user}")
+
     def create_role(self, role_name: str) -> Response:
         """
         Create a GeoServer role
@@ -677,6 +715,28 @@ class GeoServerCloud:
         )
         roles = response.json().get("roles", [])
         return role_name in roles
+
+    def get_user_roles(self, user: str) -> list[str] | Response:
+        """
+        Get all roles assigned to a GeoServer user
+        """
+        response = self.get_request(f"/rest/security/roles/user/{user}.json")
+        try:
+            return response.json().get("roles")
+        except JSONDecodeError:
+            return response
+
+    def assign_role_to_user(self, user: str, role: str) -> Response:
+        """
+        Assign a role to a GeoServer user
+        """
+        return self.post_request(f"/rest/security/roles/role/{role}/user/{user}")
+
+    def remove_role_from_user(self, user: str, role: str) -> Response:
+        """
+        Remove a role from a GeoServer user
+        """
+        return self.delete_request(f"/rest/security/roles/role/{role}/user/{user}")
 
     def create_acl_admin_rule(
         self,
