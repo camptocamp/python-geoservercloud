@@ -5,12 +5,14 @@ log = logging.getLogger()
 
 
 class KeyDollarListDict(dict):
-    def __init__(self, input_list=None, *args, **kwargs):
+    def __init__(self, input_list=None, input_dict=None, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.key_prefix = "@key"
         self.value_prefix = "$"
         if input_list:
             self.deserialize(input_list)
+        if input_dict:
+            self.update(input_dict)
         log.debug(self)
 
     def deserialize(self, input_list):
@@ -34,6 +36,6 @@ class KeyDollarListDict(dict):
     def __str__(self):
         return json.dumps(self.serialize())
 
-    # def update(self, other: dict):
-    #     for key, value in other.items():
-    #         super().__setitem__(key, value)
+    def update(self, other: dict):  # type: ignore
+        for key, value in other.items():
+            super().__setitem__(key, value)

@@ -25,6 +25,8 @@ def pg_payload() -> Generator[dict[str, dict[str, Any]], Any, None]:
     yield {
         "dataStore": {
             "name": STORE,
+            "type": "PostGIS",
+            "enabled": True,
             "connectionParameters": {
                 "entry": [
                     {"@key": "dbtype", "$": "postgis"},
@@ -51,6 +53,8 @@ def jndi_payload() -> Generator[dict[str, dict[str, Any]], Any, None]:
         "dataStore": {
             "name": STORE,
             "description": DESCRIPTION,
+            "type": "PostGIS (JNDI)",
+            "enabled": True,
             "connectionParameters": {
                 "entry": [
                     {"@key": "dbtype", "$": "postgis"},
@@ -73,6 +77,34 @@ def jndi_payload() -> Generator[dict[str, dict[str, Any]], Any, None]:
     }
 
 
+@pytest.fixture(scope="module")
+def datastores_response() -> Generator[dict[str, Any], Any, None]:
+    yield {
+        "dataStores": {
+            "dataStore": [
+                {
+                    "name": STORE,
+                    "href": f"{GEOSERVER_URL}/rest/workspaces/{WORKSPACE}/datastores/{STORE}.json",
+                }
+            ],
+        }
+    }
+
+
+def test_get_datastores(
+    geoserver: GeoServerCloud, datastores_response: dict[str, Any]
+) -> None:
+    with responses.RequestsMock() as rsps:
+        rsps.get(
+            url=f"{GEOSERVER_URL}/rest/workspaces/{WORKSPACE}/datastores.json",
+            status=200,
+            json=datastores_response,
+        )
+
+        datastores = geoserver.get_datastores(workspace_name=WORKSPACE)
+        assert datastores == ["test_store"]
+
+
 def test_create_pg_datastore(
     geoserver: GeoServerCloud, pg_payload: dict[str, dict[str, Any]]
 ) -> None:
@@ -90,7 +122,7 @@ def test_create_pg_datastore(
 
         response = geoserver.create_pg_datastore(
             workspace_name=WORKSPACE,
-            datastore=STORE,
+            datastore_name=STORE,
             pg_host=HOST,
             pg_port=PORT,
             pg_db=DATABASE,
@@ -119,7 +151,7 @@ def test_update_pg_datastore(
 
         response = geoserver.create_pg_datastore(
             workspace_name=WORKSPACE,
-            datastore=STORE,
+            datastore_name=STORE,
             pg_host=HOST,
             pg_port=PORT,
             pg_db=DATABASE,
@@ -148,7 +180,7 @@ def test_create_jndi_datastore(
 
         response = geoserver.create_jndi_datastore(
             workspace_name=WORKSPACE,
-            datastore=STORE,
+            datastore_name=STORE,
             jndi_reference=JNDI,
             pg_schema=SCHEMA,
             description=DESCRIPTION,
@@ -174,7 +206,7 @@ def test_update_jndi_datastore(
 
         response = geoserver.create_jndi_datastore(
             workspace_name=WORKSPACE,
-            datastore=STORE,
+            datastore_name=STORE,
             jndi_reference=JNDI,
             pg_schema=SCHEMA,
             description=DESCRIPTION,

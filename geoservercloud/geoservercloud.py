@@ -10,7 +10,13 @@ from owslib.wmts import WebMapTileService
 from requests import Response
 
 from geoservercloud import utils
-from geoservercloud.models import Workspace, Workspaces
+from geoservercloud.models import (
+    DataStores,
+    KeyDollarListDict,
+    PostGisDataStore,
+    Workspace,
+    Workspaces,
+)
 from geoservercloud.services import (
     AclEndpoints,
     GwcEndpoints,
@@ -156,52 +162,72 @@ class GeoServerCloud:
         """
         self.set_default_locale_for_service(workspace_name, None)
 
+    def get_datastores(self, workspace_name: str) -> dict[str, Any]:
+        """
+        Get all datastores for a given workspace
+        """
+        response = self.get_request(self.rest_endpoints.datastores(workspace_name))
+        return DataStores.from_response(response).datastores
+
     def create_pg_datastore(
         self,
         workspace_name: str,
-        datastore: str,
+        datastore_name: str,
         pg_host: str,
         pg_port: int,
         pg_db: str,
         pg_user: str,
         pg_password: str,
         pg_schema: str = "public",
+        description: str | None = None,
         set_default_datastore: bool = False,
     ) -> Response | None:
         """
         Create a PostGIS datastore from the DB connection parameters, or update it if it already exist.
         """
         response: None | Response = None
-        payload: dict[str, dict[str, Any]] = Templates.postgis_data_store(
-            datastore=datastore,
-            pg_host=pg_host,
-            pg_port=pg_port,
-            pg_db=pg_db,
-            pg_user=pg_user,
-            pg_password=pg_password,
-            namespace=f"http://{workspace_name}",
-            pg_schema=pg_schema,
+        datastore = PostGisDataStore(
+            workspace_name,
+            datastore_name,
+            connection_parameters=KeyDollarListDict(
+                input_dict={
+                    "dbtype": "postgis",
+                    "host": pg_host,
+                    "port": pg_port,
+                    "database": pg_db,
+                    "user": pg_user,
+                    "passwd": pg_password,
+                    "schema": pg_schema,
+                    "namespace": f"http://{workspace_name}",
+                    "Expose primary keys": "true",
+                }
+            ),
+            data_store_type="PostGIS",
+            description=description,
         )
+        payload = datastore.put_payload()
+
         if not self.resource_exists(
-            self.rest_endpoints.datastore(workspace_name, datastore)
+            self.rest_endpoints.datastore(workspace_name, datastore_name)
         ):
             response = self.post_request(
                 self.rest_endpoints.datastores(workspace_name), json=payload
             )
         else:
             response = self.put_request(
-                self.rest_endpoints.datastore(workspace_name, datastore), json=payload
+                self.rest_endpoints.datastore(workspace_name, datastore_name),
+                json=payload,
             )
 
         if set_default_datastore:
-            self.default_datastore = datastore
+            self.default_datastore = datastore_name
 
         return response
 
     def create_jndi_datastore(
         self,
         workspace_name: str,
-        datastore: str,
+        datastore_name: str,
         jndi_reference: str,
         pg_schema: str = "public",
         description: str | None = None,
@@ -211,26 +237,36 @@ class GeoServerCloud:
         Create a PostGIS datastore from JNDI resource, or update it if it already exist.
         """
         response: None | Response = None
-        payload: dict[str, dict[str, Any]] = Templates.postgis_jndi_data_store(
-            datastore=datastore,
-            jndi_reference=jndi_reference,
-            namespace=f"http://{workspace_name}",
-            pg_schema=pg_schema,
+        datastore = PostGisDataStore(
+            workspace_name,
+            datastore_name,
+            connection_parameters=KeyDollarListDict(
+                input_dict={
+                    "dbtype": "postgis",
+                    "jndiReferenceName": jndi_reference,
+                    "schema": pg_schema,
+                    "namespace": f"http://{workspace_name}",
+                    "Expose primary keys": "true",
+                }
+            ),
+            data_store_type="PostGIS (JNDI)",
             description=description,
         )
+        payload = datastore.put_payload()
         if not self.resource_exists(
-            self.rest_endpoints.datastore(workspace_name, datastore)
+            self.rest_endpoints.datastore(workspace_name, datastore_name)
         ):
             response = self.post_request(
                 self.rest_endpoints.datastores(workspace_name), json=payload
             )
         else:
             response = self.put_request(
-                self.rest_endpoints.datastore(workspace_name, datastore), json=payload
+                self.rest_endpoints.datastore(workspace_name, datastore_name),
+                json=payload,
             )
 
         if set_default_datastore:
-            self.default_datastore = datastore
+            self.default_datastore = datastore_name
 
         return response
 
