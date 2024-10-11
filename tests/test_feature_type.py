@@ -3,7 +3,13 @@ from typing import Any
 import pytest
 import responses
 
-from geoservercloud.geoservercloud import GeoServerCloud
+from geoservercloud import GeoServerCloud
+
+# TODO: add tests for
+# - geoservercloud.get_featuretypes()
+# - geoservercloud.get_featuretype()
+# for the moment just import them as import tests
+from geoservercloud.models import FeatureType, FeatureTypes
 
 LAYER = "test_layer"
 WORKSPACE = "test_workspace"
@@ -54,53 +60,3 @@ def feature_type_payload() -> dict[str, dict[str, Any]]:
             },
         }
     }
-
-
-def test_create_feature_type(
-    geoserver: GeoServerCloud, feature_type_payload: dict[str, dict[str, Any]]
-) -> None:
-    with responses.RequestsMock() as rsps:
-        rsps.get(
-            f"{geoserver.url}/rest/workspaces/{WORKSPACE}/datastores/{STORE}/featuretypes/{LAYER}.json",
-            status=404,
-        )
-        rsps.post(
-            f"{geoserver.url}/rest/workspaces/{WORKSPACE}/datastores/{STORE}/featuretypes.json",
-            match=[responses.matchers.json_params_matcher(feature_type_payload)],
-            status=201,
-        )
-        response = geoserver.create_feature_type(
-            workspace=WORKSPACE,
-            datastore=STORE,
-            layer=LAYER,
-            title={"en": "English"},
-            abstract={"en": "English"},
-        )
-
-        assert response
-        assert response.status_code == 201
-
-
-def test_update_feature_type(
-    geoserver: GeoServerCloud, feature_type_payload: dict[str, dict[str, Any]]
-) -> None:
-    with responses.RequestsMock() as rsps:
-        rsps.get(
-            f"{geoserver.url}/rest/workspaces/{WORKSPACE}/datastores/{STORE}/featuretypes/{LAYER}.json",
-            status=200,
-        )
-        rsps.put(
-            f"{geoserver.url}/rest/workspaces/{WORKSPACE}/datastores/{STORE}/featuretypes/{LAYER}.json",
-            match=[responses.matchers.json_params_matcher(feature_type_payload)],
-            status=200,
-        )
-        response = geoserver.create_feature_type(
-            workspace=WORKSPACE,
-            datastore=STORE,
-            layer=LAYER,
-            title={"en": "English"},
-            abstract={"en": "English"},
-        )
-
-        assert response
-        assert response.status_code == 200

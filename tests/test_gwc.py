@@ -1,6 +1,6 @@
 import responses
 
-from geoservercloud.geoservercloud import GeoServerCloud
+from geoservercloud import GeoServerCloud
 
 WORKSPACE = "test_workspace"
 LAYER = "test_layer"
