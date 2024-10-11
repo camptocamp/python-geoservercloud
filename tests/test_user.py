@@ -9,7 +9,7 @@ TEST_USER = "test_user"
 def test_create_user(geoserver: GeoServerCloud) -> None:
     with responses.RequestsMock() as rsps:
         rsps.post(
-            url=f"{geoserver.url}/rest/security/usergroup/users",
+            url=f"{geoserver.url}/rest/security/usergroup/users.json",
             status=201,
             match=[
                 responses.matchers.json_params_matcher(
@@ -30,7 +30,7 @@ def test_create_user(geoserver: GeoServerCloud) -> None:
 def test_update_user_password(geoserver: GeoServerCloud) -> None:
     with responses.RequestsMock() as rsps:
         rsps.post(
-            url=f"{geoserver.url}/rest/security/usergroup/user/{TEST_USER}",
+            url=f"{geoserver.url}/rest/security/usergroup/user/{TEST_USER}.json",
             status=200,
             match=[
                 responses.matchers.json_params_matcher(
@@ -49,7 +49,7 @@ def test_update_user_password(geoserver: GeoServerCloud) -> None:
 def test_update_user_enabled(geoserver: GeoServerCloud) -> None:
     with responses.RequestsMock() as rsps:
         rsps.post(
-            url=f"{geoserver.url}/rest/security/usergroup/user/{TEST_USER}",
+            url=f"{geoserver.url}/rest/security/usergroup/user/{TEST_USER}.json",
             status=200,
             match=[
                 responses.matchers.json_params_matcher(
@@ -68,7 +68,8 @@ def test_update_user_enabled(geoserver: GeoServerCloud) -> None:
 def test_delete_user(geoserver: GeoServerCloud) -> None:
     with responses.RequestsMock() as rsps:
         rsps.delete(
-            url=f"{geoserver.url}/rest/security/usergroup/user/{TEST_USER}", status=200
+            url=f"{geoserver.url}/rest/security/usergroup/user/{TEST_USER}.json",
+            status=200,
         )
         response = geoserver.delete_user(TEST_USER)
         assert response.status_code == 200

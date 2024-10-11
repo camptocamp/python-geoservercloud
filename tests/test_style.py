@@ -17,7 +17,7 @@ def test_create_style(geoserver: GeoServerCloud) -> None:
             status=404,
         )
         rsps.post(
-            url=f"{GEOSERVER_URL}/rest/styles",
+            url=f"{GEOSERVER_URL}/rest/styles.json",
             status=201,
         )
 
@@ -57,7 +57,7 @@ def test_create_style_zip(geoserver: GeoServerCloud) -> None:
             status=404,
         )
         rsps.post(
-            url=f"{GEOSERVER_URL}/rest/styles",
+            url=f"{GEOSERVER_URL}/rest/styles.json",
             status=201,
         )
 

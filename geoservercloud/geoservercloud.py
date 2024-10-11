@@ -10,7 +10,13 @@ from owslib.wmts import WebMapTileService
 from requests import Response
 
 from geoservercloud import utils
-from geoservercloud.services import RestService
+from geoservercloud.services import (
+    AclEndpoints,
+    GwcEndpoints,
+    OwsEndpoints,
+    RestEndpoints,
+    RestService,
+)
 from geoservercloud.templates import Templates
 
 
@@ -27,14 +33,14 @@ class GeoServerCloud:
         self.password: str = password
         self.auth: tuple[str, str] = (user, password)
         self.rest_service: RestService = RestService(url, self.auth)
+        self.acl_endpoints: AclEndpoints = AclEndpoints()
+        self.gwc_endpoints: GwcEndpoints = GwcEndpoints()
+        self.ows_endpoints: OwsEndpoints = OwsEndpoints()
+        self.rest_endpoints: RestEndpoints = RestEndpoints()
         self.wms: WebMapService_1_3_0 | None = None
         self.wmts: WebMapTileService | None = None
         self.default_workspace: str | None = None
         self.default_datastore: str | None = None
-
-    @staticmethod
-    def workspace_wms_settings_path(workspace: str) -> str:
-        return f"/rest/services/wms/workspaces/{workspace}/settings.json"
 
     @staticmethod
     def get_wmts_layer_bbox(
@@ -48,9 +54,9 @@ class GeoServerCloud:
 
     def create_wms(self) -> None:
         if self.default_workspace:
-            path: str = f"/{self.default_workspace}/wms"
+            path: str = self.ows_endpoints.workspace_wms(self.default_workspace)
         else:
-            path = "/wms"
+            path = self.ows_endpoints.wms()
         self.wms = WebMapService_1_3_0(
             f"{self.url}{path}",
             username=self.user,
@@ -59,7 +65,7 @@ class GeoServerCloud:
         )
 
     def create_wmts(self) -> None:
-        path = "/gwc/service/wmts"
+        path = self.ows_endpoints.wmts()
         self.wmts = WebMapTileService(
             f"{self.url}{path}",
             version="1.0.0",
@@ -83,10 +89,12 @@ class GeoServerCloud:
                 "isolated": isolated,
             }
         }
-        response: Response = self.post_request("/rest/workspaces.json", json=payload)
+        response: Response = self.post_request(
+            self.rest_endpoints.workspaces(), json=payload
+        )
         if response.status_code == 409:
             response = self.put_request(
-                f"/rest/workspaces/{workspace}.json", json=payload
+                self.rest_endpoints.workspace(workspace), json=payload
             )
         if set_default_workspace:
             self.default_workspace = workspace
@@ -96,8 +104,9 @@ class GeoServerCloud:
         """
         Delete a GeoServer workspace (recursively)
         """
-        path: str = f"/rest/workspaces/{workspace}.json?recurse=true"
-        response: Response = self.delete_request(path)
+        response: Response = self.delete_request(
+            self.rest_endpoints.workspace(workspace), params={"recurse": "true"}
+        )
         if self.default_workspace == workspace:
             self.default_workspace = None
             self.wms = None
@@ -119,10 +128,10 @@ class GeoServerCloud:
         """
         Publish the WMS service for a given workspace
         """
-        path: str = f"{self.workspace_wms_settings_path(workspace)}"
-
         data: dict[str, dict[str, Any]] = Templates.workspace_wms(workspace)
-        return self.put_request(path, json=data)
+        return self.put_request(
+            self.rest_endpoints.workspace_wms_settings(workspace), json=data
+        )
 
     def set_default_locale_for_service(
         self, workspace: str, locale: str | None
@@ -130,13 +139,14 @@ class GeoServerCloud:
         """
         Set a default language for localized WMS requests
         """
-        path: str = self.workspace_wms_settings_path(workspace)
         data: dict[str, dict[str, Any]] = {
             "wms": {
                 "defaultLocale": locale,
             }
         }
-        return self.put_request(path, json=data)
+        return self.put_request(
+            self.rest_endpoints.workspace_wms_settings(workspace), json=data
+        )
 
     def unset_default_locale_for_service(self, workspace) -> None:
         """
@@ -160,8 +170,6 @@ class GeoServerCloud:
         Create a PostGIS datastore from the DB connection parameters, or update it if it already exist.
         """
         response: None | Response = None
-        path = f"/rest/workspaces/{workspace}/datastores.json"
-        resource_path = f"/rest/workspaces/{workspace}/datastores/{datastore}.json"
         payload: dict[str, dict[str, Any]] = Templates.postgis_data_store(
             datastore=datastore,
             pg_host=pg_host,
@@ -172,10 +180,16 @@ class GeoServerCloud:
             namespace=f"http://{workspace}",
             pg_schema=pg_schema,
         )
-        if not self.resource_exists(resource_path):
-            response = self.post_request(path, json=payload)
+        if not self.resource_exists(
+            self.rest_endpoints.datastore(workspace, datastore)
+        ):
+            response = self.post_request(
+                self.rest_endpoints.datastores(workspace), json=payload
+            )
         else:
-            response = self.put_request(resource_path, json=payload)
+            response = self.put_request(
+                self.rest_endpoints.datastore(workspace, datastore), json=payload
+            )
 
         if set_default_datastore:
             self.default_datastore = datastore
@@ -195,8 +209,6 @@ class GeoServerCloud:
         Create a PostGIS datastore from JNDI resource, or update it if it already exist.
         """
         response: None | Response = None
-        path = f"/rest/workspaces/{workspace}/datastores.json"
-        resource_path = f"/rest/workspaces/{workspace}/datastores/{datastore}.json"
         payload: dict[str, dict[str, Any]] = Templates.postgis_jndi_data_store(
             datastore=datastore,
             jndi_reference=jndi_reference,
@@ -204,10 +216,16 @@ class GeoServerCloud:
             pg_schema=pg_schema,
             description=description,
         )
-        if not self.resource_exists(resource_path):
-            response = self.post_request(path, json=payload)
+        if not self.resource_exists(
+            self.rest_endpoints.datastore(workspace, datastore)
+        ):
+            response = self.post_request(
+                self.rest_endpoints.datastores(workspace), json=payload
+            )
         else:
-            response = self.put_request(resource_path, json=payload)
+            response = self.put_request(
+                self.rest_endpoints.datastore(workspace, datastore), json=payload
+            )
 
         if set_default_datastore:
             self.default_datastore = datastore
@@ -223,13 +241,15 @@ class GeoServerCloud:
         """
         Create a cascaded WMTS store, or update it if it already exist.
         """
-        path = f"/rest/workspaces/{workspace}/wmtsstores.json"
-        resource_path = f"/rest/workspaces/{workspace}/wmtsstores/{name}.json"
         payload = Templates.wmts_store(workspace, name, capabilities)
-        if not self.resource_exists(resource_path):
-            return self.post_request(path, json=payload)
+        if not self.resource_exists(self.rest_endpoints.wmtsstore(workspace, name)):
+            return self.post_request(
+                self.rest_endpoints.wmtsstores(workspace), json=payload
+            )
         else:
-            return self.put_request(resource_path, json=payload)
+            return self.put_request(
+                self.rest_endpoints.wmtsstore(workspace, name), json=payload
+            )
 
     def create_feature_type(
         self,
@@ -250,12 +270,6 @@ class GeoServerCloud:
         datastore = datastore or self.default_datastore
         if not datastore:
             raise ValueError("Datastore not provided")
-        path: str = (
-            f"/rest/workspaces/{workspace}/datastores/{datastore}/featuretypes.json"
-        )
-        resource_path: str = (
-            f"/rest/workspaces/{workspace}/datastores/{datastore}/featuretypes/{layer}.json"
-        )
         payload: dict[str, dict[str, Any]] = Templates.feature_type(
             layer=layer,
             workspace=workspace,
@@ -272,10 +286,17 @@ class GeoServerCloud:
         else:
             payload["featureType"]["abstract"] = abstract
 
-        if not self.resource_exists(resource_path):
-            return self.post_request(path, json=payload)
+        if not self.resource_exists(
+            self.rest_endpoints.featuretype(workspace, datastore, layer)
+        ):
+            return self.post_request(
+                self.rest_endpoints.featuretypes(workspace, datastore), json=payload
+            )
         else:
-            return self.put_request(resource_path, json=payload)
+            return self.put_request(
+                self.rest_endpoints.featuretype(workspace, datastore, layer),
+                json=payload,
+            )
 
     def create_layer_group(
         self,
@@ -293,8 +314,6 @@ class GeoServerCloud:
         workspace = workspace or self.default_workspace
         if not workspace:
             raise ValueError("Workspace not provided")
-        path: str = f"/rest/workspaces/{workspace}/layergroups.json"
-        resource_path: str = f"/rest/workspaces/{workspace}/layergroups/{group}.json"
         payload: dict[str, dict[str, Any]] = Templates.layer_group(
             group=group,
             layers=layers,
@@ -304,10 +323,14 @@ class GeoServerCloud:
             epsg=epsg,
             mode=mode,
         )
-        if not self.resource_exists(resource_path):
-            return self.post_request(path, json=payload)
+        if not self.resource_exists(self.rest_endpoints.layergroup(workspace, group)):
+            return self.post_request(
+                self.rest_endpoints.layergroups(workspace), json=payload
+            )
         else:
-            return self.put_request(resource_path, json=payload)
+            return self.put_request(
+                self.rest_endpoints.layergroup(workspace, group), json=payload
+            )
 
     def create_wmts_layer(
         self,
@@ -324,19 +347,21 @@ class GeoServerCloud:
         """
         if not published_layer:
             published_layer = native_layer
-        resource_path = f"/rest/workspaces/{workspace}/wmtsstores/{wmts_store}/layers/{published_layer}.json"
-        if self.resource_exists(resource_path):
-            self.delete_request(resource_path, params={"recurse": "true"})
-        wmts_store_path = f"/rest/workspaces/{workspace}/wmtsstores/{wmts_store}.json"
+        if self.resource_exists(
+            self.rest_endpoints.wmtslayer(workspace, wmts_store, published_layer)
+        ):
+            self.delete_request(
+                self.rest_endpoints.wmtslayer(workspace, wmts_store, published_layer),
+                params={"recurse": "true"},
+            )
         capabilities_url = (
-            self.get_request(wmts_store_path)
+            self.get_request(self.rest_endpoints.wmtsstore(workspace, wmts_store))
             .json()
             .get("wmtsStore")
             .get("capabilitiesURL")
         )
         wgs84_bbox = self.get_wmts_layer_bbox(capabilities_url, native_layer)
 
-        path = f"/rest/workspaces/{workspace}/wmtsstores/{wmts_store}/layers.json"
         payload = Templates.wmts_layer(
             published_layer,
             native_layer,
@@ -346,11 +371,12 @@ class GeoServerCloud:
             international_abstract=international_abstract,
         )
 
-        return self.post_request(path, json=payload)
+        return self.post_request(
+            self.rest_endpoints.wmtslayers(workspace, wmts_store), json=payload
+        )
 
     def get_gwc_layer(self, workspace: str, layer: str) -> dict[str, Any] | None:
-        path = f"/gwc/rest/layers/{workspace}:{layer}.json"
-        response = self.get_request(path)
+        response = self.get_request(self.gwc_endpoints.layer(workspace, layer))
         if response.status_code == 404:
             return None
         return response.json()
@@ -360,7 +386,7 @@ class GeoServerCloud:
     ) -> Response | None:
         # Reload config to make sure GWC is aware of GeoServer layers
         self.post_request(
-            "/gwc/rest/reload",
+            self.gwc_endpoints.reload(),
             headers={"Content-Type": "application/json"},
             data="reload_configuration=1",  # type: ignore
         )
@@ -369,7 +395,7 @@ class GeoServerCloud:
             return None
         payload = Templates.gwc_layer(workspace, layer, f"EPSG:{epsg}")
         return self.put_request(
-            f"/gwc/rest/layers/{workspace}:{layer}.json",
+            self.gwc_endpoints.layer(workspace, layer),
             json=payload,
         )
 
@@ -382,12 +408,14 @@ class GeoServerCloud:
         """Create a style from a file, or update it if it already exists.
         Supported file extensions are .sld and .zip."""
         path = (
-            "/rest/styles" if not workspace else f"/rest/workspaces/{workspace}/styles"
+            self.rest_endpoints.styles()
+            if not workspace
+            else self.rest_endpoints.workspace_styles(workspace)
         )
         resource_path = (
-            f"/rest/styles/{style}.json"
+            self.rest_endpoints.style(style)
             if not workspace
-            else f"/rest/workspaces/{workspace}/styles/{style}.json"
+            else self.rest_endpoints.workspace_style(workspace, style)
         )
 
         file_ext = os.path.splitext(file)[1]
@@ -409,14 +437,15 @@ class GeoServerCloud:
     def set_default_layer_style(
         self, layer: str, workspace: str, style: str
     ) -> Response:
-        path = f"/rest/layers/{workspace}:{layer}.json"
         data = {"layer": {"defaultStyle": {"name": style}}}
-        return self.put_request(path, json=data)
+        return self.put_request(
+            self.rest_endpoints.workspace_layer(workspace, layer), json=data
+        )
 
     def get_wms_capabilities(
         self, workspace: str, accept_languages=None
     ) -> dict[str, Any]:
-        path: str = f"/{workspace}/wms"
+        path: str = self.ows_endpoints.workspace_wms(workspace)
         params: dict[str, str] = {
             "service": "WMS",
             "version": "1.3.0",
@@ -439,13 +468,14 @@ class GeoServerCloud:
             return capabilities
 
     def get_wfs_capabilities(self, workspace: str) -> dict[str, Any]:
-        path: str = f"/{workspace}/wfs"
         params: dict[str, str] = {
             "service": "WFS",
             "version": "1.1.0",
             "request": "GetCapabilities",
         }
-        response: Response = self.get_request(path, params=params)
+        response: Response = self.get_request(
+            self.ows_endpoints.workspace_wfs(workspace), params=params
+        )
         return xmltodict.parse(response.content)
 
     def get_wfs_layers(self, workspace: str) -> Any | dict[str, Any]:
@@ -534,9 +564,9 @@ class GeoServerCloud:
         """
         path: str
         if not workspace:
-            path = "/wms"
+            path = self.ows_endpoints.wms()
         else:
-            path = f"/{workspace}/wms"
+            path = self.ows_endpoints.workspace_wms(workspace)
         params: dict[str, Any] = {
             "service": "WMS",
             "version": "1.3.0",
@@ -581,7 +611,8 @@ class GeoServerCloud:
         """WFS GetFeature request
         Return the feature(s) as dict if found, otherwise return the raw response content as bytes
         """
-        path = f"/{workspace}/wfs"
+        # FIXME: we should consider also the global wfs endpoint
+        path = self.ows_endpoints.workspace_wfs(workspace)
         params = {
             "service": "WFS",
             "version": "1.1.0",
@@ -601,14 +632,17 @@ class GeoServerCloud:
 
     def describe_feature_type(
         self,
-        workspace: str,
+        workspace: str | None = None,
         type_name: str | None = None,
         format: str = "application/json",
     ) -> dict[str, Any] | bytes:
         """WFS DescribeFeatureType request
         Return the feature type(s) as dict if found, otherwise return the raw response content as bytes
         """
-        path = f"/{workspace}/wfs"
+        if not workspace:
+            path = self.ows_endpoints.wfs()
+        else:
+            path = self.ows_endpoints.workspace_wfs(workspace)
         params = {
             "service": "WFS",
             "version": "1.1.0",
@@ -633,7 +667,8 @@ class GeoServerCloud:
         Return the properties as dict (if one feature was found), a list (if multiple features were found)
         or an empty dict if no feature was found. Otherwise throw a requests.exceptions.HTTPError
         """
-        path = f"/{workspace}/wfs"
+        # FIXME: we should consider also the global wfs endpoint
+        path = self.ows_endpoints.workspace_wfs(workspace)
         params = {
             "service": "WFS",
             "version": "2.0.0",
@@ -661,7 +696,7 @@ class GeoServerCloud:
             }
         }
         return self.post_request(
-            "/rest/security/usergroup/users", json=payload, headers=headers
+            self.rest_endpoints.users(), json=payload, headers=headers
         )
 
     def update_user(
@@ -677,26 +712,26 @@ class GeoServerCloud:
         if enabled is not None:
             payload["user"]["enabled"] = enabled
         return self.post_request(
-            f"/rest/security/usergroup/user/{user}", json=payload, headers=headers
+            self.rest_endpoints.user(user), json=payload, headers=headers
         )
 
     def delete_user(self, user: str) -> Response:
         """
         Delete a GeoServer user
         """
-        return self.delete_request(f"/rest/security/usergroup/user/{user}")
+        return self.delete_request(self.rest_endpoints.user(user))
 
     def create_role(self, role_name: str) -> Response:
         """
         Create a GeoServer role
         """
-        return self.post_request(f"/rest/security/roles/role/{role_name}")
+        return self.post_request(self.rest_endpoints.role(role_name))
 
     def delete_role(self, role_name: str) -> Response:
         """
         Delete a GeoServer role
         """
-        return self.delete_request(f"/rest/security/roles/role/{role_name}")
+        return self.delete_request(self.rest_endpoints.role(role_name))
 
     def create_role_if_not_exists(self, role_name: str) -> Response | None:
         """
@@ -711,7 +746,7 @@ class GeoServerCloud:
         Check if a GeoServer role exists
         """
         response = self.get_request(
-            f"/rest/security/roles", headers={"Accept": "application/json"}
+            self.rest_endpoints.roles(), headers={"Accept": "application/json"}
         )
         roles = response.json().get("roles", [])
         return role_name in roles
@@ -720,7 +755,7 @@ class GeoServerCloud:
         """
         Get all roles assigned to a GeoServer user
         """
-        response = self.get_request(f"/rest/security/roles/user/{user}.json")
+        response = self.get_request(self.rest_endpoints.user_roles(user))
         try:
             return response.json().get("roles")
         except JSONDecodeError:
@@ -730,13 +765,13 @@ class GeoServerCloud:
         """
         Assign a role to a GeoServer user
         """
-        return self.post_request(f"/rest/security/roles/role/{role}/user/{user}")
+        return self.post_request(self.rest_endpoints.role_user(role, user))
 
     def remove_role_from_user(self, user: str, role: str) -> Response:
         """
         Remove a role from a GeoServer user
         """
-        return self.delete_request(f"/rest/security/roles/role/{role}/user/{user}")
+        return self.delete_request(self.rest_endpoints.role_user(role, user))
 
     def create_acl_admin_rule(
         self,
@@ -749,9 +784,8 @@ class GeoServerCloud:
         """
         Create a GeoServer ACL admin rule
         """
-        path = "/acl/api/adminrules"
         return self.post_request(
-            path,
+            self.acl_endpoints.adminrules(),
             json={
                 "priority": priority,
                 "access": access,
@@ -765,22 +799,19 @@ class GeoServerCloud:
         """
         Delete a GeoServer ACL admin rule by id
         """
-        path = f"/acl/api/adminrules/id/{id}"
-        return self.delete_request(path)
+        return self.delete_request(self.acl_endpoints.adminrule(id))
 
     def delete_all_acl_admin_rules(self) -> Response:
         """
         Delete all existing GeoServer ACL admin rules
         """
-        path = "/acl/api/adminrules"
-        return self.delete_request(path)
+        return self.delete_request(self.acl_endpoints.adminrules())
 
     def get_acl_rules(self) -> dict[str, Any]:
         """
         Return all GeoServer ACL data rules
         """
-        path = "/acl/api/rules"
-        response = self.get_request(path)
+        response = self.get_request(self.acl_endpoints.rules())
         return response.json()
 
     def create_acl_rules_for_requests(
@@ -822,7 +853,6 @@ class GeoServerCloud:
         """
         Create a GeoServer ACL data rule
         """
-        path = "/acl/api/rules"
         json = {"priority": priority, "access": access}
         if role:
             json["role"] = role
@@ -834,14 +864,30 @@ class GeoServerCloud:
             json["request"] = request
         if workspace:
             json["workspace"] = workspace
-        return self.post_request(path, json=json)
+        return self.post_request(self.acl_endpoints.rules(), json=json)
 
     def delete_all_acl_rules(self) -> Response:
         """
         Delete all existing GeoServer ACL data rules
         """
-        path = "/acl/api/rules"
-        return self.delete_request(path)
+        return self.delete_request(self.acl_endpoints.rules())
+
+    def create_gridset(self, epsg: int) -> Response | None:
+        """
+        Create a gridset for GeoWebCache for a given projection
+        Supported EPSG codes are 2056, 21781 and 3857
+        """
+        if self.resource_exists(self.gwc_endpoints.gridset(epsg)):
+            return None
+        file_path: Path = Path(__file__).parent / "gridsets" / f"{epsg}.xml"
+        headers: dict[str, str] = {"Content-Type": "application/xml"}
+        try:
+            data: bytes = file_path.read_bytes()
+        except FileNotFoundError:
+            raise ValueError(f"No gridset definition found for EPSG:{epsg}")
+        return self.put_request(
+            self.gwc_endpoints.gridset(epsg), data=data, headers=headers
+        )
 
     def create_or_update_resource(self, path, resource_path, payload) -> Response:
         """
@@ -851,22 +897,6 @@ class GeoServerCloud:
             return self.post_request(path, json=payload)
         else:
             return self.put_request(resource_path, json=payload)
-
-    def create_gridset(self, epsg: int) -> Response | None:
-        """
-        Create a gridset for GeoWebCache for a given projection
-        Supported EPSG codes are 2056, 21781 and 3857
-        """
-        resource_path: str = f"/gwc/rest/gridsets/EPSG:{epsg}.xml"
-        if self.resource_exists(resource_path):
-            return None
-        file_path: Path = Path(__file__).parent / "gridsets" / f"{epsg}.xml"
-        headers: dict[str, str] = {"Content-Type": "application/xml"}
-        try:
-            data: bytes = file_path.read_bytes()
-        except FileNotFoundError:
-            raise ValueError(f"No gridset definition found for EPSG:{epsg}")
-        return self.put_request(resource_path, data=data, headers=headers)
 
     def resource_exists(self, path: str) -> bool:
         """
