@@ -3,7 +3,7 @@ from typing import Any
 import pytest
 import responses
 
-from geoservercloud.geoservercloud import GeoServerCloud
+from geoservercloud import GeoServerCloud
 
 WORKSPACE = "test_workspace"
 STORE = "test_wmtsstore"
@@ -83,7 +83,7 @@ def test_create_wmts_store(
             status=201,
         )
         response = geoserver.create_wmts_store(
-            workspace=WORKSPACE,
+            workspace_name=WORKSPACE,
             name=STORE,
             capabilities=CAPABILITIES_URL,
         )
@@ -105,7 +105,7 @@ def test_update_wmts_store(
             status=200,
         )
         response = geoserver.create_wmts_store(
-            workspace=WORKSPACE,
+            workspace_name=WORKSPACE,
             name=STORE,
             capabilities=CAPABILITIES_URL,
         )
@@ -138,7 +138,7 @@ def test_create_wmts_layer(
             status=201,
         )
         response = geoserver.create_wmts_layer(
-            workspace=WORKSPACE,
+            workspace_name=WORKSPACE,
             wmts_store=STORE,
             native_layer=NATIVE_LAYER,
             published_layer=LAYER,
@@ -178,7 +178,7 @@ def test_create_wmts_layer_already_exists(
             status=201,
         )
         response = geoserver.create_wmts_layer(
-            workspace=WORKSPACE,
+            workspace_name=WORKSPACE,
             wmts_store=STORE,
             native_layer=NATIVE_LAYER,
             published_layer=LAYER,
@@ -214,7 +214,7 @@ def test_create_wmts_layer_international_title(
             status=201,
         )
         response = geoserver.create_wmts_layer(
-            workspace=WORKSPACE,
+            workspace_name=WORKSPACE,
             wmts_store=STORE,
             native_layer=NATIVE_LAYER,
             published_layer=LAYER,
