@@ -10,7 +10,7 @@ from owslib.wmts import WebMapTileService
 from requests import Response
 
 from geoservercloud import utils
-from geoservercloud.restservice import RestService
+from geoservercloud.services import RestService
 from geoservercloud.templates import Templates
 
 
