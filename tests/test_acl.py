@@ -27,7 +27,7 @@ def test_create_acl_admin_rule(geoserver: GeoServerCloud) -> None:
             access="ADMIN",
             role="TEST_ROLE",
             user="TEST_USER",
-            workspace="TEST_WORKSPACE",
+            workspace_name="TEST_WORKSPACE",
         )
         assert response.status_code == 201
 
@@ -54,7 +54,7 @@ def test_create_acl_rule(geoserver: GeoServerCloud) -> None:
             priority=1,
             access="ALLOW",
             role="TEST_ROLE",
-            workspace="TEST_WORKSPACE",
+            workspace_name="TEST_WORKSPACE",
             service="WMS",
         )
         assert response.status_code == 201
@@ -99,7 +99,7 @@ def test_create_acl_rule_for_requests(geoserver: GeoServerCloud) -> None:
             priority=1,
             access="ALLOW",
             role="TEST_ROLE",
-            workspace="TEST_WORKSPACE",
+            workspace_name="TEST_WORKSPACE",
             service="WMS",
             requests=["GetCapabilities", "GetMap"],
         )

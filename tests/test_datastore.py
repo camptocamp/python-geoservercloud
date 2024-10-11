@@ -89,7 +89,7 @@ def test_create_pg_datastore(
         )
 
         response = geoserver.create_pg_datastore(
-            workspace=WORKSPACE,
+            workspace_name=WORKSPACE,
             datastore=STORE,
             pg_host=HOST,
             pg_port=PORT,
@@ -118,7 +118,7 @@ def test_update_pg_datastore(
         )
 
         response = geoserver.create_pg_datastore(
-            workspace=WORKSPACE,
+            workspace_name=WORKSPACE,
             datastore=STORE,
             pg_host=HOST,
             pg_port=PORT,
@@ -147,7 +147,7 @@ def test_create_jndi_datastore(
         )
 
         response = geoserver.create_jndi_datastore(
-            workspace=WORKSPACE,
+            workspace_name=WORKSPACE,
             datastore=STORE,
             jndi_reference=JNDI,
             pg_schema=SCHEMA,
@@ -173,7 +173,7 @@ def test_update_jndi_datastore(
         )
 
         response = geoserver.create_jndi_datastore(
-            workspace=WORKSPACE,
+            workspace_name=WORKSPACE,
             datastore=STORE,
             jndi_reference=JNDI,
             pg_schema=SCHEMA,

@@ -58,7 +58,7 @@ def test_create_layer_group(
 
         response = geoserver.create_layer_group(
             group=LAYER_GROUP,
-            workspace=WORKSPACE,
+            workspace_name=WORKSPACE,
             layers=LAYERS,
             title=TITLE,
             abstract=ABSTRACT,
@@ -83,7 +83,7 @@ def test_update_layer_group(
 
         response = geoserver.create_layer_group(
             group=LAYER_GROUP,
-            workspace=WORKSPACE,
+            workspace_name=WORKSPACE,
             layers=LAYERS,
             title=TITLE,
             abstract=ABSTRACT,

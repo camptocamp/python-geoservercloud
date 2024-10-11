@@ -70,7 +70,7 @@ def test_create_feature_type(
             status=201,
         )
         response = geoserver.create_feature_type(
-            workspace=WORKSPACE,
+            workspace_name=WORKSPACE,
             datastore=STORE,
             layer=LAYER,
             title={"en": "English"},
@@ -95,7 +95,7 @@ def test_update_feature_type(
             status=200,
         )
         response = geoserver.create_feature_type(
-            workspace=WORKSPACE,
+            workspace_name=WORKSPACE,
             datastore=STORE,
             layer=LAYER,
             title={"en": "English"},

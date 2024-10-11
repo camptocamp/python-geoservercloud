@@ -5,6 +5,26 @@ from geoservercloud.geoservercloud import GeoServerCloud
 from tests.conftest import GEOSERVER_URL
 
 
+def test_list_workspaces(geoserver: GeoServerCloud) -> None:
+    with responses.RequestsMock() as rsps:
+        rsps.get(
+            url=f"{GEOSERVER_URL}/rest/workspaces.json",
+            status=200,
+            json={
+                "workspaces": {
+                    "workspace": [
+                        {
+                            "name": "test_workspace",
+                            "href": "http://localhost:8080/geoserver/rest/workspaces/test_workspace.json",
+                        }
+                    ]
+                }
+            },
+        )
+        workspaces = geoserver.get_workspaces()
+        assert workspaces.workspaces == ["test_workspace"]
+
+
 def test_create_workspace(geoserver: GeoServerCloud) -> None:
     workspace = "test_workspace"
     isolated = True
