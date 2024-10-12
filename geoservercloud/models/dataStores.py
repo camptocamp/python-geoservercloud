@@ -1,8 +1,5 @@
 import logging
 
-import jsonschema
-import requests
-
 log = logging.getLogger()
 
 

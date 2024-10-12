@@ -1,3 +1,4 @@
+import json
 import logging
 
 from . import KeyDollarListDict
@@ -49,7 +50,8 @@ class PostGisDataStore:
 
     @classmethod
     def from_response(cls, response):
-
+        if response.status_code == 404:
+            return None
         json_data = response.json()
         connection_parameters = cls.parse_connection_parameters(json_data)
         return cls(
@@ -68,3 +70,6 @@ class PostGisDataStore:
             .get("connectionParameters", {})
             .get("entry", [])
         )
+
+    def __repr__(self):
+        return json.dumps(self.put_payload(), indent=4)

@@ -14,6 +14,8 @@ from geoservercloud.models import (
     DataStores,
     KeyDollarListDict,
     PostGisDataStore,
+    Style,
+    Styles,
     Workspace,
     Workspaces,
 )
@@ -168,6 +170,17 @@ class GeoServerCloud:
         """
         response = self.get_request(self.rest_endpoints.datastores(workspace_name))
         return DataStores.from_response(response).datastores
+
+    def get_postgis_datastore(
+        self, workspace_name: str, datastore_name: str
+    ) -> dict[str, Any]:
+        """
+        Get a specific datastore
+        """
+        response = self.get_request(
+            self.rest_endpoints.datastore(workspace_name, datastore_name)
+        )
+        return PostGisDataStore.from_response(response)
 
     def create_pg_datastore(
         self,
@@ -444,6 +457,32 @@ class GeoServerCloud:
             json=payload,
         )
 
+    def get_styles(self, workspace_name: str | None = None) -> dict[str, Any]:
+        """
+        Get all styles for a given workspace
+        """
+        path = (
+            self.rest_endpoints.styles()
+            if not workspace_name
+            else self.rest_endpoints.workspace_styles(workspace_name)
+        )
+        styles = Styles.from_response(self.get_request(path)).styles
+        return styles
+
+    def get_style(
+        self, style: str, workspace_name: str | None = None
+    ) -> dict[str, Any]:
+        """
+        Get a specific style
+        """
+        path = (
+            self.rest_endpoints.style(style)
+            if not workspace_name
+            else self.rest_endpoints.workspace_style(workspace_name, style)
+        )
+        return Style.from_response(self.get_request(path))
+
+    # TODO: add a create_style method that takes a Style object as input
     def create_style_from_file(
         self,
         style: str,

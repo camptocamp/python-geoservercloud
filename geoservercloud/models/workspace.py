@@ -1,7 +1,5 @@
+import json
 import logging
-
-import jsonschema
-import requests
 
 log = logging.getLogger()
 
@@ -29,3 +27,6 @@ class Workspace:
             json_data.get("workspace", {}).get("isolated", False),
         )
         return cls(json_data.get("workspace", {}).get("name", None))
+
+    def __repr__(self):
+        return json.dumps(self.put_payload(), indent=4)
