@@ -1,6 +1,6 @@
 import responses
 
-from geoservercloud.geoservercloud import GeoServerCloud
+from geoservercloud import GeoServerCloud
 from tests.conftest import GEOSERVER_URL
 
 WORKSPACE = "test_workspace"

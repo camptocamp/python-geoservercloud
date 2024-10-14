@@ -72,12 +72,12 @@ class FeatureType:
             "featureType": {
                 "name": self.name,
                 "nativeName": self.native_name,
-                self._title.payload_tuple[0]: self._title.payload_tuple[1],
-                self._abstract.payload_tuple[0]: self._abstract.payload_tuple[1],
                 "srs": self.srs,
                 "keywords": self.keywords,
             }
         }
+        payload["featureType"].update(self.title.asdict())
+        payload["featureType"].update(self.abstract.asdict())
         if self.metadataLink != {}:
             payload["featureType"]["metadataLinks"] = self.metadataLink
         if self.attributes:

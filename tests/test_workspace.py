@@ -1,7 +1,7 @@
 import responses
 from responses import matchers
 
-from geoservercloud.geoservercloud import GeoServerCloud
+from geoservercloud import GeoServerCloud
 from tests.conftest import GEOSERVER_URL
 
 

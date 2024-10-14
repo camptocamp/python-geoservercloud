@@ -3,7 +3,7 @@ from typing import Any
 import pytest
 import responses
 
-from geoservercloud.geoservercloud import GeoServerCloud
+from geoservercloud import GeoServerCloud
 
 WORKSPACE = "test_workspace"
 STORE = "test_wmtsstore"

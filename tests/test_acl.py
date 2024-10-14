@@ -1,7 +1,7 @@
 import responses
 import responses.matchers
 
-from geoservercloud.geoservercloud import GeoServerCloud
+from geoservercloud import GeoServerCloud
 
 
 def test_create_acl_admin_rule(geoserver: GeoServerCloud) -> None:

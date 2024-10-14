@@ -19,7 +19,6 @@ class Workspaces:
 
     @classmethod
     def from_response(cls, response: Response):
-        # Parse the JSON response
         json_data = response.json()
 
         workspaces = []

@@ -306,6 +306,7 @@ class GeoServerCloud:
                 self.rest_endpoints.wmtsstore(workspace_name, name), json=payload
             )
 
+    # TODO: add a test for this method
     def get_feature_types(
         self, workspace_name: str, datastore_name: str
     ) -> dict[str, Any]:
@@ -319,6 +320,7 @@ class GeoServerCloud:
         )
         return featuretypes
 
+    # TODO: add a test for this method
     def get_feature_type(
         self, workspace_name: str, datastore_name: str, feature_type_name: str
     ) -> dict[str, Any]:
@@ -337,7 +339,7 @@ class GeoServerCloud:
         datastore: str | None = None,
         title: str | dict = "Default title",
         abstract: str | dict = "Default abstract",
-        attributes: dict = Templates.geom_point_attribute(),
+        attributes: dict = Templates.geom_point_attribute(),  # TODO: remove default value, because if should be None
         epsg: int = 4326,
     ) -> Response:
         """
@@ -349,6 +351,7 @@ class GeoServerCloud:
         datastore = datastore or self.default_datastore
         if not datastore:
             raise ValueError("Datastore not provided")
+        # TODO: use FeatureType.post_payload()
         payload: dict[str, dict[str, Any]] = Templates.feature_type(
             layer=layer,
             workspace=workspace_name,

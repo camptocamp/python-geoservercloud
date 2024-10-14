@@ -2,10 +2,9 @@ from unittest.mock import Mock
 
 import pytest
 
-from geoservercloud.models import Styles  # Replace with the correct import path
+from geoservercloud.models import Styles
 
 
-# Test initialization of Styles class
 def test_styles_initialization():
     workspace = "test_workspace"
     styles = ["style1", "style2"]
@@ -16,7 +15,6 @@ def test_styles_initialization():
     assert styles_instance.styles == styles
 
 
-# Test the from_response method with a valid response
 def test_styles_from_response_valid():
     mock_response = Mock()
     mock_response.json.return_value = {
@@ -32,7 +30,6 @@ def test_styles_from_response_valid():
     assert styles_instance.styles == ["style1", "style2"]
 
 
-# Test the from_response method when no workspace is provided
 def test_styles_from_response_no_workspace():
     mock_response = Mock()
     mock_response.json.return_value = {
@@ -45,7 +42,6 @@ def test_styles_from_response_no_workspace():
     assert styles_instance.styles == ["style1", "style2"]
 
 
-# Test the from_response method with empty styles list
 def test_styles_from_response_empty_styles():
     mock_response = Mock()
     mock_response.json.return_value = {
@@ -58,7 +54,6 @@ def test_styles_from_response_empty_styles():
     assert styles_instance.styles == []
 
 
-# Test the from_response method with no styles section
 def test_styles_from_response_no_styles_section():
     mock_response = Mock()
     mock_response.json.return_value = {}

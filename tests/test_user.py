@@ -1,7 +1,7 @@
 import responses
 import responses.matchers
 
-from geoservercloud.geoservercloud import GeoServerCloud
+from geoservercloud import GeoServerCloud
 
 TEST_USER = "test_user"
 

@@ -1,6 +1,6 @@
 import responses
 
-from geoservercloud.geoservercloud import GeoServerCloud
+from geoservercloud import GeoServerCloud
 
 
 def test_create_resource(geoserver: GeoServerCloud) -> None:

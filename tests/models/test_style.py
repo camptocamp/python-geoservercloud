@@ -2,10 +2,9 @@ from unittest.mock import Mock
 
 import pytest
 
-from geoservercloud.models import Style  # Adjust based on the actual import path
+from geoservercloud.models import Style
 
 
-# Test initialization of Style class
 def test_style_initialization():
     style = Style(
         name="test_style",
@@ -17,8 +16,8 @@ def test_style_initialization():
         date_modified="2023-10-02",
         legend_url="http://example.com/legend.png",
         legend_format="image/png",
-        legend_width="100",
-        legend_height="100",
+        legend_width=100,
+        legend_height=100,
     )
 
     assert style.name == "test_style"
@@ -31,12 +30,11 @@ def test_style_initialization():
     assert style.legend == {
         "onlineResource": "http://example.com/legend.png",
         "format": "image/png",
-        "width": "100",
-        "height": "100",
+        "width": 100,
+        "height": 100,
     }
 
 
-# Test initialization without a legend
 def test_style_initialization_without_legend():
     style = Style(
         name="test_style",
@@ -49,26 +47,6 @@ def test_style_initialization_without_legend():
     assert style.legend is None
 
 
-# Test create_legend method
-def test_style_create_legend():
-    style = Style(
-        name="test_style",
-        workspace="test_workspace",
-        legend_url="http://example.com/legend.png",
-        legend_format="image/png",
-        legend_width="100",
-        legend_height="100",
-    )
-
-    assert style.legend == {
-        "onlineResource": "http://example.com/legend.png",
-        "format": "image/png",
-        "width": "100",
-        "height": "100",
-    }
-
-
-# Test put_payload method with legend
 def test_style_put_payload_with_legend(mocker):
     style = Style(
         name="test_style",
@@ -94,11 +72,9 @@ def test_style_put_payload_with_legend(mocker):
         }
     }
 
-    payload = style.put_payload()
-    assert payload == expected_payload
+    assert style.put_payload() == expected_payload
 
 
-# Test put_payload method without legend
 def test_style_put_payload_without_legend(mocker):
     style = Style(
         name="test_style",
@@ -114,11 +90,9 @@ def test_style_put_payload_without_legend(mocker):
         }
     }
 
-    payload = style.put_payload()
-    assert payload == expected_payload
+    assert style.put_payload() == expected_payload
 
 
-# Test post_payload method
 def test_style_post_payload(mocker):
     style = Style(
         name="test_style",
@@ -135,7 +109,6 @@ def test_style_post_payload(mocker):
     mock_put_payload.assert_called_once()
 
 
-# Test from_response method
 def test_style_from_response():
     mock_response = Mock()
     mock_response.json.return_value = {

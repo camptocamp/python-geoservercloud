@@ -50,10 +50,28 @@ class KeyDollarListDict(dict):
 
 class I18N:
     """
-    Class to handle internationalization of strings
-    items like title, abstract, etc. that can be internationalized
-    become a dictionary with the key being the language code
-    and their key in the payload changes to internationalizedTitle, internationalizedAbstract, etc.
+    Geoserver handles internationalization with 2 possible (mutually exclusive) keys in the rest payload:
+    either:
+    - [key: string]
+    or
+    - [internationalKey: dictionary]
+
+    example:
+    a) as key: string we get {"title": "Test Title"}
+    b) as key: dict we get {"internationalTitle": {"en": "Test Title", "es": "Título de Prueba"}}
+
+    This class gives a layer of abstraction to handle both cases.
+
+    Usage:
+    Call the class by adding both possible keys in a tuple and the value.
+
+    Parameters:
+    keys: tuple[str, str] example : ("title", "internationalTitle")
+    value: str | dict example: "Test Title" | {"en": "Test Title", "es": "Título de Prueba"}
+
+    Example:
+
+    my_i18n = I18N(("title", "internationalTitle"), "Test Title")
     """
 
     def __init__(self, keys: tuple[str, Any], value: str | dict) -> None:
@@ -61,9 +79,9 @@ class I18N:
         self._i18n_key = keys[1]
         self._value = value
         if isinstance(value, str):
-            self._payload = (self.str_key, self._value)
+            self._content = {self.str_key: self._value}
         elif isinstance(value, dict):
-            self._payload = (self._i18n_key, self._value)  # type: ignore
+            self._content = {self._i18n_key: self._value}
         else:
             raise ValueError("Invalid value type")
 
@@ -79,9 +97,8 @@ class I18N:
     def value(self):
         return self._value
 
-    @property
-    def payload_tuple(self):
-        return self._payload
+    def asdict(self):
+        return self._content
 
     def __repr__(self):
-        return json.dumps({self._payload[0]: self._payload[1]}, indent=4)
+        return json.dumps(self._content, indent=4)

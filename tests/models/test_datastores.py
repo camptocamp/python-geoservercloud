@@ -2,10 +2,9 @@ from unittest.mock import Mock
 
 import pytest
 
-from geoservercloud.models import DataStores  # Replace with the actual module name
+from geoservercloud.models import DataStores
 
 
-# Test initialization of DataStores class
 def test_datastores_initialization():
     workspace_name = "test_workspace"
     datastores = ["store1", "store2"]
@@ -16,7 +15,6 @@ def test_datastores_initialization():
     assert ds.datastores == datastores
 
 
-# Test the from_response class method with a valid response
 def test_datastores_from_response(mocker):
     mock_response = Mock()
     mock_response.json.return_value = {
@@ -32,7 +30,6 @@ def test_datastores_from_response(mocker):
     assert ds.datastores == ["store1", "store2"]
 
 
-# Test from_response with an empty response
 def test_datastores_from_response_empty():
     mock_response = Mock()
     mock_response.json.return_value = {
@@ -45,7 +42,6 @@ def test_datastores_from_response_empty():
     assert ds.datastores == []
 
 
-# Test the __repr__ method
 def test_datastores_repr():
     ds = DataStores("test_workspace", ["store1", "store2"])
 

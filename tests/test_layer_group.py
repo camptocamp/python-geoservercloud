@@ -3,7 +3,7 @@ from typing import Any
 import pytest
 import responses
 
-from geoservercloud.geoservercloud import GeoServerCloud
+from geoservercloud import GeoServerCloud
 from tests.conftest import GEOSERVER_URL
 
 LAYER_GROUP = "test_layer_group"

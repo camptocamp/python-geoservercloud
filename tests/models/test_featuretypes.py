@@ -6,7 +6,6 @@ import pytest
 from geoservercloud.models import FeatureTypes  # Replace with the correct module path
 
 
-# Test initialization of FeatureTypes class
 def test_featuretypes_initialization():
     featuretypes = ["feature1", "feature2"]
     feature_types_instance = FeatureTypes(featuretypes)
@@ -14,7 +13,6 @@ def test_featuretypes_initialization():
     assert feature_types_instance.featuretypes == featuretypes
 
 
-# Test from_response method with a valid response
 def test_featuretypes_from_response_valid():
     mock_response = Mock()
     mock_response.status_code = 200
@@ -27,7 +25,6 @@ def test_featuretypes_from_response_valid():
     assert feature_types_instance.featuretypes == ["feature1", "feature2"]
 
 
-# Test __repr__ method
 def test_featuretypes_repr():
     featuretypes = ["feature1", "feature2"]
     feature_types_instance = FeatureTypes(featuretypes)

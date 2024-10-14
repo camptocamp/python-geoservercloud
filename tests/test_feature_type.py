@@ -3,7 +3,7 @@ from typing import Any
 import pytest
 import responses
 
-from geoservercloud.geoservercloud import GeoServerCloud
+from geoservercloud import GeoServerCloud
 
 # TODO: add tests for
 # - geoservercloud.get_featuretypes()

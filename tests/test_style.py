@@ -3,7 +3,7 @@ from pathlib import Path
 import pytest
 import responses
 
-from geoservercloud.geoservercloud import GeoServerCloud
+from geoservercloud import GeoServerCloud
 from geoservercloud.models import Styles
 from tests.conftest import GEOSERVER_URL
 
@@ -36,7 +36,6 @@ def test_get_styles_no_workspace(geoserver: GeoServerCloud):
     assert result == ["style1", "style2"]
 
 
-@responses.activate
 def test_get_styles_with_workspace(geoserver: GeoServerCloud):
     workspace_name = "test_workspace"
     with responses.RequestsMock() as rsps:
