@@ -207,19 +207,17 @@ class GeoServerCloud:
         datastore = PostGisDataStore(
             workspace_name,
             datastore_name,
-            connection_parameters=KeyDollarListDict(
-                input_dict={
-                    "dbtype": "postgis",
-                    "host": pg_host,
-                    "port": pg_port,
-                    "database": pg_db,
-                    "user": pg_user,
-                    "passwd": pg_password,
-                    "schema": pg_schema,
-                    "namespace": f"http://{workspace_name}",
-                    "Expose primary keys": "true",
-                }
-            ),
+            connection_parameters={
+                "dbtype": "postgis",
+                "host": pg_host,
+                "port": pg_port,
+                "database": pg_db,
+                "user": pg_user,
+                "passwd": pg_password,
+                "schema": pg_schema,
+                "namespace": f"http://{workspace_name}",
+                "Expose primary keys": "true",
+            },
             data_store_type="PostGIS",
             description=description,
         )
@@ -258,15 +256,13 @@ class GeoServerCloud:
         datastore = PostGisDataStore(
             workspace_name,
             datastore_name,
-            connection_parameters=KeyDollarListDict(
-                input_dict={
-                    "dbtype": "postgis",
-                    "jndiReferenceName": jndi_reference,
-                    "schema": pg_schema,
-                    "namespace": f"http://{workspace_name}",
-                    "Expose primary keys": "true",
-                }
-            ),
+            connection_parameters={
+                "dbtype": "postgis",
+                "jndiReferenceName": jndi_reference,
+                "schema": pg_schema,
+                "namespace": f"http://{workspace_name}",
+                "Expose primary keys": "true",
+            },
             data_store_type="PostGIS (JNDI)",
             description=description,
         )

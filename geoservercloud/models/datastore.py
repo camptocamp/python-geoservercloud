@@ -14,14 +14,14 @@ class PostGisDataStore:
         self,
         workspace_name: str,
         data_store_name: str,
-        connection_parameters: KeyDollarListDict,
+        connection_parameters: dict,
         data_store_type: str = "PostGIS",
         enabled: bool = True,
         description: str | None = None,
     ) -> None:
         self.workspace_name = workspace_name
         self.data_store_name = data_store_name
-        self.connection_parameters = connection_parameters
+        self.connection_parameters = KeyDollarListDict(input_dict=connection_parameters)
         self.data_store_type = data_store_type
         self.description = description
         self.enabled = enabled
