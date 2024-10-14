@@ -102,9 +102,8 @@ class Style:
         return self.put_payload()
 
     @classmethod
-    def from_response(cls, response: Response):
-        json_data = response.json()
-        style_data = json_data.get("style", {})
+    def from_dict(cls, content: dict):
+        style_data = content.get("style", {})
         return cls(
             workspace=style_data.get("workspace"),
             name=style_data.get("name"),

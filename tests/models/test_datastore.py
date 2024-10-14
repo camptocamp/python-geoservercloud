@@ -1,7 +1,3 @@
-from unittest.mock import Mock
-
-import pytest
-
 from geoservercloud.models import (
     KeyDollarListDict,
     PostGisDataStore,
@@ -61,9 +57,8 @@ def test_postgisdatastore_post_payload():
     assert datastore.post_payload() == datastore.put_payload()
 
 
-def test_postgisdatastore_from_response(mocker):
-    mock_response = Mock()
-    mock_response.json.return_value = {
+def test_postgisdatastore_from_dict():
+    mock_response = {
         "dataStore": {
             "name": "test_datastore",
             "type": "PostGIS",
@@ -76,7 +71,7 @@ def test_postgisdatastore_from_response(mocker):
         }
     }
 
-    datastore = PostGisDataStore.from_response(mock_response)
+    datastore = PostGisDataStore.from_dict(mock_response)
 
     assert datastore.data_store_name == "test_datastore"
     assert datastore.data_store_type == "PostGIS"
@@ -86,7 +81,7 @@ def test_postgisdatastore_from_response(mocker):
 
 
 def test_postgisdatastore_parse_connection_parameters():
-    json_data = {
+    content = {
         "dataStore": {
             "connectionParameters": {
                 "entry": [
@@ -97,7 +92,7 @@ def test_postgisdatastore_parse_connection_parameters():
         }
     }
 
-    connection_params = PostGisDataStore.parse_connection_parameters(json_data)
+    connection_params = PostGisDataStore.parse_connection_parameters(content)
 
     assert isinstance(connection_params, KeyDollarListDict)
     assert connection_params["host"] == "localhost"

@@ -18,12 +18,11 @@ class Workspaces:
         return self._workspaces
 
     @classmethod
-    def from_response(cls, response: Response):
-        json_data = response.json()
+    def from_dict(cls, content: dict):
 
         workspaces = []
         # Map the response to a list of Workspace instances
-        for ws in json_data.get("workspaces", {}).get("workspace", []):
+        for ws in content.get("workspaces", {}).get("workspace", []):
             workspaces.append(ws["name"])
 
         # Now 'workspaces' is a list of Workspace instances

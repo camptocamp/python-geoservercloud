@@ -16,15 +16,14 @@ class Styles:
         return self._styles
 
     @classmethod
-    def from_response(cls, response: Response):
-        json_data = response.json()
+    def from_dict(cls, content: dict):
         styles = []
         try:
-            workspace = json_data["styles"]["workspace"]
+            workspace = content["styles"]["workspace"]
         except KeyError:
             workspace = None
         try:
-            for style in json_data.get("styles", {}).get("style", []):
+            for style in content.get("styles", {}).get("style", []):
                 styles.append(style["name"])
         except AttributeError:
             styles = []

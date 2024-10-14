@@ -51,24 +51,21 @@ class PostGisDataStore:
         return payload
 
     @classmethod
-    def from_response(cls, response: Response):
-        if response.status_code == 404:
-            return None
-        json_data = response.json()
-        connection_parameters = cls.parse_connection_parameters(json_data)
+    def from_dict(cls, content: dict):
+        connection_parameters = cls.parse_connection_parameters(content)
         return cls(
-            json_data.get("dataStore", {}).get("workspace", {}).get("name", None),
-            json_data.get("dataStore", {}).get("name", None),
+            content.get("dataStore", {}).get("workspace", {}).get("name", None),
+            content.get("dataStore", {}).get("name", None),
             connection_parameters,
-            json_data.get("dataStore", {}).get("type", "PostGIS"),
-            json_data.get("dataStore", {}).get("enabled", True),
-            json_data.get("dataStore", {}).get("description", None),
+            content.get("dataStore", {}).get("type", "PostGIS"),
+            content.get("dataStore", {}).get("enabled", True),
+            content.get("dataStore", {}).get("description", None),
         )
 
     @classmethod
-    def parse_connection_parameters(cls, json_data):
+    def parse_connection_parameters(cls, content):
         return KeyDollarListDict(
-            json_data.get("dataStore", {})
+            content.get("dataStore", {})
             .get("connectionParameters", {})
             .get("entry", [])
         )

@@ -1,7 +1,4 @@
 import json
-from unittest.mock import Mock
-
-import pytest
 
 from geoservercloud.models import FeatureTypes  # Replace with the correct module path
 
@@ -13,14 +10,12 @@ def test_featuretypes_initialization():
     assert feature_types_instance.featuretypes == featuretypes
 
 
-def test_featuretypes_from_response_valid():
-    mock_response = Mock()
-    mock_response.status_code = 200
-    mock_response.json.return_value = {
+def test_featuretypes_from_dict_valid():
+    mock_response = {
         "featureTypes": {"featureType": [{"name": "feature1"}, {"name": "feature2"}]}
     }
 
-    feature_types_instance = FeatureTypes.from_response(mock_response)
+    feature_types_instance = FeatureTypes.from_dict(mock_response)
 
     assert feature_types_instance.featuretypes == ["feature1", "feature2"]
 

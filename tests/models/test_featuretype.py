@@ -1,7 +1,6 @@
 import json
-from unittest.mock import Mock
 
-from geoservercloud.models import I18N, FeatureType
+from geoservercloud.models import FeatureType
 
 
 def test_featuretype_initialization():
@@ -74,9 +73,8 @@ def test_featuretype_create_metadata_link():
     assert feature_type.metadataLink == expected_metadata_link
 
 
-def test_featuretype_from_response():
-    mock_response = Mock()
-    mock_response.json.return_value = {
+def test_featuretype_from_dict():
+    mock_response = {
         "featureType": {
             "namespace": {"name": "test_namespace"},
             "name": "test_name",
@@ -96,7 +94,7 @@ def test_featuretype_from_response():
         }
     }
 
-    feature_type = FeatureType.from_response(mock_response)
+    feature_type = FeatureType.from_dict(mock_response)
 
     assert feature_type.namespace_name == "test_namespace"
     assert feature_type.name == "test_name"

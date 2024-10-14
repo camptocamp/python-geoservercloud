@@ -1,7 +1,3 @@
-from unittest.mock import Mock
-
-import pytest
-
 from geoservercloud.models import Workspace
 
 
@@ -28,23 +24,19 @@ def test_workspace_post_payload():
     assert workspace.post_payload() == expected_payload
 
 
-def test_workspace_from_response_isolated():
-    mock_response = Mock()
-    mock_response.json.return_value = {
-        "workspace": {"name": "test_workspace", "isolated": True}
-    }
+def test_workspace_from_dict_isolated():
+    mock_response = {"workspace": {"name": "test_workspace", "isolated": True}}
 
-    workspace = Workspace.from_response(mock_response)
+    workspace = Workspace.from_dict(mock_response)
 
     assert workspace.name == "test_workspace"
     assert workspace.isolated is True
 
 
-def test_workspace_from_response_not_isolated():
-    mock_response = Mock()
-    mock_response.json.return_value = {"workspace": {"name": "test_workspace"}}
+def test_workspace_from_dict_not_isolated():
+    mock_response = {"workspace": {"name": "test_workspace"}}
 
-    workspace = Workspace.from_response(mock_response)
+    workspace = Workspace.from_dict(mock_response)
 
     assert workspace.name == "test_workspace"
     assert workspace.isolated is False

@@ -1,7 +1,3 @@
-from unittest.mock import Mock
-
-import pytest
-
 from geoservercloud.models import Style
 
 
@@ -109,9 +105,8 @@ def test_style_post_payload(mocker):
     mock_put_payload.assert_called_once()
 
 
-def test_style_from_response():
-    mock_response = Mock()
-    mock_response.json.return_value = {
+def test_style_from_dict():
+    mock_response = {
         "style": {
             "workspace": "test_workspace",
             "name": "test_style",
@@ -129,7 +124,7 @@ def test_style_from_response():
         }
     }
 
-    style = Style.from_response(mock_response)
+    style = Style.from_dict(mock_response)
 
     assert style.name == "test_style"
     assert style.workspace == "test_workspace"

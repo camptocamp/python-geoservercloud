@@ -22,13 +22,11 @@ class Workspace:
         return self.put_payload()
 
     @classmethod
-    def from_response(cls, response: Response):
-        json_data = response.json()
+    def from_dict(cls, content: dict):
         return cls(
-            json_data.get("workspace", {}).get("name", None),
-            json_data.get("workspace", {}).get("isolated", False),
+            content.get("workspace", {}).get("name", None),
+            content.get("workspace", {}).get("isolated", False),
         )
-        return cls(json_data.get("workspace", {}).get("name", None))
 
     def __repr__(self):
         return json.dumps(self.put_payload(), indent=4)

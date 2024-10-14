@@ -1,7 +1,3 @@
-from unittest.mock import Mock
-
-import pytest
-
 from geoservercloud.models import DataStores
 
 
@@ -15,28 +11,26 @@ def test_datastores_initialization():
     assert ds.datastores == datastores
 
 
-def test_datastores_from_response(mocker):
-    mock_response = Mock()
-    mock_response.json.return_value = {
+def test_datastores_from_dict():
+    mock_response = {
         "dataStores": {
             "workspace": {"name": "test_workspace"},
             "dataStore": [{"name": "store1"}, {"name": "store2"}],
         }
     }
 
-    ds = DataStores.from_response(mock_response)
+    ds = DataStores.from_dict(mock_response)
 
     assert ds.workspace_name == "test_workspace"
     assert ds.datastores == ["store1", "store2"]
 
 
-def test_datastores_from_response_empty():
-    mock_response = Mock()
-    mock_response.json.return_value = {
+def test_datastores_from_dict_empty():
+    mock_response = {
         "dataStores": {"workspace": {"name": "empty_workspace"}, "dataStore": []}
     }
 
-    ds = DataStores.from_response(mock_response)
+    ds = DataStores.from_dict(mock_response)
 
     assert ds.workspace_name == "empty_workspace"
     assert ds.datastores == []

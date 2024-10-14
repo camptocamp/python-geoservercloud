@@ -16,13 +16,13 @@ class DataStores:
         return self._datastores
 
     @classmethod
-    def from_response(cls, response: Response):
-        json_data = response.json()
+    def from_dict(cls, content: dict):
         datastores = []
         workspace_name = (
-            json_data.get("dataStores", {}).get("workspace", {}).get("name", None)
+            content.get("dataStores", {}).get("workspace", {}).get("name", None)
         )
-        for store in json_data.get("dataStores", {}).get("dataStore", []):
+
+        for store in content.get("dataStores", {}).get("dataStore", []):
             datastores.append(store["name"])
             for data_store_name in datastores:
                 log.debug(f"Name: {data_store_name}")

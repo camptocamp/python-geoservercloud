@@ -13,10 +13,9 @@ class FeatureTypes:
         return self._featuretypes
 
     @classmethod
-    def from_response(cls, response: Response):
+    def from_dict(cls, content: dict):
         featuretypes = []
-        json_data = response.json()
-        for featuretype in json_data.get("featureTypes", {}).get("featureType", []):
+        for featuretype in content.get("featureTypes", {}).get("featureType", []):
             featuretypes.append(featuretype["name"])
         return cls(featuretypes)
 

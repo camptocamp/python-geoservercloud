@@ -1,5 +1,3 @@
-from unittest.mock import Mock
-
 from geoservercloud.models import Workspaces
 
 
@@ -23,10 +21,9 @@ def test_workspaces_find_non_existing():
     assert workspaces.find("NonExistingWorkspace") is None
 
 
-def test_workspaces_from_response_empty():
-    mock_response = Mock()
-    mock_response.json.return_value = {"workspaces": {}}
+def test_workspaces_from_dict_empty():
+    mock_response = {"workspaces": {}}
 
-    workspaces = Workspaces.from_response(mock_response)
+    workspaces = Workspaces.from_dict(mock_response)
 
     assert workspaces.workspaces == []

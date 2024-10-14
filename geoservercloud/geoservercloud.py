@@ -86,7 +86,7 @@ class GeoServerCloud:
 
     def get_workspaces(self) -> Workspaces:
         response: Response = self.get_request(self.rest_endpoints.workspaces())
-        workspaces = Workspaces.from_response(response)
+        workspaces = Workspaces.from_dict(response.json())
         return workspaces
 
     def create_workspace(
@@ -171,18 +171,21 @@ class GeoServerCloud:
         Get all datastores for a given workspace
         """
         response = self.get_request(self.rest_endpoints.datastores(workspace_name))
-        return DataStores.from_response(response).datastores
+        return DataStores.from_dict(response.json()).datastores
 
     def get_postgis_datastore(
         self, workspace_name: str, datastore_name: str
-    ) -> dict[str, Any]:
+    ) -> dict[str, Any] | None:
         """
         Get a specific datastore
         """
         response = self.get_request(
             self.rest_endpoints.datastore(workspace_name, datastore_name)
         )
-        return PostGisDataStore.from_response(response)
+        if response.status_code == 404:
+            return None
+        else:
+            return PostGisDataStore.from_dict(response.json())
 
     def create_pg_datastore(
         self,
@@ -313,10 +316,10 @@ class GeoServerCloud:
         """
         Get all feature types for a given workspace and datastore
         """
-        featuretypes = FeatureTypes.from_response(
+        featuretypes = FeatureTypes.from_dict(
             self.get_request(
                 self.rest_endpoints.featuretypes(workspace_name, datastore_name)
-            )
+            ).json()
         )
         return featuretypes
 
@@ -324,12 +327,12 @@ class GeoServerCloud:
     def get_feature_type(
         self, workspace_name: str, datastore_name: str, feature_type_name: str
     ) -> dict[str, Any]:
-        return FeatureType.from_response(
+        return FeatureType.from_dict(
             self.get_request(
                 self.rest_endpoints.featuretype(
                     workspace_name, datastore_name, feature_type_name
                 )
-            )
+            ).json()
         )
 
     def create_feature_type(
@@ -495,7 +498,7 @@ class GeoServerCloud:
             if not workspace_name
             else self.rest_endpoints.workspace_styles(workspace_name)
         )
-        styles = Styles.from_response(self.get_request(path)).styles
+        styles = Styles.from_dict(self.get_request(path).json()).styles
         return styles
 
     def get_style(
@@ -509,7 +512,7 @@ class GeoServerCloud:
             if not workspace_name
             else self.rest_endpoints.workspace_style(workspace_name, style)
         )
-        return Style.from_response(self.get_request(path))
+        return Style.from_dict(self.get_request(path).json())
 
     # TODO: add a create_style method that takes a Style object as input
     def create_style_from_file(

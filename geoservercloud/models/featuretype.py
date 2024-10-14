@@ -96,35 +96,34 @@ class FeatureType:
             }
 
     @classmethod
-    def from_response(cls, response: Response):
-        json_data = response.json()
+    def from_dict(cls, content: dict):
         try:
-            abstract = json_data["featureType"]["abstract"]
+            abstract = content["featureType"]["abstract"]
         except KeyError:
-            abstract = json_data["featureType"]["internationalAbstract"]
+            abstract = content["featureType"]["internationalAbstract"]
         try:
-            title = json_data["featureType"]["title"]
+            title = content["featureType"]["title"]
         except KeyError:
-            title = json_data["featureType"]["internationalTitle"]
+            title = content["featureType"]["internationalTitle"]
 
         return cls(
-            namespace_name=json_data["featureType"]["namespace"]["name"],
-            name=json_data["featureType"]["name"],
-            native_name=json_data["featureType"]["nativeName"],
+            namespace_name=content["featureType"]["namespace"]["name"],
+            name=content["featureType"]["name"],
+            native_name=content["featureType"]["nativeName"],
             title=title,
             abstract=abstract,
-            srs=json_data["featureType"]["srs"],
-            keywords=json_data["featureType"]["keywords"],
-            attributes=json_data["featureType"].get("attributes", None),
-            metadata_url=json_data["featureType"]
+            srs=content["featureType"]["srs"],
+            keywords=content["featureType"]["keywords"],
+            attributes=content["featureType"].get("attributes", None),
+            metadata_url=content["featureType"]
             .get("metadataLinks", {})
             .get("metadataLink", {})
             .get("content"),
-            metadata_type=json_data["featureType"]
+            metadata_type=content["featureType"]
             .get("metadataLinks", {})
             .get("metadataLink", {})
             .get("metadataType"),
-            metadata_format=json_data["featureType"]
+            metadata_format=content["featureType"]
             .get("metadataLinks", {})
             .get("metadataLink", {})
             .get("type"),
