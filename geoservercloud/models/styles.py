@@ -1,3 +1,6 @@
+from requests.models import Response
+
+
 class Styles:
 
     def __init__(self, styles: list[str], workspace: str | None = None) -> None:
@@ -13,7 +16,7 @@ class Styles:
         return self._styles
 
     @classmethod
-    def from_response(cls, response):
+    def from_response(cls, response: Response):
         json_data = response.json()
         styles = []
         try:

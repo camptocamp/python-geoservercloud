@@ -1,12 +1,14 @@
 import json
 import logging
 
+from requests.models import Response
+
 log = logging.getLogger()
 
 
 class Workspace:
 
-    def __init__(self, name, isolated: bool = False) -> None:
+    def __init__(self, name: str, isolated: bool = False) -> None:
         self.name = name
         self.isolated = isolated
 
@@ -20,7 +22,7 @@ class Workspace:
         return self.put_payload()
 
     @classmethod
-    def from_response(cls, response):
+    def from_response(cls, response: Response):
         json_data = response.json()
         return cls(
             json_data.get("workspace", {}).get("name", None),

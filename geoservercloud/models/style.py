@@ -1,6 +1,7 @@
 import json
 
 import xmltodict
+from requests.models import Response
 
 
 class Style:
@@ -16,8 +17,8 @@ class Style:
         date_modified: str | None = None,
         legend_url: str | None = None,
         legend_format: str | None = None,
-        legend_width: str | None = None,
-        legend_height: str | None = None,
+        legend_width: int | None = None,
+        legend_height: int | None = None,
     ) -> None:
         self._workspace = workspace
         self._name = name
@@ -26,7 +27,9 @@ class Style:
         self._filename = filename
         self._date_created = date_created
         self._date_modified = date_modified
-        self.create_legend(legend_url, legend_format, legend_width, legend_height)
+        self._legend = self.create_legend(
+            legend_url, legend_format, legend_width, legend_height
+        )
 
     # create one property for each attribute
     @property
@@ -61,19 +64,26 @@ class Style:
     def legend(self):
         return self._legend
 
-    def create_legend(self, url, image_format, width, height):
+    def create_legend(
+        self,
+        url: str | None,
+        image_format: str | None,
+        width: int | None,
+        height: int | None,
+    ):
         if any([url, image_format, width, height]):
-            self._legend = {}
+            legend: dict = {}
             if url:
-                self.legend["onlineResource"] = url
+                legend["onlineResource"] = url
             if image_format:
-                self.legend["format"] = image_format
+                legend["format"] = image_format
             if width:
-                self.legend["width"] = width
+                legend["width"] = width
             if height:
-                self.legend["height"] = height
+                legend["height"] = height
         else:
-            self._legend = None
+            legend = None  # type: ignore
+        return legend
 
     def put_payload(self):
         payload = {
@@ -92,7 +102,7 @@ class Style:
         return self.put_payload()
 
     @classmethod
-    def from_response(cls, response):
+    def from_response(cls, response: Response):
         json_data = response.json()
         style_data = json_data.get("style", {})
         return cls(

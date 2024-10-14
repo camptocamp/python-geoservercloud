@@ -1,23 +1,16 @@
 import logging
 
+from requests.models import Response
+
 log = logging.getLogger()
 
 
 class Workspaces:
 
-    def __init__(self, workspaces: dict = {}) -> None:
+    def __init__(self, workspaces: list = []) -> None:
         self._workspaces = workspaces
 
-    @classmethod
-    def validate(self, response):
-        try:
-            jsonschema.validate(response, self.response_schema)
-        except jsonschema.exceptions.ValidationError as err:
-            print(err)
-            return False
-        return True
-
-    def find(self, workspace_name):
+    def find(self, workspace_name: str):
         return self.workspaces.get(workspace_name, None)
 
     @property
@@ -25,7 +18,7 @@ class Workspaces:
         return self._workspaces
 
     @classmethod
-    def from_response(cls, response):
+    def from_response(cls, response: Response):
         # Parse the JSON response
         json_data = response.json()
 

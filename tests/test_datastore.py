@@ -113,7 +113,7 @@ def test_get_postgis_datastore_valid(
 ) -> None:
     with responses.RequestsMock() as rsps:
         rsps.get(
-            url=f"{GEOSERVER_URL}/rest/workspaces/{WORKSPACE}/datastores/{STORE}.json",
+            url=f"{geoserver.url}/rest/workspaces/{WORKSPACE}/datastores/{STORE}.json",
             json=pg_payload,
             status=200,
         )

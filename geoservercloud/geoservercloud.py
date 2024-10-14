@@ -12,6 +12,8 @@ from requests import Response
 from geoservercloud import utils
 from geoservercloud.models import (
     DataStores,
+    FeatureType,
+    FeatureTypes,
     KeyDollarListDict,
     PostGisDataStore,
     Style,
@@ -303,6 +305,30 @@ class GeoServerCloud:
             return self.put_request(
                 self.rest_endpoints.wmtsstore(workspace_name, name), json=payload
             )
+
+    def get_feature_types(
+        self, workspace_name: str, datastore_name: str
+    ) -> dict[str, Any]:
+        """
+        Get all feature types for a given workspace and datastore
+        """
+        featuretypes = FeatureTypes.from_response(
+            self.get_request(
+                self.rest_endpoints.featuretypes(workspace_name, datastore_name)
+            )
+        )
+        return featuretypes
+
+    def get_feature_type(
+        self, workspace_name: str, datastore_name: str, feature_type_name: str
+    ) -> dict[str, Any]:
+        return FeatureType.from_response(
+            self.get_request(
+                self.rest_endpoints.featuretype(
+                    workspace_name, datastore_name, feature_type_name
+                )
+            )
+        )
 
     def create_feature_type(
         self,

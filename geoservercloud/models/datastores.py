@@ -1,5 +1,7 @@
 import logging
 
+from requests.models import Response
+
 log = logging.getLogger()
 
 
@@ -14,7 +16,7 @@ class DataStores:
         return self._datastores
 
     @classmethod
-    def from_response(cls, response):
+    def from_response(cls, response: Response):
         json_data = response.json()
         datastores = []
         workspace_name = (

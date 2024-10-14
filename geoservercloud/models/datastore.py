@@ -1,6 +1,8 @@
 import json
 import logging
 
+from requests.models import Response
+
 from . import KeyDollarListDict
 
 log = logging.getLogger()
@@ -49,7 +51,7 @@ class PostGisDataStore:
         return payload
 
     @classmethod
-    def from_response(cls, response):
+    def from_response(cls, response: Response):
         if response.status_code == 404:
             return None
         json_data = response.json()
