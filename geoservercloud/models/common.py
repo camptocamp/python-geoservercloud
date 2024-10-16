@@ -1,11 +1,51 @@
 import json
-import logging
 from typing import Any
 
-log = logging.getLogger()
+
+class BaseModel:
+    @classmethod
+    def from_get_response_payload(cls, content: dict):
+        raise NotImplementedError
+
+
+class EntityModel(BaseModel):
+    def asdict(self) -> dict[str, Any]:
+        raise NotImplementedError
+
+    def post_payload(self) -> dict[str, Any]:
+        raise NotImplementedError
+
+    def put_payload(self) -> dict[str, Any]:
+        raise NotImplementedError
+
+
+class ListModel(BaseModel):
+    def aslist(self) -> list:
+        raise NotImplementedError
+
+
+class ReferencedObjectModel(BaseModel):
+    def __init__(self, name: str, href: str | None = None):
+        self.name = name
+        self.href = href
+
+    @classmethod
+    def from_get_response_payload(cls, content: dict):
+        cls.name = content["name"]
+        cls.href = content["href"]
+
+    def asdict(self) -> dict[str, str]:
+        content = {"name": self.name}
+        if self.href:
+            content["href"] = self.href
+        return content
 
 
 class KeyDollarListDict(dict):
+
+    key_prefix: str = "@key"
+    value_prefix: str = "$"
+
     def __init__(
         self,
         input_list: list | None = None,
@@ -14,13 +54,10 @@ class KeyDollarListDict(dict):
         **kwargs
     ):
         super().__init__(*args, **kwargs)
-        self.key_prefix = "@key"
-        self.value_prefix = "$"
         if input_list:
             self.deserialize(input_list)
         if input_dict:
             self.update(input_dict)
-        log.debug(self)
 
     def deserialize(self, input_list: list):
         for item in input_list:

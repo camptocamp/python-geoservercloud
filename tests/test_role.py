@@ -3,19 +3,6 @@ import responses
 from geoservercloud import GeoServerCloud
 
 
-def test_create_role(geoserver: GeoServerCloud) -> None:
-    role = "test_role"
-    with responses.RequestsMock() as rsps:
-        rsps.post(
-            url=f"{geoserver.url}/rest/security/roles/role/{role}.json",
-            status=201,
-        )
-
-        response = geoserver.create_role(role)
-
-        assert response.status_code == 201
-
-
 def test_create_role_if_not_exists_case_true(geoserver: GeoServerCloud) -> None:
     role = "test_role"
     with responses.RequestsMock() as rsps:
@@ -29,9 +16,9 @@ def test_create_role_if_not_exists_case_true(geoserver: GeoServerCloud) -> None:
             status=201,
         )
 
-        response = geoserver.create_role_if_not_exists(role)
-        assert response
-        assert response.status_code == 201
+        content, code = geoserver.create_role(role)
+        assert content == ""
+        assert code == 201
 
 
 def test_create_role_if_not_exists_case_false(geoserver: GeoServerCloud) -> None:
@@ -43,8 +30,9 @@ def test_create_role_if_not_exists_case_false(geoserver: GeoServerCloud) -> None
             json={"roles": [role]},
         )
 
-        response = geoserver.create_role_if_not_exists(role)
-        assert response is None
+        content, code = geoserver.create_role(role)
+        assert content == ""
+        assert code == 200
 
 
 def test_delete_role(geoserver: GeoServerCloud) -> None:
@@ -53,11 +41,13 @@ def test_delete_role(geoserver: GeoServerCloud) -> None:
         rsps.delete(
             url=f"{geoserver.url}/rest/security/roles/role/{role}.json",
             status=200,
+            body=b"",
         )
 
-        response = geoserver.delete_role(role)
+        content, code = geoserver.delete_role(role)
 
-        assert response.status_code == 200
+        assert content == ""
+        assert code == 200
 
 
 def test_get_user_roles(geoserver: GeoServerCloud) -> None:
@@ -70,9 +60,10 @@ def test_get_user_roles(geoserver: GeoServerCloud) -> None:
             json={"roles": roles},
         )
 
-        response = geoserver.get_user_roles(user)
+        content, code = geoserver.get_user_roles(user)
 
-        assert response == roles
+        assert content == roles
+        assert code == 200
 
 
 def test_assign_role_to_user(geoserver: GeoServerCloud) -> None:
@@ -82,11 +73,13 @@ def test_assign_role_to_user(geoserver: GeoServerCloud) -> None:
         rsps.post(
             url=f"{geoserver.url}/rest/security/roles/role/{role}/user/{user}.json",
             status=200,
+            body=b"",
         )
 
-        response = geoserver.assign_role_to_user(user, role)
+        content, code = geoserver.assign_role_to_user(user, role)
 
-        assert response.status_code == 200
+        assert content == ""
+        assert code == 200
 
 
 def test_remove_role_from_user(geoserver: GeoServerCloud) -> None:
@@ -96,8 +89,10 @@ def test_remove_role_from_user(geoserver: GeoServerCloud) -> None:
         rsps.delete(
             url=f"{geoserver.url}/rest/security/roles/role/{role}/user/{user}.json",
             status=200,
+            body=b"",
         )
 
-        response = geoserver.remove_role_from_user(user, role)
+        content, code = geoserver.remove_role_from_user(user, role)
 
-        assert response.status_code == 200
+        assert content == ""
+        assert code == 200

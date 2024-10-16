@@ -24,19 +24,10 @@ def test_workspace_post_payload():
     assert workspace.post_payload() == expected_payload
 
 
-def test_workspace_from_dict_isolated():
+def test_workspace_from_get_response_payload():
     mock_response = {"workspace": {"name": "test_workspace", "isolated": True}}
 
-    workspace = Workspace.from_dict(mock_response)
+    workspace = Workspace.from_get_response_payload(mock_response)
 
     assert workspace.name == "test_workspace"
     assert workspace.isolated is True
-
-
-def test_workspace_from_dict_not_isolated():
-    mock_response = {"workspace": {"name": "test_workspace"}}
-
-    workspace = Workspace.from_dict(mock_response)
-
-    assert workspace.name == "test_workspace"
-    assert workspace.isolated is False

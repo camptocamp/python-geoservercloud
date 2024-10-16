@@ -1,7 +1,24 @@
-from geoservercloud.models import (
-    KeyDollarListDict,
-    PostGisDataStore,
-)
+import pytest
+
+from geoservercloud.models import KeyDollarListDict, PostGisDataStore
+
+
+@pytest.fixture(scope="module")
+def pg_payload():
+    yield {
+        "dataStore": {
+            "name": "test_datastore",
+            "type": "PostGIS",
+            "enabled": True,
+            "connectionParameters": {
+                "entry": [
+                    {"@key": "host", "$": "localhost"},
+                    {"@key": "port", "$": "5432"},
+                ]
+            },
+            "workspace": {"name": "test_workspace"},
+        }
+    }
 
 
 def test_postgisdatastore_initialization():
@@ -14,12 +31,12 @@ def test_postgisdatastore_initialization():
     )
 
     assert datastore.workspace_name == "test_workspace"
-    assert datastore.data_store_name == "test_datastore"
+    assert datastore.name == "test_datastore"
     assert datastore.connection_parameters == connection_parameters
-    assert datastore.data_store_type == "PostGIS"
+    assert datastore.type == "PostGIS"
 
 
-def test_postgisdatastore_put_payload():
+def test_postgisdatastore_put_payload(pg_payload):
     connection_parameters = KeyDollarListDict(
         [{"@key": "host", "$": "localhost"}, {"@key": "port", "$": "5432"}]
     )
@@ -28,21 +45,7 @@ def test_postgisdatastore_put_payload():
         "test_workspace", "test_datastore", connection_parameters
     )
 
-    expected_payload = {
-        "dataStore": {
-            "name": "test_datastore",
-            "type": "PostGIS",
-            "enabled": True,
-            "connectionParameters": {
-                "entry": [
-                    {"@key": "host", "$": "localhost"},
-                    {"@key": "port", "$": "5432"},
-                ]
-            },
-        }
-    }
-
-    assert datastore.put_payload() == expected_payload
+    assert datastore.put_payload() == pg_payload
 
 
 def test_postgisdatastore_post_payload():
@@ -57,43 +60,30 @@ def test_postgisdatastore_post_payload():
     assert datastore.post_payload() == datastore.put_payload()
 
 
-def test_postgisdatastore_from_dict():
-    mock_response = {
-        "dataStore": {
-            "name": "test_datastore",
-            "type": "PostGIS",
-            "connectionParameters": {
-                "entry": [
-                    {"@key": "host", "$": "localhost"},
-                    {"@key": "port", "$": "5432"},
-                ]
-            },
-        }
-    }
+def test_postgisdatastore_from_get_response_payload(pg_payload):
 
-    datastore = PostGisDataStore.from_dict(mock_response)
+    datastore = PostGisDataStore.from_get_response_payload(pg_payload)
 
-    assert datastore.data_store_name == "test_datastore"
-    assert datastore.data_store_type == "PostGIS"
+    assert datastore.name == "test_datastore"
+    assert datastore.type == "PostGIS"
 
+    assert isinstance(datastore.connection_parameters, KeyDollarListDict)
     assert datastore.connection_parameters["host"] == "localhost"
     assert datastore.connection_parameters["port"] == "5432"
 
 
-def test_postgisdatastore_parse_connection_parameters():
-    content = {
-        "dataStore": {
-            "connectionParameters": {
-                "entry": [
-                    {"@key": "host", "$": "localhost"},
-                    {"@key": "port", "$": "5432"},
-                ]
+def test_postgisdatastore_asdict(pg_payload):
+    datastore = PostGisDataStore.from_get_response_payload(pg_payload)
+
+    assert datastore.asdict() == {
+        "name": "test_datastore",
+        "type": "PostGIS",
+        "enabled": True,
+        "connectionParameters": {
+            "entry": {
+                "host": "localhost",
+                "port": "5432",
             }
-        }
+        },
+        "workspace": "test_workspace",
     }
-
-    connection_params = PostGisDataStore.parse_connection_parameters(content)
-
-    assert isinstance(connection_params, KeyDollarListDict)
-    assert connection_params["host"] == "localhost"
-    assert connection_params["port"] == "5432"

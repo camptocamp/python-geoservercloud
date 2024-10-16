@@ -1,33 +1,26 @@
-import logging
-
-from requests.models import Response
-
-log = logging.getLogger()
+from geoservercloud.models import ListModel
 
 
-class Workspaces:
-
-    def __init__(self, workspaces: list = []) -> None:
+class Workspaces(ListModel):
+    def __init__(self, workspaces: list[dict[str, str]] = []) -> None:
         self._workspaces = workspaces
 
-    def find(self, workspace_name: str):
-        return self.workspaces.get(workspace_name, None)
-
-    @property
-    def workspaces(self):
-        return self._workspaces
+    def find(self, workspace_name: str) -> dict[str, str] | None:
+        for ws in self._workspaces:
+            if ws["name"] == workspace_name:
+                return ws
+        return None
 
     @classmethod
-    def from_dict(cls, content: dict):
+    def from_get_response_payload(cls, content: dict):
 
-        workspaces = []
-        # Map the response to a list of Workspace instances
-        for ws in content.get("workspaces", {}).get("workspace", []):
-            workspaces.append(ws["name"])
+        workspaces: str | dict = content["workspaces"]
+        if not workspaces:
+            return cls()
+        return cls(workspaces["workspace"])  # type: ignore
 
-        # Now 'workspaces' is a list of Workspace instances
-        log.debug("Parsed Workspaces:")
-        for workspace in workspaces:
-            log.debug(f"Name: {workspace}")
+    def __repr__(self) -> str:
+        return str(self._workspaces)
 
-        return cls(workspaces)
+    def aslist(self) -> list[dict[str, str]]:
+        return self._workspaces

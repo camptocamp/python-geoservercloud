@@ -53,10 +53,11 @@ def test_create_layer_group(
         rsps.post(
             url=f"{GEOSERVER_URL}/rest/workspaces/{WORKSPACE}/layergroups.json",
             status=201,
+            body=b"test_layer_group",
             match=[responses.matchers.json_params_matcher(layer_group_payload)],
         )
 
-        response = geoserver.create_layer_group(
+        content, code = geoserver.create_layer_group(
             group=LAYER_GROUP,
             workspace_name=WORKSPACE,
             layers=LAYERS,
@@ -64,7 +65,8 @@ def test_create_layer_group(
             abstract=ABSTRACT,
         )
 
-        assert response.status_code == 201
+        assert content == "test_layer_group"
+        assert code == 201
 
 
 def test_update_layer_group(
@@ -78,10 +80,11 @@ def test_update_layer_group(
         rsps.put(
             url=f"{GEOSERVER_URL}/rest/workspaces/{WORKSPACE}/layergroups/{LAYER_GROUP}.json",
             status=200,
+            body=b"",
             match=[responses.matchers.json_params_matcher(layer_group_payload)],
         )
 
-        response = geoserver.create_layer_group(
+        content, code = geoserver.create_layer_group(
             group=LAYER_GROUP,
             workspace_name=WORKSPACE,
             layers=LAYERS,
@@ -89,4 +92,5 @@ def test_update_layer_group(
             abstract=ABSTRACT,
         )
 
-        assert response.status_code == 200
+        assert content == ""
+        assert code == 200

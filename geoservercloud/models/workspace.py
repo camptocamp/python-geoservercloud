@@ -1,31 +1,31 @@
 import json
-import logging
+from typing import Any
 
-from requests.models import Response
-
-log = logging.getLogger()
+from geoservercloud.models import EntityModel
 
 
-class Workspace:
-
+class Workspace(EntityModel):
     def __init__(self, name: str, isolated: bool = False) -> None:
-        self.name = name
-        self.isolated = isolated
+        self.name: str = name
+        self.isolated: bool = isolated
 
-    def put_payload(self):
-        payload = {"workspace": {"name": self.name}}
-        if self.isolated:
-            payload["workspace"]["isolated"] = self.isolated
-        return payload
+    def asdict(self) -> dict[str, Any]:
+        return {
+            "name": self.name,
+            "isolated": self.isolated,
+        }
 
-    def post_payload(self):
+    def put_payload(self) -> dict[str, dict[str, Any]]:
+        return {"workspace": self.asdict()}
+
+    def post_payload(self) -> dict[str, dict[str, str]]:
         return self.put_payload()
 
     @classmethod
-    def from_dict(cls, content: dict):
+    def from_get_response_payload(cls, content: dict):
         return cls(
-            content.get("workspace", {}).get("name", None),
-            content.get("workspace", {}).get("isolated", False),
+            content["workspace"]["name"],
+            content["workspace"]["isolated"],
         )
 
     def __repr__(self):

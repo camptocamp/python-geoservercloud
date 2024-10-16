@@ -1,15 +1,16 @@
 import json
+from typing import Any
 
 import xmltodict
-from requests.models import Response
+
+from geoservercloud.models import EntityModel, ReferencedObjectModel
 
 
-class Style:
-
+class Style(EntityModel):
     def __init__(
         self,
         name: str,
-        workspace: str | None = None,
+        workspace_name: str | None = None,
         format: str | None = "sld",
         language_version: dict | None = {"version": "1.0.0"},
         filename: str | None = None,
@@ -20,7 +21,9 @@ class Style:
         legend_width: int | None = None,
         legend_height: int | None = None,
     ) -> None:
-        self._workspace = workspace
+        self._workspace: ReferencedObjectModel | None = None
+        if workspace_name:
+            self._workspace = ReferencedObjectModel(workspace_name)
         self._name = name
         self._format = format
         self._language_version = language_version
@@ -31,10 +34,9 @@ class Style:
             legend_url, legend_format, legend_width, legend_height
         )
 
-    # create one property for each attribute
     @property
-    def workspace(self):
-        return self._workspace
+    def workspace_name(self) -> str | None:
+        return self._workspace.name if self._workspace else None
 
     @property
     def name(self):
@@ -70,9 +72,9 @@ class Style:
         image_format: str | None,
         width: int | None,
         height: int | None,
-    ):
+    ) -> dict[str, str | int] | None:
+        legend: dict[str, str | int] = {}
         if any([url, image_format, width, height]):
-            legend: dict = {}
             if url:
                 legend["onlineResource"] = url
             if image_format:
@@ -82,34 +84,45 @@ class Style:
             if height:
                 legend["height"] = height
         else:
-            legend = None  # type: ignore
+            return None
         return legend
 
-    def put_payload(self):
-        payload = {
-            "style": {
-                "name": self.name,
-                "format": self.format,
-                "languageVersion": self.language_version,
-                "filename": self.filename,
-            }
+    def asdict(self) -> dict[str, Any]:
+        content = {
+            "name": self.name,
+            "format": self.format,
+            "languageVersion": self.language_version,
         }
+        if self.workspace_name:
+            content["workspace"] = self.workspace_name
+        if self.filename:
+            content["filename"] = self.filename
+        if self.date_created:
+            content["dateCreated"] = self.date_created
+        if self.date_modified:
+            content["dateModified"] = self.date_modified
         if self.legend:
-            payload["style"]["legend"] = self.legend
-        return payload
+            content["legend"] = self.legend
+        return content
 
-    def post_payload(self):
-        return self.put_payload()
+    def post_payload(self) -> dict[str, dict[str, Any]]:
+        content = self.asdict()
+        if self._workspace:
+            content["workspace"] = self._workspace.asdict()
+        return {"style": content}
+
+    def put_payload(self) -> dict[str, dict[str, Any]]:
+        return self.post_payload()
 
     @classmethod
-    def from_dict(cls, content: dict):
-        style_data = content.get("style", {})
+    def from_get_response_payload(cls, content: dict):
+        style_data = content["style"]
         return cls(
-            workspace=style_data.get("workspace"),
-            name=style_data.get("name"),
-            format=style_data.get("format"),
-            language_version=style_data.get("languageVersion", None),
-            filename=style_data.get("filename"),
+            name=style_data["name"],
+            workspace_name=style_data.get("workspace", {}).get("name"),
+            format=style_data["format"],
+            language_version=style_data["languageVersion"],
+            filename=style_data["filename"],
             date_created=style_data.get("dateCreated"),
             date_modified=style_data.get("dateModified"),
             legend_url=style_data.get("legend", {}).get("onlineResource"),
@@ -118,11 +131,11 @@ class Style:
             legend_height=style_data.get("legend", {}).get("height"),
         )
 
-    def xml_post_payload(self):
+    def xml_post_payload(self) -> str:
         return xmltodict.unparse(self.post_payload()).split("\n", 1)[1]
 
-    def xml_put_payload(self):
+    def xml_put_payload(self) -> str:
         return xmltodict.unparse(self.put_payload()).split("\n", 1)[1]
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return json.dumps(self.put_payload(), indent=4)

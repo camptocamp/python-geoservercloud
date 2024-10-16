@@ -210,10 +210,13 @@ def test_set_default_locale_for_service(geoserver: GeoServerCloud) -> None:
     with responses.RequestsMock() as rsps:
         rsps.put(
             f"{geoserver.url}/rest/services/wms/workspaces/{WORKSPACE}/settings.json",
+            status=200,
+            body=b"",
             match=[
                 responses.matchers.json_params_matcher({"wms": {"defaultLocale": "en"}})
             ],
         )
 
-        response = geoserver.set_default_locale_for_service(WORKSPACE, "en")
-        assert response.status_code == 200
+        content, code = geoserver.set_default_locale_for_service(WORKSPACE, "en")
+        assert content == ""
+        assert code == 200

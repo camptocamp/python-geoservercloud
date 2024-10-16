@@ -42,6 +42,7 @@ def test_publish_gwc_layer(geoserver: GeoServerCloud) -> None:
         rsps.put(
             url=f"{geoserver.url}/gwc/rest/layers/{WORKSPACE}:{LAYER}.json",
             status=200,
+            body=b"layer saved",
             match=[
                 responses.matchers.json_params_matcher(
                     {
@@ -57,9 +58,9 @@ def test_publish_gwc_layer(geoserver: GeoServerCloud) -> None:
             ],
         )
 
-        response = geoserver.publish_gwc_layer(WORKSPACE, LAYER, EPSG)
-        assert response
-        assert response.status_code == 200
+        content, code = geoserver.publish_gwc_layer(WORKSPACE, LAYER, EPSG)
+        assert content == "layer saved"
+        assert code == 200
 
 
 def test_publish_gwc_layer_already_exists(geoserver: GeoServerCloud) -> None:
@@ -79,8 +80,9 @@ def test_publish_gwc_layer_already_exists(geoserver: GeoServerCloud) -> None:
             json={"GeoServerLayer": {"name": f"{WORKSPACE}:{LAYER}"}},
         )
 
-        response = geoserver.publish_gwc_layer(WORKSPACE, LAYER, EPSG)
-        assert response is None
+        content, code = geoserver.publish_gwc_layer(WORKSPACE, LAYER, EPSG)
+        assert content == ""
+        assert code == 200
 
 
 def test_create_gridset(geoserver: GeoServerCloud) -> None:
@@ -91,12 +93,13 @@ def test_create_gridset(geoserver: GeoServerCloud) -> None:
         )
         rsps.put(
             url=f"{geoserver.url}/gwc/rest/gridsets/EPSG:{EPSG}.xml",
-            status=200,
+            status=201,
+            body=b"",
         )
 
-        response = geoserver.create_gridset(EPSG)
-        assert response
-        assert response.status_code == 200
+        content, code = geoserver.create_gridset(EPSG)
+        assert content == ""
+        assert code == 201
 
 
 def test_get_tile(geoserver: GeoServerCloud) -> None:

@@ -6,38 +6,61 @@ from tests.conftest import GEOSERVER_URL
 
 
 def test_list_workspaces(geoserver: GeoServerCloud) -> None:
+    workspaces = [
+        {
+            "name": "test_workspace",
+            "href": "http://localhost:8080/geoserver/rest/workspaces/test_workspace.json",
+        }
+    ]
     with responses.RequestsMock() as rsps:
         rsps.get(
             url=f"{GEOSERVER_URL}/rest/workspaces.json",
             status=200,
-            json={
-                "workspaces": {
-                    "workspace": [
-                        {
-                            "name": "test_workspace",
-                            "href": "http://localhost:8080/geoserver/rest/workspaces/test_workspace.json",
-                        }
-                    ]
-                }
-            },
+            json={"workspaces": {"workspace": workspaces}},
         )
-        workspaces = geoserver.get_workspaces()
-        assert workspaces.workspaces == ["test_workspace"]
+        assert geoserver.get_workspaces() == (workspaces, 200)
+
+
+def test_get_workspace_ok(geoserver: GeoServerCloud) -> None:
+    workspace_name = "test_workspace"
+    workspace = {"name": workspace_name, "isolated": False}
+    with responses.RequestsMock() as rsps:
+        rsps.get(
+            url=f"{GEOSERVER_URL}/rest/workspaces/{workspace_name}.json",
+            status=200,
+            json={"workspace": workspace},
+        )
+        assert geoserver.get_workspace(workspace_name) == (workspace, 200)
+
+
+def test_get_workspace_not_found(geoserver: GeoServerCloud) -> None:
+    workspace_name = "test_workspace"
+    with responses.RequestsMock() as rsps:
+        rsps.get(
+            url=f"{GEOSERVER_URL}/rest/workspaces/{workspace_name}.json",
+            status=404,
+            body=b"No such workspace: 'test_workspace' found",
+        )
+        assert geoserver.get_workspace(workspace_name) == (
+            "No such workspace: 'test_workspace' found",
+            404,
+        )
 
 
 def test_create_workspace(geoserver: GeoServerCloud) -> None:
-    workspace = "test_workspace"
+    workspace_name = "test_workspace"
     isolated = True
 
     with responses.RequestsMock() as rsps:
         rsps.post(
             url=f"{GEOSERVER_URL}/rest/workspaces.json",
             status=201,
+            body=b"test_workspace",
             match=[
                 matchers.json_params_matcher(
                     {
                         "workspace": {
-                            "name": workspace,
+                            "name": workspace_name,
                             "isolated": isolated,
                         }
                     }
@@ -45,27 +68,50 @@ def test_create_workspace(geoserver: GeoServerCloud) -> None:
             ],
         )
 
-        response = geoserver.create_workspace(workspace, isolated=isolated)
+        content, status_code = geoserver.create_workspace(workspace_name, isolated)
 
-        assert response.status_code == 201
+        assert content == workspace_name
+        assert status_code == 201
 
 
 def test_update_workspace(geoserver: GeoServerCloud) -> None:
-    workspace = "test_workspace"
+    workspace_name = "test_workspace"
 
     with responses.RequestsMock() as rsps:
         rsps.post(
             url=f"{GEOSERVER_URL}/rest/workspaces.json",
             status=409,
+            match=[
+                matchers.json_params_matcher(
+                    {
+                        "workspace": {
+                            "name": workspace_name,
+                            "isolated": False,
+                        }
+                    }
+                )
+            ],
         )
         rsps.put(
-            url=f"{GEOSERVER_URL}/rest/workspaces/{workspace}.json",
+            url=f"{GEOSERVER_URL}/rest/workspaces/{workspace_name}.json",
+            match=[
+                matchers.json_params_matcher(
+                    {
+                        "workspace": {
+                            "name": workspace_name,
+                            "isolated": False,
+                        }
+                    }
+                )
+            ],
             status=200,
+            body=b"",
         )
 
-        response = geoserver.create_workspace(workspace)
+        content, status_code = geoserver.create_workspace(workspace_name)
 
-        assert response.status_code == 200
+        assert content == ""
+        assert status_code == 200
 
 
 def test_delete_workspace(geoserver: GeoServerCloud) -> None:
@@ -75,29 +121,42 @@ def test_delete_workspace(geoserver: GeoServerCloud) -> None:
         rsps.delete(
             url=f"{GEOSERVER_URL}/rest/workspaces/{workspace}.json",
             status=200,
+            body=b"",
         )
 
-        response = geoserver.delete_workspace(workspace)
-
-        assert response.status_code == 200
+        content, status_code = geoserver.delete_workspace(workspace)
+        assert content == ""
+        assert status_code == 200
 
 
 def test_recreate_workspace(geoserver: GeoServerCloud) -> None:
-    workspace = "test_workspace"
+    workspace_name = "test_workspace"
 
     with responses.RequestsMock() as rsps:
         rsps.delete(
-            url=f"{GEOSERVER_URL}/rest/workspaces/{workspace}.json",
+            url=f"{GEOSERVER_URL}/rest/workspaces/{workspace_name}.json",
             status=200,
+            body=b"",
         )
         rsps.post(
             url=f"{GEOSERVER_URL}/rest/workspaces.json",
             status=201,
+            body=b"test_workspace",
+            match=[
+                matchers.json_params_matcher(
+                    {
+                        "workspace": {
+                            "name": workspace_name,
+                            "isolated": False,
+                        }
+                    }
+                )
+            ],
         )
 
-        response = geoserver.recreate_workspace(workspace)
-
-        assert response.status_code == 201
+        content, status_code = geoserver.recreate_workspace(workspace_name)
+        assert content == workspace_name
+        assert status_code == 201
 
 
 def test_publish_workspace(geoserver: GeoServerCloud) -> None:
@@ -155,6 +214,6 @@ def test_publish_workspace(geoserver: GeoServerCloud) -> None:
             ],
         )
 
-        response = geoserver.publish_workspace(workspace)
-
-        assert response.status_code == 200
+        content, status_code = geoserver.publish_workspace(workspace)
+        assert content == ""
+        assert status_code == 200
