@@ -5,7 +5,6 @@ from requests.models import Response
 
 
 class Style:
-
     def __init__(
         self,
         name: str,

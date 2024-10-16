@@ -14,20 +14,13 @@ from geoservercloud.models import (
     DataStores,
     FeatureType,
     FeatureTypes,
-    KeyDollarListDict,
     PostGisDataStore,
     Style,
     Styles,
     Workspace,
     Workspaces,
 )
-from geoservercloud.services import (
-    AclEndpoints,
-    GwcEndpoints,
-    OwsEndpoints,
-    RestEndpoints,
-    RestService,
-)
+from geoservercloud.services import RestService
 from geoservercloud.templates import Templates
 
 
@@ -44,10 +37,6 @@ class GeoServerCloud:
         self.password: str = password
         self.auth: tuple[str, str] = (user, password)
         self.rest_service: RestService = RestService(url, self.auth)
-        self.acl_endpoints: AclEndpoints = AclEndpoints()
-        self.gwc_endpoints: GwcEndpoints = GwcEndpoints()
-        self.ows_endpoints: OwsEndpoints = OwsEndpoints()
-        self.rest_endpoints: RestEndpoints = RestEndpoints()
         self.wms: WebMapService_1_3_0 | None = None
         self.wmts: WebMapTileService | None = None
         self.default_workspace: str | None = None
@@ -84,80 +73,81 @@ class GeoServerCloud:
             password=self.password,
         )
 
-    def get_workspaces(self) -> Workspaces:
-        response: Response = self.get_request(self.rest_endpoints.workspaces())
-        workspaces = Workspaces.from_dict(response.json())
-        return workspaces
+    def get_workspaces(self) -> tuple[list[dict[str, str]], int]:
+        """
+        Get all GeoServer workspaces
+        """
+        workspaces, status_code = self.rest_service.get_workspaces()
+        return workspaces.aslist(), status_code
+
+    def get_workspace(self, workspace_name: str) -> tuple[dict[str, str] | str, int]:
+        """
+        Get a workspace by name
+        """
+        workspace, status_code = self.rest_service.get_workspace(workspace_name)
+        if isinstance(workspace, str):
+            return workspace, status_code
+        return workspace.asdict(), status_code
 
     def create_workspace(
         self,
         workspace_name: str,
         isolated: bool = False,
         set_default_workspace: bool = False,
-    ) -> Response:
+    ) -> tuple[str, int]:
         """
         Create a workspace in GeoServer, if it does not already exist.
         It if exists, update it
         """
-        response: Response = self.post_request(
-            self.rest_endpoints.workspaces(),
-            json=Workspace(workspace_name, isolated).post_payload(),
-        )
-        if response.status_code == 409:
-            response = self.put_request(
-                self.rest_endpoints.workspace(workspace_name),
-                json=Workspace(workspace_name, isolated).put_payload(),
-            )
+        workspace = Workspace(workspace_name, isolated)
+        content, status_code = self.rest_service.create_workspace(workspace)
         if set_default_workspace:
             self.default_workspace = workspace_name
-        return response
+        return content, status_code
 
-    def delete_workspace(self, workspace_name: str) -> Response:
+    def delete_workspace(self, workspace_name: str) -> tuple[str, int]:
         """
         Delete a GeoServer workspace (recursively)
         """
-        response: Response = self.delete_request(
-            self.rest_endpoints.workspace(workspace_name), params={"recurse": "true"}
+        content, status_code = self.rest_service.delete_workspace(
+            Workspace(workspace_name)
         )
         if self.default_workspace == workspace_name:
             self.default_workspace = None
             self.wms = None
             self.wmts = None
-        return response
+        return content, status_code
 
     def recreate_workspace(
-        self, workspace_name: str, set_default_workspace: bool = False
-    ) -> Response:
+        self,
+        workspace_name: str,
+        isolated: bool = False,
+        set_default_workspace: bool = False,
+    ) -> tuple[str, int]:
         """
         Create a workspace in GeoServer, and first delete it if it already exists.
         """
         self.delete_workspace(workspace_name)
         return self.create_workspace(
-            workspace_name, set_default_workspace=set_default_workspace
+            workspace_name,
+            isolated=isolated,
+            set_default_workspace=set_default_workspace,
         )
 
-    def publish_workspace(self, workspace_name) -> Response:
+    def publish_workspace(self, workspace_name) -> tuple[str, int]:
         """
         Publish the WMS service for a given workspace
         """
-        data: dict[str, dict[str, Any]] = Templates.workspace_wms(workspace_name)
-        return self.put_request(
-            self.rest_endpoints.workspace_wms_settings(workspace_name), json=data
-        )
+        return self.rest_service.publish_workspace(Workspace(workspace_name))
 
     def set_default_locale_for_service(
         self, workspace_name: str, locale: str | None
-    ) -> Response:
+    ) -> None:
         """
         Set a default language for localized WMS requests
         """
-        data: dict[str, dict[str, Any]] = {
-            "wms": {
-                "defaultLocale": locale,
-            }
-        }
-        return self.put_request(
-            self.rest_endpoints.workspace_wms_settings(workspace_name), json=data
+        self.rest_service.set_default_locale_for_service(
+            Workspace(workspace_name), locale
         )
 
     def unset_default_locale_for_service(self, workspace_name) -> None:
@@ -166,26 +156,25 @@ class GeoServerCloud:
         """
         self.set_default_locale_for_service(workspace_name, None)
 
-    def get_datastores(self, workspace_name: str) -> dict[str, Any]:
+    def get_datastores(self, workspace_name: str) -> tuple[list[dict[str, str]], int]:
         """
         Get all datastores for a given workspace
         """
-        response = self.get_request(self.rest_endpoints.datastores(workspace_name))
-        return DataStores.from_dict(response.json()).datastores
+        datastores, status_code = self.rest_service.get_datastores(workspace_name)
+        return datastores.aslist(), status_code
 
-    def get_postgis_datastore(
+    def get_pg_datastore(
         self, workspace_name: str, datastore_name: str
-    ) -> dict[str, Any] | None:
+    ) -> tuple[dict[str, Any] | str, int]:
         """
-        Get a specific datastore
+        Get a datastore by workspace and name
         """
-        response = self.get_request(
-            self.rest_endpoints.datastore(workspace_name, datastore_name)
+        datastore, status_code = self.rest_service.get_pg_datastore(
+            workspace_name, datastore_name
         )
-        if response.status_code == 404:
-            return None
-        else:
-            return PostGisDataStore.from_dict(response.json())
+        if isinstance(datastore, str):
+            return datastore, status_code
+        return datastore.asdict(), status_code
 
     def create_pg_datastore(
         self,
@@ -199,11 +188,10 @@ class GeoServerCloud:
         pg_schema: str = "public",
         description: str | None = None,
         set_default_datastore: bool = False,
-    ) -> Response | None:
+    ) -> tuple[str, int]:
         """
         Create a PostGIS datastore from the DB connection parameters, or update it if it already exist.
         """
-        response: None | Response = None
         datastore = PostGisDataStore(
             workspace_name,
             datastore_name,
@@ -218,27 +206,17 @@ class GeoServerCloud:
                 "namespace": f"http://{workspace_name}",
                 "Expose primary keys": "true",
             },
-            data_store_type="PostGIS",
+            type="PostGIS",
             description=description,
         )
-        payload = datastore.put_payload()
-
-        if not self.resource_exists(
-            self.rest_endpoints.datastore(workspace_name, datastore_name)
-        ):
-            response = self.post_request(
-                self.rest_endpoints.datastores(workspace_name), json=payload
-            )
-        else:
-            response = self.put_request(
-                self.rest_endpoints.datastore(workspace_name, datastore_name),
-                json=payload,
-            )
+        content, status_code = self.rest_service.create_pg_datastore(
+            workspace_name, datastore
+        )
 
         if set_default_datastore:
             self.default_datastore = datastore_name
 
-        return response
+        return content, status_code
 
     def create_jndi_datastore(
         self,
@@ -248,11 +226,10 @@ class GeoServerCloud:
         pg_schema: str = "public",
         description: str | None = None,
         set_default_datastore: bool = False,
-    ) -> Response | None:
+    ) -> tuple[str, int]:
         """
         Create a PostGIS datastore from JNDI resource, or update it if it already exist.
         """
-        response: None | Response = None
         datastore = PostGisDataStore(
             workspace_name,
             datastore_name,
@@ -263,26 +240,17 @@ class GeoServerCloud:
                 "namespace": f"http://{workspace_name}",
                 "Expose primary keys": "true",
             },
-            data_store_type="PostGIS (JNDI)",
+            type="PostGIS (JNDI)",
             description=description,
         )
-        payload = datastore.put_payload()
-        if not self.resource_exists(
-            self.rest_endpoints.datastore(workspace_name, datastore_name)
-        ):
-            response = self.post_request(
-                self.rest_endpoints.datastores(workspace_name), json=payload
-            )
-        else:
-            response = self.put_request(
-                self.rest_endpoints.datastore(workspace_name, datastore_name),
-                json=payload,
-            )
+        content, code = self.rest_service.create_jndi_datastore(
+            workspace_name, datastore
+        )
 
         if set_default_datastore:
             self.default_datastore = datastore_name
 
-        return response
+        return content, code
 
     def create_wmts_store(
         self,
@@ -1009,15 +977,6 @@ class GeoServerCloud:
             return self.post_request(path, json=payload)
         else:
             return self.put_request(resource_path, json=payload)
-
-    def resource_exists(self, path: str) -> bool:
-        """
-        Check if a resource (given its path) exists in GeoServer
-        """
-        # GeoServer raises a 500 when posting to a datastore or feature type that already exists, so first do
-        # a get request
-        response = self.get_request(path)
-        return response.status_code == 200
 
     def get_request(
         self,

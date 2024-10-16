@@ -37,7 +37,6 @@ EPSG_BBOX = {
 
 
 class Templates:
-
     @staticmethod
     def workspace_wms(workspace: str) -> dict[str, dict[str, Any]]:
         return {

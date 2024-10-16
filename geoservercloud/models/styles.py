@@ -2,7 +2,6 @@ from requests.models import Response
 
 
 class Styles:
-
     def __init__(self, styles: list[str], workspace: str | None = None) -> None:
         self._workspace = workspace
         self._styles = styles

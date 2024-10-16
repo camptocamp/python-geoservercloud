@@ -4,7 +4,6 @@ from requests.models import Response
 
 
 class FeatureTypes:
-
     def __init__(self, featuretypes: list = []) -> None:
         self._featuretypes = featuretypes
 
