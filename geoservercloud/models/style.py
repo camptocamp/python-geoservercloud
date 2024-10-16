@@ -1,11 +1,11 @@
 import json
 
 import xmltodict
-from requests.models import Response
+
+from geoservercloud.models import EntityModel
 
 
-class Style:
-
+class Style(EntityModel):
     def __init__(
         self,
         name: str,

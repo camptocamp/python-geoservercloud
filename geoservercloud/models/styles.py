@@ -1,8 +1,7 @@
-from requests.models import Response
+from geoservercloud.models import ListModel
 
 
-class Styles:
-
+class Styles(ListModel):
     def __init__(self, styles: list[str], workspace: str | None = None) -> None:
         self._workspace = workspace
         self._styles = styles

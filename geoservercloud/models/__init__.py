@@ -1,4 +1,4 @@
-from .common import I18N, KeyDollarListDict
+from .common import BaseModel, EntityModel, ListModel, I18N, KeyDollarListDict
 from .datastore import PostGisDataStore
 from .datastores import DataStores
 from .featuretype import FeatureType
@@ -9,8 +9,11 @@ from .workspace import Workspace
 from .workspaces import Workspaces
 
 __all__ = [
+    "BaseModel",
     "DataStores",
+    "EntityModel",
     "KeyDollarListDict",
+    "ListModel",
     "FeatureType",
     "FeatureTypes",
     "I18N",

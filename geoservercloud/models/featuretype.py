@@ -1,12 +1,10 @@
 import json
 
-from requests.models import Response
-
-from geoservercloud.models import I18N
+from geoservercloud.models import EntityModel, I18N
 
 
 # TODO: import more default values from Templates
-class FeatureType:
+class FeatureType(EntityModel):
     def __init__(
         self,
         namespace_name: str,

@@ -215,5 +215,4 @@ def test_set_default_locale_for_service(geoserver: GeoServerCloud) -> None:
             ],
         )
 
-        response = geoserver.set_default_locale_for_service(WORKSPACE, "en")
-        assert response.status_code == 200
+        assert geoserver.set_default_locale_for_service(WORKSPACE, "en") == None

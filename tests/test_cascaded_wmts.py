@@ -81,14 +81,16 @@ def test_create_wmts_store(
             f"{geoserver.url}/rest/workspaces/{WORKSPACE}/wmtsstores.json",
             match=[responses.matchers.json_params_matcher(wmts_store_payload)],
             status=201,
+            body=b"test_wmtsstore",
         )
-        response = geoserver.create_wmts_store(
+        content, code = geoserver.create_wmts_store(
             workspace_name=WORKSPACE,
             name=STORE,
             capabilities=CAPABILITIES_URL,
         )
 
-        assert response.status_code == 201
+        assert content == STORE
+        assert code == 201
 
 
 def test_update_wmts_store(
@@ -103,14 +105,16 @@ def test_update_wmts_store(
             f"{geoserver.url}/rest/workspaces/{WORKSPACE}/wmtsstores/{STORE}.json",
             match=[responses.matchers.json_params_matcher(wmts_store_payload)],
             status=200,
+            body=b"",
         )
-        response = geoserver.create_wmts_store(
+        content, code = geoserver.create_wmts_store(
             workspace_name=WORKSPACE,
             name=STORE,
             capabilities=CAPABILITIES_URL,
         )
 
-        assert response.status_code == 200
+        assert content == ""
+        assert code == 200
 
 
 def test_create_wmts_layer(
@@ -136,16 +140,17 @@ def test_create_wmts_layer(
             f"{geoserver.url}/rest/workspaces/{WORKSPACE}/wmtsstores/{STORE}/layers.json",
             match=[responses.matchers.json_params_matcher(wmts_layer_payload)],
             status=201,
+            body=b"test_layer",
         )
-        response = geoserver.create_wmts_layer(
+        content, code = geoserver.create_wmts_layer(
             workspace_name=WORKSPACE,
             wmts_store=STORE,
             native_layer=NATIVE_LAYER,
             published_layer=LAYER,
         )
 
-        assert response
-        assert response.status_code == 201
+        assert content == LAYER
+        assert code == 201
 
 
 def test_create_wmts_layer_already_exists(
@@ -176,15 +181,17 @@ def test_create_wmts_layer_already_exists(
             f"{geoserver.url}/rest/workspaces/{WORKSPACE}/wmtsstores/{STORE}/layers.json",
             match=[responses.matchers.json_params_matcher(wmts_layer_payload)],
             status=201,
+            body=b"test_layer",
         )
-        response = geoserver.create_wmts_layer(
+        content, code = geoserver.create_wmts_layer(
             workspace_name=WORKSPACE,
             wmts_store=STORE,
             native_layer=NATIVE_LAYER,
             published_layer=LAYER,
         )
 
-        assert response.status_code == 201
+        assert content == LAYER
+        assert code == 201
 
 
 def test_create_wmts_layer_international_title(
@@ -213,7 +220,7 @@ def test_create_wmts_layer_international_title(
             match=[responses.matchers.json_params_matcher(wmts_layer_payload)],
             status=201,
         )
-        response = geoserver.create_wmts_layer(
+        content, code = geoserver.create_wmts_layer(
             workspace_name=WORKSPACE,
             wmts_store=STORE,
             native_layer=NATIVE_LAYER,
@@ -222,4 +229,4 @@ def test_create_wmts_layer_international_title(
             international_abstract={"en": "Abstract"},
         )
 
-        assert response.status_code == 201
+        assert code == 201

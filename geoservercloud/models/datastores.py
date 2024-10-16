@@ -1,32 +1,19 @@
-import logging
-
-from requests.models import Response
-
-log = logging.getLogger()
+from geoservercloud.models import ListModel
 
 
-class DataStores:
-
-    def __init__(self, workspace_name: str, datastores: list[str] = []) -> None:
-        self.workspace_name = workspace_name
-        self._datastores = datastores
-
-    @property
-    def datastores(self):
-        return self._datastores
+class DataStores(ListModel):
+    def __init__(self, datastores: list[dict[str, str]] = []) -> None:
+        self._datastores: list[dict[str, str]] = datastores
 
     @classmethod
-    def from_dict(cls, content: dict):
-        datastores = []
-        workspace_name = (
-            content.get("dataStores", {}).get("workspace", {}).get("name", None)
-        )
+    def from_get_response_payload(cls, content: dict):
+        datastores: str | dict = content["dataStores"]
+        if not datastores:
+            return cls()
+        return cls(datastores["dataStore"])  # type: ignore
 
-        for store in content.get("dataStores", {}).get("dataStore", []):
-            datastores.append(store["name"])
-            for data_store_name in datastores:
-                log.debug(f"Name: {data_store_name}")
-        return cls(workspace_name, datastores)
+    def __repr__(self) -> str:
+        return str(self._datastores)
 
-    def __repr__(self):
-        return str(self.datastores)
+    def aslist(self) -> list[dict[str, str]]:
+        return self._datastores

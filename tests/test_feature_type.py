@@ -60,3 +60,55 @@ def feature_type_payload() -> dict[str, dict[str, Any]]:
             },
         }
     }
+
+
+def test_create_feature_type(
+    geoserver: GeoServerCloud, feature_type_payload: dict[str, dict[str, Any]]
+) -> None:
+    with responses.RequestsMock() as rsps:
+        rsps.get(
+            f"{geoserver.url}/rest/workspaces/{WORKSPACE}/datastores/{STORE}/featuretypes/{LAYER}.json",
+            status=404,
+        )
+        rsps.post(
+            f"{geoserver.url}/rest/workspaces/{WORKSPACE}/datastores/{STORE}/featuretypes.json",
+            match=[responses.matchers.json_params_matcher(feature_type_payload)],
+            status=201,
+            body=b"",
+        )
+        content, code = geoserver.create_feature_type(
+            workspace_name=WORKSPACE,
+            datastore=STORE,
+            layer=LAYER,
+            title={"en": "English"},
+            abstract={"en": "English"},
+        )
+
+        assert content == ""
+        assert code == 201
+
+
+def test_update_feature_type(
+    geoserver: GeoServerCloud, feature_type_payload: dict[str, dict[str, Any]]
+) -> None:
+    with responses.RequestsMock() as rsps:
+        rsps.get(
+            f"{geoserver.url}/rest/workspaces/{WORKSPACE}/datastores/{STORE}/featuretypes/{LAYER}.json",
+            status=200,
+        )
+        rsps.put(
+            f"{geoserver.url}/rest/workspaces/{WORKSPACE}/datastores/{STORE}/featuretypes/{LAYER}.json",
+            match=[responses.matchers.json_params_matcher(feature_type_payload)],
+            status=200,
+            body=b"",
+        )
+        content, code = geoserver.create_feature_type(
+            workspace_name=WORKSPACE,
+            datastore=STORE,
+            layer=LAYER,
+            title={"en": "English"},
+            abstract={"en": "English"},
+        )
+
+        assert content == ""
+        assert code == 200

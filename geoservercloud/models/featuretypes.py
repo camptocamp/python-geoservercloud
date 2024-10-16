@@ -1,10 +1,9 @@
 import json
 
-from requests.models import Response
+from geoservercloud.models import ListModel
 
 
-class FeatureTypes:
-
+class FeatureTypes(ListModel):
     def __init__(self, featuretypes: list = []) -> None:
         self._featuretypes = featuretypes
 

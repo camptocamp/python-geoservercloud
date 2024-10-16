@@ -11,6 +11,7 @@ def test_create_user(geoserver: GeoServerCloud) -> None:
         rsps.post(
             url=f"{geoserver.url}/rest/security/usergroup/users.json",
             status=201,
+            body=b"",
             match=[
                 responses.matchers.json_params_matcher(
                     {
@@ -23,8 +24,9 @@ def test_create_user(geoserver: GeoServerCloud) -> None:
                 )
             ],
         )
-        response = geoserver.create_user(TEST_USER, "test_password")
-        assert response.status_code == 201
+        content, code = geoserver.create_user(TEST_USER, "test_password")
+        assert content == ""
+        assert code == 201
 
 
 def test_update_user_password(geoserver: GeoServerCloud) -> None:
@@ -32,6 +34,7 @@ def test_update_user_password(geoserver: GeoServerCloud) -> None:
         rsps.post(
             url=f"{geoserver.url}/rest/security/usergroup/user/{TEST_USER}.json",
             status=200,
+            body=b"",
             match=[
                 responses.matchers.json_params_matcher(
                     {
@@ -42,8 +45,9 @@ def test_update_user_password(geoserver: GeoServerCloud) -> None:
                 )
             ],
         )
-        response = geoserver.update_user(TEST_USER, password="new_password")
-        assert response.status_code == 200
+        content, code = geoserver.update_user(TEST_USER, "new_password")
+        assert content == ""
+        assert code == 200
 
 
 def test_update_user_enabled(geoserver: GeoServerCloud) -> None:
@@ -51,6 +55,7 @@ def test_update_user_enabled(geoserver: GeoServerCloud) -> None:
         rsps.post(
             url=f"{geoserver.url}/rest/security/usergroup/user/{TEST_USER}.json",
             status=200,
+            body=b"",
             match=[
                 responses.matchers.json_params_matcher(
                     {
@@ -61,8 +66,9 @@ def test_update_user_enabled(geoserver: GeoServerCloud) -> None:
                 )
             ],
         )
-        response = geoserver.update_user(TEST_USER, enabled=False)
-        assert response.status_code == 200
+        content, code = geoserver.update_user(TEST_USER, enabled=False)
+        assert content == ""
+        assert code == 200
 
 
 def test_delete_user(geoserver: GeoServerCloud) -> None:
@@ -70,6 +76,8 @@ def test_delete_user(geoserver: GeoServerCloud) -> None:
         rsps.delete(
             url=f"{geoserver.url}/rest/security/usergroup/user/{TEST_USER}.json",
             status=200,
+            body=b"",
         )
-        response = geoserver.delete_user(TEST_USER)
-        assert response.status_code == 200
+        content, code = geoserver.delete_user(TEST_USER)
+        assert content == ""
+        assert code == 200
