@@ -4,14 +4,12 @@ import pytest
 import responses
 
 from geoservercloud import GeoServerCloud
-from geoservercloud.models import Styles
 from tests.conftest import GEOSERVER_URL
 
 STYLE = "test_style"
 
 
 def test_get_styles_no_workspace(geoserver: GeoServerCloud):
-    # Mock the self.rest_endpoints.styles() URL
     with responses.RequestsMock() as rsps:
         rsps.get(
             url=f"{GEOSERVER_URL}/rest/styles.json",
@@ -31,9 +29,10 @@ def test_get_styles_no_workspace(geoserver: GeoServerCloud):
                 }
             },
         )
-        result = geoserver.get_styles()
+        content, code = geoserver.get_styles()
 
-    assert result == ["style1", "style2"]
+    assert content == ["style1", "style2"]
+    assert code == 200
 
 
 def test_get_styles_with_workspace(geoserver: GeoServerCloud):
@@ -57,23 +56,63 @@ def test_get_styles_with_workspace(geoserver: GeoServerCloud):
                 }
             },
         )
-        result = geoserver.get_styles(workspace_name)
+        content, code = geoserver.get_styles(workspace_name)
 
-    assert result == ["style3", "style4"]
+    assert content == ["style3", "style4"]
+    assert code == 200
 
 
-def test_get_style_no_workspace(geoserver: GeoServerCloud) -> None:
+def test_get_style_no_workspace(geoserver: GeoServerCloud):
     with responses.RequestsMock() as rsps:
         rsps.get(
             url=f"{GEOSERVER_URL}/rest/styles/{STYLE}.json",
             status=200,
-            json={"style": {"name": STYLE}},
+            json={
+                "style": {
+                    "name": STYLE,
+                    "format": "sld",
+                    "languageVersion": {"version": "1.0.0"},
+                    "filename": f"{STYLE}.sld",
+                }
+            },
         )
+        content, code = geoserver.get_style(STYLE)
 
-        style = geoserver.get_style(STYLE)
+    assert content == {
+        "name": STYLE,
+        "format": "sld",
+        "languageVersion": {"version": "1.0.0"},
+        "filename": f"{STYLE}.sld",
+    }
+    assert code == 200
 
-        assert style.name == STYLE  # type: ignore
-        assert style.workspace is None  # type: ignore
+
+def test_get_style_with_workspace(geoserver: GeoServerCloud):
+    workspace_name = "test_workspace"
+    with responses.RequestsMock() as rsps:
+        rsps.get(
+            url=f"{GEOSERVER_URL}/rest/workspaces/{workspace_name}/styles/{STYLE}.json",
+            status=200,
+            json={
+                "style": {
+                    "name": STYLE,
+                    "workspace": {"name": workspace_name},
+                    "format": "sld",
+                    "languageVersion": {"version": "1.0.0"},
+                    "filename": f"{STYLE}.sld",
+                }
+            },
+        )
+        content, code = geoserver.get_style(STYLE, workspace_name)
+
+    assert content == {
+        "name": STYLE,
+        "format": "sld",
+        "languageVersion": {"version": "1.0.0"},
+        "filename": f"{STYLE}.sld",
+        "workspace": workspace_name,
+    }
+    assert code == 200
 
 
 def test_create_style(geoserver: GeoServerCloud) -> None:
@@ -86,14 +125,17 @@ def test_create_style(geoserver: GeoServerCloud) -> None:
         rsps.post(
             url=f"{GEOSERVER_URL}/rest/styles.json",
             status=201,
+            body=b"test_style",
+            # Matching of binary content is not supported by responses
         )
 
-        response = geoserver.create_style_from_file(
+        content, code = geoserver.create_style_from_file(
             style=STYLE,
             file=str(file_path),
         )
 
-        assert response.status_code == 201
+        assert content == STYLE
+        assert code == 201
 
 
 def test_update_style(geoserver: GeoServerCloud) -> None:
@@ -106,14 +148,17 @@ def test_update_style(geoserver: GeoServerCloud) -> None:
         rsps.put(
             url=f"{GEOSERVER_URL}/rest/styles/{STYLE}.json",
             status=200,
+            body=b"",
+            # Matching of binary content is not supported by responses
         )
 
-        response = geoserver.create_style_from_file(
+        content, code = geoserver.create_style_from_file(
             style=STYLE,
             file=str(file_path),
         )
 
-        assert response.status_code == 200
+        assert content == ""
+        assert code == 200
 
 
 def test_create_style_zip(geoserver: GeoServerCloud) -> None:
@@ -126,14 +171,17 @@ def test_create_style_zip(geoserver: GeoServerCloud) -> None:
         rsps.post(
             url=f"{GEOSERVER_URL}/rest/styles.json",
             status=201,
+            body=b"test_style",
+            # Matching of binary content is not supported by responses
         )
 
-        response = geoserver.create_style_from_file(
+        content, code = geoserver.create_style_from_file(
             style=STYLE,
             file=str(file_path),
         )
 
-        assert response.status_code == 201
+        assert content == STYLE
+        assert code == 201
 
 
 def test_create_style_unsupported_format(geoserver: GeoServerCloud) -> None:
@@ -154,6 +202,7 @@ def test_set_default_layer_style(geoserver: GeoServerCloud) -> None:
         rsps.put(
             url=f"{GEOSERVER_URL}/rest/layers/{workspace}:{layer}.json",
             status=200,
+            body=b"",
             match=[
                 responses.matchers.json_params_matcher(
                     {"layer": {"defaultStyle": {"name": style}}}
@@ -161,6 +210,7 @@ def test_set_default_layer_style(geoserver: GeoServerCloud) -> None:
             ],
         )
 
-        response = geoserver.set_default_layer_style(layer, workspace, style)
+        content, code = geoserver.set_default_layer_style(layer, workspace, style)
 
-        assert response.status_code == 200
+        assert content == ""
+        assert code == 200

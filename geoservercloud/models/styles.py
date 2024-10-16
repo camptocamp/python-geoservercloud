@@ -1,30 +1,21 @@
-from requests.models import Response
+from geoservercloud.models import ListModel
 
 
-class Styles:
-
+class Styles(ListModel):
     def __init__(self, styles: list[str], workspace: str | None = None) -> None:
-        self._workspace = workspace
-        self._styles = styles
+        self._workspace: str | None = workspace
+        self._styles: list[str] = styles
 
     @property
-    def workspace(self):
+    def workspace(self) -> str | None:
         return self._workspace
 
-    @property
-    def styles(self):
+    def aslist(self) -> list[str]:
         return self._styles
 
     @classmethod
-    def from_dict(cls, content: dict):
-        styles = []
-        try:
-            workspace = content["styles"]["workspace"]
-        except KeyError:
-            workspace = None
-        try:
-            for style in content.get("styles", {}).get("style", []):
-                styles.append(style["name"])
-        except AttributeError:
-            styles = []
-        return cls(styles, workspace)
+    def from_get_response_payload(cls, content: dict):
+        styles: str | dict = content["styles"]
+        if not styles:
+            return cls([])
+        return cls([style["name"] for style in styles["style"]])  # type: ignore

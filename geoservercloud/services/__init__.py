@@ -1,10 +1,7 @@
-from .endpoints import AclEndpoints, GwcEndpoints, OwsEndpoints, RestEndpoints
+from .owsservice import OwsService
 from .restservice import RestService
 
 __all__ = [
+    "OwsService",
     "RestService",
-    "AclEndpoints",
-    "OwsEndpoints",
-    "GwcEndpoints",
-    "RestEndpoints",
 ]

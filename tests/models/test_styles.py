@@ -1,4 +1,29 @@
+import pytest
+
 from geoservercloud.models import Styles
+
+
+@pytest.fixture
+def styles_get_response_payload():
+    return {
+        "styles": {
+            "style": [
+                {
+                    "name": "style1",
+                    "href": "http://localhost/style1.json",
+                },
+                {
+                    "name": "style2",
+                    "href": "http://localhost/style2.json",
+                },
+            ]
+        }
+    }
+
+
+@pytest.fixture
+def empty_styles_get_response_payload():
+    return {"styles": ""}
 
 
 def test_styles_initialization():
@@ -8,45 +33,19 @@ def test_styles_initialization():
     styles_instance = Styles(styles, workspace)
 
     assert styles_instance.workspace == workspace
-    assert styles_instance.styles == styles
+    assert styles_instance.aslist() == styles
 
 
-def test_styles_from_dict_valid():
-    mock_response = {
-        "styles": {
-            "workspace": "test_workspace",
-            "style": [{"name": "style1"}, {"name": "style2"}],
-        }
-    }
+def test_styles_from_get_response(styles_get_response_payload):
+    styles_instance = Styles.from_get_response_payload(styles_get_response_payload)
 
-    styles_instance = Styles.from_dict(mock_response)
-
-    assert styles_instance.workspace == "test_workspace"
-    assert styles_instance.styles == ["style1", "style2"]
+    assert styles_instance.aslist() == ["style1", "style2"]
 
 
-def test_styles_from_dict_no_workspace():
-    mock_response = {"styles": {"style": [{"name": "style1"}, {"name": "style2"}]}}
+def test_styles_from_get_response_empty(empty_styles_get_response_payload):
 
-    styles_instance = Styles.from_dict(mock_response)
+    styles_instance = Styles.from_get_response_payload(
+        empty_styles_get_response_payload
+    )
 
-    assert styles_instance.workspace is None
-    assert styles_instance.styles == ["style1", "style2"]
-
-
-def test_styles_from_dict_empty_styles():
-    mock_response = {"styles": {"workspace": "test_workspace", "style": []}}
-
-    styles_instance = Styles.from_dict(mock_response)
-
-    assert styles_instance.workspace == "test_workspace"
-    assert styles_instance.styles == []
-
-
-def test_styles_from_dict_no_styles_section():
-    mock_response = {}
-
-    styles_instance = Styles.from_dict(mock_response)
-
-    assert styles_instance.workspace is None
-    assert styles_instance.styles == []
+    assert styles_instance.aslist() == []

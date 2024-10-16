@@ -1,44 +1,49 @@
+from pytest import fixture
+
 from geoservercloud.models import DataStores
 
 
-def test_datastores_initialization():
-    workspace_name = "test_workspace"
-    datastores = ["store1", "store2"]
-
-    ds = DataStores(workspace_name, datastores)
-
-    assert ds.workspace_name == "test_workspace"
-    assert ds.datastores == datastores
+@fixture(scope="module")
+def mock_datastore():
+    return {
+        "name": "DataStore1",
+        "href": "http://example.com/ds1",
+    }
 
 
-def test_datastores_from_dict():
-    mock_response = {
+@fixture(scope="module")
+def mock_response(mock_datastore):
+    return {
         "dataStores": {
-            "workspace": {"name": "test_workspace"},
-            "dataStore": [{"name": "store1"}, {"name": "store2"}],
+            "dataStore": [mock_datastore],
         }
     }
 
-    ds = DataStores.from_dict(mock_response)
 
-    assert ds.workspace_name == "test_workspace"
-    assert ds.datastores == ["store1", "store2"]
+def test_datastores_initialization(mock_datastore):
+    ds = DataStores([mock_datastore])
 
-
-def test_datastores_from_dict_empty():
-    mock_response = {
-        "dataStores": {"workspace": {"name": "empty_workspace"}, "dataStore": []}
-    }
-
-    ds = DataStores.from_dict(mock_response)
-
-    assert ds.workspace_name == "empty_workspace"
-    assert ds.datastores == []
+    assert ds.aslist() == [mock_datastore]
 
 
-def test_datastores_repr():
-    ds = DataStores("test_workspace", ["store1", "store2"])
+def test_datastores_from_get_response_payload(mock_datastore, mock_response):
 
-    expected_repr = "['store1', 'store2']"
+    ds = DataStores.from_get_response_payload(mock_response)
+
+    assert ds.aslist() == [mock_datastore]
+
+
+def test_datastores_from_get_response_payload_empty():
+    mock_response = {"dataStores": ""}
+
+    ds = DataStores.from_get_response_payload(mock_response)
+
+    assert ds.aslist() == []
+
+
+def test_datastores_repr(mock_datastore):
+    ds = DataStores([mock_datastore])
+
+    expected_repr = "[{'name': 'DataStore1', 'href': 'http://example.com/ds1'}]"
 
     assert repr(ds) == expected_repr

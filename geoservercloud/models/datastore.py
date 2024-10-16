@@ -1,74 +1,82 @@
 import json
-import logging
+from typing import Any
 
-from requests.models import Response
-
-from . import KeyDollarListDict
-
-log = logging.getLogger()
+from geoservercloud.models import EntityModel, KeyDollarListDict, ReferencedObjectModel
 
 
-class PostGisDataStore:
-
+class PostGisDataStore(EntityModel):
     def __init__(
         self,
         workspace_name: str,
-        data_store_name: str,
+        name: str,
         connection_parameters: dict,
-        data_store_type: str = "PostGIS",
+        type: str = "PostGIS",
         enabled: bool = True,
         description: str | None = None,
+        default: bool | None = None,
+        disable_on_conn_failure: bool | None = None,
     ) -> None:
-        self.workspace_name = workspace_name
-        self.data_store_name = data_store_name
+        self.workspace: ReferencedObjectModel = ReferencedObjectModel(workspace_name)
+        self._name: str = name
         self.connection_parameters = KeyDollarListDict(input_dict=connection_parameters)
-        self.data_store_type = data_store_type
-        self.description = description
-        self.enabled = enabled
+        self.type: str = type
+        self.description: str | None = description
+        self.enabled: bool = enabled
+        self._default: bool | None = default
+        self.disable_on_conn_failure: bool | None = disable_on_conn_failure
 
     @property
-    def name(self):
-        return self.data_store_name
+    def name(self) -> str:
+        return self._name
 
-    def post_payload(self):
-        payload = {
-            "dataStore": {
-                "name": self.data_store_name,
-                "type": self.data_store_type,
-                "connectionParameters": {
-                    "entry": self.connection_parameters.serialize()
-                },
-            }
+    @property
+    def workspace_name(self) -> str:
+        return self.workspace.name
+
+    def asdict(self) -> dict[str, Any]:
+        content: dict[str, Any] = {
+            "name": self._name,
+            "type": self.type,
+            "connectionParameters": {"entry": dict(self.connection_parameters)},
+            "workspace": self.workspace_name,
         }
         if self.description:
-            payload["dataStore"]["description"] = self.description
+            content["description"] = self.description
         if self.enabled:
-            payload["dataStore"]["enabled"] = self.enabled
-        return payload
+            content["enabled"] = self.enabled
+        if self._default is not None:
+            content["_default"] = self._default
+        if self.disable_on_conn_failure is not None:
+            content["disableOnConnFailure"] = self.disable_on_conn_failure
+        return content
 
-    def put_payload(self):
-        payload = self.post_payload()
-        return payload
+    def post_payload(self) -> dict[str, Any]:
+        content = self.asdict()
+        content["connectionParameters"] = {
+            "entry": self.connection_parameters.serialize()
+        }
+        content["workspace"] = {"name": self.workspace_name}
+        return {"dataStore": content}
+
+    def put_payload(self) -> dict[str, Any]:
+        return self.post_payload()
 
     @classmethod
-    def from_dict(cls, content: dict):
-        connection_parameters = cls.parse_connection_parameters(content)
+    def from_get_response_payload(cls, content: dict):
+        data_store = content["dataStore"]
+        connection_parameters = KeyDollarListDict(
+            input_list=data_store["connectionParameters"]["entry"]
+        )
         return cls(
-            content.get("dataStore", {}).get("workspace", {}).get("name", None),
-            content.get("dataStore", {}).get("name", None),
+            data_store["workspace"]["name"],
+            data_store["name"],
             connection_parameters,
-            content.get("dataStore", {}).get("type", "PostGIS"),
-            content.get("dataStore", {}).get("enabled", True),
-            content.get("dataStore", {}).get("description", None),
+            data_store.get("type", "PostGIS"),
+            data_store.get("enabled", True),
+            data_store.get("description", None),
+            data_store.get("_default", None),
+            data_store.get("disableOnConnFailure", None),
         )
 
-    @classmethod
-    def parse_connection_parameters(cls, content):
-        return KeyDollarListDict(
-            content.get("dataStore", {})
-            .get("connectionParameters", {})
-            .get("entry", [])
-        )
-
-    def __repr__(self):
+    def __repr__(self) -> str:
         return json.dumps(self.put_payload(), indent=4)

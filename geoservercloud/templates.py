@@ -1,43 +1,9 @@
 from typing import Any
 
-EPSG_BBOX = {
-    2056: {
-        "nativeBoundingBox": {
-            "crs": {"$": "EPSG:2056", "@class": "projected"},
-            "maxx": 2837016.9329778464,
-            "maxy": 1299782.763494124,
-            "minx": 2485014.052451379,
-            "miny": 1074188.6943776933,
-        },
-        "latLonBoundingBox": {
-            "crs": "EPSG:4326",
-            "maxx": 10.603307860867739,
-            "maxy": 47.8485348773655,
-            "minx": 5.902662003204146,
-            "miny": 45.7779277267225,
-        },
-    },
-    4326: {
-        "nativeBoundingBox": {
-            "crs": {"$": "EPSG:4326", "@class": "projected"},
-            "maxx": 180,
-            "maxy": 90,
-            "minx": -180,
-            "miny": -90,
-        },
-        "latLonBoundingBox": {
-            "crs": "EPSG:4326",
-            "maxx": 180,
-            "maxy": 90,
-            "minx": -180,
-            "miny": -90,
-        },
-    },
-}
+from geoservercloud.utils import EPSG_BBOX
 
 
 class Templates:
-
     @staticmethod
     def workspace_wms(workspace: str) -> dict[str, dict[str, Any]]:
         return {
@@ -83,73 +49,6 @@ class Templates:
             }
         }
 
-    # TODO: verify that we don't need these 2 templates anymore
-    # @staticmethod
-    # def postgis_data_store(
-    #     datastore: str,
-    #     pg_host: str,
-    #     pg_port: int,
-    #     pg_db: str,
-    #     pg_user: str,
-    #     pg_password: str,
-    #     namespace: str,
-    #     pg_schema: str = "public",
-    # ) -> dict[str, dict[str, Any]]:
-    #     return {
-    #         "dataStore": {
-    #             "name": datastore,
-    #             "connectionParameters": {
-    #                 "entry": [
-    #                     {"@key": "dbtype", "$": "postgis"},
-    #                     {"@key": "host", "$": pg_host},
-    #                     {"@key": "port", "$": pg_port},
-    #                     {"@key": "database", "$": pg_db},
-    #                     {"@key": "user", "$": pg_user},
-    #                     {"@key": "passwd", "$": pg_password},
-    #                     {"@key": "schema", "$": pg_schema},
-    #                     {
-    #                         "@key": "namespace",
-    #                         "$": namespace,
-    #                     },
-    #                     {"@key": "Expose primary keys", "$": "true"},
-    #                 ]
-    #             },
-    #         }
-    #     }
-
-    # @staticmethod
-    # def postgis_jndi_data_store(
-    #     datastore: str,
-    #     jndi_reference: str,
-    #     namespace: str,
-    #     pg_schema: str = "public",
-    #     description: str | None = None,
-    # ) -> dict[str, dict[str, Any]]:
-    #     return {
-    #         "dataStore": {
-    #             "name": datastore,
-    #             "description": description,
-    #             "connectionParameters": {
-    #                 "entry": [
-    #                     {"@key": "dbtype", "$": "postgis"},
-    #                     {
-    #                         "@key": "jndiReferenceName",
-    #                         "$": jndi_reference,
-    #                     },
-    #                     {
-    #                         "@key": "schema",
-    #                         "$": pg_schema,
-    #                     },
-    #                     {
-    #                         "@key": "namespace",
-    #                         "$": namespace,
-    #                     },
-    #                     {"@key": "Expose primary keys", "$": "true"},
-    #                 ]
-    #             },
-    #         }
-    #     }
-
     @staticmethod
     def wmts_store(
         workspace: str, name: str, capabilities: str
@@ -171,45 +70,6 @@ class Templates:
             "geom": {
                 "type": "Point",
                 "required": True,
-            }
-        }
-
-    # TODO: remove this template after finishing to merge
-    # BBOX stuff in the FeatureType class
-    @staticmethod
-    def feature_type(
-        layer: str,
-        workspace: str,
-        datastore: str,
-        attributes: list[dict],
-        epsg: int = 4326,
-    ) -> dict[str, dict[str, Any]]:
-        return {
-            "featureType": {
-                "name": layer,
-                "nativeName": layer,
-                "srs": f"EPSG:{epsg}",
-                "enabled": True,
-                "store": {
-                    "name": f"{workspace}:{datastore}",
-                },
-                "attributes": {
-                    "attribute": attributes,
-                },
-                "nativeBoundingBox": {
-                    "crs": EPSG_BBOX[epsg]["nativeBoundingBox"]["crs"],
-                    "maxx": EPSG_BBOX[epsg]["nativeBoundingBox"]["maxx"],
-                    "maxy": EPSG_BBOX[epsg]["nativeBoundingBox"]["maxy"],
-                    "minx": EPSG_BBOX[epsg]["nativeBoundingBox"]["minx"],
-                    "miny": EPSG_BBOX[epsg]["nativeBoundingBox"]["miny"],
-                },
-                "latLonBoundingBox": {
-                    "crs": EPSG_BBOX[epsg]["latLonBoundingBox"]["crs"],
-                    "maxx": EPSG_BBOX[epsg]["latLonBoundingBox"]["maxx"],
-                    "maxy": EPSG_BBOX[epsg]["latLonBoundingBox"]["maxy"],
-                    "minx": EPSG_BBOX[epsg]["latLonBoundingBox"]["minx"],
-                    "miny": EPSG_BBOX[epsg]["latLonBoundingBox"]["miny"],
-                },
             }
         }
 
