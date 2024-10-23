@@ -582,8 +582,9 @@ class RestService:
         response: Response = self.rest_client.get(path)
         return response.status_code == 200
 
+    @staticmethod
     def deserialize_response(
-        self, response: Response, data_type: type[BaseModel]
+        response: Response, data_type: type[BaseModel]
     ) -> tuple[Any, int]:
         try:
             content = response.json()
