@@ -20,10 +20,10 @@ jobs:
           github-gopass-ci-token: ${{secrets.GOPASS_CI_GITHUB_TOKEN}}
           patterns: pypi docker
         if: env.HAS_SECRETS == 'HAS_SECRETS'
-
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
       - run: echo "${HOME}/.local/bin" >> ${GITHUB_PATH}
-      - run: python3 -m venv /tmp/venv
-      - run: echo /tmp/venv/bin >> ${GITHUB_PATH}
       - run: python3 -m pip install --requirement=ci/requirements.txt
         name: Install CI requirements
       - uses: actions/cache@v4
