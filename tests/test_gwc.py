@@ -85,6 +85,32 @@ def test_publish_gwc_layer_already_exists(geoserver: GeoServerCloud) -> None:
         assert code == 200
 
 
+def test_delete_gwc_layer(geoserver: GeoServerCloud) -> None:
+    with responses.RequestsMock() as rsps:
+        rsps.delete(
+            url=f"{geoserver.url}/gwc/rest/layers/{WORKSPACE}:{LAYER}.json",
+            status=200,
+            body=b"test_workspace:test_layer deleted",
+        )
+
+        content, code = geoserver.delete_gwc_layer(WORKSPACE, LAYER)
+        assert content == "test_workspace:test_layer deleted"
+        assert code == 200
+
+
+def test_delete_gwc_layer_not_found(geoserver: GeoServerCloud) -> None:
+    with responses.RequestsMock() as rsps:
+        rsps.delete(
+            url=f"{geoserver.url}/gwc/rest/layers/{WORKSPACE}:{LAYER}.json",
+            status=404,
+            body=b"Unknown layer: test_workspace:test_layer",
+        )
+
+        content, code = geoserver.delete_gwc_layer(WORKSPACE, LAYER)
+        assert content == "Unknown layer: test_workspace:test_layer"
+        assert code == 404
+
+
 def test_create_gridset(geoserver: GeoServerCloud) -> None:
     with responses.RequestsMock() as rsps:
         rsps.get(

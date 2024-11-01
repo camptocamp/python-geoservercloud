@@ -367,6 +367,9 @@ class GeoServerCloud:
     ) -> tuple[str, int]:
         return self.rest_service.publish_gwc_layer(workspace_name, layer, epsg)
 
+    def delete_gwc_layer(self, workspace_name: str, layer: str) -> tuple[str, int]:
+        return self.rest_service.delete_gwc_layer(workspace_name, layer)
+
     def get_styles(
         self, workspace_name: str | None = None
     ) -> tuple[list[str] | str, int]:
