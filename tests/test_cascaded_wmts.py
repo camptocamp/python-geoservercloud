@@ -166,6 +166,10 @@ def test_create_wmts_layer_already_exists(
             status=200,
             match=[responses.matchers.query_param_matcher({"recurse": "true"})],
         )
+        rsps.delete(
+            url=f"{geoserver.url}/gwc/rest/layers/{WORKSPACE}:{LAYER}.json",
+            status=200,
+        )
         rsps.get(
             f"{geoserver.url}/rest/workspaces/{WORKSPACE}/wmtsstores/{STORE}.json",
             status=200,

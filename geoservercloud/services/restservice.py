@@ -167,6 +167,8 @@ class RestService:
                 resource_path,
                 params={"recurse": "true"},
             )
+            # Also delete the corresponding GWC layer (delete is not cascaded when using REST API)
+            self.delete_gwc_layer(workspace_name, published_layer)
         capabilities_url: str = (
             self.rest_client.get(
                 self.rest_endpoints.wmtsstore(workspace_name, wmts_store)
@@ -224,6 +226,12 @@ class RestService:
         response: Response = self.rest_client.put(
             self.gwc_endpoints.layer(workspace_name, layer),
             json=payload,
+        )
+        return response.content.decode(), response.status_code
+
+    def delete_gwc_layer(self, workspace_name: str, layer: str) -> tuple[str, int]:
+        response: Response = self.rest_client.delete(
+            self.gwc_endpoints.layer(workspace_name, layer)
         )
         return response.content.decode(), response.status_code
 
