@@ -69,10 +69,12 @@ class FeatureType(EntityModel):
         self.namespace: ReferencedObjectModel | None = (
             ReferencedObjectModel(namespace_name) if namespace_name else None
         )
-        if title:
-            self.title: I18N = I18N(("title", "internationalTitle"), title)
-        if abstract:
-            self.abstract: I18N = I18N(("abstract", "internationalAbstract"), abstract)
+        self.title: I18N | None = (
+            I18N(("title", "internationalTitle"), title) if title else None
+        )
+        self.abstract: I18N | None = (
+            I18N(("abstract", "internationalAbstract"), abstract) if abstract else None
+        )
         self.keywords: list[str] | None = keywords
         self.native_bounding_box: dict[str, Any] | None = native_bounding_box
         self.lat_lon_bounding_box: dict[str, Any] | None = lat_lon_bounding_box
