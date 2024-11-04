@@ -138,16 +138,16 @@ class FeatureType(EntityModel):
             attributes=feature_type["attributes"]["attribute"],
             metadata_links=metadata_links,
             enabled=feature_type["enabled"],
-            advertised=feature_type["advertised"],
             circular_arc_present=feature_type["circularArcPresent"],
-            encode_measures=feature_type["encodeMeasures"],
-            forced_decimals=feature_type["forcedDecimals"],
             overriding_service_srs=feature_type["overridingServiceSRS"],
             pad_with_zeros=feature_type["padWithZeros"],
             projection_policy=feature_type["projectionPolicy"],
             service_configuration=feature_type["serviceConfiguration"],
-            simple_conversion_enabled=feature_type["simpleConversionEnabled"],
-            skip_number_match=feature_type["skipNumberMatch"],
+            advertised=feature_type.get("advertised"),
+            encode_measures=feature_type.get("encodeMeasures"),
+            forced_decimals=feature_type.get("forcedDecimals"),
+            simple_conversion_enabled=feature_type.get("simpleConversionEnabled"),
+            skip_number_match=feature_type.get("skipNumberMatch"),
         )
 
     def asdict(self) -> dict[str, Any]:
