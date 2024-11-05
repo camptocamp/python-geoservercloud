@@ -63,13 +63,14 @@ def test_get_layers(geoserver: GeoServerCloud) -> None:
     with responses.RequestsMock() as rsps:
         rsps.get(
             f"{geoserver.url}/{WORKSPACE}/wms",
+            status=200,
+            headers={"Content-Type": "text/xml"},
+            body=CAPABILITIES,
             match=[
                 responses.matchers.query_param_matcher(
                     {"service": "WMS", "request": "GetCapabilities", "version": "1.3.0"}
                 )
             ],
-            status=200,
-            body=CAPABILITIES,
         )
 
         layers = geoserver.get_wms_layers(WORKSPACE)
@@ -80,13 +81,14 @@ def test_get_map(geoserver: GeoServerCloud) -> None:
     with responses.RequestsMock() as rsps:
         rsps.get(
             f"{geoserver.url}/wms",
+            status=200,
+            headers={"Content-Type": "text/xml"},
+            body=CAPABILITIES,
             match=[
                 responses.matchers.query_param_matcher(
                     {"service": "WMS", "request": "GetCapabilities", "version": "1.3.0"}
                 )
             ],
-            status=200,
-            body=CAPABILITIES,
         )
         rsps.get(
             f"{geoserver.url}/wms",
@@ -125,13 +127,14 @@ def test_get_feature_info(geoserver: GeoServerCloud) -> None:
     with responses.RequestsMock() as rsps:
         rsps.get(
             f"{geoserver.url}/wms",
+            status=200,
+            headers={"Content-Type": "text/xml"},
+            body=CAPABILITIES,
             match=[
                 responses.matchers.query_param_matcher(
                     {"service": "WMS", "request": "GetCapabilities", "version": "1.3.0"}
                 )
             ],
-            status=200,
-            body=CAPABILITIES,
         )
         rsps.get(
             f"{geoserver.url}/wms",
@@ -175,13 +178,14 @@ def test_get_legend(geoserver: GeoServerCloud) -> None:
     with responses.RequestsMock() as rsps:
         rsps.get(
             f"{geoserver.url}/wms",
+            status=200,
+            headers={"Content-Type": "text/xml"},
+            body=CAPABILITIES,
             match=[
                 responses.matchers.query_param_matcher(
                     {"service": "WMS", "request": "GetCapabilities", "version": "1.3.0"}
                 )
             ],
-            status=200,
-            body=CAPABILITIES,
         )
         rsps.get(
             f"{geoserver.url}/wms",
