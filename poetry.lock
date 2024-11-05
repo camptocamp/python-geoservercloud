@@ -470,22 +470,21 @@ source = ["Cython (>=3.0.11)"]
 
 [[package]]
 name = "owslib"
-version = "0.31.0"
+version = "0.32.0"
 description = "OGC Web Service utility library"
 category = "main"
 optional = false
-python-versions = ">=3.6"
+python-versions = ">=3.10"
 files = [
-    {file = "OWSLib-0.31.0-py2.py3-none-any.whl", hash = "sha256:ab54d20974bd8ddd24ee5539c46a7829ec9e77ed0976724f635d1a3a321d3a39"},
-    {file = "OWSLib-0.31.0.tar.gz", hash = "sha256:2ed6540087445cc57d905138a590b6ae58624ec7661b5c1682ed4e3303bcd150"},
+    {file = "OWSLib-0.32.0-py2.py3-none-any.whl", hash = "sha256:69d8d64138612b5f3c09fdac69e53651cc2e3b925f292ab7bde872435e78cf17"},
+    {file = "OWSLib-0.32.0.tar.gz", hash = "sha256:7513860d3102ae8d4dc5efd8652ff3c61eca3a8cb220d6c8601121357cd2b01a"},
 ]
 
 [package.dependencies]
 lxml = "*"
-python-dateutil = ">=1.5"
-pytz = "*"
+python-dateutil = "*"
 pyyaml = "*"
-requests = ">=1.0"
+requests = "*"
 
 [[package]]
 name = "packaging"
@@ -570,18 +569,6 @@ files = [
 
 [package.dependencies]
 six = ">=1.5"
-
-[[package]]
-name = "pytz"
-version = "2024.2"
-description = "World timezone definitions, modern and historical"
-category = "main"
-optional = false
-python-versions = "*"
-files = [
-    {file = "pytz-2024.2-py2.py3-none-any.whl", hash = "sha256:31c7c1817eb7fae7ca4b8c7ee50c72f93aa2dd863de768e1ef4245d426aa0725"},
-    {file = "pytz-2024.2.tar.gz", hash = "sha256:2aa355083c50a0f93fa581709deac0c9ad65cca8a9e9beac660adcbd493c798a"},
-]
 
 [[package]]
 name = "pyyaml"
@@ -858,14 +845,14 @@ urllib3 = ">=2"
 
 [[package]]
 name = "types-xmltodict"
-version = "0.13.0.3"
+version = "0.14.0.20241009"
 description = "Typing stubs for xmltodict"
 category = "main"
 optional = false
-python-versions = "*"
+python-versions = ">=3.8"
 files = [
-    {file = "types-xmltodict-0.13.0.3.tar.gz", hash = "sha256:8884534bab0364c4b22d5973f3c8153ff40d413a801d9e70eb893e676909f1fc"},
-    {file = "types_xmltodict-0.13.0.3-py3-none-any.whl", hash = "sha256:cb251c59e838986d8402b10d804225ade9fd6c9f66d01dc45cd6cfdf43640128"},
+    {file = "types-xmltodict-0.14.0.20241009.tar.gz", hash = "sha256:9224c2422c5b6359cf826685b4ee50b14dc2cb9134561ab793ef6b03dd7108e1"},
+    {file = "types_xmltodict-0.14.0.20241009-py3-none-any.whl", hash = "sha256:92812e17ffa9171416b35806cb5f4ed3f8f52b6724b2c555e4733e902ef4afd0"},
 ]
 
 [[package]]
@@ -888,17 +875,17 @@ zstd = ["zstandard (>=0.18.0)"]
 
 [[package]]
 name = "xmltodict"
-version = "0.13.0"
+version = "0.14.2"
 description = "Makes working with XML feel like you are working with JSON"
 category = "main"
 optional = false
-python-versions = ">=3.4"
+python-versions = ">=3.6"
 files = [
-    {file = "xmltodict-0.13.0-py2.py3-none-any.whl", hash = "sha256:aa89e8fd76320154a40d19a0df04a4695fb9dc5ba977cbb68ab3e4eb225e7852"},
-    {file = "xmltodict-0.13.0.tar.gz", hash = "sha256:341595a488e3e01a85a9d8911d8912fd922ede5fecc4dce437eb4b6c8d037e56"},
+    {file = "xmltodict-0.14.2-py2.py3-none-any.whl", hash = "sha256:20cc7d723ed729276e808f26fb6b3599f786cbc37e06c65e192ba77c40f20aac"},
+    {file = "xmltodict-0.14.2.tar.gz", hash = "sha256:201e7c28bb210e374999d1dde6382923ab0ed1a8a5faeece48ab525b7810a553"},
 ]
 
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.10,<4.0"
-content-hash = "1c0b8c9fececd3d71a0dd39e534e92d3004a9cc4957a653cefd8f4da2dfa9440"
+content-hash = "71e40edbadad556ddbc12ff75589954ed48cb80a09b4d4502abe96350887155b"
