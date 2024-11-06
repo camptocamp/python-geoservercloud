@@ -347,17 +347,23 @@ class RestService:
         path = (
             self.rest_endpoints.styles()
             if not workspace_name
-            else self.rest_endpoints.workspace_styles(workspace_name)
+            else self.rest_endpoints.workspace_styles(workspace_name, format="xml")
         )
         resource_path = (
             self.rest_endpoints.style(style.name)
             if not workspace_name
             else self.rest_endpoints.workspace_style(workspace_name, style.name)
         )
+        headers = {"Content-Type": "text/xml"}
+        print(style.xml_post_payload())
         if not self.resource_exists(resource_path):
-            response: Response = self.rest_client.post(path, json=style.post_payload())
+            response: Response = self.rest_client.post(
+                path, data=style.xml_post_payload().encode("utf-8"), headers=headers
+            )
         else:
-            response = self.rest_client.put(resource_path, json=style.put_payload())
+            response = self.rest_client.put(
+                resource_path, data=style.xml_put_payload().encode(), headers=headers
+            )
         return response.content.decode(), response.status_code
 
     def create_style_from_file(
@@ -636,8 +642,10 @@ class RestService:
         def __init__(self, base_url: str = "/rest") -> None:
             self.base_url: str = base_url
 
-        def styles(self) -> str:
-            return f"{self.base_url}/styles.json"
+        def styles(self, format="json") -> str:
+            if format == "json":
+                return f"{self.base_url}/styles.json"
+            return f"{self.base_url}/styles"
 
         def style(self, style_name: str) -> str:
             return f"{self.base_url}/styles/{style_name}.json"
@@ -648,8 +656,10 @@ class RestService:
         def workspace(self, workspace_name: str) -> str:
             return f"{self.base_url}/workspaces/{workspace_name}.json"
 
-        def workspace_styles(self, workspace_name: str) -> str:
-            return f"{self.base_url}/workspaces/{workspace_name}/styles.json"
+        def workspace_styles(self, workspace_name: str, format="json") -> str:
+            if format == "json":
+                return f"{self.base_url}/workspaces/{workspace_name}/styles.json"
+            return f"{self.base_url}/workspaces/{workspace_name}/styles"
 
         def workspace_style(self, workspace_name: str, style_name: str) -> str:
             return (

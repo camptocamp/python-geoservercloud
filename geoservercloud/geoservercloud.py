@@ -254,7 +254,7 @@ class GeoServerCloud:
 
     def get_feature_types(
         self, workspace_name: str, datastore_name: str
-    ) -> tuple[list[dict[str, Any]] | str, int]:
+    ) -> tuple[list[str] | str, int]:
         """
         Get all feature types for a given workspace and datastore
         """

@@ -17,9 +17,7 @@ def test_featuretypes_from_dict_valid():
 
     feature_types_instance = FeatureTypes.from_get_response_payload(mock_response)
 
-    assert (
-        feature_types_instance.aslist() == mock_response["featureTypes"]["featureType"]
-    )
+    assert feature_types_instance.aslist() == ["feature1", "feature2"]
 
 
 def test_featuretypes_repr():

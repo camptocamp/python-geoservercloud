@@ -49,3 +49,55 @@ class GeoServerCloudSync:
         if isinstance(workspace, str):
             return workspace, status_code
         return self.dst_instance.create_workspace(workspace)
+
+    def copy_pg_datastore(
+        self, workspace_name: str, datastore_name: str
+    ) -> tuple[str, int]:
+        """
+        Shallow copy a datastore from source to destination GeoServer instance
+        """
+        datastore, status_code = self.src_instance.get_pg_datastore(
+            workspace_name, datastore_name
+        )
+        if isinstance(datastore, str):
+            return datastore, status_code
+        return self.dst_instance.create_pg_datastore(workspace_name, datastore)
+
+    def copy_feature_types_in_datastore(
+        self, workspace_name: str, datastore_name: str
+    ) -> list[tuple[str, int]] | tuple[str, int]:
+        """
+        Copy all feature types in a datastore from source to destination GeoServer instance
+        """
+        feature_types, status_code = self.src_instance.get_feature_types(
+            workspace_name, datastore_name
+        )
+        if isinstance(feature_types, str):
+            return feature_types, status_code
+        return [
+            self.copy_feature_type(workspace_name, datastore_name, feature_type_name)
+            for feature_type_name in feature_types.aslist()
+        ]
+
+    def copy_feature_type(
+        self, workspace_name: str, datastore_name: str, feature_type_name: str
+    ) -> tuple[str, int]:
+        """
+        Copy a feature type from source to destination GeoServer instance
+        """
+        feature_type, status_code = self.src_instance.get_feature_type(
+            workspace_name, datastore_name, feature_type_name
+        )
+        if isinstance(feature_type, str):
+            return feature_type, status_code
+        return self.dst_instance.create_feature_type(feature_type)
+
+    def copy_style(self, workspace_name: str, style_name: str) -> tuple[str, int]:
+        """
+        Copy a style from source to destination GeoServer instance
+        curl -vf -XPUT -u testadmin:testadmin -H "Content-type:application/vnd.ogc.sld+xml" -T "metro_canton_situation_polygon.sld"
+        """
+        style, status_code = self.src_instance.get_style(style_name, workspace_name)
+        if isinstance(style, str):
+            return style, status_code
+        return self.dst_instance.create_style(style, workspace_name)

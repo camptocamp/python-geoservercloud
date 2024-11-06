@@ -160,9 +160,7 @@ def test_get_feature_types(
             workspace_name=WORKSPACE, datastore_name=STORE
         )
 
-        assert (
-            content == feature_types_get_response_payload["featureTypes"]["featureType"]
-        )
+        assert content == ["featuretype1", "featuretype2", "featuretype3"]
         assert code == 200
 
 

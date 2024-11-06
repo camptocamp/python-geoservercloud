@@ -5,13 +5,16 @@ from geoservercloud.models import ListModel
 
 class FeatureTypes(ListModel):
     def __init__(self, featuretypes: list = []) -> None:
-        self._featuretypes = featuretypes
+        self._featuretypes: list[str] = featuretypes
 
     @classmethod
     def from_get_response_payload(cls, content: dict):
-        return cls(content["featureTypes"]["featureType"])
+        feature_types: str | dict = content["featureTypes"]
+        if not feature_types:
+            return cls([])
+        return cls([feature_type["name"] for feature_type in feature_types["featureType"]])  # type: ignore
 
-    def aslist(self) -> list[dict[str, str]]:
+    def aslist(self) -> list[str]:
         return self._featuretypes
 
     def __repr__(self):
