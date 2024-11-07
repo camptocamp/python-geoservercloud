@@ -19,3 +19,6 @@ class Styles(ListModel):
         if not styles:
             return cls([])
         return cls([style["name"] for style in styles["style"]])  # type: ignore
+
+    def post_payload(self) -> dict[str, dict[str, list[dict[str, str]]]]:
+        return {"styles": {"style": [{"name": style} for style in self._styles]}}

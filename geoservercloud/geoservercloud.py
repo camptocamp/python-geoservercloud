@@ -11,6 +11,7 @@ from geoservercloud.models import (
     PostGisDataStore,
     Workspace,
 )
+from geoservercloud.models.layer import Layer
 from geoservercloud.services import OwsService, RestService
 from geoservercloud.templates import Templates
 
@@ -403,9 +404,11 @@ class GeoServerCloud:
         return self.rest_service.create_style_from_file(style, file, workspace_name)
 
     def set_default_layer_style(
-        self, layer: str, workspace_name: str, style: str
+        self, layer_name: str, workspace_name: str, style: str
     ) -> tuple[str, int]:
-        return self.rest_service.set_default_layer_style(layer, workspace_name, style)
+        """Set the default style for a layer"""
+        layer = Layer(layer_name, default_style_name=style)
+        return self.rest_service.update_layer(layer, workspace_name)
 
     def get_wms_layers(
         self, workspace_name: str, accept_languages: str | None = None

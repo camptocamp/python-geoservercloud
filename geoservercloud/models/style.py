@@ -93,17 +93,14 @@ class Style(EntityModel):
             "format": self.format,
             "languageVersion": self.language_version,
         }
-        if self.workspace_name:
-            content["workspace"] = self.workspace_name
-        if self.filename:
-            content["filename"] = self.filename
-        if self.date_created:
-            content["dateCreated"] = self.date_created
-        if self.date_modified:
-            content["dateModified"] = self.date_modified
-        if self.legend:
-            content["legend"] = self.legend
-        return content
+        optional_items = {
+            "workspace": self.workspace_name,
+            "filename": self.filename,
+            "dateCreated": self.date_created,
+            "dateModified": self.date_modified,
+            "legend": self.legend,
+        }
+        return EntityModel.add_items_to_dict(content, optional_items)
 
     def post_payload(self) -> dict[str, dict[str, Any]]:
         content = self.asdict()
