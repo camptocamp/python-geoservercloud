@@ -5,18 +5,16 @@ from typing import Any
 from owslib.wmts import WebMapTileService
 from requests import Response
 
-from geoservercloud.models import (
-    BaseModel,
-    DataStores,
-    PostGisDataStore,
-    Style,
-    Styles,
-    Workspace,
-    Workspaces,
-)
+from geoservercloud.models.common import BaseModel
+from geoservercloud.models.datastore import PostGisDataStore
+from geoservercloud.models.datastores import DataStores
 from geoservercloud.models.featuretype import FeatureType
 from geoservercloud.models.featuretypes import FeatureTypes
 from geoservercloud.models.layer import Layer
+from geoservercloud.models.style import Style
+from geoservercloud.models.styles import Styles
+from geoservercloud.models.workspace import Workspace
+from geoservercloud.models.workspaces import Workspaces
 from geoservercloud.services.restclient import RestClient
 from geoservercloud.templates import Templates
 

@@ -2,7 +2,7 @@ import json
 
 import pytest
 
-from geoservercloud.models import I18N, KeyDollarListDict
+from geoservercloud.models.common import I18N, KeyDollarListDict
 
 
 def test_keydollarlistdict_initialization_with_input_list():

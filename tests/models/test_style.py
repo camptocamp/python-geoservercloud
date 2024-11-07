@@ -1,4 +1,4 @@
-from geoservercloud.models import Style
+from geoservercloud.models.style import Style
 
 
 def test_style_initialization():

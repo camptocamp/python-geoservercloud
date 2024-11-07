@@ -1,7 +1,7 @@
 import json
 from typing import Any
 
-from geoservercloud.models import EntityModel
+from geoservercloud.models.common import EntityModel
 
 
 class Workspace(EntityModel):

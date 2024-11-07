@@ -1,4 +1,4 @@
-from geoservercloud.models import ListModel
+from geoservercloud.models.common import ListModel
 
 
 class DataStores(ListModel):

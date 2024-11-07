@@ -1,6 +1,6 @@
 import json
 
-from geoservercloud.models import FeatureTypes
+from geoservercloud.models.featuretypes import FeatureTypes
 
 
 def test_featuretypes_initialization():

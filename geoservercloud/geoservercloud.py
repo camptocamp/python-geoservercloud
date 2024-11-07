@@ -6,12 +6,10 @@ from owslib.wmts import WebMapTileService
 from requests import Response
 
 from geoservercloud import utils
-from geoservercloud.models import (
-    FeatureType,
-    PostGisDataStore,
-    Workspace,
-)
+from geoservercloud.models.datastore import PostGisDataStore
+from geoservercloud.models.featuretype import FeatureType
 from geoservercloud.models.layer import Layer
+from geoservercloud.models.workspace import Workspace
 from geoservercloud.services import OwsService, RestService
 from geoservercloud.templates import Templates
 

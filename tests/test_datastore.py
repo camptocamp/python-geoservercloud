@@ -6,7 +6,6 @@ import responses
 from responses import matchers
 
 from geoservercloud import GeoServerCloud
-from geoservercloud.models import PostGisDataStore
 from tests.conftest import GEOSERVER_URL
 
 WORKSPACE = "test_workspace"
