@@ -1,6 +1,6 @@
 from pytest import fixture
 
-from geoservercloud.models import DataStores
+from geoservercloud.models.datastores import DataStores
 
 
 @fixture(scope="module")

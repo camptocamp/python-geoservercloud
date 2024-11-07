@@ -1,6 +1,6 @@
 from typing import Any
 
-from geoservercloud.models import EntityModel, ReferencedObjectModel
+from geoservercloud.models.common import EntityModel, ReferencedObjectModel
 from geoservercloud.models.styles import Styles
 
 

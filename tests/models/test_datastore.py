@@ -1,6 +1,7 @@
 import pytest
 
-from geoservercloud.models import KeyDollarListDict, PostGisDataStore
+from geoservercloud.models.common import KeyDollarListDict
+from geoservercloud.models.datastore import PostGisDataStore
 
 
 @pytest.fixture(scope="module")

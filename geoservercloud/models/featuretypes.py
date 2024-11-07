@@ -1,6 +1,6 @@
 import json
 
-from geoservercloud.models import ListModel
+from geoservercloud.models.common import ListModel
 
 
 class FeatureTypes(ListModel):

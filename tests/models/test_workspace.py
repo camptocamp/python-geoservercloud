@@ -1,4 +1,4 @@
-from geoservercloud.models import Workspace
+from geoservercloud.models.workspace import Workspace
 
 
 def test_workspace_initialization():

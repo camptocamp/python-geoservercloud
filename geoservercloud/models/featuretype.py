@@ -1,7 +1,7 @@
 import json
 from typing import Any
 
-from geoservercloud.models import I18N, EntityModel, ReferencedObjectModel
+from geoservercloud.models.common import I18N, EntityModel, ReferencedObjectModel
 from geoservercloud.utils import EPSG_BBOX
 
 

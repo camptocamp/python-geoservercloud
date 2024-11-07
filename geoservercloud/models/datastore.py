@@ -1,7 +1,11 @@
 import json
 from typing import Any
 
-from geoservercloud.models import EntityModel, KeyDollarListDict, ReferencedObjectModel
+from geoservercloud.models.common import (
+    EntityModel,
+    KeyDollarListDict,
+    ReferencedObjectModel,
+)
 
 
 class PostGisDataStore(EntityModel):

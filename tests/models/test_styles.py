@@ -1,6 +1,6 @@
 import pytest
 
-from geoservercloud.models import Styles
+from geoservercloud.models.styles import Styles
 
 
 @pytest.fixture

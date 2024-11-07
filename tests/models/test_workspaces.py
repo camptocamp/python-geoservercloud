@@ -1,6 +1,6 @@
 from pytest import fixture
 
-from geoservercloud.models import Workspaces
+from geoservercloud.models.workspaces import Workspaces
 
 
 @fixture(scope="module")

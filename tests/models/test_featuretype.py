@@ -1,7 +1,6 @@
 import json
 
-from geoservercloud.models import FeatureType
-from geoservercloud.models.featuretype import MetadataLink
+from geoservercloud.models.featuretype import FeatureType, MetadataLink
 
 
 def test_featuretype_initialization():

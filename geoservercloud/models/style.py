@@ -3,7 +3,7 @@ from typing import Any
 
 import xmltodict
 
-from geoservercloud.models import EntityModel, ReferencedObjectModel
+from geoservercloud.models.common import EntityModel, ReferencedObjectModel
 
 
 class Style(EntityModel):
