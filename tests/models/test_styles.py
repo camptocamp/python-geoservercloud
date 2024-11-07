@@ -49,3 +49,18 @@ def test_styles_from_get_response_empty(empty_styles_get_response_payload):
     )
 
     assert styles_instance.aslist() == []
+
+
+def test_styles_post_payload():
+    styles = ["style1", "style2"]
+
+    styles_instance = Styles(styles)
+
+    assert styles_instance.post_payload() == {
+        "styles": {
+            "style": [
+                {"name": "style1"},
+                {"name": "style2"},
+            ]
+        }
+    }

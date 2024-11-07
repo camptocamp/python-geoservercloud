@@ -192,25 +192,3 @@ def test_create_style_unsupported_format(geoserver: GeoServerCloud) -> None:
                 file="resources/style.txt",
             )
         assert "Unsupported file extension" in str(excinfo.value)
-
-
-def test_set_default_layer_style(geoserver: GeoServerCloud) -> None:
-    workspace = "test_workspace"
-    layer = "test_layer"
-    style = "test_style"
-    with responses.RequestsMock() as rsps:
-        rsps.put(
-            url=f"{GEOSERVER_URL}/rest/layers/{workspace}:{layer}.json",
-            status=200,
-            body=b"",
-            match=[
-                responses.matchers.json_params_matcher(
-                    {"layer": {"defaultStyle": {"name": style}}}
-                )
-            ],
-        )
-
-        content, code = geoserver.set_default_layer_style(layer, workspace, style)
-
-        assert content == ""
-        assert code == 200

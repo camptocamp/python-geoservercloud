@@ -18,6 +18,18 @@ class EntityModel(BaseModel):
     def put_payload(self) -> dict[str, Any]:
         raise NotImplementedError
 
+    @staticmethod
+    def add_items_to_dict(content: dict, items: dict[str, Any]) -> dict[Any, Any]:
+        for key, value in items.items():
+            content = EntityModel.add_item_to_dict(content, key, value)
+        return content
+
+    @staticmethod
+    def add_item_to_dict(content: dict, key: str, value: Any) -> dict[Any, Any]:
+        if value is not None:
+            content[key] = value
+        return content
+
 
 class ListModel(BaseModel):
     def aslist(self) -> list:
@@ -26,8 +38,8 @@ class ListModel(BaseModel):
 
 class ReferencedObjectModel(BaseModel):
     def __init__(self, name: str, href: str | None = None):
-        self.name = name
-        self.href = href
+        self.name: str = name
+        self.href: str | None = href
 
     @classmethod
     def from_get_response_payload(cls, content: dict):
@@ -35,10 +47,7 @@ class ReferencedObjectModel(BaseModel):
         cls.href = content["href"]
 
     def asdict(self) -> dict[str, str]:
-        content = {"name": self.name}
-        if self.href:
-            content["href"] = self.href
-        return content
+        return EntityModel.add_item_to_dict({"name": self.name}, "href", self.href)
 
 
 class KeyDollarListDict(dict):

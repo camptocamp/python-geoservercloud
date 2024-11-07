@@ -40,15 +40,13 @@ class PostGisDataStore(EntityModel):
             "connectionParameters": {"entry": dict(self.connection_parameters)},
             "workspace": self.workspace_name,
         }
-        if self.description:
-            content["description"] = self.description
-        if self.enabled:
-            content["enabled"] = self.enabled
-        if self._default is not None:
-            content["_default"] = self._default
-        if self.disable_on_conn_failure is not None:
-            content["disableOnConnFailure"] = self.disable_on_conn_failure
-        return content
+        optional_items = {
+            "description": self.description,
+            "enabled": self.enabled,
+            "_default": self._default,
+            "disableOnConnFailure": self.disable_on_conn_failure,
+        }
+        return EntityModel.add_items_to_dict(content, optional_items)
 
     def post_payload(self) -> dict[str, Any]:
         content = self.asdict()

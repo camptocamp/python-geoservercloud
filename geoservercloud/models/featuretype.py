@@ -158,14 +158,10 @@ class FeatureType(EntityModel):
         }
         if self.namespace is not None:
             content["namespace"] = self.namespace.asdict()
-        if self.srs:
-            content["srs"] = self.srs
         if self.title:
             content.update(self.title.asdict())
         if self.abstract:
             content.update(self.abstract.asdict())
-        if self.keywords:
-            content["keywords"] = self.keywords
         if self.native_bounding_box:
             content["nativeBoundingBox"] = self.native_bounding_box
         elif self.epsg_code:
@@ -178,35 +174,25 @@ class FeatureType(EntityModel):
             content["latLonBoundingBox"] = EPSG_BBOX[self.epsg_code][
                 "latLonBoundingBox"
             ]
-        if self.attributes:
-            content["attributes"] = self.attributes
-        if self.projection_policy is not None:
-            content["projectionPolicy"] = self.projection_policy
-        if self.enabled is not None:
-            content["enabled"] = self.enabled
-        if self.advertised is not None:
-            content["advertised"] = self.advertised
-        if self.service_configuration is not None:
-            content["serviceConfiguration"] = self.service_configuration
-        if self.simple_conversion_enabled is not None:
-            content["simpleConversionEnabled"] = self.simple_conversion_enabled
-        if self.max_features is not None:
-            content["maxFeatures"] = self.max_features
-        if self.num_decimals is not None:
-            content["numDecimals"] = self.num_decimals
-        if self.pad_with_zeros is not None:
-            content["padWithZeros"] = self.pad_with_zeros
-        if self.forced_decimals is not None:
-            content["forcedDecimals"] = self.forced_decimals
-        if self.overriding_service_srs is not None:
-            content["overridingServiceSRS"] = self.overriding_service_srs
-        if self.skip_number_match is not None:
-            content["skipNumberMatch"] = self.skip_number_match
-        if self.circular_arc_present is not None:
-            content["circularArcPresent"] = self.circular_arc_present
-        if self.encode_measures is not None:
-            content["encodeMeasures"] = self.encode_measures
-        return content
+        optional_items = {
+            "srs": self.srs,
+            "keywords": self.keywords,
+            "attributes": self.attributes,
+            "projectionPolicy": self.projection_policy,
+            "enabled": self.enabled,
+            "advertised": self.advertised,
+            "serviceConfiguration": self.service_configuration,
+            "simpleConversionEnabled": self.simple_conversion_enabled,
+            "maxFeatures": self.max_features,
+            "numDecimals": self.num_decimals,
+            "padWithZeros": self.pad_with_zeros,
+            "forcedDecimals": self.forced_decimals,
+            "overridingServiceSRS": self.overriding_service_srs,
+            "skipNumberMatch": self.skip_number_match,
+            "circularArcPresent": self.circular_arc_present,
+            "encodeMeasures": self.encode_measures,
+        }
+        return EntityModel.add_items_to_dict(content, optional_items)
 
     def post_payload(self) -> dict[str, Any]:
         content = self.asdict()

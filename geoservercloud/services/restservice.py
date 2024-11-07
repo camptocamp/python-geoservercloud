@@ -16,6 +16,7 @@ from geoservercloud.models import (
 )
 from geoservercloud.models.featuretype import FeatureType
 from geoservercloud.models.featuretypes import FeatureTypes
+from geoservercloud.models.layer import Layer
 from geoservercloud.services.restclient import RestClient
 from geoservercloud.templates import Templates
 
@@ -394,12 +395,10 @@ class RestService:
             response = self.rest_client.put(resource_path, data=data, headers=headers)
         return response.content.decode(), response.status_code
 
-    def set_default_layer_style(
-        self, layer: str, workspace_name: str, style: str
-    ) -> tuple[str, int]:
-        data = {"layer": {"defaultStyle": {"name": style}}}
+    def update_layer(self, layer: Layer, workspace_name: str) -> tuple[str, int]:
         response: Response = self.rest_client.put(
-            self.rest_endpoints.workspace_layer(workspace_name, layer), json=data
+            self.rest_endpoints.workspace_layer(workspace_name, layer.name),
+            json=layer.put_payload(),
         )
         return response.content.decode(), response.status_code
 
