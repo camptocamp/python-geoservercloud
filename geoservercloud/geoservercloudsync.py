@@ -49,3 +49,14 @@ class GeoServerCloudSync:
         if isinstance(workspace, str):
             return workspace, status_code
         return self.dst_instance.create_workspace(workspace)
+
+    def copy_style(
+        self, style_name: str, workspace_name: str | None = None
+    ) -> tuple[str, int]:
+        """
+        Copy a style from source to destination GeoServer instance
+        """
+        style, code = self.src_instance.get_style(style_name, workspace_name)
+        if isinstance(style, str):
+            return style, code
+        return self.dst_instance.create_style(style_name, style, workspace_name)

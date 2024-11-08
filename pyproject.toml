@@ -14,7 +14,6 @@ OWSLib = "0.32.0"
 xmltodict = "0.14.2"
 types-requests = "2.32.0.20241016"
 types-xmltodict = "0.14.0.20241009"
-jsonschema = "^4.23.0"
 pytest-mock = "^3.14.0"
 
 [tool.poetry.group.dev.dependencies]

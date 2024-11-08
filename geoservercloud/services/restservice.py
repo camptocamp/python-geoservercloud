@@ -321,76 +321,65 @@ class RestService:
         return response.content.decode(), response.status_code
 
     def get_styles(self, workspace_name: str | None = None) -> tuple[Styles | str, int]:
-        path = (
-            self.rest_endpoints.styles()
-            if not workspace_name
-            else self.rest_endpoints.workspace_styles(workspace_name)
-        )
+        path = self.rest_endpoints.styles(workspace_name=workspace_name)
         response: Response = self.rest_client.get(path)
         return self.deserialize_response(response, Styles)
 
-    def get_style(
+    def get_style_definition(
         self, style: str, workspace_name: str | None = None
     ) -> tuple[Style | str, int]:
-        path = (
-            self.rest_endpoints.style(style)
-            if not workspace_name
-            else self.rest_endpoints.workspace_style(workspace_name, style)
-        )
-        response: Response = self.rest_client.get(path)
-        return self.deserialize_response(response, Style)
+        path = self.rest_endpoints.style(style, workspace_name, format="json")
+        return self.deserialize_response(self.rest_client.get(path), Style)
 
-    def create_style(
-        self, style: Style, workspace_name: str | None = None
-    ) -> tuple[str, int]:
-        path = (
-            self.rest_endpoints.styles()
-            if not workspace_name
-            else self.rest_endpoints.workspace_styles(workspace_name)
-        )
-        resource_path = (
-            self.rest_endpoints.style(style.name)
-            if not workspace_name
-            else self.rest_endpoints.workspace_style(workspace_name, style.name)
-        )
-        if not self.resource_exists(resource_path):
-            response: Response = self.rest_client.post(path, json=style.post_payload())
-        else:
-            response = self.rest_client.put(resource_path, json=style.put_payload())
-        return response.content.decode(), response.status_code
-
-    def create_style_from_file(
+    def create_style_definition(
         self,
-        style: str,
-        file: str,
+        style_name: str,
+        style: Style,
         workspace_name: str | None = None,
     ) -> tuple[str, int]:
-        path = (
-            self.rest_endpoints.styles()
-            if not workspace_name
-            else self.rest_endpoints.workspace_styles(workspace_name)
+        # Use XML because JSON is not supported for style creation
+        path = self.rest_endpoints.styles(workspace_name=workspace_name, format="xml")
+        resource_path = self.rest_endpoints.style(
+            workspace_name=workspace_name, style_name=style_name, format="xml"
         )
-        resource_path = (
-            self.rest_endpoints.style(style)
-            if not workspace_name
-            else self.rest_endpoints.workspace_style(workspace_name, style)
-        )
-
-        file_ext = Path(file).suffix
-        if file_ext == ".sld":
-            content_type = "application/vnd.ogc.sld+xml"
-        elif file_ext == ".zip":
-            content_type = "application/zip"
-        else:
-            raise ValueError(f"Unsupported file extension: {file_ext}")
-        with open(f"{file}", "rb") as fs:
-            data: bytes = fs.read()
-        headers: dict[str, str] = {"Content-Type": content_type}
-
+        data: bytes = style.xml_post_payload().encode()
+        headers: dict[str, str] = {"Content-Type": "text/xml"}
         if not self.resource_exists(resource_path):
             response: Response = self.rest_client.post(path, data=data, headers=headers)
         else:
             response = self.rest_client.put(resource_path, data=data, headers=headers)
+        return response.content.decode(), response.status_code
+
+    def get_style(
+        self, style: str, workspace_name: str | None = None, format: str = "sld"
+    ) -> tuple[bytes | str, int]:
+        path = self.rest_endpoints.style(style, workspace_name, format=format)
+        response: Response = self.rest_client.get(path)
+        if not response.ok:
+            return response.content.decode(), response.status_code
+        return response.content, response.status_code
+
+    def create_style(
+        self,
+        style_name: str,
+        style: bytes,
+        workspace_name: str | None = None,
+        format: str = "sld",
+    ) -> tuple[str, int]:
+        path = self.rest_endpoints.styles(workspace_name=workspace_name, format=format)
+        resource_path = self.rest_endpoints.style(
+            workspace_name=workspace_name, style_name=style_name, format=format
+        )
+        if format == "sld":
+            headers = {"Content-Type": "application/vnd.ogc.sld+xml"}
+        elif format == "zip":
+            headers = {"Content-Type": "application/zip"}
+        if not self.resource_exists(resource_path):
+            response: Response = self.rest_client.post(
+                path, data=style, headers=headers
+            )
+        else:
+            response = self.rest_client.put(resource_path, data=style, headers=headers)
         return response.content.decode(), response.status_code
 
     def update_layer(self, layer: Layer, workspace_name: str) -> tuple[str, int]:
@@ -633,25 +622,36 @@ class RestService:
         def __init__(self, base_url: str = "/rest") -> None:
             self.base_url: str = base_url
 
-        def styles(self) -> str:
-            return f"{self.base_url}/styles.json"
+        def styles(
+            self, workspace_name: str | None = None, format: str = "json"
+        ) -> str:
+            if not workspace_name:
+                url: str = f"{self.base_url}/styles"
+            else:
+                url = f"{self.base_url}/workspaces/{workspace_name}/styles"
+            if format == "json":
+                return f"{url}.json"
+            return url
 
-        def style(self, style_name: str) -> str:
-            return f"{self.base_url}/styles/{style_name}.json"
+        def style(
+            self,
+            style_name: str,
+            workspace_name: str | None = None,
+            format: str = "json",
+        ) -> str:
+            if not workspace_name:
+                url: str = f"{self.base_url}/styles/{style_name}"
+            else:
+                url = f"{self.base_url}/workspaces/{workspace_name}/styles/{style_name}"
+            if format in ("json", "sld"):
+                return f"{url}.{format}"
+            return url
 
         def workspaces(self) -> str:
             return f"{self.base_url}/workspaces.json"
 
         def workspace(self, workspace_name: str) -> str:
             return f"{self.base_url}/workspaces/{workspace_name}.json"
-
-        def workspace_styles(self, workspace_name: str) -> str:
-            return f"{self.base_url}/workspaces/{workspace_name}/styles.json"
-
-        def workspace_style(self, workspace_name: str, style_name: str) -> str:
-            return (
-                f"{self.base_url}/workspaces/{workspace_name}/styles/{style_name}.json"
-            )
 
         def workspace_layer(self, workspace_name: str, layer_name: str) -> str:
             return f"{self.base_url}/layers/{workspace_name}:{layer_name}.json"
