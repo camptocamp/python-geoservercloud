@@ -2,9 +2,10 @@ from pathlib import Path
 
 import pytest
 import responses
+from requests import Response
 
 from geoservercloud import GeoServerCloud
-from tests.conftest import GEOSERVER_URL
+from geoservercloud.services.restclient import RestClient
 
 STYLE = "test_style"
 
@@ -12,18 +13,18 @@ STYLE = "test_style"
 def test_get_styles_no_workspace(geoserver: GeoServerCloud):
     with responses.RequestsMock() as rsps:
         rsps.get(
-            url=f"{GEOSERVER_URL}/rest/styles.json",
+            url=f"{geoserver.url}/rest/styles.json",
             status=200,
             json={
                 "styles": {
                     "style": [
                         {
                             "name": "style1",
-                            "href": f"{GEOSERVER_URL}/rest/styles/style1.json",
+                            "href": f"{geoserver.url}/rest/styles/style1.json",
                         },
                         {
                             "name": "style2",
-                            "href": f"{GEOSERVER_URL}/rest/styles/style2.json",
+                            "href": f"{geoserver.url}/rest/styles/style2.json",
                         },
                     ]
                 }
@@ -39,18 +40,18 @@ def test_get_styles_with_workspace(geoserver: GeoServerCloud):
     workspace_name = "test_workspace"
     with responses.RequestsMock() as rsps:
         rsps.get(
-            url=f"{GEOSERVER_URL}/rest/workspaces/{workspace_name}/styles.json",
+            url=f"{geoserver.url}/rest/workspaces/{workspace_name}/styles.json",
             status=200,
             json={
                 "styles": {
                     "style": [
                         {
                             "name": "style3",
-                            "href": f"{GEOSERVER_URL}/rest/workspaces/{workspace_name}/styles/style3.json",
+                            "href": f"{geoserver.url}/rest/workspaces/{workspace_name}/styles/style3.json",
                         },
                         {
                             "name": "style4",
-                            "href": f"{GEOSERVER_URL}/rest/workspaces/{workspace_name}/styles/style4.json",
+                            "href": f"{geoserver.url}/rest/workspaces/{workspace_name}/styles/style4.json",
                         },
                     ]
                 }
@@ -62,10 +63,10 @@ def test_get_styles_with_workspace(geoserver: GeoServerCloud):
     assert code == 200
 
 
-def test_get_style_no_workspace(geoserver: GeoServerCloud):
+def test_get_style_definition_no_workspace(geoserver: GeoServerCloud):
     with responses.RequestsMock() as rsps:
         rsps.get(
-            url=f"{GEOSERVER_URL}/rest/styles/{STYLE}.json",
+            url=f"{geoserver.url}/rest/styles/{STYLE}.json",
             status=200,
             json={
                 "style": {
@@ -76,7 +77,7 @@ def test_get_style_no_workspace(geoserver: GeoServerCloud):
                 }
             },
         )
-        content, code = geoserver.get_style(STYLE)
+        content, code = geoserver.get_style_definition(STYLE)
 
     assert content == {
         "name": STYLE,
@@ -87,11 +88,11 @@ def test_get_style_no_workspace(geoserver: GeoServerCloud):
     assert code == 200
 
 
-def test_get_style_with_workspace(geoserver: GeoServerCloud):
+def test_get_style_definition_with_workspace(geoserver: GeoServerCloud):
     workspace_name = "test_workspace"
     with responses.RequestsMock() as rsps:
         rsps.get(
-            url=f"{GEOSERVER_URL}/rest/workspaces/{workspace_name}/styles/{STYLE}.json",
+            url=f"{geoserver.url}/rest/workspaces/{workspace_name}/styles/{STYLE}.json",
             status=200,
             json={
                 "style": {
@@ -103,7 +104,7 @@ def test_get_style_with_workspace(geoserver: GeoServerCloud):
                 }
             },
         )
-        content, code = geoserver.get_style(STYLE, workspace_name)
+        content, code = geoserver.get_style_definition(STYLE, workspace_name)
 
     assert content == {
         "name": STYLE,
@@ -115,22 +116,60 @@ def test_get_style_with_workspace(geoserver: GeoServerCloud):
     assert code == 200
 
 
-def test_create_style(geoserver: GeoServerCloud) -> None:
+def test_create_style_definition(mocker, geoserver: GeoServerCloud) -> None:
+    # Use mocker to check the POST request payload (binary payload matching is not supported by responses)
+    response = Response()
+    response.status_code = 201
+    response._content = b"test_style"
+    mock_post = mocker.patch.object(
+        geoserver.rest_service.rest_client, "post", return_value=response
+    )
+    expected_xml = """
+    <style>
+        <name>test_style</name>
+        <format>sld</format>
+        <languageVersion><version>1.0.0</version></languageVersion>
+        <workspace><name>test_workspace</name></workspace>
+        <filename>style.sld</filename>
+    </style>
+    """
+    expected_payload: bytes = "".join(expected_xml.split()).encode("utf-8")
+    with responses.RequestsMock() as rsps:
+        rsps.get(
+            url=f"{geoserver.url}/rest/workspaces/test_workspace/styles/{STYLE}",
+            status=404,
+        )
+        geoserver.create_style_definition(
+            style_name=STYLE, filename="style.sld", workspace_name="test_workspace"
+        )
+        mock_post.assert_called_with(
+            "/rest/workspaces/test_workspace/styles",
+            data=expected_payload,
+            headers={"Content-Type": "text/xml"},
+        )
+
+
+def test_create_style_from_file(geoserver: GeoServerCloud) -> None:
     file_path = (Path(__file__).parent / "resources/style.sld").resolve()
     with responses.RequestsMock() as rsps:
         rsps.get(
-            url=f"{GEOSERVER_URL}/rest/styles/{STYLE}.json",
+            url=f"{geoserver.url}/rest/styles/{STYLE}.sld",
             status=404,
         )
         rsps.post(
-            url=f"{GEOSERVER_URL}/rest/styles.json",
+            url=f"{geoserver.url}/rest/styles",
             status=201,
             body=b"test_style",
+            match=[
+                responses.matchers.header_matcher(
+                    {"Content-Type": "application/vnd.ogc.sld+xml"}
+                )
+            ],
             # Matching of binary content is not supported by responses
         )
 
         content, code = geoserver.create_style_from_file(
-            style=STYLE,
+            style_name=STYLE,
             file=str(file_path),
         )
 
@@ -138,22 +177,27 @@ def test_create_style(geoserver: GeoServerCloud) -> None:
         assert code == 201
 
 
-def test_update_style(geoserver: GeoServerCloud) -> None:
+def test_update_style_from_file(geoserver: GeoServerCloud) -> None:
     file_path = (Path(__file__).parent / "resources/style.sld").resolve()
     with responses.RequestsMock() as rsps:
         rsps.get(
-            url=f"{GEOSERVER_URL}/rest/styles/{STYLE}.json",
+            url=f"{geoserver.url}/rest/styles/{STYLE}.sld",
             status=200,
         )
         rsps.put(
-            url=f"{GEOSERVER_URL}/rest/styles/{STYLE}.json",
+            url=f"{geoserver.url}/rest/styles/{STYLE}.sld",
             status=200,
             body=b"",
+            match=[
+                responses.matchers.header_matcher(
+                    {"Content-Type": "application/vnd.ogc.sld+xml"}
+                )
+            ],
             # Matching of binary content is not supported by responses
         )
 
         content, code = geoserver.create_style_from_file(
-            style=STYLE,
+            style_name=STYLE,
             file=str(file_path),
         )
 
@@ -161,22 +205,25 @@ def test_update_style(geoserver: GeoServerCloud) -> None:
         assert code == 200
 
 
-def test_create_style_zip(geoserver: GeoServerCloud) -> None:
+def test_create_style_from_file_zip(geoserver: GeoServerCloud) -> None:
     file_path = (Path(__file__).parent / "resources/style.zip").resolve()
     with responses.RequestsMock() as rsps:
         rsps.get(
-            url=f"{GEOSERVER_URL}/rest/styles/{STYLE}.json",
+            url=f"{geoserver.url}/rest/styles/{STYLE}",
             status=404,
         )
         rsps.post(
-            url=f"{GEOSERVER_URL}/rest/styles.json",
+            url=f"{geoserver.url}/rest/styles",
             status=201,
             body=b"test_style",
+            match=[
+                responses.matchers.header_matcher({"Content-Type": "application/zip"})
+            ],
             # Matching of binary content is not supported by responses
         )
 
         content, code = geoserver.create_style_from_file(
-            style=STYLE,
+            style_name=STYLE,
             file=str(file_path),
         )
 
@@ -184,11 +231,11 @@ def test_create_style_zip(geoserver: GeoServerCloud) -> None:
         assert code == 201
 
 
-def test_create_style_unsupported_format(geoserver: GeoServerCloud) -> None:
+def test_create_style_from_file_unsupported_format(geoserver: GeoServerCloud) -> None:
     with responses.RequestsMock():
         with pytest.raises(ValueError) as excinfo:
             geoserver.create_style_from_file(
-                style=STYLE,
+                style_name=STYLE,
                 file="resources/style.txt",
             )
         assert "Unsupported file extension" in str(excinfo.value)

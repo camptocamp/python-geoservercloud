@@ -1,3 +1,4 @@
+from pathlib import Path
 from typing import Any
 
 from owslib.map.wms130 import WebMapService_1_3_0
@@ -9,6 +10,7 @@ from geoservercloud import utils
 from geoservercloud.models.datastore import PostGisDataStore
 from geoservercloud.models.featuretype import FeatureType
 from geoservercloud.models.layer import Layer
+from geoservercloud.models.style import Style
 from geoservercloud.models.workspace import Workspace
 from geoservercloud.services import OwsService, RestService
 from geoservercloud.templates import Templates
@@ -380,26 +382,49 @@ class GeoServerCloud:
             return content, code
         return content.aslist(), code
 
-    def get_style(
+    def get_style_definition(
         self, style: str, workspace_name: str | None = None
     ) -> tuple[dict[str, Any] | str, int]:
         """
-        Get a specific style
+        Get a style definition by name
         """
-        content, code = self.rest_service.get_style(style, workspace_name)
+        content, code = self.rest_service.get_style_definition(style, workspace_name)
         if isinstance(content, str):
             return content, code
         return content.asdict(), code
 
+    def create_style_definition(
+        self,
+        style_name: str,
+        filename: str,
+        workspace_name: str | None = None,
+    ) -> tuple[str, int]:
+        """Create a style definition"""
+        style = Style(name=style_name, filename=filename, workspace_name=workspace_name)
+        return self.rest_service.create_style_definition(
+            style_name=style_name, style=style, workspace_name=workspace_name
+        )
+
     def create_style_from_file(
         self,
-        style: str,
+        style_name: str,
         file: str,
         workspace_name: str | None = None,
     ) -> tuple[str, int]:
-        """Create a style from a file, or update it if it already exists.
+        """Create a style (SLD) from a file, or update it if it already exists.
         Supported file extensions are .sld and .zip."""
-        return self.rest_service.create_style_from_file(style, file, workspace_name)
+        file_ext = Path(file).suffix
+        if file_ext == ".sld":
+            file_format = "sld"
+        elif file_ext == ".zip":
+            file_format = "zip"
+        else:
+            raise ValueError(f"Unsupported file extension: {file_ext}")
+        with open(f"{file}", "rb") as fs:
+            style: bytes = fs.read()
+        return self.rest_service.create_style(
+            style_name, style, workspace_name, format=file_format
+        )
 
     def set_default_layer_style(
         self, layer_name: str, workspace_name: str, style: str

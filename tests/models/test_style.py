@@ -71,7 +71,7 @@ def test_style_put_payload_with_legend():
     assert style.put_payload() == expected_payload
 
 
-def test_style_put_payload_without_legend(mocker):
+def test_style_put_payload_without_legend():
     style = Style(
         name="test_style",
         workspace_name="test_workspace",
