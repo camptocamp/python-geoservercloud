@@ -11,6 +11,7 @@ from geoservercloud.models.datastores import DataStores
 from geoservercloud.models.featuretype import FeatureType
 from geoservercloud.models.featuretypes import FeatureTypes
 from geoservercloud.models.layer import Layer
+from geoservercloud.models.resourcedirectory import ResourceDirectory
 from geoservercloud.models.style import Style
 from geoservercloud.models.styles import Styles
 from geoservercloud.models.workspace import Workspace
@@ -562,6 +563,39 @@ class RestService:
         response: Response = self.rest_client.delete(self.acl_endpoints.rules())
         return response.content.decode(), response.status_code
 
+    def get_resource_directory(
+        self, path: str, workspace_name: str | None = None
+    ) -> tuple[ResourceDirectory | str, int]:
+        response: Response = self.rest_client.get(
+            self.rest_endpoints.resource_directory(path, workspace_name),
+            headers={"Accept": "application/json"},
+        )
+        return self.deserialize_response(response, ResourceDirectory)
+
+    def get_resource(
+        self, path: str, resource_name: str, workspace_name: str | None = None
+    ) -> tuple[bytes, int]:
+        response: Response = self.rest_client.get(
+            self.rest_endpoints.resource(path, resource_name, workspace_name),
+        )
+        return response.content, response.status_code
+
+    def put_resource(
+        self,
+        path: str,
+        name: str,
+        content_type: str,
+        data: bytes,
+        workspace_name: str | None = None,
+    ) -> tuple[str, int]:
+        headers = {"Content-Type": content_type}
+        response: Response = self.rest_client.put(
+            path=self.rest_endpoints.resource(path, name, workspace_name),
+            headers=headers,
+            data=data,
+        )
+        return response.content.decode(), response.status_code
+
     @staticmethod
     def get_wmts_layer_bbox(
         url: str, layer_name: str
@@ -741,3 +775,22 @@ class RestService:
             return (
                 f"{self.base_url}/security/roles/role/{role_name}/user/{username}.json"
             )
+
+        def resource_directory(
+            self, relative_path: str, workspace_name: str | None = None
+        ) -> str:
+            if not workspace_name:
+                return f"{self.base_url}/resource/{relative_path}"
+            return (
+                f"{self.base_url}/resource/workspaces/{workspace_name}/{relative_path}"
+            )
+
+        def resource(
+            self,
+            relative_path: str,
+            resource_name: str,
+            workspace_name: str | None = None,
+        ) -> str:
+            if not workspace_name:
+                return f"{self.base_url}/resource/{relative_path}/{resource_name}"
+            return f"{self.base_url}/resource/workspaces/{workspace_name}/{relative_path}/{resource_name}"
