@@ -80,3 +80,21 @@ def test_workspace_style_endpoint(
         endpoints.style(style_name="test_style", workspace_name="test", format=format)
         == path
     )
+
+
+def test_resource_directory_endpoint(endpoints: RestService.RestEndpoints):
+    assert (
+        endpoints.resource_directory("styles", "test_workspace")
+        == "/rest/resource/workspaces/test_workspace/styles"
+    )
+    assert endpoints.resource_directory("styles") == "/rest/resource/styles"
+
+
+def test_resource_endpoint(endpoints: RestService.RestEndpoints):
+    assert (
+        endpoints.resource("styles", "image.svg", "test_workspace")
+        == "/rest/resource/workspaces/test_workspace/styles/image.svg"
+    )
+    assert (
+        endpoints.resource("styles", "image.svg") == "/rest/resource/styles/image.svg"
+    )
