@@ -132,7 +132,7 @@ def test_get_datastores(
         )
 
         datastores, status_code = geoserver.get_datastores(workspace_name=WORKSPACE)
-        assert datastores == datastores_get_response["dataStores"]["dataStore"]
+        assert datastores == ["test_store"]
         assert status_code == 200
 
 

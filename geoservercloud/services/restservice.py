@@ -383,6 +383,14 @@ class RestService:
             response = self.rest_client.put(resource_path, data=style, headers=headers)
         return response.content.decode(), response.status_code
 
+    def get_layer(
+        self, workspace_name: str, layer_name: str
+    ) -> tuple[Layer | str, int]:
+        response: Response = self.rest_client.get(
+            self.rest_endpoints.workspace_layer(workspace_name, layer_name)
+        )
+        return self.deserialize_response(response, Layer)
+
     def update_layer(self, layer: Layer, workspace_name: str) -> tuple[str, int]:
         response: Response = self.rest_client.put(
             self.rest_endpoints.workspace_layer(workspace_name, layer.name),
