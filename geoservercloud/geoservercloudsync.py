@@ -47,7 +47,8 @@ class GeoServerCloudSync:
     ) -> tuple[str, int]:
         """
         Copy a workspace from the source to the destination GeoServer instance.
-        If deep_copy is True, the copy includes the styles in the workspace (including images).
+        If deep_copy is True, the copy includes the PostGIS datastores, the feature types in the datastores,
+        the corresponding layers and the styles in the workspace (including images).
         """
         workspace, status_code = self.src_instance.get_workspace(workspace_name)
         if isinstance(workspace, str):
@@ -61,7 +62,102 @@ class GeoServerCloudSync:
             content, status_code = self.copy_styles(workspace_name)
             if self.not_ok(status_code):
                 return content, status_code
+            content, status_code = self.copy_pg_datastores(
+                workspace_name, deep_copy=True
+            )
+            if self.not_ok(status_code):
+                return content, status_code
         return new_workspace, new_ws_status_code
+
+    def copy_pg_datastores(
+        self, workspace_name: str, deep_copy: bool = False
+    ) -> tuple[str, int]:
+        """
+        Copy all the datastores in given workspace.
+        If deep_copy is True, copy all feature types and the corresponding layers in each datastore
+        """
+        datastores, status_code = self.src_instance.get_datastores(workspace_name)
+        if isinstance(datastores, str):
+            return datastores, status_code
+        for datastore_name in datastores.aslist():
+            content, status_code = self.copy_pg_datastore(
+                workspace_name, datastore_name, deep_copy=deep_copy
+            )
+            if self.not_ok(status_code):
+                return content, status_code
+        return content, status_code
+
+    def copy_pg_datastore(
+        self, workspace_name: str, datastore_name: str, deep_copy: bool = False
+    ) -> tuple[str, int]:
+        """
+        Copy a datastore from source to destination GeoServer instance
+        If deep_copy is True, copy all feature types and the corresponding layers
+        """
+        datastore, status_code = self.src_instance.get_pg_datastore(
+            workspace_name, datastore_name
+        )
+        if isinstance(datastore, str):
+            return datastore, status_code
+        new_ds, new_ds_status_code = self.dst_instance.create_pg_datastore(
+            workspace_name, datastore
+        )
+        if self.not_ok(new_ds_status_code):
+            return new_ds, new_ds_status_code
+        if deep_copy:
+            self.copy_feature_types(workspace_name, datastore_name, copy_layers=True)
+        return new_ds, new_ds_status_code
+
+    def copy_feature_types(
+        self, workspace_name: str, datastore_name: str, copy_layers: bool = False
+    ) -> tuple[str, int]:
+        """
+        Copy all feature types in a datastore from source to destination GeoServer instance
+        """
+        feature_types, status_code = self.src_instance.get_feature_types(
+            workspace_name, datastore_name
+        )
+        if isinstance(feature_types, str):
+            return feature_types, status_code
+        for feature_type in feature_types.aslist():
+            content, status_code = self.copy_feature_type(
+                workspace_name, datastore_name, feature_type["name"]
+            )
+            if self.not_ok(status_code):
+                return content, status_code
+            if copy_layers:
+                content, status_code = self.copy_layer(
+                    workspace_name, feature_type["name"]
+                )
+                if self.not_ok(status_code):
+                    return content, status_code
+        return content, status_code
+
+    def copy_feature_type(
+        self, workspace_name: str, datastore_name: str, feature_type_name: str
+    ) -> tuple[str, int]:
+        """
+        Copy a feature type from source to destination GeoServer instance
+        """
+        feature_type, status_code = self.src_instance.get_feature_type(
+            workspace_name, datastore_name, feature_type_name
+        )
+        if isinstance(feature_type, str):
+            return feature_type, status_code
+        return self.dst_instance.create_feature_type(feature_type)
+
+    def copy_layer(
+        self, workspace_name: str, feature_type_name: str
+    ) -> tuple[str, int]:
+        """
+        Copy a layer from source to destination GeoServer instance
+        """
+        layer, status_code = self.src_instance.get_layer(
+            workspace_name, feature_type_name
+        )
+        if isinstance(layer, str):
+            return layer, status_code
+        return self.dst_instance.update_layer(layer, workspace_name)
 
     def copy_styles(
         self, workspace_name: str | None = None, include_images: bool = True
