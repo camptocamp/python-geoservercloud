@@ -79,6 +79,8 @@ class GeoServerCloudSync:
         datastores, status_code = self.src_instance.get_datastores(workspace_name)
         if isinstance(datastores, str):
             return datastores, status_code
+        elif datastores.aslist() == []:
+            return "", status_code
         for datastore_name in datastores.aslist():
             content, status_code = self.copy_pg_datastore(
                 workspace_name, datastore_name, deep_copy=deep_copy
@@ -119,6 +121,8 @@ class GeoServerCloudSync:
         )
         if isinstance(feature_types, str):
             return feature_types, status_code
+        elif feature_types.aslist() == []:
+            return "", status_code
         for feature_type in feature_types.aslist():
             content, status_code = self.copy_feature_type(
                 workspace_name, datastore_name, feature_type["name"]
@@ -165,15 +169,17 @@ class GeoServerCloudSync:
         """
         Copy all styles in a workspace (if a workspace is provided) or all global styles
         """
-        if include_images:
-            content, status_code = self.copy_style_images(workspace_name)
-            if self.not_ok(status_code):
-                return content, status_code
         styles, status_code = self.src_instance.get_styles(workspace_name)
         if isinstance(styles, str):
             return styles, status_code
+        elif styles.aslist() == []:
+            return "", status_code
         for style in styles.aslist():
             content, status_code = self.copy_style(style, workspace_name)
+            if self.not_ok(status_code):
+                return content, status_code
+        if include_images:
+            content, status_code = self.copy_style_images(workspace_name)
             if self.not_ok(status_code):
                 return content, status_code
         return content, status_code
@@ -200,14 +206,16 @@ class GeoServerCloudSync:
         )
         if isinstance(resource_dir, str):
             return resource_dir, status_code
-        for child in resource_dir.children:
-            if child.is_image():
-                content, status_code = self.copy_resource(
-                    resource_dir="styles",
-                    resource_name=child.name,
-                    content_type=child.type,
-                    workspace_name=workspace_name,
-                )
+        images = [child for child in resource_dir.children if child.is_image()]
+        if images == []:
+            return "", status_code
+        for image in images:
+            content, status_code = self.copy_resource(
+                resource_dir="styles",
+                resource_name=image.name,
+                content_type=image.type,
+                workspace_name=workspace_name,
+            )
         return content, status_code
 
     def copy_resource(
