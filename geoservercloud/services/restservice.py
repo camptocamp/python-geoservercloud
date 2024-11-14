@@ -345,7 +345,10 @@ class RestService:
         )
         data: bytes = style.xml_post_payload().encode()
         headers: dict[str, str] = {"Content-Type": "text/xml"}
-        if not self.resource_exists(resource_path):
+        # Use "Accept" header otherwise GeoServer throws a 500 on GET when the resource exists
+        if not self.resource_exists(
+            resource_path, headers={"Accept": "application/json"}
+        ):
             response: Response = self.rest_client.post(path, data=data, headers=headers)
         else:
             response = self.rest_client.put(resource_path, data=data, headers=headers)
@@ -375,12 +378,11 @@ class RestService:
             headers = {"Content-Type": "application/vnd.ogc.sld+xml"}
         elif format == "zip":
             headers = {"Content-Type": "application/zip"}
-        if not self.resource_exists(resource_path):
-            response: Response = self.rest_client.post(
-                path, data=style, headers=headers
-            )
-        else:
-            response = self.rest_client.put(resource_path, data=style, headers=headers)
+        # Do not check for existence because GeoServer throws a 500 if the style definition exists and not
+        # the SLD. Besides PUT is also supported on creation
+        response: Response = self.rest_client.put(
+            resource_path, data=style, headers=headers
+        )
         return response.content.decode(), response.status_code
 
     def get_layer(
@@ -614,8 +616,8 @@ class RestService:
         except (KeyError, AttributeError):
             return None
 
-    def resource_exists(self, path: str) -> bool:
-        response: Response = self.rest_client.get(path)
+    def resource_exists(self, path: str, headers: dict[str, str] | None = None) -> bool:
+        response: Response = self.rest_client.get(path, headers=headers)
         return response.status_code == 200
 
     @staticmethod
