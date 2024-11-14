@@ -9,7 +9,10 @@ class FeatureTypes(ListModel):
 
     @classmethod
     def from_get_response_payload(cls, content: dict):
-        return cls(content["featureTypes"]["featureType"])
+        feature_types: str | dict = content["featureTypes"]
+        if not feature_types:
+            return cls()
+        return cls(feature_types["featureType"])  # type: ignore
 
     def aslist(self) -> list[dict[str, str]]:
         return self._featuretypes
