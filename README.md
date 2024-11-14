@@ -11,6 +11,10 @@ pip install geoservercloud
 From git repository:
 
 ```shell
+git clone https://github.com/camptocamp/python-geoservercloud
+cd python-geoservercloud
+python3 -m venv .venv
+source .venv/bin/activate
 poetry install
 ```
 
@@ -38,8 +42,8 @@ For example, creating a workspace, connecting to a PostGIS datastore and publish
 ```python
 geoserver.create_workspace("example")
 geoserver.create_pg_datastore(
-    workspace="example",
-    datastore="example_store",
+    workspace_name="example",
+    datastore_name="example_store",
     pg_host="localhost",
     pg_port=5432,
     pg_db="database",
@@ -47,9 +51,9 @@ geoserver.create_pg_datastore(
     pg_password="password"
 )
 geoserver.create_feature_type(
-    layer="layer_example"
-    workspace="example",
-    datastore="example_store",
+    layer_name="layer_example",
+    workspace_name="example",
+    datastore_name="example_store",
     title={
         "en":"Layer title",
         "fr": "Titre de la couche",
@@ -92,4 +96,31 @@ def test_i18n_layer_title(geoserver, language, expected_title):
     )
     layer = capabilities.get("Layer")
     assert layer.get("Title") == expected_title
+```
+
+### Syncing
+
+Copying a workspace from one GeoServer instance to another, including PG datastores, layers, styles and style images.
+
+#### In a Python console or script
+
+```python
+from geoservercloud import GeoServerCloudSync
+geoserversync = GeoServerCloudSync(
+    src_url="http://localhost:8080/geoserver",
+    src_user="admin",
+    src_password="geoserver",
+    dst_url="http://localhost:9099/geoserver",
+    dst_user="admin",
+    dst_password="geoserver",
+)
+geoserversync.copy_workspace("workspace_name", deep_copy=True)
+```
+
+#### In a shell terminal or script
+
+First install the package in your current virtual environment (see [Installation](#installation)), then run the script with:
+
+```shell
+copy-workspace --src_url "http://localhost:8080/geoserver" --src_user admin --src_password geoserver --dst_url "http://localhost:9099/geoserver" --dst_user admin --dst_password geoserver --workspace workspace_name
 ```

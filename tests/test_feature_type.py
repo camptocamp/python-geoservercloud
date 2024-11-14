@@ -206,8 +206,8 @@ def test_create_feature_type(
         )
         content, code = geoserver.create_feature_type(
             workspace_name=WORKSPACE,
-            datastore=STORE,
-            layer=LAYER,
+            datastore_name=STORE,
+            layer_name=LAYER,
             title={"en": "English"},
             abstract={"en": "English"},
             keywords=["example"],
@@ -233,8 +233,8 @@ def test_update_feature_type(
         )
         content, code = geoserver.create_feature_type(
             workspace_name=WORKSPACE,
-            datastore=STORE,
-            layer=LAYER,
+            datastore_name=STORE,
+            layer_name=LAYER,
             title={"en": "English"},
             abstract={"en": "English"},
             keywords=["example"],

@@ -279,9 +279,9 @@ class GeoServerCloud:
 
     def create_feature_type(
         self,
-        layer: str,
+        layer_name: str,
         workspace_name: str | None = None,
-        datastore: str | None = None,
+        datastore_name: str | None = None,
         title: str | dict = "Default title",
         abstract: str | dict = "Default abstract",
         attributes: dict = Templates.geom_point_attribute(),  # TODO: remove default value, because if should be None
@@ -294,14 +294,14 @@ class GeoServerCloud:
         workspace_name = workspace_name or self.default_workspace
         if not workspace_name:
             raise ValueError("Workspace not provided")
-        datastore = datastore or self.default_datastore
-        if not datastore:
+        datastore_name = datastore_name or self.default_datastore
+        if not datastore_name:
             raise ValueError("Datastore not provided")
         feature_type = FeatureType(
-            name=layer,
-            native_name=layer,
+            name=layer_name,
+            native_name=layer_name,
             workspace_name=workspace_name,
-            store_name=datastore,
+            store_name=datastore_name,
             srs=f"EPSG:{epsg}",
             title=title,
             abstract=abstract,
