@@ -108,14 +108,10 @@ class FeatureType(EntityModel):
         feature_type = content["featureType"]
         workspace_name = feature_type["store"]["name"].split(":")[0]
         store_name = feature_type["store"]["name"].split(":")[1]
-        try:
-            abstract = feature_type["abstract"]
-        except KeyError:
-            abstract = feature_type["internationalAbstract"]
-        try:
-            title = feature_type["title"]
-        except KeyError:
-            title = feature_type["internationalTitle"]
+        title = feature_type.get("title", feature_type.get("internationalTitle"))
+        abstract = feature_type.get(
+            "abstract", feature_type.get("internationalAbstract")
+        )
         if feature_type.get("metadataLinks"):
             metadata_links_payload = feature_type["metadataLinks"]["metadataLink"]
             metadata_links = [
