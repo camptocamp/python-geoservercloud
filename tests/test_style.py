@@ -2,6 +2,7 @@ from pathlib import Path
 
 import pytest
 import responses
+import responses.matchers
 from requests import Response
 
 from geoservercloud import GeoServerCloud
@@ -138,6 +139,7 @@ def test_create_style_definition(mocker, geoserver: GeoServerCloud) -> None:
         rsps.get(
             url=f"{geoserver.url}/rest/workspaces/test_workspace/styles/{STYLE}",
             status=404,
+            match=[responses.matchers.header_matcher({"Accept": "application/json"})],
         )
         geoserver.create_style_definition(
             style_name=STYLE, filename="style.sld", workspace_name="test_workspace"
@@ -152,12 +154,8 @@ def test_create_style_definition(mocker, geoserver: GeoServerCloud) -> None:
 def test_create_style_from_file(geoserver: GeoServerCloud) -> None:
     file_path = (Path(__file__).parent / "resources/style.sld").resolve()
     with responses.RequestsMock() as rsps:
-        rsps.get(
+        rsps.put(
             url=f"{geoserver.url}/rest/styles/{STYLE}.sld",
-            status=404,
-        )
-        rsps.post(
-            url=f"{geoserver.url}/rest/styles",
             status=201,
             body=b"test_style",
             match=[
@@ -180,10 +178,6 @@ def test_create_style_from_file(geoserver: GeoServerCloud) -> None:
 def test_update_style_from_file(geoserver: GeoServerCloud) -> None:
     file_path = (Path(__file__).parent / "resources/style.sld").resolve()
     with responses.RequestsMock() as rsps:
-        rsps.get(
-            url=f"{geoserver.url}/rest/styles/{STYLE}.sld",
-            status=200,
-        )
         rsps.put(
             url=f"{geoserver.url}/rest/styles/{STYLE}.sld",
             status=200,
@@ -208,12 +202,8 @@ def test_update_style_from_file(geoserver: GeoServerCloud) -> None:
 def test_create_style_from_file_zip(geoserver: GeoServerCloud) -> None:
     file_path = (Path(__file__).parent / "resources/style.zip").resolve()
     with responses.RequestsMock() as rsps:
-        rsps.get(
+        rsps.put(
             url=f"{geoserver.url}/rest/styles/{STYLE}",
-            status=404,
-        )
-        rsps.post(
-            url=f"{geoserver.url}/rest/styles",
             status=201,
             body=b"test_style",
             match=[

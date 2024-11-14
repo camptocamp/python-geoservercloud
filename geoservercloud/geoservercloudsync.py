@@ -192,6 +192,16 @@ class GeoServerCloudSync:
         """
         Copy a style from source to destination GeoServer instance
         """
+        style_definition, status_code = self.src_instance.get_style_definition(
+            style_name, workspace_name
+        )
+        if isinstance(style_definition, str):
+            return style_definition, status_code
+        content, status_code = self.dst_instance.create_style_definition(
+            style_name, style_definition, workspace_name
+        )
+        if self.not_ok(status_code):
+            return content, status_code
         style, status_code = self.src_instance.get_style(style_name, workspace_name)
         if isinstance(style, str):
             return style, status_code
