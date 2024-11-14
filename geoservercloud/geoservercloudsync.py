@@ -1,3 +1,5 @@
+from argparse import ArgumentParser
+
 from geoservercloud.models.resourcedirectory import ResourceDirectory
 from geoservercloud.services import RestService
 
@@ -254,3 +256,62 @@ class GeoServerCloudSync:
     @staticmethod
     def not_ok(http_status_code: int) -> bool:
         return http_status_code >= 400
+
+
+def parse_args():
+    parser = ArgumentParser(
+        description="""
+        Copy a workspace from a GeoServer instance to another, including PG datastores,
+        layers, styles and style images.
+        If using JNDI, the JNDI reference must exist in the destination GeoServer instance.
+        """
+    )
+    parser.add_argument(
+        "--src_url",
+        help="URL of the source GeoServer instance",
+        default="http://localhost:8080/geoserver",
+    )
+    parser.add_argument(
+        "--src_user",
+        default="admin",
+        help="Admin user of the source GeoServer instance",
+    )
+    parser.add_argument(
+        "--src_password",
+        default="geoserver",
+        help="Admin password of the source GeoServer instance",
+    )
+    parser.add_argument(
+        "--dst_url",
+        help="URL of the destination GeoServer instance",
+        default="http://localhost:8080/geoserver",
+    )
+    parser.add_argument(
+        "--dst_user",
+        default="admin",
+        help="Admin user of the destination GeoServer instance",
+    )
+    parser.add_argument(
+        "--dst_password",
+        default="geoserver",
+        help="Admin password of the destination GeoServer instance",
+    )
+    parser.add_argument(
+        "--workspace",
+        help="Workspace to copy",
+    )
+    return parser.parse_args()
+
+
+def main():
+    args = parse_args()
+    geoserversync = GeoServerCloudSync(
+        args.src_url,
+        args.src_user,
+        args.src_password,
+        args.dst_url,
+        args.dst_user,
+        args.dst_password,
+    )
+    content, code = geoserversync.copy_workspace(args.workspace, deep_copy=True)
+    print(code, content)

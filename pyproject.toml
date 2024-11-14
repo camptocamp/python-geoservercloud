@@ -29,6 +29,9 @@ requires = [
 ]
 build-backend = "poetry.core.masonry.api"
 
+[tool.poetry.scripts]
+copy-workspace = "geoservercloud.geoservercloudsync:main"
+
 [tool.poetry-dynamic-versioning]
 enable = true
 vcs = "git"
