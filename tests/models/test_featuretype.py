@@ -134,7 +134,21 @@ def test_featuretype_from_get_response_payload():
             "enabled": True,
             "advertised": True,
             "projectionPolicy": "FORCE_DECLARED",
-            "srs": "EPSG:4326",
+            "srs": "EPSG:2056",
+            "nativeBoundingBox": {
+                "minx": 2485014.052451379,
+                "maxx": 2837016.9329778464,
+                "miny": 1074188.6943776933,
+                "maxy": 1299782.763494124,
+                "crs": {"@class": "projected", "$": "EPSG:2056"},
+            },
+            "latLonBoundingBox": {
+                "minx": 5.902662003204146,
+                "maxx": 10.603307860867739,
+                "miny": 45.7779277267225,
+                "maxy": 47.8485348773655,
+                "crs": "EPSG:4326",
+            },
             "title": "Test Title",
             "abstract": "Test Abstract",
             "keywords": {"string": ["keyword1", "keyword2"]},
@@ -176,7 +190,21 @@ def test_featuretype_from_get_response_payload():
     assert feature_type.native_name == "test_native_name"
     assert feature_type.store_name == "test_store"
     assert feature_type.workspace_name == "test_workspace"
-    assert feature_type.srs == "EPSG:4326"
+    assert feature_type.srs == "EPSG:2056"
+    assert feature_type.native_bounding_box == {
+        "minx": 2485014.052451379,
+        "maxx": 2837016.9329778464,
+        "miny": 1074188.6943776933,
+        "maxy": 1299782.763494124,
+        "crs": {"@class": "projected", "$": "EPSG:2056"},
+    }
+    assert feature_type.lat_lon_bounding_box == {
+        "minx": 5.902662003204146,
+        "maxx": 10.603307860867739,
+        "miny": 45.7779277267225,
+        "maxy": 47.8485348773655,
+        "crs": "EPSG:4326",
+    }
     assert feature_type.title.asdict()["title"] == "Test Title"
     assert feature_type.abstract.asdict()["abstract"] == "Test Abstract"
     assert feature_type.keywords == ["keyword1", "keyword2"]

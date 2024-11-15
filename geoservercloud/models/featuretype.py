@@ -140,6 +140,8 @@ class FeatureType(EntityModel):
             projection_policy=feature_type["projectionPolicy"],
             service_configuration=feature_type["serviceConfiguration"],
             advertised=feature_type.get("advertised"),
+            native_bounding_box=feature_type.get("nativeBoundingBox"),
+            lat_lon_bounding_box=feature_type.get("latLonBoundingBox"),
             encode_measures=feature_type.get("encodeMeasures"),
             forced_decimals=feature_type.get("forcedDecimals"),
             simple_conversion_enabled=feature_type.get("simpleConversionEnabled"),
