@@ -11,6 +11,7 @@ from geoservercloud.models.datastore import PostGisDataStore
 from geoservercloud.models.featuretype import FeatureType
 from geoservercloud.models.layer import Layer
 from geoservercloud.models.style import Style
+from geoservercloud.models.wmssettings import WmsSettings
 from geoservercloud.models.workspace import Workspace
 from geoservercloud.services import OwsService, RestService
 from geoservercloud.templates import Templates
@@ -120,11 +121,90 @@ class GeoServerCloud:
             set_default_workspace=set_default_workspace,
         )
 
-    def publish_workspace(self, workspace_name) -> tuple[str, int]:
+    def get_workspace_wms_settings(
+        self, workspace_name: str
+    ) -> tuple[dict[str, Any] | str, int]:
+        """
+        Get the WMS settings for a given workspace
+        """
+        wms_settings, status_code = self.rest_service.get_workspace_wms_settings(
+            workspace_name
+        )
+        if isinstance(wms_settings, str):
+            return wms_settings, status_code
+        return wms_settings.asdict(), status_code
+
+    def publish_workspace(
+        self,
+        workspace_name: str,
+        versions: list[str] = ["1.1.1", "1.3.0"],
+        cite_compliant: bool = False,
+        schema_base_url: str = "http://schemas.opengis.net",
+        verbose: bool = False,
+        bbox_for_each_crs: bool = False,
+        watermark: dict = {
+            "enabled": False,
+            "position": "BOT_RIGHT",
+            "transparency": 100,
+        },
+        interpolation: str = "Nearest",
+        get_feature_info_mime_type_checking_enabled: bool = False,
+        get_map_mime_type_checking_enabled: bool = False,
+        dynamic_styling_disabled: bool = False,
+        features_reprojection_disabled: bool = False,
+        max_buffer: int = 0,
+        max_request_memory: int = 0,
+        max_rendering_time: int = 0,
+        max_rendering_errors: int = 0,
+        max_requested_dimension_values: int = 100,
+        cache_configuration: dict = {
+            "enabled": False,
+            "maxEntries": 1000,
+            "maxEntrySize": 51200,
+        },
+        remote_style_max_request_time: int = 60000,
+        remote_style_timeout: int = 30000,
+        default_group_style_enabled: bool = True,
+        transform_feature_info_disabled: bool = False,
+        auto_escape_template_values: bool = False,
+    ) -> tuple[str, int]:
         """
         Publish the WMS service for a given workspace
         """
-        return self.rest_service.publish_workspace(Workspace(workspace_name))
+        wms_settings = WmsSettings(
+            workspace_name=workspace_name,
+            name="WMS",
+            enabled=True,
+            versions={
+                "org.geotools.util.Version": [
+                    {"version": version} for version in versions
+                ]
+            },
+            cite_compliant=cite_compliant,
+            schema_base_url=schema_base_url,
+            verbose=verbose,
+            bbox_for_each_crs=bbox_for_each_crs,
+            watermark=watermark,
+            interpolation=interpolation,
+            get_feature_info_mime_type_checking_enabled=get_feature_info_mime_type_checking_enabled,
+            get_map_mime_type_checking_enabled=get_map_mime_type_checking_enabled,
+            dynamic_styling_disabled=dynamic_styling_disabled,
+            features_reprojection_disabled=features_reprojection_disabled,
+            max_buffer=max_buffer,
+            max_request_memory=max_request_memory,
+            max_rendering_time=max_rendering_time,
+            max_rendering_errors=max_rendering_errors,
+            max_requested_dimension_values=max_requested_dimension_values,
+            cache_configuration=cache_configuration,
+            remote_style_max_request_time=remote_style_max_request_time,
+            remote_style_timeout=remote_style_timeout,
+            default_group_style_enabled=default_group_style_enabled,
+            transform_feature_info_disabled=transform_feature_info_disabled,
+            auto_escape_template_values=auto_escape_template_values,
+        )
+        return self.rest_service.put_workspace_wms_settings(
+            workspace_name, wms_settings
+        )
 
     def set_default_locale_for_service(
         self, workspace_name: str, locale: str | None
@@ -132,8 +212,9 @@ class GeoServerCloud:
         """
         Set a default language for localized WMS requests
         """
-        return self.rest_service.set_default_locale_for_service(
-            Workspace(workspace_name), locale
+        wms_settings = WmsSettings(default_locale=locale)
+        return self.rest_service.put_workspace_wms_settings(
+            workspace_name, wms_settings
         )
 
     def unset_default_locale_for_service(self, workspace_name) -> tuple[str, int]:

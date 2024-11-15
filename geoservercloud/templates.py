@@ -5,51 +5,6 @@ from geoservercloud.utils import EPSG_BBOX
 
 class Templates:
     @staticmethod
-    def workspace_wms(workspace: str) -> dict[str, dict[str, Any]]:
-        return {
-            "wms": {
-                "workspace": {"name": workspace},
-                "enabled": True,
-                "name": "WMS",
-                "versions": {
-                    "org.geotools.util.Version": [
-                        {"version": "1.1.1"},
-                        {"version": "1.3.0"},
-                    ]
-                },
-                "citeCompliant": False,
-                "schemaBaseURL": "http://schemas.opengis.net",
-                "verbose": False,
-                "bboxForEachCRS": False,
-                "watermark": {
-                    "enabled": False,
-                    "position": "BOT_RIGHT",
-                    "transparency": 100,
-                },
-                "interpolation": "Nearest",
-                "getFeatureInfoMimeTypeCheckingEnabled": False,
-                "getMapMimeTypeCheckingEnabled": False,
-                "dynamicStylingDisabled": False,
-                "featuresReprojectionDisabled": False,
-                "maxBuffer": 0,
-                "maxRequestMemory": 0,
-                "maxRenderingTime": 0,
-                "maxRenderingErrors": 0,
-                "maxRequestedDimensionValues": 100,
-                "cacheConfiguration": {
-                    "enabled": False,
-                    "maxEntries": 1000,
-                    "maxEntrySize": 51200,
-                },
-                "remoteStyleMaxRequestTime": 60000,
-                "remoteStyleTimeout": 30000,
-                "defaultGroupStyleEnabled": True,
-                "transformFeatureInfoDisabled": False,
-                "autoEscapeTemplateValues": False,
-            }
-        }
-
-    @staticmethod
     def wmts_store(
         workspace: str, name: str, capabilities: str
     ) -> dict[str, dict[str, Any]]:

@@ -14,6 +14,7 @@ from geoservercloud.models.layer import Layer
 from geoservercloud.models.resourcedirectory import ResourceDirectory
 from geoservercloud.models.style import Style
 from geoservercloud.models.styles import Styles
+from geoservercloud.models.wmssettings import WmsSettings
 from geoservercloud.models.workspace import Workspace
 from geoservercloud.models.workspaces import Workspaces
 from geoservercloud.services.restclient import RestClient
@@ -62,23 +63,20 @@ class RestService:
         response: Response = self.rest_client.delete(path, params=params)
         return response.content.decode(), response.status_code
 
-    def publish_workspace(self, workspace: Workspace) -> tuple[str, int]:
-        data: dict[str, dict[str, Any]] = Templates.workspace_wms(workspace.name)
-        response: Response = self.rest_client.put(
-            self.rest_endpoints.workspace_wms_settings(workspace.name), json=data
+    def get_workspace_wms_settings(
+        self, workspace_name: str
+    ) -> tuple[WmsSettings | str, int]:
+        response: Response = self.rest_client.get(
+            self.rest_endpoints.workspace_wms_settings(workspace_name)
         )
-        return response.content.decode(), response.status_code
+        return self.deserialize_response(response, WmsSettings)
 
-    def set_default_locale_for_service(
-        self, workspace: Workspace, locale: str | None
+    def put_workspace_wms_settings(
+        self, workspace_name: str, wms_settings: WmsSettings
     ) -> tuple[str, int]:
-        data: dict[str, dict[str, Any]] = {
-            "wms": {
-                "defaultLocale": locale,
-            }
-        }
         response: Response = self.rest_client.put(
-            self.rest_endpoints.workspace_wms_settings(workspace.name), json=data
+            self.rest_endpoints.workspace_wms_settings(workspace_name),
+            json=wms_settings.put_payload(),
         )
         return response.content.decode(), response.status_code
 
