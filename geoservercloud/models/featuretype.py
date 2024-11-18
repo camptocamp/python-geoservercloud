@@ -41,7 +41,7 @@ class FeatureType(EntityModel):
         namespace_name: str | None = None,
         title: dict[str, str] | str | None = None,
         abstract: dict[str, str] | str | None = None,
-        keywords: list[str] | None = [],
+        keywords: list[str] | None = None,
         native_bounding_box: dict[str, Any] | None = None,
         lat_lon_bounding_box: dict[str, Any] | None = None,
         attributes: list[dict[str, Any]] | None = None,
@@ -130,7 +130,6 @@ class FeatureType(EntityModel):
             title=title,
             abstract=abstract,
             srs=feature_type["srs"],
-            keywords=feature_type["keywords"]["string"],
             attributes=feature_type["attributes"]["attribute"],
             metadata_links=metadata_links,
             enabled=feature_type["enabled"],
@@ -142,6 +141,7 @@ class FeatureType(EntityModel):
             advertised=feature_type.get("advertised"),
             native_bounding_box=feature_type.get("nativeBoundingBox"),
             lat_lon_bounding_box=feature_type.get("latLonBoundingBox"),
+            keywords=feature_type.get("keywords", {}).get("string", []),
             encode_measures=feature_type.get("encodeMeasures"),
             forced_decimals=feature_type.get("forcedDecimals"),
             simple_conversion_enabled=feature_type.get("simpleConversionEnabled"),
@@ -194,8 +194,10 @@ class FeatureType(EntityModel):
 
     def post_payload(self) -> dict[str, Any]:
         content = self.asdict()
-        content["attributes"] = {"attribute": self.attributes}
-        content["keywords"] = {"string": self.keywords}
+        if self.attributes is not None:
+            content["attributes"] = {"attribute": self.attributes}
+        if self.keywords is not None:
+            content["keywords"] = {"string": self.keywords}
         return {"featureType": content}
 
     def put_payload(self) -> dict[str, Any]:

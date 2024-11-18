@@ -252,3 +252,29 @@ def test_featuretype_repr():
     expected_repr = json.dumps(feature_type.post_payload(), indent=4)
 
     assert repr(feature_type) == expected_repr
+
+
+def test_featuretype_create_no_keyword():
+    feature_type = FeatureType(
+        namespace_name="test_namespace",
+        workspace_name="test_workspace",
+        store_name="test_store",
+        name="test_name",
+        native_name="test_native_name",
+        keywords=None,
+    )
+
+    assert feature_type.post_payload()["featureType"].get("keywords") is None
+
+    feature_type = FeatureType(
+        namespace_name="test_namespace",
+        workspace_name="test_workspace",
+        store_name="test_store",
+        name="test_name",
+        native_name="test_native_name",
+        keywords=[],
+    )
+
+    assert (
+        feature_type.post_payload()["featureType"].get("keywords").get("string") == []
+    )
