@@ -10,6 +10,7 @@ from geoservercloud import utils
 from geoservercloud.models.datastore import PostGisDataStore
 from geoservercloud.models.featuretype import FeatureType
 from geoservercloud.models.layer import Layer
+from geoservercloud.models.layergroup import LayerGroup
 from geoservercloud.models.style import Style
 from geoservercloud.models.wmssettings import WmsSettings
 from geoservercloud.models.workspace import Workspace
@@ -402,6 +403,30 @@ class GeoServerCloud:
             workspace_name, datastore_name, layer_name
         )
 
+    def get_layer_groups(
+        self, workspace_name: str
+    ) -> tuple[list[dict[str, str]] | str, int]:
+        """
+        Get all layer groups for a given workspace
+        """
+        layer_groups, status_code = self.rest_service.get_layer_groups(workspace_name)
+        if isinstance(layer_groups, str):
+            return layer_groups, status_code
+        return layer_groups.aslist(), status_code
+
+    def get_layer_group(
+        self, workspace_name: str, layer_group_name: str
+    ) -> tuple[dict[str, Any] | str, int]:
+        """
+        Get a layer group by name
+        """
+        layer_group, status_code = self.rest_service.get_layer_group(
+            workspace_name, layer_group_name
+        )
+        if isinstance(layer_group, str):
+            return layer_group, status_code
+        return layer_group.asdict(), status_code
+
     def create_layer_group(
         self,
         group: str,
@@ -411,16 +436,46 @@ class GeoServerCloud:
         abstract: str | dict,
         epsg: int = 4326,
         mode: str = "SINGLE",
+        enabled: bool = True,
+        advertised: bool = True,
     ) -> tuple[str, int]:
         """
-        Create a layer group if it does not already exist.
+        Create a layer group or update it if it already exists.
         """
         workspace_name = workspace_name or self.default_workspace
         if not workspace_name:
             raise ValueError("Workspace not provided")
-        return self.rest_service.create_layer_group(
-            group, workspace_name, layers, title, abstract, epsg, mode
+        if not mode in LayerGroup.modes:
+            raise ValueError(
+                f"Invalid mode: {mode}, possible values are: {LayerGroup.modes}"
+            )
+        bounds = {
+            "minx": utils.EPSG_BBOX[epsg]["nativeBoundingBox"]["minx"],
+            "maxx": utils.EPSG_BBOX[epsg]["nativeBoundingBox"]["maxx"],
+            "miny": utils.EPSG_BBOX[epsg]["nativeBoundingBox"]["miny"],
+            "maxy": utils.EPSG_BBOX[epsg]["nativeBoundingBox"]["maxy"],
+            "crs": f"EPSG:{epsg}",
+        }
+        layer_group = LayerGroup(
+            name=group,
+            mode=mode,
+            workspace_name=workspace_name,
+            title=title,
+            abstract=abstract,
+            publishables=[f"{workspace_name}:{layer}" for layer in layers],
+            bounds=bounds,
+            enabled=enabled,
+            advertised=advertised,
         )
+        return self.rest_service.create_layer_group(group, workspace_name, layer_group)
+
+    def delete_layer_group(
+        self, workspace_name: str, layer_group_name: str
+    ) -> tuple[str, int]:
+        """
+        Delete a layer group
+        """
+        return self.rest_service.delete_layer_group(workspace_name, layer_group_name)
 
     def create_wmts_layer(
         self,

@@ -11,6 +11,8 @@ from geoservercloud.models.datastores import DataStores
 from geoservercloud.models.featuretype import FeatureType
 from geoservercloud.models.featuretypes import FeatureTypes
 from geoservercloud.models.layer import Layer
+from geoservercloud.models.layergroup import LayerGroup
+from geoservercloud.models.layergroups import LayerGroups
 from geoservercloud.models.resourcedirectory import ResourceDirectory
 from geoservercloud.models.style import Style
 from geoservercloud.models.styles import Styles
@@ -297,35 +299,46 @@ class RestService:
         )
         return response.content.decode(), response.status_code
 
+    def get_layer_groups(self, workspace_name: str) -> tuple[LayerGroups | str, int]:
+        response: Response = self.rest_client.get(
+            self.rest_endpoints.layergroups(workspace_name)
+        )
+        return self.deserialize_response(response, LayerGroups)
+
+    def get_layer_group(
+        self, workspace_name: str, layer_group_name: str
+    ) -> tuple[LayerGroup | str, int]:
+        response: Response = self.rest_client.get(
+            self.rest_endpoints.layergroup(workspace_name, layer_group_name)
+        )
+        return self.deserialize_response(response, LayerGroup)
+
     def create_layer_group(
         self,
-        group: str,
+        layer_group_name: str,
         workspace_name: str,
-        layers: list[str],
-        title: str | dict,
-        abstract: str | dict,
-        epsg: int = 4326,
-        mode: str = "SINGLE",
+        layer_group: LayerGroup,
     ) -> tuple[str, int]:
-        payload: dict[str, dict[str, Any]] = Templates.layer_group(
-            group=group,
-            layers=layers,
-            workspace=workspace_name,
-            title=title,
-            abstract=abstract,
-            epsg=epsg,
-            mode=mode,
-        )
         if not self.resource_exists(
-            self.rest_endpoints.layergroup(workspace_name, group)
+            self.rest_endpoints.layergroup(workspace_name, layer_group_name)
         ):
             response: Response = self.rest_client.post(
-                self.rest_endpoints.layergroups(workspace_name), json=payload
+                self.rest_endpoints.layergroups(workspace_name),
+                json=layer_group.post_payload(),
             )
         else:
             response = self.rest_client.put(
-                self.rest_endpoints.layergroup(workspace_name, group), json=payload
+                self.rest_endpoints.layergroup(workspace_name, layer_group_name),
+                json=layer_group.put_payload(),
             )
+        return response.content.decode(), response.status_code
+
+    def delete_layer_group(
+        self, workspace_name: str, layer_group_name: str
+    ) -> tuple[str, int]:
+        response: Response = self.rest_client.delete(
+            self.rest_endpoints.layergroup(workspace_name, layer_group_name)
+        )
         return response.content.decode(), response.status_code
 
     def get_styles(self, workspace_name: str | None = None) -> tuple[Styles | str, int]:
