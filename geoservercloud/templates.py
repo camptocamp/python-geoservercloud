@@ -29,54 +29,6 @@ class Templates:
         }
 
     @staticmethod
-    def layer_group(
-        group: str,
-        layers: list[str],
-        workspace: str,
-        title: str | dict[str, Any],
-        abstract: str | dict[str, Any],
-        epsg: int = 4326,
-        mode: str = "SINGLE",
-    ) -> dict[str, dict[str, Any]]:
-        modes = ["SINGLE", "OPAQUE_CONTAINER", "NAMED", "CONTAINER", "EO"]
-        if not mode in modes:
-            raise ValueError(f"Invalid mode: {mode}, possible values are: {modes}")
-        template = {
-            "layerGroup": {
-                "name": group,
-                "workspace": {"name": workspace},
-                "mode": mode,
-                "publishables": {
-                    "published": [
-                        {"@type": "layer", "name": f"{workspace}:{layer}"}
-                        for layer in layers
-                    ]
-                },
-                "styles": {"style": [{"name": ""}] * len(layers)},
-                "bounds": {
-                    "minx": EPSG_BBOX[epsg]["nativeBoundingBox"]["minx"],
-                    "maxx": EPSG_BBOX[epsg]["nativeBoundingBox"]["maxx"],
-                    "miny": EPSG_BBOX[epsg]["nativeBoundingBox"]["miny"],
-                    "maxy": EPSG_BBOX[epsg]["nativeBoundingBox"]["maxy"],
-                    "crs": f"EPSG:{epsg}",
-                },
-                "enabled": True,
-                "advertised": True,
-            }
-        }
-        if title:
-            if type(title) is dict:
-                template["layerGroup"]["internationalTitle"] = title
-            else:
-                template["layerGroup"]["title"] = title
-        if abstract:
-            if type(abstract) is dict:
-                template["layerGroup"]["internationalAbstract"] = abstract
-            else:
-                template["layerGroup"]["abstract"] = abstract
-        return template
-
-    @staticmethod
     def wmts_layer(
         name: str,
         native_name: str,

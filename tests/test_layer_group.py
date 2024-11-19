@@ -42,6 +42,58 @@ def layer_group_payload() -> dict[str, dict[str, Any]]:
     }
 
 
+@pytest.fixture(scope="module")
+def layer_groups_payload() -> dict[str, dict[str, Any]]:
+    return {
+        "layerGroups": {
+            "layerGroup": [
+                {
+                    "name": "layer_group_1",
+                    "href": "http://localhost/layer_group_1",
+                },
+                {
+                    "name": "layer_group_2",
+                    "href": "http://localhost/layer_group_2",
+                },
+                {
+                    "name": "layer_group_3",
+                    "href": "http://localhost/layer_group_3",
+                },
+            ]
+        }
+    }
+
+
+def test_get_layer_groups(
+    geoserver: GeoServerCloud, layer_groups_payload: dict[str, dict[str, Any]]
+) -> None:
+    with responses.RequestsMock() as rsps:
+        rsps.get(
+            url=f"{GEOSERVER_URL}/rest/workspaces/{WORKSPACE}/layergroups.json",
+            status=200,
+            json=layer_groups_payload,
+        )
+
+        content, code = geoserver.get_layer_groups(workspace_name=WORKSPACE)
+
+        assert content == layer_groups_payload["layerGroups"]["layerGroup"]
+        assert code == 200
+
+
+def test_get_layer_group(geoserver: GeoServerCloud, layer_group_payload) -> None:
+    with responses.RequestsMock() as rsps:
+        rsps.get(
+            url=f"{GEOSERVER_URL}/rest/workspaces/{WORKSPACE}/layergroups/{LAYER_GROUP}.json",
+            status=200,
+            json=layer_group_payload,
+        )
+
+        content, code = geoserver.get_layer_group(WORKSPACE, LAYER_GROUP)
+
+        assert content == layer_group_payload["layerGroup"]
+        assert code == 200
+
+
 def test_create_layer_group(
     geoserver: GeoServerCloud, layer_group_payload: dict[str, dict[str, Any]]
 ) -> None:
@@ -72,6 +124,8 @@ def test_create_layer_group(
 def test_update_layer_group(
     geoserver: GeoServerCloud, layer_group_payload: dict[str, dict[str, Any]]
 ) -> None:
+    layer_group_payload["layerGroup"]["title"] = None
+    layer_group_payload["layerGroup"]["abstract"] = None
     with responses.RequestsMock() as rsps:
         rsps.get(
             url=f"{GEOSERVER_URL}/rest/workspaces/{WORKSPACE}/layergroups/{LAYER_GROUP}.json",
@@ -91,6 +145,20 @@ def test_update_layer_group(
             title=TITLE,
             abstract=ABSTRACT,
         )
+
+        assert content == ""
+        assert code == 200
+
+
+def test_delete_layer_group(geoserver: GeoServerCloud) -> None:
+    with responses.RequestsMock() as rsps:
+        rsps.delete(
+            url=f"{GEOSERVER_URL}/rest/workspaces/{WORKSPACE}/layergroups/{LAYER_GROUP}.json",
+            status=200,
+            body=b"",
+        )
+
+        content, code = geoserver.delete_layer_group(WORKSPACE, LAYER_GROUP)
 
         assert content == ""
         assert code == 200

@@ -1,6 +1,5 @@
 from argparse import ArgumentParser
 
-from geoservercloud.models.resourcedirectory import ResourceDirectory
 from geoservercloud.services import RestService
 
 
@@ -50,7 +49,7 @@ class GeoServerCloudSync:
         """
         Copy a workspace from the source to the destination GeoServer instance.
         If deep_copy is True, the copy includes the PostGIS datastores, the feature types in the datastores,
-        the corresponding layers and the styles in the workspace (including images).
+        the corresponding layers, the layer groups and the styles in the workspace (including images).
         """
         workspace, status_code = self.src_instance.get_workspace(workspace_name)
         if isinstance(workspace, str):
@@ -67,6 +66,9 @@ class GeoServerCloudSync:
             content, status_code = self.copy_pg_datastores(
                 workspace_name, deep_copy=True
             )
+            if self.not_ok(status_code):
+                return content, status_code
+            content, status_code = self.copy_layer_groups(workspace_name)
             if self.not_ok(status_code):
                 return content, status_code
         return new_workspace, new_ws_status_code
@@ -164,6 +166,38 @@ class GeoServerCloudSync:
         if isinstance(layer, str):
             return layer, status_code
         return self.dst_instance.update_layer(layer, workspace_name)
+
+    def copy_layer_groups(self, workspace_name: str) -> tuple[str, int]:
+        """
+        Copy all layer groups in a workspace from source to destination GeoServer instance
+        """
+        layer_groups, status_code = self.src_instance.get_layer_groups(workspace_name)
+        if isinstance(layer_groups, str):
+            return layer_groups, status_code
+        elif layer_groups.aslist() == []:
+            return "", status_code
+        for layer_group in layer_groups.aslist():
+            content, status_code = self.copy_layer_group(
+                workspace_name, layer_group["name"]
+            )
+            if self.not_ok(status_code):
+                return content, status_code
+        return content, status_code
+
+    def copy_layer_group(
+        self, workspace_name: str, layer_group_name: str
+    ) -> tuple[str, int]:
+        """
+        Copy a layer group from source to destination GeoServer instance
+        """
+        layer_group, status_code = self.src_instance.get_layer_group(
+            workspace_name, layer_group_name
+        )
+        if isinstance(layer_group, str):
+            return layer_group, status_code
+        return self.dst_instance.create_layer_group(
+            layer_group_name, workspace_name, layer_group
+        )
 
     def copy_styles(
         self, workspace_name: str | None = None, include_images: bool = True
