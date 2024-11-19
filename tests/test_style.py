@@ -154,6 +154,14 @@ def test_create_style_definition(mocker, geoserver: GeoServerCloud) -> None:
 def test_create_style_from_file(geoserver: GeoServerCloud) -> None:
     file_path = (Path(__file__).parent / "resources/style.sld").resolve()
     with responses.RequestsMock() as rsps:
+        rsps.get(
+            url=f"{geoserver.url}/rest/styles/{STYLE}",
+            status=200,
+        )
+        rsps.put(
+            url=f"{geoserver.url}/rest/styles/{STYLE}",
+            status=200,
+        )
         rsps.put(
             url=f"{geoserver.url}/rest/styles/{STYLE}.sld",
             status=201,
@@ -178,6 +186,14 @@ def test_create_style_from_file(geoserver: GeoServerCloud) -> None:
 def test_update_style_from_file(geoserver: GeoServerCloud) -> None:
     file_path = (Path(__file__).parent / "resources/style.sld").resolve()
     with responses.RequestsMock() as rsps:
+        rsps.get(
+            url=f"{geoserver.url}/rest/styles/{STYLE}",
+            status=200,
+        )
+        rsps.put(
+            url=f"{geoserver.url}/rest/styles/{STYLE}",
+            status=200,
+        )
         rsps.put(
             url=f"{geoserver.url}/rest/styles/{STYLE}.sld",
             status=200,
@@ -202,6 +218,14 @@ def test_update_style_from_file(geoserver: GeoServerCloud) -> None:
 def test_create_style_from_file_zip(geoserver: GeoServerCloud) -> None:
     file_path = (Path(__file__).parent / "resources/style.zip").resolve()
     with responses.RequestsMock() as rsps:
+        rsps.get(
+            url=f"{geoserver.url}/rest/styles/{STYLE}",
+            status=200,
+        )
+        rsps.put(
+            url=f"{geoserver.url}/rest/styles/{STYLE}",
+            status=200,
+        )
         rsps.put(
             url=f"{geoserver.url}/rest/styles/{STYLE}",
             status=201,
@@ -222,7 +246,15 @@ def test_create_style_from_file_zip(geoserver: GeoServerCloud) -> None:
 
 
 def test_create_style_from_file_unsupported_format(geoserver: GeoServerCloud) -> None:
-    with responses.RequestsMock():
+    with responses.RequestsMock() as rsps:
+        rsps.get(
+            url=f"{geoserver.url}/rest/styles/{STYLE}",
+            status=200,
+        )
+        rsps.put(
+            url=f"{geoserver.url}/rest/styles/{STYLE}",
+            status=200,
+        )
         with pytest.raises(ValueError) as excinfo:
             geoserver.create_style_from_file(
                 style_name=STYLE,

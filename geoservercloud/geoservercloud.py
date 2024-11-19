@@ -492,7 +492,13 @@ class GeoServerCloud:
     ) -> tuple[str, int]:
         """Create a style (SLD) from a file, or update it if it already exists.
         Supported file extensions are .sld and .zip."""
+        file_base_name = Path(file).name
         file_ext = Path(file).suffix
+        content, code = self.create_style_definition(
+            style_name, f"{file_base_name}.sld", workspace_name
+        )
+        if code >= 400:
+            return content, code
         if file_ext == ".sld":
             file_format = "sld"
         elif file_ext == ".zip":
