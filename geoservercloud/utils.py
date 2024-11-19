@@ -43,7 +43,7 @@ def java_binding(data_type: str) -> str:
         case "float":
             return "java.lang.Float"
         case "datetime":
-            return "java.util.Date"
+            return "java.sql.Timestamp"
         case "Point":
             return "org.locationtech.jts.geom.Point"
         case "Line":
