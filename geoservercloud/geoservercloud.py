@@ -392,6 +392,16 @@ class GeoServerCloud:
         )
         return self.rest_service.create_feature_type(feature_type=feature_type)
 
+    def delete_feature_type(
+        self, workspace_name: str, datastore_name: str, layer_name: str
+    ) -> tuple[str, int]:
+        """
+        Delete a feature type and associated layer
+        """
+        return self.rest_service.delete_feature_type(
+            workspace_name, datastore_name, layer_name
+        )
+
     def create_layer_group(
         self,
         group: str,

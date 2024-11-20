@@ -288,6 +288,15 @@ class RestService:
             )
         return response.content.decode(), response.status_code
 
+    def delete_feature_type(
+        self, workspace_name: str, datastore_name: str, layer_name: str
+    ) -> tuple[str, int]:
+        response: Response = self.rest_client.delete(
+            self.rest_endpoints.featuretype(workspace_name, datastore_name, layer_name),
+            params={"recurse": "true"},
+        )
+        return response.content.decode(), response.status_code
+
     def create_layer_group(
         self,
         group: str,

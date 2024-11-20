@@ -242,3 +242,19 @@ def test_update_feature_type(
 
         assert content == ""
         assert code == 200
+
+
+def test_delete_feature_type(geoserver: GeoServerCloud) -> None:
+    with responses.RequestsMock() as rsps:
+        rsps.delete(
+            f"{geoserver.url}/rest/workspaces/{WORKSPACE}/datastores/{STORE}/featuretypes/{LAYER}.json",
+            status=200,
+            body=b"",
+            match=[responses.matchers.query_param_matcher({"recurse": "true"})],
+        )
+        content, code = geoserver.delete_feature_type(
+            workspace_name=WORKSPACE, datastore_name=STORE, layer_name=LAYER
+        )
+
+        assert content == ""
+        assert code == 200
