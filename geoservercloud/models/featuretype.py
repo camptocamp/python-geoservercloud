@@ -108,9 +108,9 @@ class FeatureType(EntityModel):
         feature_type = content["featureType"]
         workspace_name = feature_type["store"]["name"].split(":")[0]
         store_name = feature_type["store"]["name"].split(":")[1]
-        title = feature_type.get("title", feature_type.get("internationalTitle"))
+        title = feature_type.get("internationalTitle", feature_type.get("title"))
         abstract = feature_type.get(
-            "abstract", feature_type.get("internationalAbstract")
+            "internationalAbstract", feature_type.get("abstract")
         )
         if feature_type.get("metadataLinks"):
             metadata_links_payload = feature_type["metadataLinks"]["metadataLink"]
@@ -201,7 +201,13 @@ class FeatureType(EntityModel):
         return {"featureType": content}
 
     def put_payload(self) -> dict[str, Any]:
-        return self.post_payload()
+        content = self.post_payload()
+        # Force a null value on non-i18ned attributes, otherwise GeoServer sets it to the first i18n value
+        if content["featureType"].get("internationalTitle"):
+            content["featureType"]["title"] = None
+        if content["featureType"].get("internationalAbstract"):
+            content["featureType"]["abstract"] = None
+        return content
 
     def __repr__(self):
         return json.dumps(self.post_payload(), indent=4)
