@@ -147,6 +147,16 @@ def feature_type_post_payload(
     return {"featureType": content}
 
 
+@pytest.fixture(scope="module")
+def feature_type_put_payload(
+    feature_type_post_payload: dict[str, dict[str, Any]]
+) -> dict[str, dict[str, Any]]:
+    content = feature_type_post_payload.copy()
+    content["featureType"]["title"] = None
+    content["featureType"]["abstract"] = None
+    return content
+
+
 def test_get_feature_types(
     geoserver: GeoServerCloud, feature_types_get_response_payload: dict[str, Any]
 ) -> None:
@@ -218,7 +228,7 @@ def test_create_feature_type(
 
 
 def test_update_feature_type(
-    geoserver: GeoServerCloud, feature_type_post_payload: dict[str, dict[str, Any]]
+    geoserver: GeoServerCloud, feature_type_put_payload: dict[str, dict[str, Any]]
 ) -> None:
     with responses.RequestsMock() as rsps:
         rsps.get(
@@ -227,7 +237,7 @@ def test_update_feature_type(
         )
         rsps.put(
             f"{geoserver.url}/rest/workspaces/{WORKSPACE}/datastores/{STORE}/featuretypes/{LAYER}.json",
-            match=[responses.matchers.json_params_matcher(feature_type_post_payload)],
+            match=[responses.matchers.json_params_matcher(feature_type_put_payload)],
             status=200,
             body=b"",
         )
