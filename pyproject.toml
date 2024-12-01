@@ -17,9 +17,9 @@ types-xmltodict = "0.14.0.20241009"
 pytest-mock = "^3.14.0"
 
 [tool.poetry.group.dev.dependencies]
-pytest = "8.3.3"
+pytest = "8.3.4"
 responses = "0.25.3"
-coverage = "7.6.4"
+coverage = "7.6.8"
 
 [build-system]
 requires = [
