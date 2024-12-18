@@ -1,5 +1,5 @@
 {
-  extends: ["config:base"],
+  extends: ["config:recommended"],
   timezone: "Europe/Zurich",
   schedule: "after 5pm on the first day of the month",
   labels: ["dependencies"],
@@ -14,9 +14,10 @@
   },
   baseBranches: ["master"],
   "pre-commit": { enabled: true },
-  regexManagers: [
+  customManagers: [
     /** Do updates on pre-commit additional dependencies */
     {
+      customType: "regex",
       fileMatch: ["^\\.pre\\-commit\\-config\\.yaml$"],
       matchStrings: [
         " +- '?(?<depName>[^' @=]+)(@|==)(?<currentValue>[^' @=]+)'? # (?<datasource>.+)",
@@ -43,10 +44,10 @@
     },
     /** Group Poetry packages */
     {
-      matchPackagePrefixes: ["poetry-"],
       groupName: "Poetry",
       automerge: true,
       matchDepNames: ["poetry", "pip"],
+      matchPackageNames: ["poetry-{/,}**"],
     },
     /** Accept only the patch on stabilization branches */
     {
@@ -69,7 +70,7 @@
     },
     /** Disable update of Python version in pyproject.toml */
     {
-      matchFiles: ["pyproject.toml"],
+      matchFileNames: ["pyproject.toml"],
       enabled: false,
       matchDepNames: ["python"],
     },
