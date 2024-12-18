@@ -1,8 +1,12 @@
 {
-  extends: ["config:base"],
-  timezone: "Europe/Zurich",
-  schedule: "after 5pm on the first day of the month",
-  labels: ["dependencies"],
+  extends: [
+    'config:recommended',
+  ],
+  timezone: 'Europe/Zurich',
+  schedule: 'after 5pm on the first day of the month',
+  labels: [
+    'dependencies',
+  ],
   separateMajorMinor: true,
   separateMinorPatch: true,
   prHourlyLimit: 0,
@@ -10,73 +14,94 @@
   lockFileMaintenance: {
     enabled: true,
     automerge: true,
-    schedule: "after 5pm on the first day of the month",
+    schedule: 'after 5pm on the first day of the month',
   },
-  baseBranches: ["master"],
-  "pre-commit": { enabled: true },
-  regexManagers: [
-    /** Do updates on pre-commit additional dependencies */
+  baseBranches: [
+    'master',
+  ],
+  'pre-commit': {
+    enabled: true,
+  },
+  customManagers: [
     {
-      fileMatch: ["^\\.pre\\-commit\\-config\\.yaml$"],
+      customType: 'regex',
+      fileMatch: [
+        '^\\.pre\\-commit\\-config\\.yaml$',
+      ],
       matchStrings: [
         " +- '?(?<depName>[^' @=]+)(@|==)(?<currentValue>[^' @=]+)'? # (?<datasource>.+)",
       ],
     },
   ],
   packageRules: [
-    /** Auto merge the dev dependency update */
     {
-      matchDepTypes: ["devDependencies"],
+      matchDepTypes: [
+        'devDependencies',
+      ],
       automerge: true,
     },
-    /** Group and auto merge the patch updates */
     {
-      matchUpdateTypes: ["patch"],
-      groupName: "all patch versions",
-      automerge: true,
-    },
-    /** Group and auto merge the minor updates */
-    {
-      matchUpdateTypes: ["minor"],
-      groupName: "all minor versions",
-      automerge: true,
-    },
-    /** Group Poetry packages */
-    {
-      matchPackagePrefixes: ["poetry-"],
-      groupName: "Poetry",
-      automerge: true,
-      matchDepNames: ["poetry", "pip"],
-    },
-    /** Accept only the patch on stabilization branches */
-    {
-      matchBaseBranches: ["/^[0-9]+\\.[0-9]+$/"],
       matchUpdateTypes: [
-        "major",
-        "minor",
-        "pin",
-        "digest",
-        "lockFileMaintenance",
-        "rollback",
-        "bump",
+        'patch',
+      ],
+      groupName: 'all patch versions',
+      automerge: true,
+    },
+    {
+      matchUpdateTypes: [
+        'minor',
+      ],
+      groupName: 'all minor versions',
+      automerge: true,
+    },
+    {
+      groupName: 'Poetry',
+      automerge: true,
+      matchDepNames: [
+        'poetry',
+        'pip',
+      ],
+      matchPackageNames: [
+        'poetry-{/,}**',
+      ],
+    },
+    {
+      matchBaseBranches: [
+        '/^[0-9]+\\.[0-9]+$/',
+      ],
+      matchUpdateTypes: [
+        'major',
+        'minor',
+        'pin',
+        'digest',
+        'lockFileMaintenance',
+        'rollback',
+        'bump',
       ],
       enabled: false,
     },
-    /** Support the 4 parts of shellcheck-py version with a v prefix */
     {
-      versioning: "regex:^v(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)\\.(?<build>\\d+)$",
-      matchDepNames: ["shellcheck-py/shellcheck-py"],
+      versioning: 'regex:^v(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)\\.(?<build>\\d+)$',
+      matchDepNames: [
+        'shellcheck-py/shellcheck-py',
+      ],
     },
-    /** Disable update of Python version in pyproject.toml */
     {
-      matchFiles: ["pyproject.toml"],
+      matchFileNames: [
+        'pyproject.toml',
+      ],
       enabled: false,
-      matchDepNames: ["python"],
+      matchDepNames: [
+        'python',
+      ],
     },
-    /** Group and auto merge the CI dependencies */
     {
-      matchFileNames: [".github/**", ".pre-commit-config.yaml", "ci/**"],
-      groupName: "CI dependencies",
+      matchFileNames: [
+        '.github/**',
+        '.pre-commit-config.yaml',
+        'ci/**',
+      ],
+      groupName: 'CI dependencies',
       automerge: true,
     },
   ],
