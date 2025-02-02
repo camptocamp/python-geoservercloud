@@ -8,7 +8,7 @@ help: ## Display this help message
 
 .PHONY: install
 install: ## Install package
-	poetry lock --no-update
+	poetry lock
 	poetry install
 
 .PHONY: tests
