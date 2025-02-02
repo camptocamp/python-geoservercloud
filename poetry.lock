@@ -400,14 +400,14 @@ source = ["Cython (>=3.0.11)"]
 
 [[package]]
 name = "owslib"
-version = "0.32.0"
+version = "0.32.1"
 description = "OGC Web Service utility library"
 category = "main"
 optional = false
 python-versions = ">=3.10"
 files = [
-    {file = "OWSLib-0.32.0-py2.py3-none-any.whl", hash = "sha256:69d8d64138612b5f3c09fdac69e53651cc2e3b925f292ab7bde872435e78cf17"},
-    {file = "OWSLib-0.32.0.tar.gz", hash = "sha256:7513860d3102ae8d4dc5efd8652ff3c61eca3a8cb220d6c8601121357cd2b01a"},
+    {file = "OWSLib-0.32.1-py2.py3-none-any.whl", hash = "sha256:79968b85bb920b8d5ff736ad5eb440157adadfdf40f585aad05040f6e10e61b5"},
+    {file = "OWSLib-0.32.1.tar.gz", hash = "sha256:339d499849a14b9c27eeebb67fbcfa52c2e7be82251750dab8b5721669cd1f04"},
 ]
 
 [package.dependencies]
@@ -587,14 +587,14 @@ use-chardet-on-py3 = ["chardet (>=3.0.2,<6)"]
 
 [[package]]
 name = "responses"
-version = "0.25.3"
+version = "0.25.6"
 description = "A utility library for mocking out the `requests` Python library."
 category = "dev"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "responses-0.25.3-py3-none-any.whl", hash = "sha256:521efcbc82081ab8daa588e08f7e8a64ce79b91c39f6e62199b19159bea7dbcb"},
-    {file = "responses-0.25.3.tar.gz", hash = "sha256:617b9247abd9ae28313d57a75880422d55ec63c29d33d629697590a034358dba"},
+    {file = "responses-0.25.6-py3-none-any.whl", hash = "sha256:9cac8f21e1193bb150ec557875377e41ed56248aed94e4567ed644db564bacf1"},
+    {file = "responses-0.25.6.tar.gz", hash = "sha256:eae7ce61a9603004e76c05691e7c389e59652d91e94b419623c12bbfb8e331d8"},
 ]
 
 [package.dependencies]
@@ -719,4 +719,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.10,<4.0"
-content-hash = "449a709c791dae3b767d1c7db6fea9a7b9b7945708dda4b2af028e2a9c28f498"
+content-hash = "45dce2357e02388954856d45c2599d0b981e2e5b9294349cc4ba09e4f33d2217"
