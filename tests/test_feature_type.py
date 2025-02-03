@@ -149,7 +149,7 @@ def feature_type_post_payload(
 
 @pytest.fixture(scope="module")
 def feature_type_put_payload(
-    feature_type_post_payload: dict[str, dict[str, Any]]
+    feature_type_post_payload: dict[str, dict[str, Any]],
 ) -> dict[str, dict[str, Any]]:
     content = feature_type_post_payload.copy()
     content["featureType"]["title"] = None
