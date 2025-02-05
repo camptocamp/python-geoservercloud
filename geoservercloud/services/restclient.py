@@ -1,6 +1,7 @@
 from typing import Any
-
 import requests
+from. restlogger import gs_logger
+
 
 TIMEOUT = 120
 
@@ -17,9 +18,10 @@ class RestClient:
         username and password for GeoServer
     """
 
-    def __init__(self, url: str, auth: tuple[str, str]) -> None:
+    def __init__(self, url: str, auth: tuple[str, str], verifytls: bool = True) -> None:
         self.url: str = url
         self.auth: tuple[str, str] = auth
+        self.verifytls: bool = verifytls
 
     def get(
         self,
@@ -27,13 +29,16 @@ class RestClient:
         params: dict[str, str] | None = None,
         headers: dict[str, str] | None = None,
     ) -> requests.Response:
+        full_url = f"{self.url}{path}"
         response: requests.Response = requests.get(
-            f"{self.url}{path}",
+            full_url,
             params=params,
             headers=headers,
             auth=self.auth,
             timeout=TIMEOUT,
+            verify=self.verifytls,
         )
+        gs_logger.info("[GET] (%s) - %s", response.status_code, full_url, extra={"response": response})
         if response.status_code != 404:
             response.raise_for_status()
         return response
@@ -46,16 +51,18 @@ class RestClient:
         json: dict[str, dict[str, Any] | Any] | None = None,
         data: bytes | None = None,
     ) -> requests.Response:
-
+        full_url = f"{self.url}{path}"
         response: requests.Response = requests.post(
-            f"{self.url}{path}",
+            full_url,
             params=params,
             headers=headers,
             json=json,
             data=data,
             auth=self.auth,
             timeout=TIMEOUT,
+            verify=self.verifytls,
         )
+        gs_logger.info("[GET] (%s) - %s", response.status_code, full_url, extra={"response": response})
         if response.status_code != 409:
             response.raise_for_status()
         return response
@@ -68,15 +75,18 @@ class RestClient:
         json: dict[str, dict[str, Any]] | None = None,
         data: bytes | None = None,
     ) -> requests.Response:
+        full_url = f"{self.url}{path}"
         response: requests.Response = requests.put(
-            f"{self.url}{path}",
+            full_url,
             params=params,
             headers=headers,
             json=json,
             data=data,
             auth=self.auth,
             timeout=TIMEOUT,
+            verify=self.verifytls,
         )
+        gs_logger.info("[GET] (%s) - %s", response.status_code, full_url, extra={"response": response})
         response.raise_for_status()
         return response
 
@@ -86,13 +96,16 @@ class RestClient:
         params: dict[str, str] | None = None,
         headers: dict[str, str] | None = None,
     ) -> requests.Response:
+        full_url = f"{self.url}{path}"
         response: requests.Response = requests.delete(
-            f"{self.url}{path}",
+            full_url,
             params=params,
             headers=headers,
             auth=self.auth,
             timeout=TIMEOUT,
+            verify=self.verifytls,
         )
+        gs_logger.info("[GET] (%s) - %s", response.status_code, full_url, extra={"response": response})
         if response.status_code != 404:
             response.raise_for_status()
         return response

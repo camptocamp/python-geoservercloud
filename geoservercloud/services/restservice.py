@@ -35,10 +35,10 @@ class RestService:
         username and password for GeoServer
     """
 
-    def __init__(self, url: str, auth: tuple[str, str]) -> None:
+    def __init__(self, url: str, auth: tuple[str, str], verifytls: bool = True) -> None:
         self.url: str = url
         self.auth: tuple[str, str] = auth
-        self.rest_client = RestClient(url, auth)
+        self.rest_client = RestClient(url, auth, verifytls)
         self.acl_endpoints = self.AclEndpoints()
         self.gwc_endpoints = self.GwcEndpoints()
         self.rest_endpoints = self.RestEndpoints()

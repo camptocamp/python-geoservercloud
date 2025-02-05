@@ -37,14 +37,15 @@ class GeoServerCloud:
         url: str = "http://localhost:9090/geoserver/cloud",
         user: str = "admin",
         password: str = "geoserver",  # nosec
+        verifytls: bool = True,
     ) -> None:
 
         self.url: str = url.strip("/")
         self.user: str = user
         self.password: str = password
         self.auth: tuple[str, str] = (user, password)
-        self.rest_service: RestService = RestService(url, self.auth)
-        self.ows_service: OwsService = OwsService(url, self.auth)
+        self.rest_service: RestService = RestService(url, self.auth, verifytls)
+        self.ows_service: OwsService = OwsService(url, self.auth, verifytls)
         self.wms: WebMapService_1_3_0 | None = None
         self.wmts: WebMapTileService | None = None
         self.default_workspace: str | None = None

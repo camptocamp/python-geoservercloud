@@ -10,11 +10,11 @@ from geoservercloud.services.restclient import RestClient
 
 
 class OwsService:
-    def __init__(self, url: str, auth: tuple[str, str]) -> None:
+    def __init__(self, url: str, auth: tuple[str, str], verifytls: bool = True) -> None:
         self.url: str = url
         self.auth: tuple[str, str] = auth
         self.ows_endpoints = self.OwsEndpoints()
-        self.rest_client = RestClient(url, auth)
+        self.rest_client = RestClient(url, auth, verifytls)
 
     def create_wms(self, workspace_name: str | None = None) -> WebMapService_1_3_0:
         if workspace_name is None:
