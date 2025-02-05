@@ -31,17 +31,23 @@ class GeoServerCloudSync:
         dst_url: str,
         dst_user: str,
         dst_password: str,
+        src_verifytls: bool = True,
+        dst_verifytls: bool = True,
     ) -> None:
         self.src_url: str = src_url.strip("/")
         self.src_user: str = src_user
         self.src_password: str = src_password
         self.src_auth: tuple[str, str] = (src_user, src_password)
-        self.src_instance: RestService = RestService(src_url, self.src_auth)
+        self.src_instance: RestService = RestService(
+            src_url, self.src_auth, src_verifytls
+        )
         self.dst_url: str = dst_url.strip("/")
         self.dst_user: str = dst_user
         self.dst_password: str = dst_password
         self.dst_auth: tuple[str, str] = (dst_user, dst_password)
-        self.dst_instance: RestService = RestService(dst_url, self.dst_auth)
+        self.dst_instance: RestService = RestService(
+            dst_url, self.dst_auth, src_verifytls
+        )
 
     def copy_workspace(
         self, workspace_name: str, deep_copy: bool = False
