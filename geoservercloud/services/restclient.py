@@ -1,6 +1,6 @@
 from typing import Any
 import requests
-from. restlogger import gs_logger
+from .restlogger import gs_logger
 
 
 TIMEOUT = 120
@@ -38,7 +38,12 @@ class RestClient:
             timeout=TIMEOUT,
             verify=self.verifytls,
         )
-        gs_logger.info("[GET] (%s) - %s", response.status_code, full_url, extra={"response": response})
+        gs_logger.info(
+            "[GET] (%s) - %s",
+            response.status_code,
+            full_url,
+            extra={"response": response},
+        )
         if response.status_code != 404:
             response.raise_for_status()
         return response
@@ -62,7 +67,12 @@ class RestClient:
             timeout=TIMEOUT,
             verify=self.verifytls,
         )
-        gs_logger.info("[GET] (%s) - %s", response.status_code, full_url, extra={"response": response})
+        gs_logger.info(
+            "[GET] (%s) - %s",
+            response.status_code,
+            full_url,
+            extra={"response": response},
+        )
         if response.status_code != 409:
             response.raise_for_status()
         return response
@@ -86,7 +96,12 @@ class RestClient:
             timeout=TIMEOUT,
             verify=self.verifytls,
         )
-        gs_logger.info("[GET] (%s) - %s", response.status_code, full_url, extra={"response": response})
+        gs_logger.info(
+            "[GET] (%s) - %s",
+            response.status_code,
+            full_url,
+            extra={"response": response},
+        )
         response.raise_for_status()
         return response
 
@@ -105,7 +120,12 @@ class RestClient:
             timeout=TIMEOUT,
             verify=self.verifytls,
         )
-        gs_logger.info("[GET] (%s) - %s", response.status_code, full_url, extra={"response": response})
+        gs_logger.info(
+            "[GET] (%s) - %s",
+            response.status_code,
+            full_url,
+            extra={"response": response},
+        )
         if response.status_code != 404:
             response.raise_for_status()
         return response
