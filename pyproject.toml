@@ -12,14 +12,14 @@ python = ">=3.10,<4.0"
 requests = "2.32.3"
 OWSLib = "0.32.1"
 xmltodict = "0.14.2"
-types-requests = "2.32.0.20241016"
+types-requests = "2.32.0.20250301"
 types-xmltodict = "0.14.0.20241009"
 pytest-mock = "^3.14.0"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "8.3.4"
 responses = "0.25.6"
-coverage = "7.6.10"
+coverage = "7.6.12"
 
 [build-system]
 requires = [
