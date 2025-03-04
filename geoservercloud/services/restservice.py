@@ -17,6 +17,7 @@ from geoservercloud.models.resourcedirectory import ResourceDirectory
 from geoservercloud.models.style import Style
 from geoservercloud.models.styles import Styles
 from geoservercloud.models.wmssettings import WmsSettings
+from geoservercloud.models.wmsstore import WmsStore
 from geoservercloud.models.workspace import Workspace
 from geoservercloud.models.workspaces import Workspaces
 from geoservercloud.services.restclient import RestClient
@@ -128,6 +129,39 @@ class RestService:
                 self.rest_endpoints.datastore(workspace_name, datastore.name),
                 json=datastore.put_payload(),
             )
+        return response.content.decode(), response.status_code
+
+    def get_wms_store(
+        self, workspace_name: str, wms_store_name: str
+    ) -> tuple[WmsStore | str, int]:
+        response: Response = self.rest_client.get(
+            self.rest_endpoints.wmsstore(workspace_name, wms_store_name)
+        )
+        return self.deserialize_response(response, WmsStore)
+
+    def create_wms_store(
+        self, workspace_name: str, wms_store: WmsStore
+    ) -> tuple[str, int]:
+        if not self.resource_exists(
+            self.rest_endpoints.wmsstore(workspace_name, wms_store.name)
+        ):
+            response: Response = self.rest_client.post(
+                self.rest_endpoints.wmsstores(workspace_name),
+                json=wms_store.post_payload(),
+            )
+        else:
+            response = self.rest_client.put(
+                self.rest_endpoints.wmsstore(workspace_name, wms_store.name),
+                json=wms_store.put_payload(),
+            )
+        return response.content.decode(), response.status_code
+
+    def delete_wms_store(
+        self, workspace_name: str, wms_store_name: str
+    ) -> tuple[str, int]:
+        path = self.rest_endpoints.wmsstore(workspace_name, wms_store_name)
+        params: dict[str, str] = {"recurse": "true"}
+        response: Response = self.rest_client.delete(path, params=params)
         return response.content.decode(), response.status_code
 
     def create_wmts_store(

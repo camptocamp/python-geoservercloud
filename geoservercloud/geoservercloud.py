@@ -13,6 +13,7 @@ from geoservercloud.models.layer import Layer
 from geoservercloud.models.layergroup import LayerGroup
 from geoservercloud.models.style import Style
 from geoservercloud.models.wmssettings import WmsSettings
+from geoservercloud.models.wmsstore import WmsStore
 from geoservercloud.models.workspace import Workspace
 from geoservercloud.services import OwsService, RestService
 from geoservercloud.templates import Templates
@@ -321,6 +322,43 @@ class GeoServerCloud:
             self.default_datastore = datastore_name
 
         return content, code
+
+    def get_wms_store(
+        self, workspace_name: str, datastore_name: str
+    ) -> tuple[dict[str, Any] | str, int]:
+        """
+        Get a WMS by workspace and name
+        """
+        wms_store, status_code = self.rest_service.get_wms_store(
+            workspace_name, datastore_name
+        )
+        if isinstance(wms_store, str):
+            return wms_store, status_code
+        return wms_store.asdict(), status_code
+
+    def create_wms_store(
+        self,
+        workspace_name: str,
+        wms_store_name: str,
+        capabilities_url: str,
+    ) -> tuple[str, int]:
+        """
+        Create a cascaded WMS store, or update it if it already exist.
+        """
+        wms_store = WmsStore(
+            workspace_name,
+            wms_store_name,
+            capabilities_url,
+        )
+        return self.rest_service.create_wms_store(workspace_name, wms_store)
+
+    def delete_wms_store(
+        self, workspace_name: str, wms_store_name: str
+    ) -> tuple[str, int]:
+        """
+        Delete a WMS store recursively
+        """
+        return self.rest_service.delete_wms_store(workspace_name, wms_store_name)
 
     def create_wmts_store(
         self,
