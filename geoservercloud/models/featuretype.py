@@ -1,33 +1,14 @@
 import json
 from typing import Any
 
-from geoservercloud.models.common import I18N, EntityModel, ReferencedObjectModel
-from geoservercloud.utils import EPSG_BBOX
+from geoservercloud.models.abstractlayer import AbstractLayer
+from geoservercloud.models.common import (
+    EntityModel,
+    MetadataLink,
+)
 
 
-class MetadataLink:
-    def __init__(self, url: str, metadata_type="TC211", mime_type: str = "text/xml"):
-        self.url: str = url
-        self.metadata_type: str = metadata_type
-        self.type: str = mime_type
-
-    @classmethod
-    def from_get_response_payload(cls, content: dict):
-        return cls(
-            url=content["content"],
-            metadata_type=content["metadataType"],
-            mime_type=content["type"],
-        )
-
-    def asdict(self) -> dict[str, str]:
-        return {
-            "content": self.url,
-            "metadataType": self.metadata_type,
-            "type": self.type,
-        }
-
-
-class FeatureType(EntityModel):
+class FeatureType(AbstractLayer):
 
     def __init__(
         self,
@@ -47,6 +28,7 @@ class FeatureType(EntityModel):
         attributes: list[dict[str, Any]] | None = None,
         projection_policy: str | None = None,
         enabled: bool | None = None,
+        epsg_code: int | None = None,
         advertised: bool | None = None,
         service_configuration: bool | None = None,
         simple_conversion_enabled: bool | None = None,
@@ -59,30 +41,26 @@ class FeatureType(EntityModel):
         circular_arc_present: bool | None = None,
         encode_measures: bool | None = None,
         metadata_links: list[MetadataLink] | None = None,
-        epsg_code: int | None = None,
     ) -> None:
-        self.name: str = name
-        self.native_name: str = native_name
-        self.srs: str | None = srs
-        self.workspace_name: str = workspace_name
-        self.store = ReferencedObjectModel(f"{workspace_name}:{store_name}")
-        self.namespace: ReferencedObjectModel | None = (
-            ReferencedObjectModel(namespace_name) if namespace_name else None
+        super().__init__(
+            name=name,
+            native_name=native_name,
+            workspace_name=workspace_name,
+            store_name=store_name,
+            srs=srs,
+            namespace_name=namespace_name,
+            title=title,
+            abstract=abstract,
+            keywords=keywords,
+            native_bounding_box=native_bounding_box,
+            lat_lon_bounding_box=lat_lon_bounding_box,
+            projection_policy=projection_policy,
+            enabled=enabled,
+            epsg_code=epsg_code,
+            service_configuration=service_configuration,
         )
-        self.title: I18N | None = (
-            I18N(("title", "internationalTitle"), title) if title else None
-        )
-        self.abstract: I18N | None = (
-            I18N(("abstract", "internationalAbstract"), abstract) if abstract else None
-        )
-        self.keywords: list[str] | None = keywords
-        self.native_bounding_box: dict[str, Any] | None = native_bounding_box
-        self.lat_lon_bounding_box: dict[str, Any] | None = lat_lon_bounding_box
         self.attributes: list[dict[str, Any]] | None = attributes
-        self.projection_policy: str | None = projection_policy
-        self.enabled: bool | None = enabled
         self.advertised: bool | None = advertised
-        self.service_configuration: bool | None = service_configuration
         self.simple_conversion_enabled: bool | None = simple_conversion_enabled
         self.max_features: int | None = max_features
         self.num_decimals: int | None = num_decimals
@@ -93,15 +71,6 @@ class FeatureType(EntityModel):
         self.circular_arc_present: bool | None = circular_arc_present
         self.encode_measures: bool | None = encode_measures
         self.metadata_links: list[MetadataLink] | None = metadata_links
-        self.epsg_code: int | None = epsg_code
-
-    @property
-    def store_name(self) -> str:
-        return self.store.name.split(":")[1]
-
-    @property
-    def namespace_name(self) -> str | None:
-        return self.namespace.name if self.namespace else None
 
     @classmethod
     def from_get_response_payload(cls, content: dict):
@@ -149,36 +118,10 @@ class FeatureType(EntityModel):
         )
 
     def asdict(self) -> dict[str, Any]:
-        content: dict[str, Any] = {
-            "name": self.name,
-            "nativeName": self.native_name,
-            "store": self.store.asdict(),
-        }
-        if self.namespace is not None:
-            content["namespace"] = self.namespace.asdict()
-        if self.title:
-            content.update(self.title.asdict())
-        if self.abstract:
-            content.update(self.abstract.asdict())
-        if self.native_bounding_box:
-            content["nativeBoundingBox"] = self.native_bounding_box
-        elif self.epsg_code:
-            content["nativeBoundingBox"] = EPSG_BBOX[self.epsg_code][
-                "nativeBoundingBox"
-            ]
-        if self.lat_lon_bounding_box:
-            content["latLonBoundingBox"] = self.lat_lon_bounding_box
-        elif self.epsg_code:
-            content["latLonBoundingBox"] = EPSG_BBOX[self.epsg_code][
-                "latLonBoundingBox"
-            ]
+        content: dict[str, Any] = super().asdict()
         optional_items = {
-            "srs": self.srs,
-            "keywords": self.keywords,
-            "attributes": self.attributes,
-            "projectionPolicy": self.projection_policy,
-            "enabled": self.enabled,
             "advertised": self.advertised,
+            "attributes": self.attributes,
             "serviceConfiguration": self.service_configuration,
             "simpleConversionEnabled": self.simple_conversion_enabled,
             "maxFeatures": self.max_features,
