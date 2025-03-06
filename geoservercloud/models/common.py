@@ -148,3 +148,25 @@ class I18N:
 
     def __repr__(self):
         return json.dumps(self._content, indent=4)
+
+
+class MetadataLink:
+    def __init__(self, url: str, metadata_type="TC211", mime_type: str = "text/xml"):
+        self.url: str = url
+        self.metadata_type: str = metadata_type
+        self.type: str = mime_type
+
+    @classmethod
+    def from_get_response_payload(cls, content: dict):
+        return cls(
+            url=content["content"],
+            metadata_type=content["metadataType"],
+            mime_type=content["type"],
+        )
+
+    def asdict(self) -> dict[str, str]:
+        return {
+            "content": self.url,
+            "metadataType": self.metadata_type,
+            "type": self.type,
+        }

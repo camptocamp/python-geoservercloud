@@ -46,7 +46,6 @@ class RestClient:
         json: dict[str, dict[str, Any] | Any] | None = None,
         data: bytes | None = None,
     ) -> requests.Response:
-
         response: requests.Response = requests.post(
             f"{self.url}{path}",
             params=params,
@@ -65,7 +64,7 @@ class RestClient:
         path: str,
         params: dict[str, str] | None = None,
         headers: dict[str, str] | None = None,
-        json: dict[str, dict[str, Any]] | None = None,
+        json: dict[str, dict[str, Any] | Any] | None = None,
         data: bytes | None = None,
     ) -> requests.Response:
         response: requests.Response = requests.put(

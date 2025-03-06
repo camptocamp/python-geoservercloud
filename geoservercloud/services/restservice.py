@@ -16,6 +16,7 @@ from geoservercloud.models.layergroups import LayerGroups
 from geoservercloud.models.resourcedirectory import ResourceDirectory
 from geoservercloud.models.style import Style
 from geoservercloud.models.styles import Styles
+from geoservercloud.models.wmslayer import WmsLayer
 from geoservercloud.models.wmssettings import WmsSettings
 from geoservercloud.models.wmsstore import WmsStore
 from geoservercloud.models.workspace import Workspace
@@ -160,6 +161,37 @@ class RestService:
         self, workspace_name: str, wms_store_name: str
     ) -> tuple[str, int]:
         path = self.rest_endpoints.wmsstore(workspace_name, wms_store_name)
+        params: dict[str, str] = {"recurse": "true"}
+        response: Response = self.rest_client.delete(path, params=params)
+        return response.content.decode(), response.status_code
+
+    def get_wms_layer(
+        self, workspace_name: str, wms_store_name: str, wms_layer_name: str
+    ) -> tuple[WmsLayer | str, int]:
+        response: Response = self.rest_client.get(
+            self.rest_endpoints.wmslayer(workspace_name, wms_store_name, wms_layer_name)
+        )
+        return self.deserialize_response(response, WmsLayer)
+
+    def create_wms_layer(
+        self, workspace_name: str, wms_store_name: str, wms_layer: WmsLayer
+    ) -> tuple[str, int]:
+        if self.resource_exists(
+            self.rest_endpoints.wmslayer(workspace_name, wms_store_name, wms_layer.name)
+        ):
+            self.delete_wms_layer(workspace_name, wms_store_name, wms_layer.name)
+        response: Response = self.rest_client.post(
+            self.rest_endpoints.wmslayers(workspace_name, wms_store_name),
+            json=wms_layer.post_payload(),
+        )
+        return response.content.decode(), response.status_code
+
+    def delete_wms_layer(
+        self, workspace_name: str, wms_store_name: str, wms_layer_name: str
+    ) -> tuple[str, int]:
+        path = self.rest_endpoints.wmslayer(
+            workspace_name, wms_store_name, wms_layer_name
+        )
         params: dict[str, str] = {"recurse": "true"}
         response: Response = self.rest_client.delete(path, params=params)
         return response.content.decode(), response.status_code
@@ -424,7 +456,6 @@ class RestService:
         workspace_name: str | None = None,
         format: str = "sld",
     ) -> tuple[str, int]:
-        path = self.rest_endpoints.styles(workspace_name=workspace_name, format=format)
         resource_path = self.rest_endpoints.style(
             workspace_name=workspace_name, style_name=style_name, format=format
         )
@@ -802,6 +833,14 @@ class RestService:
 
         def wmtsstores(self, workspace_name: str) -> str:
             return f"{self.base_url}/workspaces/{workspace_name}/wmtsstores.json"
+
+        def wmslayers(self, workspace_name: str, wmtsstore_name: str) -> str:
+            return f"{self.base_url}/workspaces/{workspace_name}/wmsstores/{wmtsstore_name}/wmslayers.json"
+
+        def wmslayer(
+            self, workspace_name: str, wmtsstore_name: str, wmslayer_name: str
+        ) -> str:
+            return f"{self.base_url}/workspaces/{workspace_name}/wmsstores/{wmtsstore_name}/wmslayers/{wmslayer_name}.json"
 
         def wmtsstore(self, workspace_name: str, wmtsstore_name: str) -> str:
             return f"{self.base_url}/workspaces/{workspace_name}/wmtsstores/{wmtsstore_name}.json"

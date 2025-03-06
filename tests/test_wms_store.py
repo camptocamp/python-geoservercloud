@@ -141,6 +141,7 @@ def test_delete_wms_store(geoserver: GeoServerCloud) -> None:
             url=f"{geoserver.url}/rest/workspaces/{WORKSPACE}/wmsstores/{STORE}.json",
             status=200,
             body=b"",
+            match=[responses.matchers.query_param_matcher({"recurse": "true"})],
         )
 
         content, status_code = geoserver.delete_wms_store(WORKSPACE, STORE)

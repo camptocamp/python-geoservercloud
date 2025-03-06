@@ -181,10 +181,6 @@ def test_get_feature_type(
     feature_type_get_response_payload: dict[str, Any],
     feature_type_as_dict: dict[str, Any],
 ) -> None:
-    from pprint import pprint
-
-    pprint(feature_type_get_response_payload.get("featureType"))
-    pprint(feature_type_as_dict)
 
     with responses.RequestsMock() as rsps:
         rsps.get(

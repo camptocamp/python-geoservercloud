@@ -12,6 +12,7 @@ from geoservercloud.models.featuretype import FeatureType
 from geoservercloud.models.layer import Layer
 from geoservercloud.models.layergroup import LayerGroup
 from geoservercloud.models.style import Style
+from geoservercloud.models.wmslayer import WmsLayer
 from geoservercloud.models.wmssettings import WmsSettings
 from geoservercloud.models.wmsstore import WmsStore
 from geoservercloud.models.workspace import Workspace
@@ -359,6 +360,51 @@ class GeoServerCloud:
         Delete a WMS store recursively
         """
         return self.rest_service.delete_wms_store(workspace_name, wms_store_name)
+
+    def get_wms_layer(
+        self, workspace_name: str, wms_store_name: str, wms_layer_name: str
+    ) -> tuple[dict[str, Any] | str, int]:
+        """
+        Get a WMS layer by workspace, store and name
+        """
+        wms_layer, status_code = self.rest_service.get_wms_layer(
+            workspace_name, wms_store_name, wms_layer_name
+        )
+        if isinstance(wms_layer, str):
+            return wms_layer, status_code
+        return wms_layer.asdict(), status_code
+
+    def create_wms_layer(
+        self,
+        workspace_name: str,
+        wms_store_name: str,
+        native_layer_name: str,
+        published_layer_name: str | None = None,
+    ) -> tuple[str, int]:
+        """
+        Publish a remote WMS layer
+        If it already exists, delete and recreate it (update is not supported by GeoServer)
+        """
+        published_layer_name = published_layer_name or native_layer_name
+        wms_layer = WmsLayer(
+            name=published_layer_name,
+            native_name=native_layer_name,
+            workspace_name=workspace_name,
+            store_name=wms_store_name,
+        )
+        return self.rest_service.create_wms_layer(
+            workspace_name, wms_store_name, wms_layer
+        )
+
+    def delete_wms_layer(
+        self, workspace_name: str, wms_store_name: str, wms_layer_name: str
+    ) -> tuple[str, int]:
+        """
+        Delete a WMS layer
+        """
+        return self.rest_service.delete_wms_layer(
+            workspace_name, wms_store_name, wms_layer_name
+        )
 
     def create_wmts_store(
         self,
