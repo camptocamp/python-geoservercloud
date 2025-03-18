@@ -373,9 +373,8 @@ class RestService:
         self,
         style: str,
         workspace_name: str | None = None,
-        style_format: str = "sld",
     ) -> tuple[Style, int]:
-        path = self.rest_endpoints.style(style, workspace_name, format=style_format)
+        path = self.rest_endpoints.style(style, workspace_name, format="json")
         return self.deserialize_response(self.rest_client.get(path), Style)
 
     def get_raw_style_definition(
