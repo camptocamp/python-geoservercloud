@@ -14,8 +14,8 @@ class GsException(Exception):
             self,
             code: int,
             detail: GsDetail,
-            parent_request: Request = None,
-            parent_response: Response = None
+            parent_request: Request | None = None,
+            parent_response: Response | None = None
     ):
         super().__init__()
         self.code = code

@@ -371,9 +371,15 @@ class RestService:
 
     def get_style_definition(
             self, style: str, workspace_name: str | None = None, style_format: str = "sld",
-    ) -> tuple[Style | str, int]:
+    ) -> tuple[Style, int]:
         path = self.rest_endpoints.style(style, workspace_name, format=style_format)
-        return self.deserialize_response(self.rest_client.get(path), Style, True)
+        return self.deserialize_response(self.rest_client.get(path), Style)
+
+    def get_raw_style_definition(
+            self, style: str, workspace_name: str | None = None, style_format: str = "sld",
+    ) -> Response:
+        path = self.rest_endpoints.style(style, workspace_name, format=style_format)
+        return self.rest_client.get(path)
 
     def create_style_info(
         self,
@@ -387,6 +393,28 @@ class RestService:
         )
         data: bytes = style_info.xml_post_payload().encode()
         headers: dict[str, str] = {"Content-Type": "application/json"}
+        # Use "Accept" header otherwise GeoServer throws a 500 on GET when the resource exists
+        if not self.resource_exists(
+            resource_path, headers={"Accept": "application/json"}
+        ):
+            response: Response = self.rest_client.post(path, data=data, headers=headers)
+        else:
+            response = self.rest_client.put(resource_path, data=data, headers=headers)
+        return response.content.decode(), response.status_code
+
+    def create_style_definition(
+        self,
+        style_name: str,
+        style: Style,
+        workspace_name: str | None = None,
+    ) -> tuple[str, int]:
+        # Use XML because JSON is not supported for style creation
+        path = self.rest_endpoints.styles(workspace_name=workspace_name, format="xml")
+        resource_path = self.rest_endpoints.style(
+            workspace_name=workspace_name, style_name=style_name, format="xml"
+        )
+        data: bytes = style.xml_post_payload().encode()
+        headers: dict[str, str] = {"Content-Type": "text/xml"}
         # Use "Accept" header otherwise GeoServer throws a 500 on GET when the resource exists
         if not self.resource_exists(
             resource_path, headers={"Accept": "application/json"}
@@ -450,17 +478,23 @@ class RestService:
         )
         return self.deserialize_response(response, Layer)
 
-    def get_resource_route_from_layer(self, layer):
+    def get_resource_route_from_layer(self, layer: Layer) -> str | None:
+        if layer.resource is None or layer.resource.href is None:
+            return None
         resource_route = layer.resource.href.replace(self.rest_client.url, "")
+        if not isinstance(resource_route, str):
+            return None
         xml_resource_route = resource_route.replace(".json", ".xml")
         return xml_resource_route
 
-    def get_resource_from_layer(self, layer):
+    def get_resource_from_layer(self, layer: Layer) -> tuple[bytes, int]:
         xml_resource_route = self.get_resource_route_from_layer(layer)
+        if xml_resource_route is None:
+            return b"Error", 500
         resource = self.rest_client.get(xml_resource_route)
         return resource.content, resource.status_code
 
-    def create_layer_resource(self, layer_resource: str, layer_resource_route: str) -> tuple[str, int]:
+    def create_layer_resource(self, layer_resource: bytes, layer_resource_route: str) -> tuple[str, int]:
         if self.resource_exists(layer_resource_route):
             response: Response = self.rest_client.put(
                 layer_resource_route,
@@ -473,7 +507,7 @@ class RestService:
             "",
             layer_resource_route,
         )
-        response: Response = self.rest_client.post(
+        response = self.rest_client.post(
             post_route,
             data=layer_resource,
             headers={"content-type": "application/xml"},
@@ -709,10 +743,8 @@ class RestService:
 
     @staticmethod
     def deserialize_response(
-        response: Response, data_type: type[BaseModel], raw=False
+        response: Response, data_type: type[BaseModel],
     ) -> tuple[Any, int]:
-        if raw:
-            return response, response.status_code
         try:
             content = response.json()
         except JSONDecodeError:

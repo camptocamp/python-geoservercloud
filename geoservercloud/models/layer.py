@@ -37,7 +37,7 @@ class Layer(EntityModel):
         return self.default_style.name if self.default_style else None
 
     @property
-    def all_style_names(self) -> list[str]:
+    def all_style_names(self) -> set[str]:
         all_styles = set()
         if self.default_style_name is not None:
             all_styles.add(self.default_style_name)
@@ -70,16 +70,17 @@ class Layer(EntityModel):
         optional_items = {
             "name": self.name,
             "type": self.type,
-            "resource": {
-                "name": self.resource.name,
-                "href": self.resource.href,
-            },
             "defaultStyle": {
                 "name": self.default_style_name,
             },
             "attribution": self.attribution,
             "queryable": self.queryable,
         }
+        if self.resource is not None:
+            optional_items["resource"] = {
+                "name": self.resource.name,
+                "href": self.resource.href,
+            }
         return EntityModel.add_items_to_dict(content, optional_items)
 
     def post_payload(self) -> dict[str, dict[str, Any]]:

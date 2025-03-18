@@ -173,6 +173,8 @@ class GeoServerCloudSync:
         layer, status_code = self.src_instance.get_layer(
             workspace_name, feature_type_name
         )
+        if (status_code != 200) or isinstance(layer, str):
+            return f"Error: unexpected response {layer}", 500
         resource, status_code = self.src_instance.get_resource_from_layer(layer)
         layer_string = json.dumps(layer.asdict())
         dst_layer = Layer.from_get_response_payload({
@@ -180,6 +182,8 @@ class GeoServerCloudSync:
         })
 
         xml_resource_route = self.src_instance.get_resource_route_from_layer(layer)
+        if xml_resource_route is None:
+            return f"Error: cannot get resource route for {layer}", 500
         try:
             self.dst_instance.create_layer_resource(resource, xml_resource_route)
         except HTTPError:
@@ -262,12 +266,13 @@ class GeoServerCloudSync:
             style_name, workspace_name
         )
         if self.not_ok(status_code):
-            return style_info, status_code
-        style_definition_response, status_code = self.src_instance.get_style_definition(
+            return f"Error getting {style_info}", status_code
+        style_definition_response = self.src_instance.get_raw_style_definition(
             style_name, workspace_name, style_info.format
         )
-        if self.not_ok(status_code):
-            return style_definition_response.content, status_code
+        if self.not_ok(style_definition_response.status_code):
+            content: str = style_definition_response.content.decode()
+            return content, status_code
         try:
             content, status_code = self.dst_instance.create_style_info(style_name, style_info, workspace_name)
             if self.not_ok(status_code):
