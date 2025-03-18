@@ -1,21 +1,22 @@
-from typing import Dict, Any
-from requests import Request, Response
 from dataclasses import dataclass, field
+from typing import Any
+
+from requests import Request, Response
 
 
 @dataclass
 class GsDetail:
     message: str
-    info: Dict[str, Any] = field(default_factory=lambda: {})
+    info: dict[str, Any] = field(default_factory=lambda: {})
 
 
 class GsException(Exception):
     def __init__(
-            self,
-            code: int,
-            detail: GsDetail,
-            parent_request: Request | None = None,
-            parent_response: Response | None = None
+        self,
+        code: int,
+        detail: GsDetail,
+        parent_request: Request | None = None,
+        parent_response: Response | None = None,
     ):
         super().__init__()
         self.code = code

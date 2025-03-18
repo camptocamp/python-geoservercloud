@@ -370,13 +370,19 @@ class RestService:
         return self.deserialize_response(self.rest_client.get(path), Style)
 
     def get_style_definition(
-            self, style: str, workspace_name: str | None = None, style_format: str = "sld",
+        self,
+        style: str,
+        workspace_name: str | None = None,
+        style_format: str = "sld",
     ) -> tuple[Style, int]:
         path = self.rest_endpoints.style(style, workspace_name, format=style_format)
         return self.deserialize_response(self.rest_client.get(path), Style)
 
     def get_raw_style_definition(
-            self, style: str, workspace_name: str | None = None, style_format: str = "sld",
+        self,
+        style: str,
+        workspace_name: str | None = None,
+        style_format: str = "sld",
     ) -> Response:
         path = self.rest_endpoints.style(style, workspace_name, format=style_format)
         return self.rest_client.get(path)
@@ -436,7 +442,9 @@ class RestService:
             workspace_name=workspace_name, style_name=style_name, format=style_format
         )
         headers: dict[str, str] = {"Content-Type": content_type}
-        response: Response = self.rest_client.put(resource_path, data=style_data, headers=headers)
+        response: Response = self.rest_client.put(
+            resource_path, data=style_data, headers=headers
+        )
         return response.content.decode(), response.status_code
 
     def get_style(
@@ -494,7 +502,9 @@ class RestService:
         resource = self.rest_client.get(xml_resource_route)
         return resource.content, resource.status_code
 
-    def create_layer_resource(self, layer_resource: bytes, layer_resource_route: str) -> tuple[str, int]:
+    def create_layer_resource(
+        self, layer_resource: bytes, layer_resource_route: str
+    ) -> tuple[str, int]:
         if self.resource_exists(layer_resource_route):
             response: Response = self.rest_client.put(
                 layer_resource_route,
@@ -514,7 +524,9 @@ class RestService:
         )
         return response.content.decode(), response.status_code
 
-    def update_layer(self, layer: Layer, workspace_name: str | None = None) -> tuple[str, int]:
+    def update_layer(
+        self, layer: Layer, workspace_name: str | None = None
+    ) -> tuple[str, int]:
         response: Response = self.rest_client.put(
             self.rest_endpoints.workspace_layer(workspace_name, layer.name),
             json=layer.put_payload(),
@@ -743,7 +755,8 @@ class RestService:
 
     @staticmethod
     def deserialize_response(
-        response: Response, data_type: type[BaseModel],
+        response: Response,
+        data_type: type[BaseModel],
     ) -> tuple[Any, int]:
         try:
             content = response.json()
@@ -778,7 +791,9 @@ class RestService:
             return f"{self.base_url}/layers/{workspace_name}:{layer_name}.json"
 
         def ws_layers(self, workspace_name: str, layer_name: str) -> str:
-            return f"{self.base_url}/workspace/{workspace_name}/layers:{layer_name}.json"
+            return (
+                f"{self.base_url}/workspace/{workspace_name}/layers:{layer_name}.json"
+            )
 
         def gridsets(self) -> str:
             return f"{self.base_url}/gridsets.json"

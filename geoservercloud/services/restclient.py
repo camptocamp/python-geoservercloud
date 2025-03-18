@@ -1,7 +1,8 @@
 from typing import Any
-import requests
-from .restlogger import gs_logger
 
+import requests
+
+from .restlogger import gs_logger
 
 TIMEOUT = 120
 

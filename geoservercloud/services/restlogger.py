@@ -1,6 +1,5 @@
 import logging
 
-
 time_formatter = logging.Formatter(
     "{asctime} - {name}:{levelname} - {message}",
     style="{",
