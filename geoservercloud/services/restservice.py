@@ -1,3 +1,4 @@
+import re
 from json import JSONDecodeError
 from pathlib import Path
 from typing import Any
@@ -87,6 +88,24 @@ class RestService:
             self.rest_endpoints.datastores(workspace_name)
         )
         return self.deserialize_response(response, DataStores)
+
+    def check_workspace_for_style(self, style_info: Style):
+        if style_info.workspace_name is not None:
+            ws_route = self.rest_endpoints.workspace(style_info.workspace_name)
+            return self.resource_exists(ws_route)
+        return True
+
+    def get_workspaces_from_store(self, store: dict[str, Any]):
+        store_class = store["@class"]
+        store_route = store["href"].replace(self.rest_client.url, "")
+        store_resp = self.rest_client.get(store_route)
+        store_info = store_resp.json()
+        workspace = store_info[store_class]["workspace"]
+        return {workspace["name"]: workspace}
+
+    def check_href(self, info_dict: dict[str, Any]) -> bool:
+        check_path = info_dict["href"].replace(self.rest_client.url, "")
+        return self.resource_exists(check_path)
 
     def get_pg_datastore(
         self, workspace_name: str, datastore_name: str
@@ -346,25 +365,28 @@ class RestService:
         response: Response = self.rest_client.get(path)
         return self.deserialize_response(response, Styles)
 
-    def get_style_definition(
-        self, style: str, workspace_name: str | None = None
-    ) -> tuple[Style | str, int]:
+    def get_style_info(self, style: str, workspace_name: str | None = None):
         path = self.rest_endpoints.style(style, workspace_name, format="json")
         return self.deserialize_response(self.rest_client.get(path), Style)
 
-    def create_style_definition(
+    def get_style_definition(
+            self, style: str, workspace_name: str | None = None, style_format: str = "sld",
+    ) -> tuple[Style | str, int]:
+        path = self.rest_endpoints.style(style, workspace_name, format=style_format)
+        return self.deserialize_response(self.rest_client.get(path), Style, True)
+
+    def create_style_info(
         self,
         style_name: str,
-        style: Style,
+        style_info: Style,
         workspace_name: str | None = None,
     ) -> tuple[str, int]:
-        # Use XML because JSON is not supported for style creation
-        path = self.rest_endpoints.styles(workspace_name=workspace_name, format="xml")
+        path = self.rest_endpoints.styles(workspace_name=workspace_name, format="")
         resource_path = self.rest_endpoints.style(
-            workspace_name=workspace_name, style_name=style_name, format="xml"
+            workspace_name=workspace_name, style_name=style_name
         )
-        data: bytes = style.xml_post_payload().encode()
-        headers: dict[str, str] = {"Content-Type": "text/xml"}
+        data: bytes = style_info.xml_post_payload().encode()
+        headers: dict[str, str] = {"Content-Type": "application/json"}
         # Use "Accept" header otherwise GeoServer throws a 500 on GET when the resource exists
         if not self.resource_exists(
             resource_path, headers={"Accept": "application/json"}
@@ -372,6 +394,21 @@ class RestService:
             response: Response = self.rest_client.post(path, data=data, headers=headers)
         else:
             response = self.rest_client.put(resource_path, data=data, headers=headers)
+        return response.content.decode(), response.status_code
+
+    def fill_style_definition(
+        self,
+        style_name: str,
+        style_data: bytes,
+        style_format: str,
+        content_type: str,
+        workspace_name: str | None = None,
+    ) -> tuple[str, int]:
+        resource_path = self.rest_endpoints.style(
+            workspace_name=workspace_name, style_name=style_name, format=style_format
+        )
+        headers: dict[str, str] = {"Content-Type": content_type}
+        response: Response = self.rest_client.put(resource_path, data=style_data, headers=headers)
         return response.content.decode(), response.status_code
 
     def get_style(
@@ -413,7 +450,37 @@ class RestService:
         )
         return self.deserialize_response(response, Layer)
 
-    def update_layer(self, layer: Layer, workspace_name: str) -> tuple[str, int]:
+    def get_resource_route_from_layer(self, layer):
+        resource_route = layer.resource.href.replace(self.rest_client.url, "")
+        xml_resource_route = resource_route.replace(".json", ".xml")
+        return xml_resource_route
+
+    def get_resource_from_layer(self, layer):
+        xml_resource_route = self.get_resource_route_from_layer(layer)
+        resource = self.rest_client.get(xml_resource_route)
+        return resource.content, resource.status_code
+
+    def create_layer_resource(self, layer_resource: str, layer_resource_route: str) -> tuple[str, int]:
+        if self.resource_exists(layer_resource_route):
+            response: Response = self.rest_client.put(
+                layer_resource_route,
+                data=layer_resource,
+                headers={"content-type": "application/xml"},
+            )
+            return response.content.decode(), response.status_code
+        post_route = re.sub(
+            r"/[^/]*\.xml$",
+            "",
+            layer_resource_route,
+        )
+        response: Response = self.rest_client.post(
+            post_route,
+            data=layer_resource,
+            headers={"content-type": "application/xml"},
+        )
+        return response.content.decode(), response.status_code
+
+    def update_layer(self, layer: Layer, workspace_name: str | None = None) -> tuple[str, int]:
         response: Response = self.rest_client.put(
             self.rest_endpoints.workspace_layer(workspace_name, layer.name),
             json=layer.put_payload(),
@@ -642,8 +709,10 @@ class RestService:
 
     @staticmethod
     def deserialize_response(
-        response: Response, data_type: type[BaseModel]
+        response: Response, data_type: type[BaseModel], raw=False
     ) -> tuple[Any, int]:
+        if raw:
+            return response, response.status_code
         try:
             content = response.json()
         except JSONDecodeError:
@@ -675,6 +744,9 @@ class RestService:
 
         def layer(self, workspace_name: str, layer_name: str) -> str:
             return f"{self.base_url}/layers/{workspace_name}:{layer_name}.json"
+
+        def ws_layers(self, workspace_name: str, layer_name: str) -> str:
+            return f"{self.base_url}/workspace/{workspace_name}/layers:{layer_name}.json"
 
         def gridsets(self) -> str:
             return f"{self.base_url}/gridsets.json"
@@ -717,7 +789,9 @@ class RestService:
         def workspace(self, workspace_name: str) -> str:
             return f"{self.base_url}/workspaces/{workspace_name}.json"
 
-        def workspace_layer(self, workspace_name: str, layer_name: str) -> str:
+        def workspace_layer(self, workspace_name: str | None, layer_name: str) -> str:
+            if workspace_name is None:
+                return f"{self.base_url}/layers/{layer_name}.json"
             return f"{self.base_url}/layers/{workspace_name}:{layer_name}.json"
 
         def workspace_wms_settings(self, workspace_name: str) -> str:
