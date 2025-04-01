@@ -447,14 +447,14 @@ testing = ["pytest", "pytest-benchmark"]
 
 [[package]]
 name = "pytest"
-version = "8.3.4"
+version = "8.3.5"
 description = "pytest: simple powerful testing with Python"
 category = "main"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "pytest-8.3.4-py3-none-any.whl", hash = "sha256:50e16d954148559c9a74109af1eaf0c945ba2d8f30f0a3d3335edde19788b6f6"},
-    {file = "pytest-8.3.4.tar.gz", hash = "sha256:965370d062bce11e73868e0335abac31b4d3de0e82f4007408d242b4f8610761"},
+    {file = "pytest-8.3.5-py3-none-any.whl", hash = "sha256:c69214aa47deac29fad6c2a4f590b9c4a9fdb16a403176fe154b79c0b4d4d820"},
+    {file = "pytest-8.3.5.tar.gz", hash = "sha256:f4efe70cc14e511565ac476b57c279e12a855b11f48f212af1080ef2263d3845"},
 ]
 
 [package.dependencies]
@@ -588,14 +588,14 @@ use-chardet-on-py3 = ["chardet (>=3.0.2,<6)"]
 
 [[package]]
 name = "responses"
-version = "0.25.6"
+version = "0.25.7"
 description = "A utility library for mocking out the `requests` Python library."
 category = "dev"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "responses-0.25.6-py3-none-any.whl", hash = "sha256:9cac8f21e1193bb150ec557875377e41ed56248aed94e4567ed644db564bacf1"},
-    {file = "responses-0.25.6.tar.gz", hash = "sha256:eae7ce61a9603004e76c05691e7c389e59652d91e94b419623c12bbfb8e331d8"},
+    {file = "responses-0.25.7-py3-none-any.whl", hash = "sha256:92ca17416c90fe6b35921f52179bff29332076bb32694c0df02dcac2c6bc043c"},
+    {file = "responses-0.25.7.tar.gz", hash = "sha256:8ebae11405d7a5df79ab6fd54277f6f2bc29b2d002d0dd2d5c632594d1ddcedb"},
 ]
 
 [package.dependencies]
@@ -662,14 +662,14 @@ files = [
 
 [[package]]
 name = "types-requests"
-version = "2.32.0.20250301"
+version = "2.32.0.20250328"
 description = "Typing stubs for requests"
 category = "main"
 optional = false
 python-versions = ">=3.9"
 files = [
-    {file = "types_requests-2.32.0.20250301-py3-none-any.whl", hash = "sha256:0003e0124e2cbefefb88222ff822b48616af40c74df83350f599a650c8de483b"},
-    {file = "types_requests-2.32.0.20250301.tar.gz", hash = "sha256:3d909dc4eaab159c0d964ebe8bfa326a7afb4578d8706408d417e17d61b0c500"},
+    {file = "types_requests-2.32.0.20250328-py3-none-any.whl", hash = "sha256:72ff80f84b15eb3aa7a8e2625fffb6a93f2ad5a0c20215fc1dcfa61117bcb2a2"},
+    {file = "types_requests-2.32.0.20250328.tar.gz", hash = "sha256:c9e67228ea103bd811c96984fac36ed2ae8da87a36a633964a21f199d60baf32"},
 ]
 
 [package.dependencies]
@@ -720,4 +720,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.10,<4.0"
-content-hash = "b95cb065748100355e5b300e8f221cebd5a6fe4f41f8f417cfed2bc1e37611d4"
+content-hash = "87a6d0f09288aec22723033901ad31defa88b07364659b5742a7437b5a474146"
