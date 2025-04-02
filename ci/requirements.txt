@@ -4,4 +4,4 @@ pre-commit==4.2.0
 pytest==8.3.5
 poetry-plugin-tweak-dependencies-version==1.5.2
 poetry-dynamic-versioning==1.8.2
-poetry-plugin-drop-python-upper-constraint==0.1.0
+poetry-plugin-drop-python-upper-constraint==1.0.0
