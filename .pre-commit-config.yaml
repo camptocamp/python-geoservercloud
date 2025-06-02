@@ -49,9 +49,9 @@ repos:
           - github-workflows-require-timeout
       - id: check-renovate
         additional_dependencies:
-          - pyjson5==1.6.8 # pypi
+          - pyjson5==1.6.9 # pypi
   - repo: https://github.com/sirwart/ripsecrets
-    rev: v0.1.9
+    rev: v0.1.11
     hooks:
       - id: ripsecrets
   - repo: https://github.com/PyCQA/autoflake
