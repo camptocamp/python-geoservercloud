@@ -10,16 +10,16 @@ packages = [{ include = "geoservercloud" }]
 [tool.poetry.dependencies]
 python = ">=3.10,<4.0"
 requests = "2.32.4"
-OWSLib = "0.33.0"
+OWSLib = "0.34.1"
 xmltodict = "0.14.2"
 types-requests = "2.32.4.20250611"
 types-xmltodict = "0.14.0.20241009"
 pytest-mock = "^3.14.0"
 
 [tool.poetry.group.dev.dependencies]
-pytest = "8.3.5"
+pytest = "8.4.1"
 responses = "0.25.7"
-coverage = "7.8.2"
+coverage = "7.9.1"
 
 [build-system]
 requires = [
