@@ -1,5 +1,9 @@
 # python-geoservercloud
 
+## Documentation
+
+https://camptocamp.github.io/python-geoservercloud/
+
 ## Installation
 
 From PyPI:
