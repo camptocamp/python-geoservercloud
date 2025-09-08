@@ -19,6 +19,9 @@ jobs:
       - run: python3 -m pip install --requirement=ci/requirements.txt
         name: Install CI requirements
 
+      - name: Install
+        run: make install
+
       - name: Generate Sphinx docs
         run: poetry run sphinx-build -b html docs/source docs/build
 

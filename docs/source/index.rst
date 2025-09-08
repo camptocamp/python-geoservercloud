@@ -1,5 +1,5 @@
 python-geoservercloud Documentation
-============================
+===================================
 
 Welcome to the python-geoservercloud documentation
 
