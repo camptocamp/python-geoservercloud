@@ -27,6 +27,8 @@ jobs:
         run: |
           mkdir -p docs
           python -m pydoc -w geoservercloud
+          mv geoservercloud.html docs/index.html
+          find mypackage -name "*.py" -exec python -m pydoc -w {} \;
           mv *.html docs/
 
       - name: Deploy to GitHub Pages
