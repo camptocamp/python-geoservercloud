@@ -27,9 +27,31 @@ jobs:
         run: |
           mkdir -p docs
           python -m pydoc -w geoservercloud
-          mv geoservercloud.html docs/index.html
           find geoservercloud -name "*.py" -exec python -m pydoc -w {} \;
           mv *.html docs/
+
+      - name: Build custom index.html (table of contents)
+        run: |
+          echo '<!DOCTYPE html>' > docs/index.html
+          echo '<html><head><meta charset="utf-8"><title>python-geoservercloud Documentation</title></head><body>' >> docs/index.html
+          echo '<h1>python-geoservercloud Documentation</h1>' >> docs/index.html
+          echo '<ul>' >> docs/index.html
+
+          # Add package overview first
+          if [ -f docs/geoservercloud.html ]; then
+            echo '<li><a href="geoservercloud.html">geoservercloud (overview)</a></li>' >> docs/index.html
+          fi
+
+          # Add links for all other HTML files
+          for f in docs/*.html; do
+            base=$(basename "$f")
+            if [ "$base" != "index.html" ] && [ "$base" != "geoservercloud.html" ]; then
+              modname="${base%.html}"
+              echo "<li><a href=\"$base\">$modname</a></li>" >> docs/index.html
+            fi
+          done
+
+          echo '</ul></body></html>' >> docs/index.html
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
