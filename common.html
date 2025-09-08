@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Python: module common</title>
+</head><body>
+
+<table class="heading">
+<tr class="heading-text decor">
+<td class="title">&nbsp;<br><strong class="title">common</strong></td>
+<td class="extra"><a href=".">index</a><br><a href="file:/home/runner/work/python-geoservercloud/python-geoservercloud/geoservercloud/models/common.py">/home/runner/work/python-geoservercloud/python-geoservercloud/geoservercloud/models/common.py</a></td></tr></table>
+    <p></p>
+<p>
+<table class="section">
+<tr class="decor pkg-content-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Modules</strong></td></tr>
+    
+<tr><td class="decor pkg-content-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><table><tr><td class="multicolumn"><a href="json.html">json</a><br>
+</td><td class="multicolumn"></td><td class="multicolumn"></td><td class="multicolumn"></td></tr></table></td></tr></table><p>
+<table class="section">
+<tr class="decor index-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Classes</strong></td></tr>
+    
+<tr><td class="decor index-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><dl>
+<dt class="heading-text"><a href="builtins.html#dict">builtins.dict</a>(<a href="builtins.html#object">builtins.object</a>)
+</dt><dd>
+<dl>
+<dt class="heading-text"><a href="common.html#KeyDollarListDict">KeyDollarListDict</a>
+</dt></dl>
+</dd>
+<dt class="heading-text"><a href="builtins.html#object">builtins.object</a>
+</dt><dd>
+<dl>
+<dt class="heading-text"><a href="common.html#BaseModel">BaseModel</a>
+</dt><dd>
+<dl>
+<dt class="heading-text"><a href="common.html#EntityModel">EntityModel</a>
+</dt><dt class="heading-text"><a href="common.html#ListModel">ListModel</a>
+</dt><dt class="heading-text"><a href="common.html#ReferencedObjectModel">ReferencedObjectModel</a>
+</dt></dl>
+</dd>
+<dt class="heading-text"><a href="common.html#I18N">I18N</a>
+</dt><dt class="heading-text"><a href="common.html#MetadataLink">MetadataLink</a>
+</dt></dl>
+</dd>
+</dl>
+ <p>
+<table class="section">
+<tr class="decor title-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><a name="BaseModel">class <strong>BaseModel</strong></a>(<a href="builtins.html#object">builtins.object</a>)</td></tr>
+    
+<tr><td class="decor title-decor"><span class="code">&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn">Class methods defined here:<br>
+<dl><dt><a name="BaseModel-from_get_response_payload"><strong>from_get_response_payload</strong></a>(content: dict)</dt></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><span class="code">dictionary&nbsp;for&nbsp;instance&nbsp;variables</span></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><span class="code">list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object</span></dd>
+</dl>
+</td></tr></table> <p>
+<table class="section">
+<tr class="decor title-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><a name="EntityModel">class <strong>EntityModel</strong></a>(<a href="common.html#BaseModel">BaseModel</a>)</td></tr>
+    
+<tr><td class="decor title-decor"><span class="code">&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><dl><dt>Method resolution order:</dt>
+<dd><a href="common.html#EntityModel">EntityModel</a></dd>
+<dd><a href="common.html#BaseModel">BaseModel</a></dd>
+<dd><a href="builtins.html#object">builtins.object</a></dd>
+</dl>
+<hr>
+Methods defined here:<br>
+<dl><dt><a name="EntityModel-asdict"><strong>asdict</strong></a>(self) -&gt; dict[str, typing.Any]</dt></dl>
+
+<dl><dt><a name="EntityModel-post_payload"><strong>post_payload</strong></a>(self) -&gt; dict[str, typing.Any]</dt></dl>
+
+<dl><dt><a name="EntityModel-put_payload"><strong>put_payload</strong></a>(self) -&gt; dict[str, typing.Any]</dt></dl>
+
+<hr>
+Static methods defined here:<br>
+<dl><dt><a name="EntityModel-add_item_to_dict"><strong>add_item_to_dict</strong></a>(content: dict, key: str, value: Any) -&gt; dict[typing.Any, typing.Any]</dt></dl>
+
+<dl><dt><a name="EntityModel-add_items_to_dict"><strong>add_items_to_dict</strong></a>(content: dict, items: dict[str, typing.Any]) -&gt; dict[typing.Any, typing.Any]</dt></dl>
+
+<hr>
+Class methods inherited from <a href="common.html#BaseModel">BaseModel</a>:<br>
+<dl><dt><a name="EntityModel-from_get_response_payload"><strong>from_get_response_payload</strong></a>(content: dict)</dt></dl>
+
+<hr>
+Data descriptors inherited from <a href="common.html#BaseModel">BaseModel</a>:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><span class="code">dictionary&nbsp;for&nbsp;instance&nbsp;variables</span></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><span class="code">list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object</span></dd>
+</dl>
+</td></tr></table> <p>
+<table class="section">
+<tr class="decor title-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><a name="I18N">class <strong>I18N</strong></a>(<a href="builtins.html#object">builtins.object</a>)</td></tr>
+    
+<tr><td class="decor title-decor" rowspan=2><span class="code">&nbsp;&nbsp;&nbsp;</span></td>
+<td class="decor title-decor" colspan=2><span class="code"><a href="#I18N">I18N</a>(keys:&nbsp;tuple[str,&nbsp;typing.Any],&nbsp;value:&nbsp;str&nbsp;|&nbsp;<a href="builtins.html#dict">dict</a>)&nbsp;-&amp;gt;&nbsp;None<br>
+&nbsp;<br>
+Geoserver&nbsp;handles&nbsp;internationalization&nbsp;with&nbsp;2&nbsp;possible&nbsp;(mutually&nbsp;exclusive)&nbsp;keys&nbsp;in&nbsp;the&nbsp;rest&nbsp;payload:<br>
+either:<br>
+-&nbsp;[key:&nbsp;string]<br>
+or<br>
+-&nbsp;[internationalKey:&nbsp;dictionary]<br>
+&nbsp;<br>
+example:<br>
+a)&nbsp;as&nbsp;key:&nbsp;string&nbsp;we&nbsp;get&nbsp;{"title":&nbsp;"Test&nbsp;Title"}<br>
+b)&nbsp;as&nbsp;key:&nbsp;<a href="builtins.html#dict">dict</a>&nbsp;we&nbsp;get&nbsp;{"internationalTitle":&nbsp;{"en":&nbsp;"Test&nbsp;Title",&nbsp;"es":&nbsp;"Título&nbsp;de&nbsp;Prueba"}}<br>
+&nbsp;<br>
+This&nbsp;class&nbsp;gives&nbsp;a&nbsp;layer&nbsp;of&nbsp;abstraction&nbsp;to&nbsp;handle&nbsp;both&nbsp;cases.<br>
+&nbsp;<br>
+Usage:<br>
+Call&nbsp;the&nbsp;class&nbsp;by&nbsp;adding&nbsp;both&nbsp;possible&nbsp;keys&nbsp;in&nbsp;a&nbsp;tuple&nbsp;and&nbsp;the&nbsp;value.<br>
+&nbsp;<br>
+Parameters:<br>
+keys:&nbsp;tuple[str,&nbsp;str]&nbsp;example&nbsp;:&nbsp;("title",&nbsp;"internationalTitle")<br>
+value:&nbsp;str&nbsp;|&nbsp;<a href="builtins.html#dict">dict</a>&nbsp;example:&nbsp;"Test&nbsp;Title"&nbsp;|&nbsp;{"en":&nbsp;"Test&nbsp;Title",&nbsp;"es":&nbsp;"Título&nbsp;de&nbsp;Prueba"}<br>
+&nbsp;<br>
+Example:<br>
+&nbsp;<br>
+my_i18n&nbsp;=&nbsp;<a href="#I18N">I18N</a>(("title",&nbsp;"internationalTitle"),&nbsp;"Test&nbsp;Title")<br>&nbsp;</span></td></tr>
+<tr><td>&nbsp;</td>
+<td class="singlecolumn">Methods defined here:<br>
+<dl><dt><a name="I18N-__init__"><strong>__init__</strong></a>(self, keys: tuple[str, typing.Any], value: str | dict) -&gt; None</dt><dd><span class="code">Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</span></dd></dl>
+
+<dl><dt><a name="I18N-__repr__"><strong>__repr__</strong></a>(self)</dt><dd><span class="code">Return&nbsp;repr(self).</span></dd></dl>
+
+<dl><dt><a name="I18N-asdict"><strong>asdict</strong></a>(self)</dt></dl>
+
+<hr>
+Readonly properties defined here:<br>
+<dl><dt><strong>i18n_key</strong></dt>
+</dl>
+<dl><dt><strong>str_key</strong></dt>
+</dl>
+<dl><dt><strong>value</strong></dt>
+</dl>
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><span class="code">dictionary&nbsp;for&nbsp;instance&nbsp;variables</span></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><span class="code">list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object</span></dd>
+</dl>
+</td></tr></table> <p>
+<table class="section">
+<tr class="decor title-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><a name="KeyDollarListDict">class <strong>KeyDollarListDict</strong></a>(<a href="builtins.html#dict">builtins.dict</a>)</td></tr>
+    
+<tr><td class="decor title-decor" rowspan=2><span class="code">&nbsp;&nbsp;&nbsp;</span></td>
+<td class="decor title-decor" colspan=2><span class="code"><a href="#KeyDollarListDict">KeyDollarListDict</a>(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;input_list:&nbsp;list&nbsp;|&nbsp;None&nbsp;=&nbsp;None,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;input_dict:&nbsp;<a href="builtins.html#dict">dict</a>&nbsp;|&nbsp;None&nbsp;=&nbsp;None,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;*args,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;**kwargs<br>
+)<br>
+&nbsp;<br>
+<br>&nbsp;</span></td></tr>
+<tr><td>&nbsp;</td>
+<td class="singlecolumn"><dl><dt>Method resolution order:</dt>
+<dd><a href="common.html#KeyDollarListDict">KeyDollarListDict</a></dd>
+<dd><a href="builtins.html#dict">builtins.dict</a></dd>
+<dd><a href="builtins.html#object">builtins.object</a></dd>
+</dl>
+<hr>
+Methods defined here:<br>
+<dl><dt><a name="KeyDollarListDict-__init__"><strong>__init__</strong></a>(
+    self,
+    input_list: list | None = None,
+    input_dict: dict | None = None,
+    *args,
+    **kwargs
+)</dt><dd><span class="code">Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</span></dd></dl>
+
+<dl><dt><a name="KeyDollarListDict-__repr__"><strong>__repr__</strong></a>(self) -&gt; str</dt><dd><span class="code">Return&nbsp;repr(self).</span></dd></dl>
+
+<dl><dt><a name="KeyDollarListDict-__str__"><strong>__str__</strong></a>(self)</dt><dd><span class="code">Return&nbsp;str(self).</span></dd></dl>
+
+<dl><dt><a name="KeyDollarListDict-deserialize"><strong>deserialize</strong></a>(self, input_list: list)</dt></dl>
+
+<dl><dt><a name="KeyDollarListDict-serialize"><strong>serialize</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="KeyDollarListDict-update"><strong>update</strong></a>(self, other: dict)</dt><dd><span class="code">D.<a href="#KeyDollarListDict-update">update</a>([E,&nbsp;]**F)&nbsp;-&gt;&nbsp;None.&nbsp;&nbsp;Update&nbsp;D&nbsp;from&nbsp;mapping/iterable&nbsp;E&nbsp;and&nbsp;F.<br>
+If&nbsp;E&nbsp;is&nbsp;present&nbsp;and&nbsp;has&nbsp;a&nbsp;.<a href="#KeyDollarListDict-keys">keys</a>()&nbsp;method,&nbsp;then&nbsp;does:&nbsp;&nbsp;for&nbsp;k&nbsp;in&nbsp;E.<a href="#KeyDollarListDict-keys">keys</a>():&nbsp;D[k]&nbsp;=&nbsp;E[k]<br>
+If&nbsp;E&nbsp;is&nbsp;present&nbsp;and&nbsp;lacks&nbsp;a&nbsp;.<a href="#KeyDollarListDict-keys">keys</a>()&nbsp;method,&nbsp;then&nbsp;does:&nbsp;&nbsp;for&nbsp;k,&nbsp;v&nbsp;in&nbsp;E:&nbsp;D[k]&nbsp;=&nbsp;v<br>
+In&nbsp;either&nbsp;case,&nbsp;this&nbsp;is&nbsp;followed&nbsp;by:&nbsp;for&nbsp;k&nbsp;in&nbsp;F:&nbsp;&nbsp;D[k]&nbsp;=&nbsp;F[k]</span></dd></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><span class="code">dictionary&nbsp;for&nbsp;instance&nbsp;variables</span></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><span class="code">list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object</span></dd>
+</dl>
+<hr>
+Data and other attributes defined here:<br>
+<dl><dt><strong>__annotations__</strong> = {'key_prefix': &lt;class 'str'&gt;, 'value_prefix': &lt;class 'str'&gt;}</dl>
+
+<dl><dt><strong>key_prefix</strong> = '@key'</dl>
+
+<dl><dt><strong>value_prefix</strong> = '$'</dl>
+
+<hr>
+Methods inherited from <a href="builtins.html#dict">builtins.dict</a>:<br>
+<dl><dt><a name="KeyDollarListDict-__contains__"><strong>__contains__</strong></a>(self, key, /)</dt><dd><span class="code">True&nbsp;if&nbsp;the&nbsp;dictionary&nbsp;has&nbsp;the&nbsp;specified&nbsp;key,&nbsp;else&nbsp;False.</span></dd></dl>
+
+<dl><dt><a name="KeyDollarListDict-__delitem__"><strong>__delitem__</strong></a>(self, key, /)</dt><dd><span class="code">Delete&nbsp;self[key].</span></dd></dl>
+
+<dl><dt><a name="KeyDollarListDict-__eq__"><strong>__eq__</strong></a>(self, value, /)</dt><dd><span class="code">Return&nbsp;self==value.</span></dd></dl>
+
+<dl><dt><a name="KeyDollarListDict-__ge__"><strong>__ge__</strong></a>(self, value, /)</dt><dd><span class="code">Return&nbsp;self&gt;=value.</span></dd></dl>
+
+<dl><dt><a name="KeyDollarListDict-__getattribute__"><strong>__getattribute__</strong></a>(self, name, /)</dt><dd><span class="code">Return&nbsp;getattr(self,&nbsp;name).</span></dd></dl>
+
+<dl><dt><a name="KeyDollarListDict-__getitem__"><strong>__getitem__</strong></a>(self, key, /)</dt><dd><span class="code">Return&nbsp;self[key].</span></dd></dl>
+
+<dl><dt><a name="KeyDollarListDict-__gt__"><strong>__gt__</strong></a>(self, value, /)</dt><dd><span class="code">Return&nbsp;self&gt;value.</span></dd></dl>
+
+<dl><dt><a name="KeyDollarListDict-__ior__"><strong>__ior__</strong></a>(self, value, /)</dt><dd><span class="code">Return&nbsp;self|=value.</span></dd></dl>
+
+<dl><dt><a name="KeyDollarListDict-__iter__"><strong>__iter__</strong></a>(self, /)</dt><dd><span class="code">Implement&nbsp;iter(self).</span></dd></dl>
+
+<dl><dt><a name="KeyDollarListDict-__le__"><strong>__le__</strong></a>(self, value, /)</dt><dd><span class="code">Return&nbsp;self&lt;=value.</span></dd></dl>
+
+<dl><dt><a name="KeyDollarListDict-__len__"><strong>__len__</strong></a>(self, /)</dt><dd><span class="code">Return&nbsp;len(self).</span></dd></dl>
+
+<dl><dt><a name="KeyDollarListDict-__lt__"><strong>__lt__</strong></a>(self, value, /)</dt><dd><span class="code">Return&nbsp;self&lt;value.</span></dd></dl>
+
+<dl><dt><a name="KeyDollarListDict-__ne__"><strong>__ne__</strong></a>(self, value, /)</dt><dd><span class="code">Return&nbsp;self!=value.</span></dd></dl>
+
+<dl><dt><a name="KeyDollarListDict-__or__"><strong>__or__</strong></a>(self, value, /)</dt><dd><span class="code">Return&nbsp;self|value.</span></dd></dl>
+
+<dl><dt><a name="KeyDollarListDict-__reversed__"><strong>__reversed__</strong></a>(self, /)</dt><dd><span class="code">Return&nbsp;a&nbsp;reverse&nbsp;iterator&nbsp;over&nbsp;the&nbsp;<a href="builtins.html#dict">dict</a>&nbsp;keys.</span></dd></dl>
+
+<dl><dt><a name="KeyDollarListDict-__ror__"><strong>__ror__</strong></a>(self, value, /)</dt><dd><span class="code">Return&nbsp;value|self.</span></dd></dl>
+
+<dl><dt><a name="KeyDollarListDict-__setitem__"><strong>__setitem__</strong></a>(self, key, value, /)</dt><dd><span class="code">Set&nbsp;self[key]&nbsp;to&nbsp;value.</span></dd></dl>
+
+<dl><dt><a name="KeyDollarListDict-__sizeof__"><strong>__sizeof__</strong></a>(self, /)</dt><dd><span class="code">Return&nbsp;the&nbsp;size&nbsp;of&nbsp;the&nbsp;<a href="builtins.html#dict">dict</a>&nbsp;in&nbsp;memory,&nbsp;in&nbsp;bytes.</span></dd></dl>
+
+<dl><dt><a name="KeyDollarListDict-clear"><strong>clear</strong></a>(self, /)</dt><dd><span class="code">Remove&nbsp;all&nbsp;items&nbsp;from&nbsp;the&nbsp;<a href="builtins.html#dict">dict</a>.</span></dd></dl>
+
+<dl><dt><a name="KeyDollarListDict-copy"><strong>copy</strong></a>(self, /)</dt><dd><span class="code">Return&nbsp;a&nbsp;shallow&nbsp;copy&nbsp;of&nbsp;the&nbsp;<a href="builtins.html#dict">dict</a>.</span></dd></dl>
+
+<dl><dt><a name="KeyDollarListDict-get"><strong>get</strong></a>(self, key, default=None, /)</dt><dd><span class="code">Return&nbsp;the&nbsp;value&nbsp;for&nbsp;key&nbsp;if&nbsp;key&nbsp;is&nbsp;in&nbsp;the&nbsp;dictionary,&nbsp;else&nbsp;default.</span></dd></dl>
+
+<dl><dt><a name="KeyDollarListDict-items"><strong>items</strong></a>(self, /)</dt><dd><span class="code">Return&nbsp;a&nbsp;set-like&nbsp;<a href="builtins.html#object">object</a>&nbsp;providing&nbsp;a&nbsp;view&nbsp;on&nbsp;the&nbsp;<a href="builtins.html#dict">dict</a>'s&nbsp;items.</span></dd></dl>
+
+<dl><dt><a name="KeyDollarListDict-keys"><strong>keys</strong></a>(self, /)</dt><dd><span class="code">Return&nbsp;a&nbsp;set-like&nbsp;<a href="builtins.html#object">object</a>&nbsp;providing&nbsp;a&nbsp;view&nbsp;on&nbsp;the&nbsp;<a href="builtins.html#dict">dict</a>'s&nbsp;keys.</span></dd></dl>
+
+<dl><dt><a name="KeyDollarListDict-pop"><strong>pop</strong></a>(self, key, default=&lt;unrepresentable&gt;, /)</dt><dd><span class="code">D.<a href="#KeyDollarListDict-pop">pop</a>(k[,d])&nbsp;-&gt;&nbsp;v,&nbsp;remove&nbsp;specified&nbsp;key&nbsp;and&nbsp;return&nbsp;the&nbsp;corresponding&nbsp;value.<br>
+&nbsp;<br>
+If&nbsp;the&nbsp;key&nbsp;is&nbsp;not&nbsp;found,&nbsp;return&nbsp;the&nbsp;default&nbsp;if&nbsp;given;&nbsp;otherwise,<br>
+raise&nbsp;a&nbsp;KeyError.</span></dd></dl>
+
+<dl><dt><a name="KeyDollarListDict-popitem"><strong>popitem</strong></a>(self, /)</dt><dd><span class="code">Remove&nbsp;and&nbsp;return&nbsp;a&nbsp;(key,&nbsp;value)&nbsp;pair&nbsp;as&nbsp;a&nbsp;2-tuple.<br>
+&nbsp;<br>
+Pairs&nbsp;are&nbsp;returned&nbsp;in&nbsp;LIFO&nbsp;(last-in,&nbsp;first-out)&nbsp;order.<br>
+Raises&nbsp;KeyError&nbsp;if&nbsp;the&nbsp;<a href="builtins.html#dict">dict</a>&nbsp;is&nbsp;empty.</span></dd></dl>
+
+<dl><dt><a name="KeyDollarListDict-setdefault"><strong>setdefault</strong></a>(self, key, default=None, /)</dt><dd><span class="code">Insert&nbsp;key&nbsp;with&nbsp;a&nbsp;value&nbsp;of&nbsp;default&nbsp;if&nbsp;key&nbsp;is&nbsp;not&nbsp;in&nbsp;the&nbsp;dictionary.<br>
+&nbsp;<br>
+Return&nbsp;the&nbsp;value&nbsp;for&nbsp;key&nbsp;if&nbsp;key&nbsp;is&nbsp;in&nbsp;the&nbsp;dictionary,&nbsp;else&nbsp;default.</span></dd></dl>
+
+<dl><dt><a name="KeyDollarListDict-values"><strong>values</strong></a>(self, /)</dt><dd><span class="code">Return&nbsp;an&nbsp;<a href="builtins.html#object">object</a>&nbsp;providing&nbsp;a&nbsp;view&nbsp;on&nbsp;the&nbsp;<a href="builtins.html#dict">dict</a>'s&nbsp;values.</span></dd></dl>
+
+<hr>
+Class methods inherited from <a href="builtins.html#dict">builtins.dict</a>:<br>
+<dl><dt><a name="KeyDollarListDict-__class_getitem__"><strong>__class_getitem__</strong></a>(object, /)</dt><dd><span class="code">See&nbsp;<a href="https://peps.python.org/pep-0585/">PEP&nbsp;585</a></span></dd></dl>
+
+<dl><dt><a name="KeyDollarListDict-fromkeys"><strong>fromkeys</strong></a>(iterable, value=None, /)</dt><dd><span class="code">Create&nbsp;a&nbsp;new&nbsp;dictionary&nbsp;with&nbsp;keys&nbsp;from&nbsp;iterable&nbsp;and&nbsp;values&nbsp;set&nbsp;to&nbsp;value.</span></dd></dl>
+
+<hr>
+Static methods inherited from <a href="builtins.html#dict">builtins.dict</a>:<br>
+<dl><dt><a name="KeyDollarListDict-__new__"><strong>__new__</strong></a>(*args, **kwargs)<span class="grey"><span class="heading-text"> class method of <a href="builtins.html#dict">builtins.dict</a></span></span></dt><dd><span class="code">Create&nbsp;and&nbsp;return&nbsp;a&nbsp;new&nbsp;<a href="builtins.html#object">object</a>.&nbsp;&nbsp;See&nbsp;help(type)&nbsp;for&nbsp;accurate&nbsp;signature.</span></dd></dl>
+
+<hr>
+Data and other attributes inherited from <a href="builtins.html#dict">builtins.dict</a>:<br>
+<dl><dt><strong>__hash__</strong> = None</dl>
+
+</td></tr></table> <p>
+<table class="section">
+<tr class="decor title-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><a name="ListModel">class <strong>ListModel</strong></a>(<a href="common.html#BaseModel">BaseModel</a>)</td></tr>
+    
+<tr><td class="decor title-decor"><span class="code">&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><dl><dt>Method resolution order:</dt>
+<dd><a href="common.html#ListModel">ListModel</a></dd>
+<dd><a href="common.html#BaseModel">BaseModel</a></dd>
+<dd><a href="builtins.html#object">builtins.object</a></dd>
+</dl>
+<hr>
+Methods defined here:<br>
+<dl><dt><a name="ListModel-aslist"><strong>aslist</strong></a>(self) -&gt; list</dt></dl>
+
+<hr>
+Class methods inherited from <a href="common.html#BaseModel">BaseModel</a>:<br>
+<dl><dt><a name="ListModel-from_get_response_payload"><strong>from_get_response_payload</strong></a>(content: dict)</dt></dl>
+
+<hr>
+Data descriptors inherited from <a href="common.html#BaseModel">BaseModel</a>:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><span class="code">dictionary&nbsp;for&nbsp;instance&nbsp;variables</span></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><span class="code">list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object</span></dd>
+</dl>
+</td></tr></table> <p>
+<table class="section">
+<tr class="decor title-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><a name="MetadataLink">class <strong>MetadataLink</strong></a>(<a href="builtins.html#object">builtins.object</a>)</td></tr>
+    
+<tr><td class="decor title-decor" rowspan=2><span class="code">&nbsp;&nbsp;&nbsp;</span></td>
+<td class="decor title-decor" colspan=2><span class="code"><a href="#MetadataLink">MetadataLink</a>(url:&nbsp;str,&nbsp;metadata_type='TC211',&nbsp;mime_type:&nbsp;str&nbsp;=&nbsp;'text/xml')<br>
+&nbsp;<br>
+<br>&nbsp;</span></td></tr>
+<tr><td>&nbsp;</td>
+<td class="singlecolumn">Methods defined here:<br>
+<dl><dt><a name="MetadataLink-__init__"><strong>__init__</strong></a>(self, url: str, metadata_type='TC211', mime_type: str = 'text/xml')</dt><dd><span class="code">Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</span></dd></dl>
+
+<dl><dt><a name="MetadataLink-asdict"><strong>asdict</strong></a>(self) -&gt; dict[str, str]</dt></dl>
+
+<hr>
+Class methods defined here:<br>
+<dl><dt><a name="MetadataLink-from_get_response_payload"><strong>from_get_response_payload</strong></a>(content: dict)</dt></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><span class="code">dictionary&nbsp;for&nbsp;instance&nbsp;variables</span></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><span class="code">list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object</span></dd>
+</dl>
+</td></tr></table> <p>
+<table class="section">
+<tr class="decor title-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><a name="ReferencedObjectModel">class <strong>ReferencedObjectModel</strong></a>(<a href="common.html#BaseModel">BaseModel</a>)</td></tr>
+    
+<tr><td class="decor title-decor" rowspan=2><span class="code">&nbsp;&nbsp;&nbsp;</span></td>
+<td class="decor title-decor" colspan=2><span class="code"><a href="#ReferencedObjectModel">ReferencedObjectModel</a>(name:&nbsp;str,&nbsp;href:&nbsp;str&nbsp;|&nbsp;None&nbsp;=&nbsp;None)<br>
+&nbsp;<br>
+<br>&nbsp;</span></td></tr>
+<tr><td>&nbsp;</td>
+<td class="singlecolumn"><dl><dt>Method resolution order:</dt>
+<dd><a href="common.html#ReferencedObjectModel">ReferencedObjectModel</a></dd>
+<dd><a href="common.html#BaseModel">BaseModel</a></dd>
+<dd><a href="builtins.html#object">builtins.object</a></dd>
+</dl>
+<hr>
+Methods defined here:<br>
+<dl><dt><a name="ReferencedObjectModel-__init__"><strong>__init__</strong></a>(self, name: str, href: str | None = None)</dt><dd><span class="code">Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</span></dd></dl>
+
+<dl><dt><a name="ReferencedObjectModel-asdict"><strong>asdict</strong></a>(self) -&gt; dict[str, str]</dt></dl>
+
+<hr>
+Class methods defined here:<br>
+<dl><dt><a name="ReferencedObjectModel-from_get_response_payload"><strong>from_get_response_payload</strong></a>(content: dict)</dt></dl>
+
+<hr>
+Data descriptors inherited from <a href="common.html#BaseModel">BaseModel</a>:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><span class="code">dictionary&nbsp;for&nbsp;instance&nbsp;variables</span></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><span class="code">list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object</span></dd>
+</dl>
+</td></tr></table></td></tr></table>
+</body></html>

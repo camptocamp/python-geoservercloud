@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Python: module wmslayer</title>
+</head><body>
+
+<table class="heading">
+<tr class="heading-text decor">
+<td class="title">&nbsp;<br><strong class="title">wmslayer</strong></td>
+<td class="extra"><a href=".">index</a><br><a href="file:/home/runner/work/python-geoservercloud/python-geoservercloud/geoservercloud/models/wmslayer.py">/home/runner/work/python-geoservercloud/python-geoservercloud/geoservercloud/models/wmslayer.py</a></td></tr></table>
+    <p></p>
+<p>
+<table class="section">
+<tr class="decor index-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Classes</strong></td></tr>
+    
+<tr><td class="decor index-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><dl>
+<dt class="heading-text"><a href="geoservercloud.models.abstractlayer.html#AbstractLayer">geoservercloud.models.abstractlayer.AbstractLayer</a>(<a href="geoservercloud.models.common.html#EntityModel">geoservercloud.models.common.EntityModel</a>)
+</dt><dd>
+<dl>
+<dt class="heading-text"><a href="wmslayer.html#WmsLayer">WmsLayer</a>
+</dt></dl>
+</dd>
+</dl>
+ <p>
+<table class="section">
+<tr class="decor title-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><a name="WmsLayer">class <strong>WmsLayer</strong></a>(<a href="geoservercloud.models.abstractlayer.html#AbstractLayer">geoservercloud.models.abstractlayer.AbstractLayer</a>)</td></tr>
+    
+<tr><td class="decor title-decor" rowspan=2><span class="code">&nbsp;&nbsp;&nbsp;</span></td>
+<td class="decor title-decor" colspan=2><span class="code"><a href="#WmsLayer">WmsLayer</a>(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;name:&nbsp;str,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;native_name:&nbsp;str,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;workspace_name:&nbsp;str,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;store_name:&nbsp;str,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;srs:&nbsp;str&nbsp;|&nbsp;None&nbsp;=&nbsp;None,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;namespace_name:&nbsp;str&nbsp;|&nbsp;None&nbsp;=&nbsp;None,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;title:&nbsp;dict[str,&nbsp;str]&nbsp;|&nbsp;str&nbsp;|&nbsp;None&nbsp;=&nbsp;None,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;abstract:&nbsp;dict[str,&nbsp;str]&nbsp;|&nbsp;str&nbsp;|&nbsp;None&nbsp;=&nbsp;None,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;keywords:&nbsp;list[str]&nbsp;|&nbsp;None&nbsp;=&nbsp;None,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;native_bounding_box:&nbsp;dict[str,&nbsp;typing.Any]&nbsp;|&nbsp;None&nbsp;=&nbsp;None,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;lat_lon_bounding_box:&nbsp;dict[str,&nbsp;typing.Any]&nbsp;|&nbsp;None&nbsp;=&nbsp;None,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;attributes:&nbsp;list[dict[str,&nbsp;typing.Any]]&nbsp;|&nbsp;None&nbsp;=&nbsp;None,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;projection_policy:&nbsp;str&nbsp;|&nbsp;None&nbsp;=&nbsp;None,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;enabled:&nbsp;bool&nbsp;|&nbsp;None&nbsp;=&nbsp;None,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;epsg_code:&nbsp;int&nbsp;|&nbsp;None&nbsp;=&nbsp;None,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;description:&nbsp;str&nbsp;|&nbsp;None&nbsp;=&nbsp;None,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;native_crs:&nbsp;dict&nbsp;|&nbsp;None&nbsp;=&nbsp;None,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;forced_remote_style:&nbsp;str&nbsp;|&nbsp;None&nbsp;=&nbsp;None,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;preferred_format:&nbsp;str&nbsp;|&nbsp;None&nbsp;=&nbsp;None,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;metadata_bbox_respected:&nbsp;bool&nbsp;|&nbsp;None&nbsp;=&nbsp;None,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;service_configuration:&nbsp;bool&nbsp;|&nbsp;None&nbsp;=&nbsp;None<br>
+)<br>
+&nbsp;<br>
+<br>&nbsp;</span></td></tr>
+<tr><td>&nbsp;</td>
+<td class="singlecolumn"><dl><dt>Method resolution order:</dt>
+<dd><a href="wmslayer.html#WmsLayer">WmsLayer</a></dd>
+<dd><a href="geoservercloud.models.abstractlayer.html#AbstractLayer">geoservercloud.models.abstractlayer.AbstractLayer</a></dd>
+<dd><a href="geoservercloud.models.common.html#EntityModel">geoservercloud.models.common.EntityModel</a></dd>
+<dd><a href="geoservercloud.models.common.html#BaseModel">geoservercloud.models.common.BaseModel</a></dd>
+<dd><a href="builtins.html#object">builtins.object</a></dd>
+</dl>
+<hr>
+Methods defined here:<br>
+<dl><dt><a name="WmsLayer-__init__"><strong>__init__</strong></a>(
+    self,
+    name: str,
+    native_name: str,
+    workspace_name: str,
+    store_name: str,
+    srs: str | None = None,
+    namespace_name: str | None = None,
+    title: dict[str, str] | str | None = None,
+    abstract: dict[str, str] | str | None = None,
+    keywords: list[str] | None = None,
+    native_bounding_box: dict[str, typing.Any] | None = None,
+    lat_lon_bounding_box: dict[str, typing.Any] | None = None,
+    attributes: list[dict[str, typing.Any]] | None = None,
+    projection_policy: str | None = None,
+    enabled: bool | None = None,
+    epsg_code: int | None = None,
+    description: str | None = None,
+    native_crs: dict | None = None,
+    forced_remote_style: str | None = None,
+    preferred_format: str | None = None,
+    metadata_bbox_respected: bool | None = None,
+    service_configuration: bool | None = None
+)</dt><dd><span class="code">Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</span></dd></dl>
+
+<dl><dt><a name="WmsLayer-asdict"><strong>asdict</strong></a>(self) -&gt; dict[str, typing.Any]</dt></dl>
+
+<dl><dt><a name="WmsLayer-post_payload"><strong>post_payload</strong></a>(self) -&gt; dict[str, typing.Any]</dt></dl>
+
+<dl><dt><a name="WmsLayer-put_payload"><strong>put_payload</strong></a>(self) -&gt; dict[str, typing.Any]</dt></dl>
+
+<hr>
+Class methods defined here:<br>
+<dl><dt><a name="WmsLayer-from_get_response_payload"><strong>from_get_response_payload</strong></a>(content: dict)</dt></dl>
+
+<hr>
+Readonly properties inherited from <a href="geoservercloud.models.abstractlayer.html#AbstractLayer">geoservercloud.models.abstractlayer.AbstractLayer</a>:<br>
+<dl><dt><strong>namespace_name</strong></dt>
+</dl>
+<dl><dt><strong>store_name</strong></dt>
+</dl>
+<hr>
+Static methods inherited from <a href="geoservercloud.models.common.html#EntityModel">geoservercloud.models.common.EntityModel</a>:<br>
+<dl><dt><a name="WmsLayer-add_item_to_dict"><strong>add_item_to_dict</strong></a>(content: dict, key: str, value: Any) -&gt; dict[typing.Any, typing.Any]</dt></dl>
+
+<dl><dt><a name="WmsLayer-add_items_to_dict"><strong>add_items_to_dict</strong></a>(content: dict, items: dict[str, typing.Any]) -&gt; dict[typing.Any, typing.Any]</dt></dl>
+
+<hr>
+Data descriptors inherited from <a href="geoservercloud.models.common.html#BaseModel">geoservercloud.models.common.BaseModel</a>:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><span class="code">dictionary&nbsp;for&nbsp;instance&nbsp;variables</span></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><span class="code">list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object</span></dd>
+</dl>
+</td></tr></table></td></tr></table>
+</body></html>

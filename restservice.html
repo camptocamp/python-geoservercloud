@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Python: module restservice</title>
+</head><body>
+
+<table class="heading">
+<tr class="heading-text decor">
+<td class="title">&nbsp;<br><strong class="title">restservice</strong></td>
+<td class="extra"><a href=".">index</a><br><a href="file:/home/runner/work/python-geoservercloud/python-geoservercloud/geoservercloud/services/restservice.py">/home/runner/work/python-geoservercloud/python-geoservercloud/geoservercloud/services/restservice.py</a></td></tr></table>
+    <p></p>
+<p>
+<table class="section">
+<tr class="decor index-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Classes</strong></td></tr>
+    
+<tr><td class="decor index-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><dl>
+<dt class="heading-text"><a href="builtins.html#object">builtins.object</a>
+</dt><dd>
+<dl>
+<dt class="heading-text"><a href="restservice.html#RestService">RestService</a>
+</dt></dl>
+</dd>
+</dl>
+ <p>
+<table class="section">
+<tr class="decor title-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><a name="RestService">class <strong>RestService</strong></a>(<a href="builtins.html#object">builtins.object</a>)</td></tr>
+    
+<tr><td class="decor title-decor" rowspan=2><span class="code">&nbsp;&nbsp;&nbsp;</span></td>
+<td class="decor title-decor" colspan=2><span class="code"><a href="#RestService">RestService</a>(url:&nbsp;str,&nbsp;auth:&nbsp;tuple[str,&nbsp;str])&nbsp;-&amp;gt;&nbsp;None<br>
+&nbsp;<br>
+Service&nbsp;responsible&nbsp;for&nbsp;serializing&nbsp;and&nbsp;deserializing&nbsp;payloads&nbsp;and&nbsp;routing&nbsp;requests&nbsp;to&nbsp;GeoServer&nbsp;REST&nbsp;API<br>
+&nbsp;<br>
+Attributes<br>
+----------<br>
+url&nbsp;:&nbsp;str<br>
+&nbsp;&nbsp;&nbsp;&nbsp;base&nbsp;GeoServer&nbsp;URL<br>
+auth&nbsp;:&nbsp;tuple[str,&nbsp;str]<br>
+&nbsp;&nbsp;&nbsp;&nbsp;username&nbsp;and&nbsp;password&nbsp;for&nbsp;GeoServer<br>&nbsp;</span></td></tr>
+<tr><td>&nbsp;</td>
+<td class="singlecolumn">Methods defined here:<br>
+<dl><dt><a name="RestService-__init__"><strong>__init__</strong></a>(self, url: str, auth: tuple[str, str]) -&gt; None</dt><dd><span class="code">Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</span></dd></dl>
+
+<dl><dt><a name="RestService-assign_role_to_user"><strong>assign_role_to_user</strong></a>(self, user: str, role: str) -&gt; tuple[str, int]</dt></dl>
+
+<dl><dt><a name="RestService-create_acl_admin_rule"><strong>create_acl_admin_rule</strong></a>(
+    self,
+    priority: int = 0,
+    access: str = 'ADMIN',
+    role: str | None = None,
+    user: str | None = None,
+    workspace_name: str | None = None
+) -&gt; tuple[dict | str, int]</dt></dl>
+
+<dl><dt><a name="RestService-create_acl_rule"><strong>create_acl_rule</strong></a>(
+    self,
+    priority: int = 0,
+    access: str = 'DENY',
+    role: str | None = None,
+    user: str | None = None,
+    service: str | None = None,
+    request: str | None = None,
+    workspace_name: str | None = None
+) -&gt; tuple[dict[str, typing.Any] | str, int]</dt></dl>
+
+<dl><dt><a name="RestService-create_acl_rules_for_requests"><strong>create_acl_rules_for_requests</strong></a>(
+    self,
+    requests: list[str],
+    priority: int = 0,
+    access: str = 'DENY',
+    role: str | None = None,
+    service: str | None = None,
+    workspace_name: str | None = None
+) -&gt; list[tuple[dict | str, int]]</dt></dl>
+
+<dl><dt><a name="RestService-create_feature_type"><strong>create_feature_type</strong></a>(
+    self,
+    feature_type: geoservercloud.models.featuretype.FeatureType
+) -&gt; tuple[str, int]</dt></dl>
+
+<dl><dt><a name="RestService-create_gridset"><strong>create_gridset</strong></a>(self, epsg: int) -&gt; tuple[str, int]</dt><dd><span class="code">Create&nbsp;a&nbsp;gridset&nbsp;for&nbsp;GeoWebCache&nbsp;for&nbsp;a&nbsp;given&nbsp;projection<br>
+Supported&nbsp;EPSG&nbsp;codes&nbsp;are&nbsp;2056,&nbsp;21781&nbsp;and&nbsp;3857</span></dd></dl>
+
+<dl><dt><a name="RestService-create_jndi_datastore"><strong>create_jndi_datastore</strong></a>(
+    self,
+    workspace_name: str,
+    datastore: geoservercloud.models.datastore.PostGisDataStore
+) -&gt; tuple[str, int]</dt></dl>
+
+<dl><dt><a name="RestService-create_layer_group"><strong>create_layer_group</strong></a>(
+    self,
+    layer_group_name: str,
+    workspace_name: str,
+    layer_group: geoservercloud.models.layergroup.LayerGroup
+) -&gt; tuple[str, int]</dt></dl>
+
+<dl><dt><a name="RestService-create_pg_datastore"><strong>create_pg_datastore</strong></a>(
+    self,
+    workspace_name: str,
+    datastore: geoservercloud.models.datastore.PostGisDataStore
+) -&gt; tuple[str, int]</dt></dl>
+
+<dl><dt><a name="RestService-create_role"><strong>create_role</strong></a>(self, role_name: str) -&gt; tuple[str, int]</dt></dl>
+
+<dl><dt><a name="RestService-create_role_if_not_exists"><strong>create_role_if_not_exists</strong></a>(self, role_name: str) -&gt; tuple[str, int]</dt></dl>
+
+<dl><dt><a name="RestService-create_style"><strong>create_style</strong></a>(
+    self,
+    style_name: str,
+    style: bytes,
+    workspace_name: str | None = None,
+    format: str = 'sld'
+) -&gt; tuple[str, int]</dt></dl>
+
+<dl><dt><a name="RestService-create_style_definition"><strong>create_style_definition</strong></a>(
+    self,
+    style_name: str,
+    style: geoservercloud.models.style.Style,
+    workspace_name: str | None = None
+) -&gt; tuple[str, int]</dt></dl>
+
+<dl><dt><a name="RestService-create_user"><strong>create_user</strong></a>(self, user: str, password: str, enabled: bool = True) -&gt; tuple[str, int]</dt></dl>
+
+<dl><dt><a name="RestService-create_wms_layer"><strong>create_wms_layer</strong></a>(
+    self,
+    workspace_name: str,
+    wms_store_name: str,
+    wms_layer: geoservercloud.models.wmslayer.WmsLayer
+) -&gt; tuple[str, int]</dt></dl>
+
+<dl><dt><a name="RestService-create_wms_store"><strong>create_wms_store</strong></a>(
+    self,
+    workspace_name: str,
+    wms_store: geoservercloud.models.wmsstore.WmsStore
+) -&gt; tuple[str, int]</dt></dl>
+
+<dl><dt><a name="RestService-create_wmts_layer"><strong>create_wmts_layer</strong></a>(
+    self,
+    workspace_name: str,
+    wmts_store: str,
+    native_layer: str,
+    published_layer: str,
+    epsg: int = 4326,
+    international_title: dict[str, str] | None = None,
+    international_abstract: dict[str, str] | None = None
+) -&gt; tuple[str, int]</dt></dl>
+
+<dl><dt><a name="RestService-create_wmts_store"><strong>create_wmts_store</strong></a>(self, workspace_name: str, name: str, capabilities: str) -&gt; tuple[str, int]</dt></dl>
+
+<dl><dt><a name="RestService-create_workspace"><strong>create_workspace</strong></a>(self, workspace: geoservercloud.models.workspace.Workspace) -&gt; tuple[str, int]</dt></dl>
+
+<dl><dt><a name="RestService-delete_acl_admin_rule"><strong>delete_acl_admin_rule</strong></a>(self, id: str) -&gt; tuple[str, int]</dt></dl>
+
+<dl><dt><a name="RestService-delete_all_acl_admin_rules"><strong>delete_all_acl_admin_rules</strong></a>(self) -&gt; tuple[str, int]</dt></dl>
+
+<dl><dt><a name="RestService-delete_all_acl_rules"><strong>delete_all_acl_rules</strong></a>(self) -&gt; tuple[str, int]</dt></dl>
+
+<dl><dt><a name="RestService-delete_feature_type"><strong>delete_feature_type</strong></a>(
+    self,
+    workspace_name: str,
+    datastore_name: str,
+    layer_name: str
+) -&gt; tuple[str, int]</dt></dl>
+
+<dl><dt><a name="RestService-delete_gwc_layer"><strong>delete_gwc_layer</strong></a>(self, workspace_name: str, layer: str) -&gt; tuple[str, int]</dt></dl>
+
+<dl><dt><a name="RestService-delete_layer_group"><strong>delete_layer_group</strong></a>(self, workspace_name: str, layer_group_name: str) -&gt; tuple[str, int]</dt></dl>
+
+<dl><dt><a name="RestService-delete_role"><strong>delete_role</strong></a>(self, role_name: str) -&gt; tuple[str, int]</dt></dl>
+
+<dl><dt><a name="RestService-delete_user"><strong>delete_user</strong></a>(self, user: str) -&gt; tuple[str, int]</dt></dl>
+
+<dl><dt><a name="RestService-delete_wms_layer"><strong>delete_wms_layer</strong></a>(
+    self,
+    workspace_name: str,
+    wms_store_name: str,
+    wms_layer_name: str
+) -&gt; tuple[str, int]</dt></dl>
+
+<dl><dt><a name="RestService-delete_wms_store"><strong>delete_wms_store</strong></a>(self, workspace_name: str, wms_store_name: str) -&gt; tuple[str, int]</dt></dl>
+
+<dl><dt><a name="RestService-delete_workspace"><strong>delete_workspace</strong></a>(self, workspace: geoservercloud.models.workspace.Workspace) -&gt; tuple[str, int]</dt></dl>
+
+<dl><dt><a name="RestService-get_acl_rules"><strong>get_acl_rules</strong></a>(self) -&gt; tuple[dict[str, typing.Any] | str, int]</dt></dl>
+
+<dl><dt><a name="RestService-get_datastores"><strong>get_datastores</strong></a>(self, workspace_name: str) -&gt; tuple[geoservercloud.models.datastores.DataStores | str, int]</dt></dl>
+
+<dl><dt><a name="RestService-get_feature_type"><strong>get_feature_type</strong></a>(
+    self,
+    workspace_name: str,
+    datastore_name: str,
+    feature_type_name: str
+) -&gt; tuple[geoservercloud.models.featuretype.FeatureType | str, int]</dt></dl>
+
+<dl><dt><a name="RestService-get_feature_types"><strong>get_feature_types</strong></a>(self, workspace_name: str, datastore_name: str) -&gt; tuple[geoservercloud.models.featuretypes.FeatureTypes | str, int]</dt></dl>
+
+<dl><dt><a name="RestService-get_gwc_layer"><strong>get_gwc_layer</strong></a>(self, workspace_name: str, layer: str) -&gt; tuple[dict[str, typing.Any] | str, int]</dt></dl>
+
+<dl><dt><a name="RestService-get_layer"><strong>get_layer</strong></a>(self, workspace_name: str, layer_name: str) -&gt; tuple[geoservercloud.models.layer.Layer | str, int]</dt></dl>
+
+<dl><dt><a name="RestService-get_layer_group"><strong>get_layer_group</strong></a>(self, workspace_name: str, layer_group_name: str) -&gt; tuple[geoservercloud.models.layergroup.LayerGroup | str, int]</dt></dl>
+
+<dl><dt><a name="RestService-get_layer_groups"><strong>get_layer_groups</strong></a>(self, workspace_name: str) -&gt; tuple[geoservercloud.models.layergroups.LayerGroups | str, int]</dt></dl>
+
+<dl><dt><a name="RestService-get_pg_datastore"><strong>get_pg_datastore</strong></a>(self, workspace_name: str, datastore_name: str) -&gt; tuple[geoservercloud.models.datastore.PostGisDataStore | str, int]</dt></dl>
+
+<dl><dt><a name="RestService-get_resource"><strong>get_resource</strong></a>(
+    self,
+    path: str,
+    resource_name: str,
+    workspace_name: str | None = None
+) -&gt; tuple[bytes, int]</dt></dl>
+
+<dl><dt><a name="RestService-get_resource_directory"><strong>get_resource_directory</strong></a>(self, path: str, workspace_name: str | None = None) -&gt; tuple[geoservercloud.models.resourcedirectory.ResourceDirectory | str, int]</dt></dl>
+
+<dl><dt><a name="RestService-get_style"><strong>get_style</strong></a>(
+    self,
+    style: str,
+    workspace_name: str | None = None,
+    format: str = 'sld'
+) -&gt; tuple[bytes | str, int]</dt></dl>
+
+<dl><dt><a name="RestService-get_style_definition"><strong>get_style_definition</strong></a>(self, style: str, workspace_name: str | None = None) -&gt; tuple[geoservercloud.models.style.Style | str, int]</dt></dl>
+
+<dl><dt><a name="RestService-get_styles"><strong>get_styles</strong></a>(self, workspace_name: str | None = None) -&gt; tuple[geoservercloud.models.styles.Styles | str, int]</dt></dl>
+
+<dl><dt><a name="RestService-get_user_roles"><strong>get_user_roles</strong></a>(self, user: str) -&gt; tuple[list[str] | str, int]</dt></dl>
+
+<dl><dt><a name="RestService-get_wms_layer"><strong>get_wms_layer</strong></a>(
+    self,
+    workspace_name: str,
+    wms_store_name: str,
+    wms_layer_name: str
+) -&gt; tuple[geoservercloud.models.wmslayer.WmsLayer | str, int]</dt></dl>
+
+<dl><dt><a name="RestService-get_wms_store"><strong>get_wms_store</strong></a>(self, workspace_name: str, wms_store_name: str) -&gt; tuple[geoservercloud.models.wmsstore.WmsStore | str, int]</dt></dl>
+
+<dl><dt><a name="RestService-get_workspace"><strong>get_workspace</strong></a>(self, name: str) -&gt; tuple[geoservercloud.models.workspace.Workspace | str, int]</dt></dl>
+
+<dl><dt><a name="RestService-get_workspace_wms_settings"><strong>get_workspace_wms_settings</strong></a>(self, workspace_name: str) -&gt; tuple[geoservercloud.models.wmssettings.WmsSettings | str, int]</dt></dl>
+
+<dl><dt><a name="RestService-get_workspaces"><strong>get_workspaces</strong></a>(self) -&gt; tuple[geoservercloud.models.workspaces.Workspaces | str, int]</dt></dl>
+
+<dl><dt><a name="RestService-publish_gwc_layer"><strong>publish_gwc_layer</strong></a>(self, workspace_name: str, layer: str, epsg: int) -&gt; tuple[str, int]</dt></dl>
+
+<dl><dt><a name="RestService-put_resource"><strong>put_resource</strong></a>(
+    self,
+    path: str,
+    name: str,
+    content_type: str,
+    data: bytes,
+    workspace_name: str | None = None
+) -&gt; tuple[str, int]</dt></dl>
+
+<dl><dt><a name="RestService-put_workspace_wms_settings"><strong>put_workspace_wms_settings</strong></a>(
+    self,
+    workspace_name: str,
+    wms_settings: geoservercloud.models.wmssettings.WmsSettings
+) -&gt; tuple[str, int]</dt></dl>
+
+<dl><dt><a name="RestService-remove_role_from_user"><strong>remove_role_from_user</strong></a>(self, user: str, role: str) -&gt; tuple[str, int]</dt></dl>
+
+<dl><dt><a name="RestService-resource_exists"><strong>resource_exists</strong></a>(self, path: str, headers: dict[str, str] | None = None) -&gt; bool</dt></dl>
+
+<dl><dt><a name="RestService-role_exists"><strong>role_exists</strong></a>(self, role_name: str) -&gt; bool</dt></dl>
+
+<dl><dt><a name="RestService-update_layer"><strong>update_layer</strong></a>(
+    self,
+    layer: geoservercloud.models.layer.Layer,
+    workspace_name: str
+) -&gt; tuple[str, int]</dt></dl>
+
+<dl><dt><a name="RestService-update_user"><strong>update_user</strong></a>(
+    self,
+    user: str,
+    password: str | None = None,
+    enabled: bool | None = None
+) -&gt; tuple[str, int]</dt></dl>
+
+<hr>
+Static methods defined here:<br>
+<dl><dt><a name="RestService-deserialize_response"><strong>deserialize_response</strong></a>(
+    response: requests.models.Response,
+    data_type: type[geoservercloud.models.common.BaseModel]
+) -&gt; tuple[typing.Any, int]</dt></dl>
+
+<dl><dt><a name="RestService-get_wmts_layer_bbox"><strong>get_wmts_layer_bbox</strong></a>(url: str, layer_name: str) -&gt; tuple[float, float, float, float] | None</dt></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><span class="code">dictionary&nbsp;for&nbsp;instance&nbsp;variables</span></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><span class="code">list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object</span></dd>
+</dl>
+<hr>
+Data and other attributes defined here:<br>
+<dl><dt><strong>AclEndpoints</strong> = &lt;class 'restservice.RestService.AclEndpoints'&gt;</dl>
+
+<dl><dt><strong>GwcEndpoints</strong> = &lt;class 'restservice.RestService.GwcEndpoints'&gt;</dl>
+
+<dl><dt><strong>RestEndpoints</strong> = &lt;class 'restservice.RestService.RestEndpoints'&gt;</dl>
+
+</td></tr></table></td></tr></table>
+</body></html>

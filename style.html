@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Python: module style</title>
+</head><body>
+
+<table class="heading">
+<tr class="heading-text decor">
+<td class="title">&nbsp;<br><strong class="title">style</strong></td>
+<td class="extra"><a href=".">index</a><br><a href="file:/home/runner/work/python-geoservercloud/python-geoservercloud/geoservercloud/models/style.py">/home/runner/work/python-geoservercloud/python-geoservercloud/geoservercloud/models/style.py</a></td></tr></table>
+    <p></p>
+<p>
+<table class="section">
+<tr class="decor pkg-content-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Modules</strong></td></tr>
+    
+<tr><td class="decor pkg-content-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><table><tr><td class="multicolumn"><a href="json.html">json</a><br>
+</td><td class="multicolumn"><a href="xmltodict.html">xmltodict</a><br>
+</td><td class="multicolumn"></td><td class="multicolumn"></td></tr></table></td></tr></table><p>
+<table class="section">
+<tr class="decor index-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Classes</strong></td></tr>
+    
+<tr><td class="decor index-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><dl>
+<dt class="heading-text"><a href="geoservercloud.models.common.html#EntityModel">geoservercloud.models.common.EntityModel</a>(<a href="geoservercloud.models.common.html#BaseModel">geoservercloud.models.common.BaseModel</a>)
+</dt><dd>
+<dl>
+<dt class="heading-text"><a href="style.html#Style">Style</a>
+</dt></dl>
+</dd>
+</dl>
+ <p>
+<table class="section">
+<tr class="decor title-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><a name="Style">class <strong>Style</strong></a>(<a href="geoservercloud.models.common.html#EntityModel">geoservercloud.models.common.EntityModel</a>)</td></tr>
+    
+<tr><td class="decor title-decor" rowspan=2><span class="code">&nbsp;&nbsp;&nbsp;</span></td>
+<td class="decor title-decor" colspan=2><span class="code"><a href="#Style">Style</a>(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;name:&nbsp;str,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;workspace_name:&nbsp;str&nbsp;|&nbsp;None&nbsp;=&nbsp;None,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;format:&nbsp;str&nbsp;|&nbsp;None&nbsp;=&nbsp;'sld',<br>
+&nbsp;&nbsp;&nbsp;&nbsp;language_version:&nbsp;dict&nbsp;|&nbsp;None&nbsp;=&nbsp;{'version':&nbsp;'1.0.0'},<br>
+&nbsp;&nbsp;&nbsp;&nbsp;filename:&nbsp;str&nbsp;|&nbsp;None&nbsp;=&nbsp;None,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;date_created:&nbsp;str&nbsp;|&nbsp;None&nbsp;=&nbsp;None,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;date_modified:&nbsp;str&nbsp;|&nbsp;None&nbsp;=&nbsp;None,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;legend_url:&nbsp;str&nbsp;|&nbsp;None&nbsp;=&nbsp;None,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;legend_format:&nbsp;str&nbsp;|&nbsp;None&nbsp;=&nbsp;None,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;legend_width:&nbsp;int&nbsp;|&nbsp;None&nbsp;=&nbsp;None,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;legend_height:&nbsp;int&nbsp;|&nbsp;None&nbsp;=&nbsp;None<br>
+)&nbsp;-&amp;gt;&nbsp;None<br>
+&nbsp;<br>
+<br>&nbsp;</span></td></tr>
+<tr><td>&nbsp;</td>
+<td class="singlecolumn"><dl><dt>Method resolution order:</dt>
+<dd><a href="style.html#Style">Style</a></dd>
+<dd><a href="geoservercloud.models.common.html#EntityModel">geoservercloud.models.common.EntityModel</a></dd>
+<dd><a href="geoservercloud.models.common.html#BaseModel">geoservercloud.models.common.BaseModel</a></dd>
+<dd><a href="builtins.html#object">builtins.object</a></dd>
+</dl>
+<hr>
+Methods defined here:<br>
+<dl><dt><a name="Style-__init__"><strong>__init__</strong></a>(
+    self,
+    name: str,
+    workspace_name: str | None = None,
+    format: str | None = 'sld',
+    language_version: dict | None = {'version': '1.0.0'},
+    filename: str | None = None,
+    date_created: str | None = None,
+    date_modified: str | None = None,
+    legend_url: str | None = None,
+    legend_format: str | None = None,
+    legend_width: int | None = None,
+    legend_height: int | None = None
+) -&gt; None</dt><dd><span class="code">Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</span></dd></dl>
+
+<dl><dt><a name="Style-__repr__"><strong>__repr__</strong></a>(self) -&gt; str</dt><dd><span class="code">Return&nbsp;repr(self).</span></dd></dl>
+
+<dl><dt><a name="Style-asdict"><strong>asdict</strong></a>(self) -&gt; dict[str, typing.Any]</dt></dl>
+
+<dl><dt><a name="Style-create_legend"><strong>create_legend</strong></a>(
+    self,
+    url: str | None,
+    image_format: str | None,
+    width: int | None,
+    height: int | None
+) -&gt; dict[str, str | int] | None</dt></dl>
+
+<dl><dt><a name="Style-post_payload"><strong>post_payload</strong></a>(self) -&gt; dict[str, dict[str, typing.Any]]</dt></dl>
+
+<dl><dt><a name="Style-put_payload"><strong>put_payload</strong></a>(self) -&gt; dict[str, dict[str, typing.Any]]</dt></dl>
+
+<dl><dt><a name="Style-xml_post_payload"><strong>xml_post_payload</strong></a>(self) -&gt; str</dt></dl>
+
+<dl><dt><a name="Style-xml_put_payload"><strong>xml_put_payload</strong></a>(self) -&gt; str</dt></dl>
+
+<hr>
+Class methods defined here:<br>
+<dl><dt><a name="Style-from_get_response_payload"><strong>from_get_response_payload</strong></a>(content: dict)</dt></dl>
+
+<hr>
+Readonly properties defined here:<br>
+<dl><dt><strong>date_created</strong></dt>
+</dl>
+<dl><dt><strong>date_modified</strong></dt>
+</dl>
+<dl><dt><strong>filename</strong></dt>
+</dl>
+<dl><dt><strong>format</strong></dt>
+</dl>
+<dl><dt><strong>language_version</strong></dt>
+</dl>
+<dl><dt><strong>legend</strong></dt>
+</dl>
+<dl><dt><strong>name</strong></dt>
+</dl>
+<dl><dt><strong>workspace_name</strong></dt>
+</dl>
+<hr>
+Static methods inherited from <a href="geoservercloud.models.common.html#EntityModel">geoservercloud.models.common.EntityModel</a>:<br>
+<dl><dt><a name="Style-add_item_to_dict"><strong>add_item_to_dict</strong></a>(content: dict, key: str, value: Any) -&gt; dict[typing.Any, typing.Any]</dt></dl>
+
+<dl><dt><a name="Style-add_items_to_dict"><strong>add_items_to_dict</strong></a>(content: dict, items: dict[str, typing.Any]) -&gt; dict[typing.Any, typing.Any]</dt></dl>
+
+<hr>
+Data descriptors inherited from <a href="geoservercloud.models.common.html#BaseModel">geoservercloud.models.common.BaseModel</a>:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><span class="code">dictionary&nbsp;for&nbsp;instance&nbsp;variables</span></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><span class="code">list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object</span></dd>
+</dl>
+</td></tr></table></td></tr></table>
+</body></html>
