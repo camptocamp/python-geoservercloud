@@ -1,525 +1,607 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<title>Python: package geoservercloud</title>
-</head><body>
 
-<table class="heading">
-<tr class="heading-text decor">
-<td class="title">&nbsp;<br><strong class="title">geoservercloud</strong></td>
-<td class="extra"><a href=".">index</a><br><a href="file:/home/runner/work/python-geoservercloud/python-geoservercloud/geoservercloud/__init__.py">/home/runner/work/python-geoservercloud/python-geoservercloud/geoservercloud/__init__.py</a></td></tr></table>
-    <p></p>
-<p>
-<table class="section">
-<tr class="decor pkg-content-decor heading-text">
-<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Package Contents</strong></td></tr>
-    
-<tr><td class="decor pkg-content-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
-<td class="singlecolumn"><table><tr><td class="multicolumn"><a href="geoservercloud.geoservercloud.html">geoservercloud</a><br>
-<a href="geoservercloud.geoservercloudsync.html">geoservercloudsync</a><br>
-</td><td class="multicolumn"><a href="geoservercloud.models.html"><strong>models</strong>&nbsp;(package)</a><br>
-<a href="geoservercloud.services.html"><strong>services</strong>&nbsp;(package)</a><br>
-</td><td class="multicolumn"><a href="geoservercloud.templates.html">templates</a><br>
-<a href="geoservercloud.utils.html">utils</a><br>
-</td><td class="multicolumn"></td></tr></table></td></tr></table><p>
-<table class="section">
-<tr class="decor index-decor heading-text">
-<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Classes</strong></td></tr>
-    
-<tr><td class="decor index-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
-<td class="singlecolumn"><dl>
-<dt class="heading-text"><a href="builtins.html#object">builtins.object</a>
-</dt><dd>
-<dl>
-<dt class="heading-text"><a href="geoservercloud.geoservercloud.html#GeoServerCloud">geoservercloud.geoservercloud.GeoServerCloud</a>
-</dt><dt class="heading-text"><a href="geoservercloud.geoservercloudsync.html#GeoServerCloudSync">geoservercloud.geoservercloudsync.GeoServerCloudSync</a>
-</dt></dl>
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>geoservercloud.py &mdash; geoservercloud 0.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=7026087e"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="geoservercloudsync.py" href="geoservercloudsync.html" />
+    <link rel="prev" title="python-geoservercloud Documentation" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            geoservercloud
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Modules:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">geoservercloud.py</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#geoservercloud.GeoServerCloud"><code class="docutils literal notranslate"><span class="pre">GeoServerCloud</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#geoservercloud.GeoServerCloud.url"><code class="docutils literal notranslate"><span class="pre">GeoServerCloud.url</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#geoservercloud.GeoServerCloud.user"><code class="docutils literal notranslate"><span class="pre">GeoServerCloud.user</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#geoservercloud.GeoServerCloud.password"><code class="docutils literal notranslate"><span class="pre">GeoServerCloud.password</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#geoservercloud.GeoServerCloud.assign_role_to_user"><code class="docutils literal notranslate"><span class="pre">GeoServerCloud.assign_role_to_user()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#geoservercloud.GeoServerCloud.create_acl_admin_rule"><code class="docutils literal notranslate"><span class="pre">GeoServerCloud.create_acl_admin_rule()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#geoservercloud.GeoServerCloud.create_acl_rule"><code class="docutils literal notranslate"><span class="pre">GeoServerCloud.create_acl_rule()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#geoservercloud.GeoServerCloud.create_acl_rules_for_requests"><code class="docutils literal notranslate"><span class="pre">GeoServerCloud.create_acl_rules_for_requests()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#geoservercloud.GeoServerCloud.create_feature_type"><code class="docutils literal notranslate"><span class="pre">GeoServerCloud.create_feature_type()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#geoservercloud.GeoServerCloud.create_gridset"><code class="docutils literal notranslate"><span class="pre">GeoServerCloud.create_gridset()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#geoservercloud.GeoServerCloud.create_jndi_datastore"><code class="docutils literal notranslate"><span class="pre">GeoServerCloud.create_jndi_datastore()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#geoservercloud.GeoServerCloud.create_layer_group"><code class="docutils literal notranslate"><span class="pre">GeoServerCloud.create_layer_group()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#geoservercloud.GeoServerCloud.create_pg_datastore"><code class="docutils literal notranslate"><span class="pre">GeoServerCloud.create_pg_datastore()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#geoservercloud.GeoServerCloud.create_role"><code class="docutils literal notranslate"><span class="pre">GeoServerCloud.create_role()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#geoservercloud.GeoServerCloud.create_style_definition"><code class="docutils literal notranslate"><span class="pre">GeoServerCloud.create_style_definition()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#geoservercloud.GeoServerCloud.create_style_from_file"><code class="docutils literal notranslate"><span class="pre">GeoServerCloud.create_style_from_file()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#geoservercloud.GeoServerCloud.create_user"><code class="docutils literal notranslate"><span class="pre">GeoServerCloud.create_user()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#geoservercloud.GeoServerCloud.create_wms"><code class="docutils literal notranslate"><span class="pre">GeoServerCloud.create_wms()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#geoservercloud.GeoServerCloud.create_wms_layer"><code class="docutils literal notranslate"><span class="pre">GeoServerCloud.create_wms_layer()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#geoservercloud.GeoServerCloud.create_wms_store"><code class="docutils literal notranslate"><span class="pre">GeoServerCloud.create_wms_store()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#geoservercloud.GeoServerCloud.create_wmts"><code class="docutils literal notranslate"><span class="pre">GeoServerCloud.create_wmts()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#geoservercloud.GeoServerCloud.create_wmts_layer"><code class="docutils literal notranslate"><span class="pre">GeoServerCloud.create_wmts_layer()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#geoservercloud.GeoServerCloud.create_wmts_store"><code class="docutils literal notranslate"><span class="pre">GeoServerCloud.create_wmts_store()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#geoservercloud.GeoServerCloud.create_workspace"><code class="docutils literal notranslate"><span class="pre">GeoServerCloud.create_workspace()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#geoservercloud.GeoServerCloud.delete_acl_admin_rule"><code class="docutils literal notranslate"><span class="pre">GeoServerCloud.delete_acl_admin_rule()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#geoservercloud.GeoServerCloud.delete_all_acl_admin_rules"><code class="docutils literal notranslate"><span class="pre">GeoServerCloud.delete_all_acl_admin_rules()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#geoservercloud.GeoServerCloud.delete_all_acl_rules"><code class="docutils literal notranslate"><span class="pre">GeoServerCloud.delete_all_acl_rules()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#geoservercloud.GeoServerCloud.delete_feature_type"><code class="docutils literal notranslate"><span class="pre">GeoServerCloud.delete_feature_type()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#geoservercloud.GeoServerCloud.delete_gwc_layer"><code class="docutils literal notranslate"><span class="pre">GeoServerCloud.delete_gwc_layer()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#geoservercloud.GeoServerCloud.delete_layer_group"><code class="docutils literal notranslate"><span class="pre">GeoServerCloud.delete_layer_group()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#geoservercloud.GeoServerCloud.delete_role"><code class="docutils literal notranslate"><span class="pre">GeoServerCloud.delete_role()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#geoservercloud.GeoServerCloud.delete_user"><code class="docutils literal notranslate"><span class="pre">GeoServerCloud.delete_user()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#geoservercloud.GeoServerCloud.delete_wms_layer"><code class="docutils literal notranslate"><span class="pre">GeoServerCloud.delete_wms_layer()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#geoservercloud.GeoServerCloud.delete_wms_store"><code class="docutils literal notranslate"><span class="pre">GeoServerCloud.delete_wms_store()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#geoservercloud.GeoServerCloud.delete_workspace"><code class="docutils literal notranslate"><span class="pre">GeoServerCloud.delete_workspace()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#geoservercloud.GeoServerCloud.describe_feature_type"><code class="docutils literal notranslate"><span class="pre">GeoServerCloud.describe_feature_type()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#geoservercloud.GeoServerCloud.get_acl_rules"><code class="docutils literal notranslate"><span class="pre">GeoServerCloud.get_acl_rules()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#geoservercloud.GeoServerCloud.get_datastores"><code class="docutils literal notranslate"><span class="pre">GeoServerCloud.get_datastores()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#geoservercloud.GeoServerCloud.get_feature"><code class="docutils literal notranslate"><span class="pre">GeoServerCloud.get_feature()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#geoservercloud.GeoServerCloud.get_feature_info"><code class="docutils literal notranslate"><span class="pre">GeoServerCloud.get_feature_info()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#geoservercloud.GeoServerCloud.get_feature_type"><code class="docutils literal notranslate"><span class="pre">GeoServerCloud.get_feature_type()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#geoservercloud.GeoServerCloud.get_feature_types"><code class="docutils literal notranslate"><span class="pre">GeoServerCloud.get_feature_types()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#geoservercloud.GeoServerCloud.get_gwc_layer"><code class="docutils literal notranslate"><span class="pre">GeoServerCloud.get_gwc_layer()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#geoservercloud.GeoServerCloud.get_layer_group"><code class="docutils literal notranslate"><span class="pre">GeoServerCloud.get_layer_group()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#geoservercloud.GeoServerCloud.get_layer_groups"><code class="docutils literal notranslate"><span class="pre">GeoServerCloud.get_layer_groups()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#geoservercloud.GeoServerCloud.get_legend_graphic"><code class="docutils literal notranslate"><span class="pre">GeoServerCloud.get_legend_graphic()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#geoservercloud.GeoServerCloud.get_map"><code class="docutils literal notranslate"><span class="pre">GeoServerCloud.get_map()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#geoservercloud.GeoServerCloud.get_pg_datastore"><code class="docutils literal notranslate"><span class="pre">GeoServerCloud.get_pg_datastore()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#geoservercloud.GeoServerCloud.get_property_value"><code class="docutils literal notranslate"><span class="pre">GeoServerCloud.get_property_value()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#geoservercloud.GeoServerCloud.get_style_definition"><code class="docutils literal notranslate"><span class="pre">GeoServerCloud.get_style_definition()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#geoservercloud.GeoServerCloud.get_styles"><code class="docutils literal notranslate"><span class="pre">GeoServerCloud.get_styles()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#geoservercloud.GeoServerCloud.get_tile"><code class="docutils literal notranslate"><span class="pre">GeoServerCloud.get_tile()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#geoservercloud.GeoServerCloud.get_user_roles"><code class="docutils literal notranslate"><span class="pre">GeoServerCloud.get_user_roles()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#geoservercloud.GeoServerCloud.get_wfs_layers"><code class="docutils literal notranslate"><span class="pre">GeoServerCloud.get_wfs_layers()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#geoservercloud.GeoServerCloud.get_wms_layer"><code class="docutils literal notranslate"><span class="pre">GeoServerCloud.get_wms_layer()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#geoservercloud.GeoServerCloud.get_wms_layers"><code class="docutils literal notranslate"><span class="pre">GeoServerCloud.get_wms_layers()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#geoservercloud.GeoServerCloud.get_wms_store"><code class="docutils literal notranslate"><span class="pre">GeoServerCloud.get_wms_store()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#geoservercloud.GeoServerCloud.get_workspace"><code class="docutils literal notranslate"><span class="pre">GeoServerCloud.get_workspace()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#geoservercloud.GeoServerCloud.get_workspace_wms_settings"><code class="docutils literal notranslate"><span class="pre">GeoServerCloud.get_workspace_wms_settings()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#geoservercloud.GeoServerCloud.get_workspaces"><code class="docutils literal notranslate"><span class="pre">GeoServerCloud.get_workspaces()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#geoservercloud.GeoServerCloud.publish_gwc_layer"><code class="docutils literal notranslate"><span class="pre">GeoServerCloud.publish_gwc_layer()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#geoservercloud.GeoServerCloud.publish_workspace"><code class="docutils literal notranslate"><span class="pre">GeoServerCloud.publish_workspace()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#geoservercloud.GeoServerCloud.recreate_workspace"><code class="docutils literal notranslate"><span class="pre">GeoServerCloud.recreate_workspace()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#geoservercloud.GeoServerCloud.remove_role_from_user"><code class="docutils literal notranslate"><span class="pre">GeoServerCloud.remove_role_from_user()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#geoservercloud.GeoServerCloud.set_default_layer_style"><code class="docutils literal notranslate"><span class="pre">GeoServerCloud.set_default_layer_style()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#geoservercloud.GeoServerCloud.set_default_locale_for_service"><code class="docutils literal notranslate"><span class="pre">GeoServerCloud.set_default_locale_for_service()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#geoservercloud.GeoServerCloud.unset_default_locale_for_service"><code class="docutils literal notranslate"><span class="pre">GeoServerCloud.unset_default_locale_for_service()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#geoservercloud.GeoServerCloud.update_user"><code class="docutils literal notranslate"><span class="pre">GeoServerCloud.update_user()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="geoservercloudsync.html">geoservercloudsync.py</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">geoservercloud</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">geoservercloud.py</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/geoservercloud.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="geoservercloud-py">
+<h1>geoservercloud.py<a class="headerlink" href="#geoservercloud-py" title="Link to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="geoservercloud.GeoServerCloud">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">geoservercloud.</span></span><span class="sig-name descname"><span class="pre">GeoServerCloud</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'http://localhost:9090/geoserver/cloud'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'admin'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">password</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'geoserver'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#geoservercloud.GeoServerCloud" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Facade class allowing CRUD operations on GeoServer resources</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="geoservercloud.GeoServerCloud.url">
+<span class="sig-name descname"><span class="pre">url</span></span><a class="headerlink" href="#geoservercloud.GeoServerCloud.url" title="Link to this definition"></a></dt>
+<dd><p>base GeoServer URL</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
 </dd>
 </dl>
- <p>
-<table class="section">
-<tr class="decor title-decor heading-text">
-<td class="section-title" colspan=3>&nbsp;<br><a name="GeoServerCloud">class <strong>GeoServerCloud</strong></a>(<a href="builtins.html#object">builtins.object</a>)</td></tr>
-    
-<tr><td class="decor title-decor" rowspan=2><span class="code">&nbsp;&nbsp;&nbsp;</span></td>
-<td class="decor title-decor" colspan=2><span class="code"><a href="#GeoServerCloud">GeoServerCloud</a>(<br>
-&nbsp;&nbsp;&nbsp;&nbsp;url:&nbsp;str&nbsp;=&nbsp;'<a href="http://localhost:9090/geoserver/cloud">http://localhost:9090/geoserver/cloud</a>',<br>
-&nbsp;&nbsp;&nbsp;&nbsp;user:&nbsp;str&nbsp;=&nbsp;'admin',<br>
-&nbsp;&nbsp;&nbsp;&nbsp;password:&nbsp;str&nbsp;=&nbsp;'geoserver'<br>
-)&nbsp;-&amp;gt;&nbsp;None<br>
-&nbsp;<br>
-Facade&nbsp;class&nbsp;allowing&nbsp;CRUD&nbsp;operations&nbsp;on&nbsp;GeoServer&nbsp;resources<br>
-&nbsp;<br>
-Attributes<br>
-----------<br>
-url&nbsp;:&nbsp;str<br>
-&nbsp;&nbsp;&nbsp;&nbsp;base&nbsp;GeoServer&nbsp;URL<br>
-user&nbsp;:&nbsp;str<br>
-&nbsp;&nbsp;&nbsp;&nbsp;GeoServer&nbsp;username<br>
-password&nbsp;:&nbsp;str<br>
-&nbsp;&nbsp;&nbsp;&nbsp;GeoServer&nbsp;password<br>&nbsp;</span></td></tr>
-<tr><td>&nbsp;</td>
-<td class="singlecolumn">Methods defined here:<br>
-<dl><dt><a name="GeoServerCloud-__init__"><strong>__init__</strong></a>(
-    self,
-    url: str = 'http://localhost:9090/geoserver/cloud',
-    user: str = 'admin',
-    password: str = 'geoserver'
-) -&gt; None</dt><dd><span class="code">Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</span></dd></dl>
-
-<dl><dt><a name="GeoServerCloud-assign_role_to_user"><strong>assign_role_to_user</strong></a>(self, user: str, role: str) -&gt; tuple[str, int]</dt><dd><span class="code">Assign&nbsp;a&nbsp;role&nbsp;to&nbsp;a&nbsp;GeoServer&nbsp;user</span></dd></dl>
-
-<dl><dt><a name="GeoServerCloud-create_acl_admin_rule"><strong>create_acl_admin_rule</strong></a>(
-    self,
-    priority: int = 0,
-    access: str = 'ADMIN',
-    role: str | None = None,
-    user: str | None = None,
-    workspace_name: str | None = None
-) -&gt; tuple[dict | str, int]</dt><dd><span class="code">Create&nbsp;a&nbsp;GeoServer&nbsp;ACL&nbsp;admin&nbsp;rule</span></dd></dl>
-
-<dl><dt><a name="GeoServerCloud-create_acl_rule"><strong>create_acl_rule</strong></a>(
-    self,
-    priority: int = 0,
-    access: str = 'DENY',
-    role: str | None = None,
-    user: str | None = None,
-    service: str | None = None,
-    request: str | None = None,
-    workspace_name: str | None = None
-) -&gt; tuple[dict | str, int]</dt><dd><span class="code">Create&nbsp;a&nbsp;GeoServer&nbsp;ACL&nbsp;data&nbsp;rule</span></dd></dl>
-
-<dl><dt><a name="GeoServerCloud-create_acl_rules_for_requests"><strong>create_acl_rules_for_requests</strong></a>(
-    self,
-    requests: list[str],
-    priority: int = 0,
-    access: str = 'DENY',
-    role: str | None = None,
-    service: str | None = None,
-    workspace_name: str | None = None
-) -&gt; list[tuple[dict | str, int]]</dt><dd><span class="code">Create&nbsp;ACL&nbsp;rules&nbsp;for&nbsp;multiple&nbsp;type&nbsp;of&nbsp;OGC&nbsp;requests</span></dd></dl>
-
-<dl><dt><a name="GeoServerCloud-create_feature_type"><strong>create_feature_type</strong></a>(
-    self,
-    layer_name: str,
-    workspace_name: str | None = None,
-    datastore_name: str | None = None,
-    title: str | dict = 'Default title',
-    abstract: str | dict = 'Default abstract',
-    attributes: dict = {'geom': {'type': 'Point', 'required': True}},
-    epsg: int = 4326,
-    keywords: list[str] = []
-) -&gt; tuple[str, int]</dt><dd><span class="code">Create&nbsp;a&nbsp;feature&nbsp;type&nbsp;or&nbsp;update&nbsp;it&nbsp;if&nbsp;it&nbsp;already&nbsp;exist.</span></dd></dl>
-
-<dl><dt><a name="GeoServerCloud-create_gridset"><strong>create_gridset</strong></a>(self, epsg: int) -&gt; tuple[str, int]</dt><dd><span class="code">Create&nbsp;a&nbsp;gridset&nbsp;for&nbsp;GeoWebCache&nbsp;for&nbsp;a&nbsp;given&nbsp;projection<br>
-Supported&nbsp;EPSG&nbsp;codes&nbsp;are&nbsp;2056,&nbsp;21781&nbsp;and&nbsp;3857</span></dd></dl>
-
-<dl><dt><a name="GeoServerCloud-create_jndi_datastore"><strong>create_jndi_datastore</strong></a>(
-    self,
-    workspace_name: str,
-    datastore_name: str,
-    jndi_reference: str,
-    pg_schema: str = 'public',
-    description: str | None = None,
-    set_default_datastore: bool = False
-) -&gt; tuple[str, int]</dt><dd><span class="code">Create&nbsp;a&nbsp;PostGIS&nbsp;datastore&nbsp;from&nbsp;JNDI&nbsp;resource,&nbsp;or&nbsp;update&nbsp;it&nbsp;if&nbsp;it&nbsp;already&nbsp;exist.</span></dd></dl>
-
-<dl><dt><a name="GeoServerCloud-create_layer_group"><strong>create_layer_group</strong></a>(
-    self,
-    group: str,
-    workspace_name: str | None,
-    layers: list[str],
-    title: str | dict,
-    abstract: str | dict,
-    epsg: int = 4326,
-    mode: str = 'SINGLE',
-    enabled: bool = True,
-    advertised: bool = True
-) -&gt; tuple[str, int]</dt><dd><span class="code">Create&nbsp;a&nbsp;layer&nbsp;group&nbsp;or&nbsp;update&nbsp;it&nbsp;if&nbsp;it&nbsp;already&nbsp;exists.</span></dd></dl>
-
-<dl><dt><a name="GeoServerCloud-create_pg_datastore"><strong>create_pg_datastore</strong></a>(
-    self,
-    workspace_name: str,
-    datastore_name: str,
-    pg_host: str,
-    pg_port: int,
-    pg_db: str,
-    pg_user: str,
-    pg_password: str,
-    pg_schema: str = 'public',
-    description: str | None = None,
-    set_default_datastore: bool = False
-) -&gt; tuple[str, int]</dt><dd><span class="code">Create&nbsp;a&nbsp;PostGIS&nbsp;datastore&nbsp;from&nbsp;the&nbsp;DB&nbsp;connection&nbsp;parameters,&nbsp;or&nbsp;update&nbsp;it&nbsp;if&nbsp;it&nbsp;already&nbsp;exist.</span></dd></dl>
-
-<dl><dt><a name="GeoServerCloud-create_role"><strong>create_role</strong></a>(self, role_name: str) -&gt; tuple[str, int]</dt><dd><span class="code">Create&nbsp;a&nbsp;GeoServer&nbsp;role&nbsp;if&nbsp;it&nbsp;does&nbsp;not&nbsp;already&nbsp;exist</span></dd></dl>
-
-<dl><dt><a name="GeoServerCloud-create_style_definition"><strong>create_style_definition</strong></a>(
-    self,
-    style_name: str,
-    filename: str,
-    workspace_name: str | None = None
-) -&gt; tuple[str, int]</dt><dd><span class="code">Create&nbsp;a&nbsp;style&nbsp;definition</span></dd></dl>
-
-<dl><dt><a name="GeoServerCloud-create_style_from_file"><strong>create_style_from_file</strong></a>(
-    self,
-    style_name: str,
-    file: str,
-    workspace_name: str | None = None
-) -&gt; tuple[str, int]</dt><dd><span class="code">Create&nbsp;a&nbsp;style&nbsp;(SLD)&nbsp;from&nbsp;a&nbsp;file,&nbsp;or&nbsp;update&nbsp;it&nbsp;if&nbsp;it&nbsp;already&nbsp;exists.<br>
-Supported&nbsp;file&nbsp;extensions&nbsp;are&nbsp;.sld&nbsp;and&nbsp;.zip.</span></dd></dl>
-
-<dl><dt><a name="GeoServerCloud-create_user"><strong>create_user</strong></a>(self, user: str, password: str, enabled: bool = True) -&gt; tuple[str, int]</dt><dd><span class="code">Create&nbsp;a&nbsp;GeoServer&nbsp;user</span></dd></dl>
-
-<dl><dt><a name="GeoServerCloud-create_wms"><strong>create_wms</strong></a>(self) -&gt; None</dt></dl>
-
-<dl><dt><a name="GeoServerCloud-create_wms_layer"><strong>create_wms_layer</strong></a>(
-    self,
-    workspace_name: str,
-    wms_store_name: str,
-    native_layer_name: str,
-    published_layer_name: str | None = None
-) -&gt; tuple[str, int]</dt><dd><span class="code">Publish&nbsp;a&nbsp;remote&nbsp;WMS&nbsp;layer<br>
-If&nbsp;it&nbsp;already&nbsp;exists,&nbsp;delete&nbsp;and&nbsp;recreate&nbsp;it&nbsp;(update&nbsp;is&nbsp;not&nbsp;supported&nbsp;by&nbsp;GeoServer)</span></dd></dl>
-
-<dl><dt><a name="GeoServerCloud-create_wms_store"><strong>create_wms_store</strong></a>(
-    self,
-    workspace_name: str,
-    wms_store_name: str,
-    capabilities_url: str
-) -&gt; tuple[str, int]</dt><dd><span class="code">Create&nbsp;a&nbsp;cascaded&nbsp;WMS&nbsp;store,&nbsp;or&nbsp;update&nbsp;it&nbsp;if&nbsp;it&nbsp;already&nbsp;exist.</span></dd></dl>
-
-<dl><dt><a name="GeoServerCloud-create_wmts"><strong>create_wmts</strong></a>(self) -&gt; None</dt></dl>
-
-<dl><dt><a name="GeoServerCloud-create_wmts_layer"><strong>create_wmts_layer</strong></a>(
-    self,
-    workspace_name: str,
-    wmts_store: str,
-    native_layer: str,
-    published_layer: str | None = None,
-    epsg: int = 4326,
-    international_title: dict[str, str] | None = None,
-    international_abstract: dict[str, str] | None = None
-) -&gt; tuple[str, int]</dt><dd><span class="code">Publish&nbsp;a&nbsp;remote&nbsp;WMTS&nbsp;layer&nbsp;(first&nbsp;delete&nbsp;it&nbsp;if&nbsp;it&nbsp;already&nbsp;exists)</span></dd></dl>
-
-<dl><dt><a name="GeoServerCloud-create_wmts_store"><strong>create_wmts_store</strong></a>(self, workspace_name: str, name: str, capabilities: str) -&gt; tuple[str, int]</dt><dd><span class="code">Create&nbsp;a&nbsp;cascaded&nbsp;WMTS&nbsp;store,&nbsp;or&nbsp;update&nbsp;it&nbsp;if&nbsp;it&nbsp;already&nbsp;exist.</span></dd></dl>
-
-<dl><dt><a name="GeoServerCloud-create_workspace"><strong>create_workspace</strong></a>(
-    self,
-    workspace_name: str,
-    isolated: bool = False,
-    set_default_workspace: bool = False
-) -&gt; tuple[str, int]</dt><dd><span class="code">Create&nbsp;a&nbsp;workspace&nbsp;in&nbsp;GeoServer,&nbsp;if&nbsp;it&nbsp;does&nbsp;not&nbsp;already&nbsp;exist.<br>
-It&nbsp;if&nbsp;exists,&nbsp;update&nbsp;it</span></dd></dl>
-
-<dl><dt><a name="GeoServerCloud-delete_acl_admin_rule"><strong>delete_acl_admin_rule</strong></a>(self, id: int | str) -&gt; tuple[str, int]</dt><dd><span class="code">Delete&nbsp;a&nbsp;GeoServer&nbsp;ACL&nbsp;admin&nbsp;rule&nbsp;by&nbsp;id</span></dd></dl>
-
-<dl><dt><a name="GeoServerCloud-delete_all_acl_admin_rules"><strong>delete_all_acl_admin_rules</strong></a>(self) -&gt; tuple[str, int]</dt><dd><span class="code">Delete&nbsp;all&nbsp;existing&nbsp;GeoServer&nbsp;ACL&nbsp;admin&nbsp;rules</span></dd></dl>
-
-<dl><dt><a name="GeoServerCloud-delete_all_acl_rules"><strong>delete_all_acl_rules</strong></a>(self) -&gt; tuple[str, int]</dt><dd><span class="code">Delete&nbsp;all&nbsp;existing&nbsp;GeoServer&nbsp;ACL&nbsp;data&nbsp;rules</span></dd></dl>
-
-<dl><dt><a name="GeoServerCloud-delete_feature_type"><strong>delete_feature_type</strong></a>(
-    self,
-    workspace_name: str,
-    datastore_name: str,
-    layer_name: str
-) -&gt; tuple[str, int]</dt><dd><span class="code">Delete&nbsp;a&nbsp;feature&nbsp;type&nbsp;and&nbsp;associated&nbsp;layer</span></dd></dl>
-
-<dl><dt><a name="GeoServerCloud-delete_gwc_layer"><strong>delete_gwc_layer</strong></a>(self, workspace_name: str, layer: str) -&gt; tuple[str, int]</dt></dl>
-
-<dl><dt><a name="GeoServerCloud-delete_layer_group"><strong>delete_layer_group</strong></a>(self, workspace_name: str, layer_group_name: str) -&gt; tuple[str, int]</dt><dd><span class="code">Delete&nbsp;a&nbsp;layer&nbsp;group</span></dd></dl>
-
-<dl><dt><a name="GeoServerCloud-delete_role"><strong>delete_role</strong></a>(self, role_name: str) -&gt; tuple[str, int]</dt><dd><span class="code">Delete&nbsp;a&nbsp;GeoServer&nbsp;role</span></dd></dl>
-
-<dl><dt><a name="GeoServerCloud-delete_user"><strong>delete_user</strong></a>(self, user: str) -&gt; tuple[str, int]</dt><dd><span class="code">Delete&nbsp;a&nbsp;GeoServer&nbsp;user</span></dd></dl>
-
-<dl><dt><a name="GeoServerCloud-delete_wms_layer"><strong>delete_wms_layer</strong></a>(
-    self,
-    workspace_name: str,
-    wms_store_name: str,
-    wms_layer_name: str
-) -&gt; tuple[str, int]</dt><dd><span class="code">Delete&nbsp;a&nbsp;WMS&nbsp;layer</span></dd></dl>
-
-<dl><dt><a name="GeoServerCloud-delete_wms_store"><strong>delete_wms_store</strong></a>(self, workspace_name: str, wms_store_name: str) -&gt; tuple[str, int]</dt><dd><span class="code">Delete&nbsp;a&nbsp;WMS&nbsp;store&nbsp;recursively</span></dd></dl>
-
-<dl><dt><a name="GeoServerCloud-delete_workspace"><strong>delete_workspace</strong></a>(self, workspace_name: str) -&gt; tuple[str, int]</dt><dd><span class="code">Delete&nbsp;a&nbsp;GeoServer&nbsp;workspace&nbsp;(recursively)</span></dd></dl>
-
-<dl><dt><a name="GeoServerCloud-describe_feature_type"><strong>describe_feature_type</strong></a>(
-    self,
-    workspace_name: str | None = None,
-    type_name: str | None = None,
-    format: str = 'application/json'
-) -&gt; dict[str, typing.Any] | str</dt><dd><span class="code">WFS&nbsp;DescribeFeatureType&nbsp;request<br>
-Return&nbsp;the&nbsp;feature&nbsp;type(s)&nbsp;as&nbsp;dict&nbsp;if&nbsp;found,&nbsp;otherwise&nbsp;return&nbsp;the&nbsp;response&nbsp;content&nbsp;as&nbsp;string</span></dd></dl>
-
-<dl><dt><a name="GeoServerCloud-get_acl_rules"><strong>get_acl_rules</strong></a>(self) -&gt; tuple[dict[str, typing.Any] | str, int]</dt><dd><span class="code">Return&nbsp;all&nbsp;GeoServer&nbsp;ACL&nbsp;data&nbsp;rules</span></dd></dl>
-
-<dl><dt><a name="GeoServerCloud-get_datastores"><strong>get_datastores</strong></a>(self, workspace_name: str) -&gt; tuple[list[str] | str, int]</dt><dd><span class="code">Get&nbsp;all&nbsp;datastores&nbsp;for&nbsp;a&nbsp;given&nbsp;workspace</span></dd></dl>
-
-<dl><dt><a name="GeoServerCloud-get_feature"><strong>get_feature</strong></a>(
-    self,
-    workspace_name: str,
-    type_name: str,
-    feature_id: int | None = None,
-    max_feature: int | None = None,
-    format: str = 'application/json'
-) -&gt; dict[str, typing.Any] | str</dt><dd><span class="code">WFS&nbsp;GetFeature&nbsp;request<br>
-Return&nbsp;the&nbsp;feature(s)&nbsp;as&nbsp;dict&nbsp;if&nbsp;found,&nbsp;otherwise&nbsp;return&nbsp;the&nbsp;response&nbsp;content&nbsp;as&nbsp;string</span></dd></dl>
-
-<dl><dt><a name="GeoServerCloud-get_feature_info"><strong>get_feature_info</strong></a>(
-    self,
-    layers: list[str],
-    bbox: tuple[float, float, float, float],
-    size: tuple[int, int],
-    srs: str = 'EPSG:2056',
-    info_format: str = 'application/json',
-    transparent: bool = True,
-    styles: list[str] | None = None,
-    xy: list[float] = [0, 0]
-) -&gt; owslib.util.ResponseWrapper | None</dt><dd><span class="code">WMS&nbsp;GetFeatureInfo&nbsp;request</span></dd></dl>
-
-<dl><dt><a name="GeoServerCloud-get_feature_type"><strong>get_feature_type</strong></a>(
-    self,
-    workspace_name: str,
-    datastore_name: str,
-    feature_type_name: str
-) -&gt; tuple[dict[str, typing.Any] | str, int]</dt><dd><span class="code">Get&nbsp;a&nbsp;feature&nbsp;type&nbsp;by&nbsp;workspace,&nbsp;datastore&nbsp;and&nbsp;name</span></dd></dl>
-
-<dl><dt><a name="GeoServerCloud-get_feature_types"><strong>get_feature_types</strong></a>(self, workspace_name: str, datastore_name: str) -&gt; tuple[list[dict[str, typing.Any]] | str, int]</dt><dd><span class="code">Get&nbsp;all&nbsp;feature&nbsp;types&nbsp;for&nbsp;a&nbsp;given&nbsp;workspace&nbsp;and&nbsp;datastore</span></dd></dl>
-
-<dl><dt><a name="GeoServerCloud-get_gwc_layer"><strong>get_gwc_layer</strong></a>(self, workspace_name: str, layer: str) -&gt; tuple[dict[str, typing.Any] | str, int]</dt></dl>
-
-<dl><dt><a name="GeoServerCloud-get_layer_group"><strong>get_layer_group</strong></a>(self, workspace_name: str, layer_group_name: str) -&gt; tuple[dict[str, typing.Any] | str, int]</dt><dd><span class="code">Get&nbsp;a&nbsp;layer&nbsp;group&nbsp;by&nbsp;name</span></dd></dl>
-
-<dl><dt><a name="GeoServerCloud-get_layer_groups"><strong>get_layer_groups</strong></a>(self, workspace_name: str) -&gt; tuple[list[dict[str, str]] | str, int]</dt><dd><span class="code">Get&nbsp;all&nbsp;layer&nbsp;groups&nbsp;for&nbsp;a&nbsp;given&nbsp;workspace</span></dd></dl>
-
-<dl><dt><a name="GeoServerCloud-get_legend_graphic"><strong>get_legend_graphic</strong></a>(
-    self,
-    layer: list[str],
-    format: str = 'image/png',
-    language: str | None = None,
-    style: str | None = None,
-    workspace_name: str | None = None
-) -&gt; requests.models.Response</dt><dd><span class="code">WMS&nbsp;GetLegendGraphic&nbsp;request</span></dd></dl>
-
-<dl><dt><a name="GeoServerCloud-get_map"><strong>get_map</strong></a>(
-    self,
-    layers: list[str],
-    bbox: tuple[float, float, float, float],
-    size: tuple[int, int],
-    srs: str = 'EPSG:2056',
-    format: str = 'image/png',
-    transparent: bool = True,
-    styles: list[str] | None = None,
-    language: str | None = None
-) -&gt; owslib.util.ResponseWrapper | None</dt><dd><span class="code">WMS&nbsp;GetMap&nbsp;request</span></dd></dl>
-
-<dl><dt><a name="GeoServerCloud-get_pg_datastore"><strong>get_pg_datastore</strong></a>(self, workspace_name: str, datastore_name: str) -&gt; tuple[dict[str, typing.Any] | str, int]</dt><dd><span class="code">Get&nbsp;a&nbsp;datastore&nbsp;by&nbsp;workspace&nbsp;and&nbsp;name</span></dd></dl>
-
-<dl><dt><a name="GeoServerCloud-get_property_value"><strong>get_property_value</strong></a>(self, workspace_name: str, type_name: str, property: str) -&gt; dict | list | str</dt><dd><span class="code">WFS&nbsp;GetPropertyValue&nbsp;request<br>
-Return&nbsp;the&nbsp;properties&nbsp;as&nbsp;dict&nbsp;(if&nbsp;one&nbsp;feature&nbsp;was&nbsp;found),&nbsp;a&nbsp;list&nbsp;(if&nbsp;multiple&nbsp;features&nbsp;were&nbsp;found),<br>
-an&nbsp;empty&nbsp;dict&nbsp;if&nbsp;no&nbsp;feature&nbsp;was&nbsp;found&nbsp;or&nbsp;the&nbsp;response&nbsp;content&nbsp;as&nbsp;string</span></dd></dl>
-
-<dl><dt><a name="GeoServerCloud-get_style_definition"><strong>get_style_definition</strong></a>(self, style: str, workspace_name: str | None = None) -&gt; tuple[dict[str, typing.Any] | str, int]</dt><dd><span class="code">Get&nbsp;a&nbsp;style&nbsp;definition&nbsp;by&nbsp;name</span></dd></dl>
-
-<dl><dt><a name="GeoServerCloud-get_styles"><strong>get_styles</strong></a>(self, workspace_name: str | None = None) -&gt; tuple[list[str] | str, int]</dt><dd><span class="code">Get&nbsp;all&nbsp;styles&nbsp;for&nbsp;a&nbsp;given&nbsp;workspace.&nbsp;If&nbsp;no&nbsp;workspace&nbsp;is&nbsp;provided,&nbsp;get&nbsp;all&nbsp;global&nbsp;styles</span></dd></dl>
-
-<dl><dt><a name="GeoServerCloud-get_tile"><strong>get_tile</strong></a>(self, layer, format, tile_matrix_set, tile_matrix, row, column) -&gt; owslib.util.ResponseWrapper | None</dt><dd><span class="code">WMTS&nbsp;GetTile&nbsp;request</span></dd></dl>
-
-<dl><dt><a name="GeoServerCloud-get_user_roles"><strong>get_user_roles</strong></a>(self, user: str) -&gt; tuple[list[str] | str, int]</dt><dd><span class="code">Get&nbsp;all&nbsp;roles&nbsp;assigned&nbsp;to&nbsp;a&nbsp;GeoServer&nbsp;user</span></dd></dl>
-
-<dl><dt><a name="GeoServerCloud-get_wfs_layers"><strong>get_wfs_layers</strong></a>(self, workspace_name: str) -&gt; typing.Any | dict[str, typing.Any]</dt></dl>
-
-<dl><dt><a name="GeoServerCloud-get_wms_layer"><strong>get_wms_layer</strong></a>(
-    self,
-    workspace_name: str,
-    wms_store_name: str,
-    wms_layer_name: str
-) -&gt; tuple[dict[str, typing.Any] | str, int]</dt><dd><span class="code">Get&nbsp;a&nbsp;WMS&nbsp;layer&nbsp;by&nbsp;workspace,&nbsp;store&nbsp;and&nbsp;name</span></dd></dl>
-
-<dl><dt><a name="GeoServerCloud-get_wms_layers"><strong>get_wms_layers</strong></a>(self, workspace_name: str, accept_languages: str | None = None) -&gt; typing.Any | dict[str, typing.Any]</dt></dl>
-
-<dl><dt><a name="GeoServerCloud-get_wms_store"><strong>get_wms_store</strong></a>(self, workspace_name: str, datastore_name: str) -&gt; tuple[dict[str, typing.Any] | str, int]</dt><dd><span class="code">Get&nbsp;a&nbsp;WMS&nbsp;by&nbsp;workspace&nbsp;and&nbsp;name</span></dd></dl>
-
-<dl><dt><a name="GeoServerCloud-get_workspace"><strong>get_workspace</strong></a>(self, workspace_name: str) -&gt; tuple[dict[str, str] | str, int]</dt><dd><span class="code">Get&nbsp;a&nbsp;workspace&nbsp;by&nbsp;name</span></dd></dl>
-
-<dl><dt><a name="GeoServerCloud-get_workspace_wms_settings"><strong>get_workspace_wms_settings</strong></a>(self, workspace_name: str) -&gt; tuple[dict[str, typing.Any] | str, int]</dt><dd><span class="code">Get&nbsp;the&nbsp;WMS&nbsp;settings&nbsp;for&nbsp;a&nbsp;given&nbsp;workspace</span></dd></dl>
-
-<dl><dt><a name="GeoServerCloud-get_workspaces"><strong>get_workspaces</strong></a>(self) -&gt; tuple[list[dict[str, str]] | str, int]</dt><dd><span class="code">Get&nbsp;all&nbsp;GeoServer&nbsp;workspaces</span></dd></dl>
-
-<dl><dt><a name="GeoServerCloud-publish_gwc_layer"><strong>publish_gwc_layer</strong></a>(self, workspace_name: str, layer: str, epsg: int = 4326) -&gt; tuple[str, int]</dt></dl>
-
-<dl><dt><a name="GeoServerCloud-publish_workspace"><strong>publish_workspace</strong></a>(
-    self,
-    workspace_name: str,
-    versions: list[str] = ['1.1.1', '1.3.0'],
-    cite_compliant: bool = False,
-    schema_base_url: str = 'http://schemas.opengis.net',
-    verbose: bool = False,
-    bbox_for_each_crs: bool = False,
-    watermark: dict = {'enabled': False, 'position': 'BOT_RIGHT', 'transparency': 100},
-    interpolation: str = 'Nearest',
-    get_feature_info_mime_type_checking_enabled: bool = False,
-    get_map_mime_type_checking_enabled: bool = False,
-    dynamic_styling_disabled: bool = False,
-    features_reprojection_disabled: bool = False,
-    max_buffer: int = 0,
-    max_request_memory: int = 0,
-    max_rendering_time: int = 0,
-    max_rendering_errors: int = 0,
-    max_requested_dimension_values: int = 100,
-    cache_configuration: dict = {'enabled': False, 'maxEntries': 1000, 'maxEntrySize': 51200},
-    remote_style_max_request_time: int = 60000,
-    remote_style_timeout: int = 30000,
-    default_group_style_enabled: bool = True,
-    transform_feature_info_disabled: bool = False,
-    auto_escape_template_values: bool = False
-) -&gt; tuple[str, int]</dt><dd><span class="code">Publish&nbsp;the&nbsp;WMS&nbsp;service&nbsp;for&nbsp;a&nbsp;given&nbsp;workspace</span></dd></dl>
-
-<dl><dt><a name="GeoServerCloud-recreate_workspace"><strong>recreate_workspace</strong></a>(
-    self,
-    workspace_name: str,
-    isolated: bool = False,
-    set_default_workspace: bool = False
-) -&gt; tuple[str, int]</dt><dd><span class="code">Create&nbsp;a&nbsp;workspace&nbsp;in&nbsp;GeoServer,&nbsp;and&nbsp;first&nbsp;delete&nbsp;it&nbsp;if&nbsp;it&nbsp;already&nbsp;exists.</span></dd></dl>
-
-<dl><dt><a name="GeoServerCloud-remove_role_from_user"><strong>remove_role_from_user</strong></a>(self, user: str, role: str) -&gt; tuple[str, int]</dt><dd><span class="code">Remove&nbsp;a&nbsp;role&nbsp;from&nbsp;a&nbsp;GeoServer&nbsp;user</span></dd></dl>
-
-<dl><dt><a name="GeoServerCloud-set_default_layer_style"><strong>set_default_layer_style</strong></a>(self, layer_name: str, workspace_name: str, style: str) -&gt; tuple[str, int]</dt><dd><span class="code">Set&nbsp;the&nbsp;default&nbsp;style&nbsp;for&nbsp;a&nbsp;layer</span></dd></dl>
-
-<dl><dt><a name="GeoServerCloud-set_default_locale_for_service"><strong>set_default_locale_for_service</strong></a>(self, workspace_name: str, locale: str | None) -&gt; tuple[str, int]</dt><dd><span class="code">Set&nbsp;a&nbsp;default&nbsp;language&nbsp;for&nbsp;localized&nbsp;WMS&nbsp;requests</span></dd></dl>
-
-<dl><dt><a name="GeoServerCloud-unset_default_locale_for_service"><strong>unset_default_locale_for_service</strong></a>(self, workspace_name) -&gt; tuple[str, int]</dt><dd><span class="code">Remove&nbsp;the&nbsp;default&nbsp;language&nbsp;for&nbsp;localized&nbsp;WMS&nbsp;requests</span></dd></dl>
-
-<dl><dt><a name="GeoServerCloud-update_user"><strong>update_user</strong></a>(
-    self,
-    user: str,
-    password: str | None = None,
-    enabled: bool | None = None
-) -&gt; tuple[str, int]</dt><dd><span class="code">Update&nbsp;a&nbsp;GeoServer&nbsp;user</span></dd></dl>
-
-<hr>
-Data descriptors defined here:<br>
-<dl><dt><strong>__dict__</strong></dt>
-<dd><span class="code">dictionary&nbsp;for&nbsp;instance&nbsp;variables</span></dd>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="geoservercloud.GeoServerCloud.user">
+<span class="sig-name descname"><span class="pre">user</span></span><a class="headerlink" href="#geoservercloud.GeoServerCloud.user" title="Link to this definition"></a></dt>
+<dd><p>GeoServer username</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
 </dl>
-<dl><dt><strong>__weakref__</strong></dt>
-<dd><span class="code">list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object</span></dd>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="geoservercloud.GeoServerCloud.password">
+<span class="sig-name descname"><span class="pre">password</span></span><a class="headerlink" href="#geoservercloud.GeoServerCloud.password" title="Link to this definition"></a></dt>
+<dd><p>GeoServer password</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
 </dl>
-</td></tr></table> <p>
-<table class="section">
-<tr class="decor title-decor heading-text">
-<td class="section-title" colspan=3>&nbsp;<br><a name="GeoServerCloudSync">class <strong>GeoServerCloudSync</strong></a>(<a href="builtins.html#object">builtins.object</a>)</td></tr>
-    
-<tr><td class="decor title-decor" rowspan=2><span class="code">&nbsp;&nbsp;&nbsp;</span></td>
-<td class="decor title-decor" colspan=2><span class="code"><a href="#GeoServerCloudSync">GeoServerCloudSync</a>(<br>
-&nbsp;&nbsp;&nbsp;&nbsp;src_url:&nbsp;str,<br>
-&nbsp;&nbsp;&nbsp;&nbsp;src_user:&nbsp;str,<br>
-&nbsp;&nbsp;&nbsp;&nbsp;src_password:&nbsp;str,<br>
-&nbsp;&nbsp;&nbsp;&nbsp;dst_url:&nbsp;str,<br>
-&nbsp;&nbsp;&nbsp;&nbsp;dst_user:&nbsp;str,<br>
-&nbsp;&nbsp;&nbsp;&nbsp;dst_password:&nbsp;str<br>
-)&nbsp;-&amp;gt;&nbsp;None<br>
-&nbsp;<br>
-Facade&nbsp;class&nbsp;allowing&nbsp;synchronization&nbsp;of&nbsp;GeoServer&nbsp;resources&nbsp;between&nbsp;two&nbsp;GeoServer&nbsp;instances<br>
-&nbsp;<br>
-Attributes<br>
-----------<br>
-src_url&nbsp;:&nbsp;str<br>
-&nbsp;&nbsp;&nbsp;&nbsp;base&nbsp;GeoServer&nbsp;URL&nbsp;for&nbsp;source&nbsp;GeoServer&nbsp;instance<br>
-src_user&nbsp;:&nbsp;str<br>
-&nbsp;&nbsp;&nbsp;&nbsp;GeoServer&nbsp;username&nbsp;for&nbsp;source&nbsp;GeoServer&nbsp;instance<br>
-src_password&nbsp;:&nbsp;str<br>
-&nbsp;&nbsp;&nbsp;&nbsp;GeoServer&nbsp;password&nbsp;for&nbsp;source&nbsp;GeoServer&nbsp;instance<br>
-dst_url&nbsp;:&nbsp;str<br>
-&nbsp;&nbsp;&nbsp;&nbsp;base&nbsp;GeoServer&nbsp;URL&nbsp;for&nbsp;destination&nbsp;GeoServer&nbsp;instance<br>
-dst_user&nbsp;:&nbsp;str<br>
-&nbsp;&nbsp;&nbsp;&nbsp;GeoServer&nbsp;username&nbsp;for&nbsp;destination&nbsp;GeoServer&nbsp;instance<br>
-dst_password&nbsp;:&nbsp;str<br>
-&nbsp;&nbsp;&nbsp;&nbsp;GeoServer&nbsp;password&nbsp;for&nbsp;destination&nbsp;GeoServer&nbsp;instance<br>&nbsp;</span></td></tr>
-<tr><td>&nbsp;</td>
-<td class="singlecolumn">Methods defined here:<br>
-<dl><dt><a name="GeoServerCloudSync-__init__"><strong>__init__</strong></a>(
-    self,
-    src_url: str,
-    src_user: str,
-    src_password: str,
-    dst_url: str,
-    dst_user: str,
-    dst_password: str
-) -&gt; None</dt><dd><span class="code">Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</span></dd></dl>
+</dd></dl>
 
-<dl><dt><a name="GeoServerCloudSync-copy_feature_type"><strong>copy_feature_type</strong></a>(
-    self,
-    workspace_name: str,
-    datastore_name: str,
-    feature_type_name: str
-) -&gt; tuple[str, int]</dt><dd><span class="code">Copy&nbsp;a&nbsp;feature&nbsp;type&nbsp;from&nbsp;source&nbsp;to&nbsp;destination&nbsp;GeoServer&nbsp;instance</span></dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="geoservercloud.GeoServerCloud.assign_role_to_user">
+<span class="sig-name descname"><span class="pre">assign_role_to_user</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">role</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#geoservercloud.GeoServerCloud.assign_role_to_user" title="Link to this definition"></a></dt>
+<dd><p>Assign a role to a GeoServer user</p>
+</dd></dl>
 
-<dl><dt><a name="GeoServerCloudSync-copy_feature_types"><strong>copy_feature_types</strong></a>(
-    self,
-    workspace_name: str,
-    datastore_name: str,
-    copy_layers: bool = False
-) -&gt; tuple[str, int]</dt><dd><span class="code">Copy&nbsp;all&nbsp;feature&nbsp;types&nbsp;in&nbsp;a&nbsp;datastore&nbsp;from&nbsp;source&nbsp;to&nbsp;destination&nbsp;GeoServer&nbsp;instance</span></dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="geoservercloud.GeoServerCloud.create_acl_admin_rule">
+<span class="sig-name descname"><span class="pre">create_acl_admin_rule</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">priority</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">access</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'ADMIN'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">role</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">workspace_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#geoservercloud.GeoServerCloud.create_acl_admin_rule" title="Link to this definition"></a></dt>
+<dd><p>Create a GeoServer ACL admin rule</p>
+</dd></dl>
 
-<dl><dt><a name="GeoServerCloudSync-copy_layer"><strong>copy_layer</strong></a>(self, workspace_name: str, feature_type_name: str) -&gt; tuple[str, int]</dt><dd><span class="code">Copy&nbsp;a&nbsp;layer&nbsp;from&nbsp;source&nbsp;to&nbsp;destination&nbsp;GeoServer&nbsp;instance</span></dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="geoservercloud.GeoServerCloud.create_acl_rule">
+<span class="sig-name descname"><span class="pre">create_acl_rule</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">priority</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">access</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'DENY'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">role</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">request</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">workspace_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#geoservercloud.GeoServerCloud.create_acl_rule" title="Link to this definition"></a></dt>
+<dd><p>Create a GeoServer ACL data rule</p>
+</dd></dl>
 
-<dl><dt><a name="GeoServerCloudSync-copy_layer_group"><strong>copy_layer_group</strong></a>(self, workspace_name: str, layer_group_name: str) -&gt; tuple[str, int]</dt><dd><span class="code">Copy&nbsp;a&nbsp;layer&nbsp;group&nbsp;from&nbsp;source&nbsp;to&nbsp;destination&nbsp;GeoServer&nbsp;instance</span></dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="geoservercloud.GeoServerCloud.create_acl_rules_for_requests">
+<span class="sig-name descname"><span class="pre">create_acl_rules_for_requests</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">requests</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">priority</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">access</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'DENY'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">role</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">workspace_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#geoservercloud.GeoServerCloud.create_acl_rules_for_requests" title="Link to this definition"></a></dt>
+<dd><p>Create ACL rules for multiple type of OGC requests</p>
+</dd></dl>
 
-<dl><dt><a name="GeoServerCloudSync-copy_layer_groups"><strong>copy_layer_groups</strong></a>(self, workspace_name: str) -&gt; tuple[str, int]</dt><dd><span class="code">Copy&nbsp;all&nbsp;layer&nbsp;groups&nbsp;in&nbsp;a&nbsp;workspace&nbsp;from&nbsp;source&nbsp;to&nbsp;destination&nbsp;GeoServer&nbsp;instance</span></dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="geoservercloud.GeoServerCloud.create_feature_type">
+<span class="sig-name descname"><span class="pre">create_feature_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">layer_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">workspace_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">datastore_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">dict</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'Default</span> <span class="pre">title'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">abstract</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">dict</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'Default</span> <span class="pre">abstract'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attributes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">{'geom':</span> <span class="pre">{'required':</span> <span class="pre">True,</span> <span class="pre">'type':</span> <span class="pre">'Point'}}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">4326</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keywords</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">[]</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#geoservercloud.GeoServerCloud.create_feature_type" title="Link to this definition"></a></dt>
+<dd><p>Create a feature type or update it if it already exist.</p>
+</dd></dl>
 
-<dl><dt><a name="GeoServerCloudSync-copy_pg_datastore"><strong>copy_pg_datastore</strong></a>(
-    self,
-    workspace_name: str,
-    datastore_name: str,
-    deep_copy: bool = False
-) -&gt; tuple[str, int]</dt><dd><span class="code">Copy&nbsp;a&nbsp;datastore&nbsp;from&nbsp;source&nbsp;to&nbsp;destination&nbsp;GeoServer&nbsp;instance<br>
-If&nbsp;deep_copy&nbsp;is&nbsp;True,&nbsp;copy&nbsp;all&nbsp;feature&nbsp;types&nbsp;and&nbsp;the&nbsp;corresponding&nbsp;layers</span></dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="geoservercloud.GeoServerCloud.create_gridset">
+<span class="sig-name descname"><span class="pre">create_gridset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">epsg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#geoservercloud.GeoServerCloud.create_gridset" title="Link to this definition"></a></dt>
+<dd><p>Create a gridset for GeoWebCache for a given projection
+Supported EPSG codes are 2056, 21781 and 3857</p>
+</dd></dl>
 
-<dl><dt><a name="GeoServerCloudSync-copy_pg_datastores"><strong>copy_pg_datastores</strong></a>(self, workspace_name: str, deep_copy: bool = False) -&gt; tuple[str, int]</dt><dd><span class="code">Copy&nbsp;all&nbsp;the&nbsp;datastores&nbsp;in&nbsp;given&nbsp;workspace.<br>
-If&nbsp;deep_copy&nbsp;is&nbsp;True,&nbsp;copy&nbsp;all&nbsp;feature&nbsp;types&nbsp;and&nbsp;the&nbsp;corresponding&nbsp;layers&nbsp;in&nbsp;each&nbsp;datastore</span></dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="geoservercloud.GeoServerCloud.create_jndi_datastore">
+<span class="sig-name descname"><span class="pre">create_jndi_datastore</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">workspace_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">datastore_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">jndi_reference</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pg_schema</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'public'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">set_default_datastore</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#geoservercloud.GeoServerCloud.create_jndi_datastore" title="Link to this definition"></a></dt>
+<dd><p>Create a PostGIS datastore from JNDI resource, or update it if it already exist.</p>
+</dd></dl>
 
-<dl><dt><a name="GeoServerCloudSync-copy_resource"><strong>copy_resource</strong></a>(
-    self,
-    resource_dir: str,
-    resource_name: str,
-    content_type: str,
-    workspace_name: str | None = None
-) -&gt; tuple[str, int]</dt><dd><span class="code">Copy&nbsp;a&nbsp;resource&nbsp;from&nbsp;source&nbsp;to&nbsp;destination&nbsp;GeoServer&nbsp;instance</span></dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="geoservercloud.GeoServerCloud.create_layer_group">
+<span class="sig-name descname"><span class="pre">create_layer_group</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">group</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">workspace_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layers</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">abstract</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">4326</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'SINGLE'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enabled</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">advertised</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#geoservercloud.GeoServerCloud.create_layer_group" title="Link to this definition"></a></dt>
+<dd><p>Create a layer group or update it if it already exists.</p>
+</dd></dl>
 
-<dl><dt><a name="GeoServerCloudSync-copy_style"><strong>copy_style</strong></a>(self, style_name: str, workspace_name: str | None = None) -&gt; tuple[str, int]</dt><dd><span class="code">Copy&nbsp;a&nbsp;style&nbsp;from&nbsp;source&nbsp;to&nbsp;destination&nbsp;GeoServer&nbsp;instance</span></dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="geoservercloud.GeoServerCloud.create_pg_datastore">
+<span class="sig-name descname"><span class="pre">create_pg_datastore</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">workspace_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">datastore_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pg_host</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pg_port</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pg_db</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pg_user</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pg_password</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pg_schema</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'public'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">set_default_datastore</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#geoservercloud.GeoServerCloud.create_pg_datastore" title="Link to this definition"></a></dt>
+<dd><p>Create a PostGIS datastore from the DB connection parameters, or update it if it already exist.</p>
+</dd></dl>
 
-<dl><dt><a name="GeoServerCloudSync-copy_style_images"><strong>copy_style_images</strong></a>(self, workspace_name: str | None = None) -&gt; tuple[str, int]</dt><dd><span class="code">Copy&nbsp;all&nbsp;images&nbsp;in&nbsp;a&nbsp;workspace's&nbsp;style&nbsp;directory,&nbsp;or&nbsp;all&nbsp;global&nbsp;style&nbsp;images&nbsp;if&nbsp;no&nbsp;workspace&nbsp;is&nbsp;provided</span></dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="geoservercloud.GeoServerCloud.create_role">
+<span class="sig-name descname"><span class="pre">create_role</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">role_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#geoservercloud.GeoServerCloud.create_role" title="Link to this definition"></a></dt>
+<dd><p>Create a GeoServer role if it does not already exist</p>
+</dd></dl>
 
-<dl><dt><a name="GeoServerCloudSync-copy_styles"><strong>copy_styles</strong></a>(
-    self,
-    workspace_name: str | None = None,
-    include_images: bool = True
-) -&gt; tuple[str, int]</dt><dd><span class="code">Copy&nbsp;all&nbsp;styles&nbsp;in&nbsp;a&nbsp;workspace&nbsp;(if&nbsp;a&nbsp;workspace&nbsp;is&nbsp;provided)&nbsp;or&nbsp;all&nbsp;global&nbsp;styles</span></dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="geoservercloud.GeoServerCloud.create_style_definition">
+<span class="sig-name descname"><span class="pre">create_style_definition</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">style_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">workspace_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#geoservercloud.GeoServerCloud.create_style_definition" title="Link to this definition"></a></dt>
+<dd><p>Create a style definition</p>
+</dd></dl>
 
-<dl><dt><a name="GeoServerCloudSync-copy_workspace"><strong>copy_workspace</strong></a>(self, workspace_name: str, deep_copy: bool = False) -&gt; tuple[str, int]</dt><dd><span class="code">Copy&nbsp;a&nbsp;workspace&nbsp;from&nbsp;the&nbsp;source&nbsp;to&nbsp;the&nbsp;destination&nbsp;GeoServer&nbsp;instance.<br>
-If&nbsp;deep_copy&nbsp;is&nbsp;True,&nbsp;the&nbsp;copy&nbsp;includes&nbsp;the&nbsp;PostGIS&nbsp;datastores,&nbsp;the&nbsp;feature&nbsp;types&nbsp;in&nbsp;the&nbsp;datastores,<br>
-the&nbsp;corresponding&nbsp;layers,&nbsp;the&nbsp;layer&nbsp;groups&nbsp;and&nbsp;the&nbsp;styles&nbsp;in&nbsp;the&nbsp;workspace&nbsp;(including&nbsp;images).</span></dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="geoservercloud.GeoServerCloud.create_style_from_file">
+<span class="sig-name descname"><span class="pre">create_style_from_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">style_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">workspace_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#geoservercloud.GeoServerCloud.create_style_from_file" title="Link to this definition"></a></dt>
+<dd><p>Create a style (SLD) from a file, or update it if it already exists.
+Supported file extensions are .sld and .zip.</p>
+</dd></dl>
 
-<hr>
-Static methods defined here:<br>
-<dl><dt><a name="GeoServerCloudSync-not_ok"><strong>not_ok</strong></a>(http_status_code: int) -&gt; bool</dt></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="geoservercloud.GeoServerCloud.create_user">
+<span class="sig-name descname"><span class="pre">create_user</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">password</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enabled</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#geoservercloud.GeoServerCloud.create_user" title="Link to this definition"></a></dt>
+<dd><p>Create a GeoServer user</p>
+</dd></dl>
 
-<hr>
-Data descriptors defined here:<br>
-<dl><dt><strong>__dict__</strong></dt>
-<dd><span class="code">dictionary&nbsp;for&nbsp;instance&nbsp;variables</span></dd>
-</dl>
-<dl><dt><strong>__weakref__</strong></dt>
-<dd><span class="code">list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object</span></dd>
-</dl>
-</td></tr></table></td></tr></table><p>
-<table class="section">
-<tr class="decor data-decor heading-text">
-<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Data</strong></td></tr>
-    
-<tr><td class="decor data-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
-<td class="singlecolumn"><strong>__all__</strong> = ['GeoServerCloud', 'GeoServerCloudSync']<br>
-<strong>__annotations__</strong> = {'__all__': list[str]}</td></tr></table>
-</body></html>
+<dl class="py method">
+<dt class="sig sig-object py" id="geoservercloud.GeoServerCloud.create_wms">
+<span class="sig-name descname"><span class="pre">create_wms</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#geoservercloud.GeoServerCloud.create_wms" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="geoservercloud.GeoServerCloud.create_wms_layer">
+<span class="sig-name descname"><span class="pre">create_wms_layer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">workspace_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wms_store_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">native_layer_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">published_layer_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#geoservercloud.GeoServerCloud.create_wms_layer" title="Link to this definition"></a></dt>
+<dd><p>Publish a remote WMS layer
+If it already exists, delete and recreate it (update is not supported by GeoServer)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="geoservercloud.GeoServerCloud.create_wms_store">
+<span class="sig-name descname"><span class="pre">create_wms_store</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">workspace_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wms_store_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">capabilities_url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#geoservercloud.GeoServerCloud.create_wms_store" title="Link to this definition"></a></dt>
+<dd><p>Create a cascaded WMS store, or update it if it already exist.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="geoservercloud.GeoServerCloud.create_wmts">
+<span class="sig-name descname"><span class="pre">create_wmts</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#geoservercloud.GeoServerCloud.create_wmts" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="geoservercloud.GeoServerCloud.create_wmts_layer">
+<span class="sig-name descname"><span class="pre">create_wmts_layer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">workspace_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wmts_store</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">native_layer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">published_layer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">4326</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">international_title</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">international_abstract</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#geoservercloud.GeoServerCloud.create_wmts_layer" title="Link to this definition"></a></dt>
+<dd><p>Publish a remote WMTS layer (first delete it if it already exists)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="geoservercloud.GeoServerCloud.create_wmts_store">
+<span class="sig-name descname"><span class="pre">create_wmts_store</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">workspace_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">capabilities</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#geoservercloud.GeoServerCloud.create_wmts_store" title="Link to this definition"></a></dt>
+<dd><p>Create a cascaded WMTS store, or update it if it already exist.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="geoservercloud.GeoServerCloud.create_workspace">
+<span class="sig-name descname"><span class="pre">create_workspace</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">workspace_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">isolated</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">set_default_workspace</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#geoservercloud.GeoServerCloud.create_workspace" title="Link to this definition"></a></dt>
+<dd><p>Create a workspace in GeoServer, if it does not already exist.
+It if exists, update it</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="geoservercloud.GeoServerCloud.delete_acl_admin_rule">
+<span class="sig-name descname"><span class="pre">delete_acl_admin_rule</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#geoservercloud.GeoServerCloud.delete_acl_admin_rule" title="Link to this definition"></a></dt>
+<dd><p>Delete a GeoServer ACL admin rule by id</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="geoservercloud.GeoServerCloud.delete_all_acl_admin_rules">
+<span class="sig-name descname"><span class="pre">delete_all_acl_admin_rules</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#geoservercloud.GeoServerCloud.delete_all_acl_admin_rules" title="Link to this definition"></a></dt>
+<dd><p>Delete all existing GeoServer ACL admin rules</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="geoservercloud.GeoServerCloud.delete_all_acl_rules">
+<span class="sig-name descname"><span class="pre">delete_all_acl_rules</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#geoservercloud.GeoServerCloud.delete_all_acl_rules" title="Link to this definition"></a></dt>
+<dd><p>Delete all existing GeoServer ACL data rules</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="geoservercloud.GeoServerCloud.delete_feature_type">
+<span class="sig-name descname"><span class="pre">delete_feature_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">workspace_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">datastore_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layer_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#geoservercloud.GeoServerCloud.delete_feature_type" title="Link to this definition"></a></dt>
+<dd><p>Delete a feature type and associated layer</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="geoservercloud.GeoServerCloud.delete_gwc_layer">
+<span class="sig-name descname"><span class="pre">delete_gwc_layer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">workspace_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#geoservercloud.GeoServerCloud.delete_gwc_layer" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="geoservercloud.GeoServerCloud.delete_layer_group">
+<span class="sig-name descname"><span class="pre">delete_layer_group</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">workspace_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layer_group_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#geoservercloud.GeoServerCloud.delete_layer_group" title="Link to this definition"></a></dt>
+<dd><p>Delete a layer group</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="geoservercloud.GeoServerCloud.delete_role">
+<span class="sig-name descname"><span class="pre">delete_role</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">role_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#geoservercloud.GeoServerCloud.delete_role" title="Link to this definition"></a></dt>
+<dd><p>Delete a GeoServer role</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="geoservercloud.GeoServerCloud.delete_user">
+<span class="sig-name descname"><span class="pre">delete_user</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#geoservercloud.GeoServerCloud.delete_user" title="Link to this definition"></a></dt>
+<dd><p>Delete a GeoServer user</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="geoservercloud.GeoServerCloud.delete_wms_layer">
+<span class="sig-name descname"><span class="pre">delete_wms_layer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">workspace_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wms_store_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wms_layer_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#geoservercloud.GeoServerCloud.delete_wms_layer" title="Link to this definition"></a></dt>
+<dd><p>Delete a WMS layer</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="geoservercloud.GeoServerCloud.delete_wms_store">
+<span class="sig-name descname"><span class="pre">delete_wms_store</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">workspace_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wms_store_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#geoservercloud.GeoServerCloud.delete_wms_store" title="Link to this definition"></a></dt>
+<dd><p>Delete a WMS store recursively</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="geoservercloud.GeoServerCloud.delete_workspace">
+<span class="sig-name descname"><span class="pre">delete_workspace</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">workspace_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#geoservercloud.GeoServerCloud.delete_workspace" title="Link to this definition"></a></dt>
+<dd><p>Delete a GeoServer workspace (recursively)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="geoservercloud.GeoServerCloud.describe_feature_type">
+<span class="sig-name descname"><span class="pre">describe_feature_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">workspace_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">format</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'application/json'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span></span></span><a class="headerlink" href="#geoservercloud.GeoServerCloud.describe_feature_type" title="Link to this definition"></a></dt>
+<dd><p>WFS DescribeFeatureType request
+Return the feature type(s) as dict if found, otherwise return the response content as string</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="geoservercloud.GeoServerCloud.get_acl_rules">
+<span class="sig-name descname"><span class="pre">get_acl_rules</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#geoservercloud.GeoServerCloud.get_acl_rules" title="Link to this definition"></a></dt>
+<dd><p>Return all GeoServer ACL data rules</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="geoservercloud.GeoServerCloud.get_datastores">
+<span class="sig-name descname"><span class="pre">get_datastores</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">workspace_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#geoservercloud.GeoServerCloud.get_datastores" title="Link to this definition"></a></dt>
+<dd><p>Get all datastores for a given workspace</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="geoservercloud.GeoServerCloud.get_feature">
+<span class="sig-name descname"><span class="pre">get_feature</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">workspace_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">feature_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_feature</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">format</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'application/json'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span></span></span><a class="headerlink" href="#geoservercloud.GeoServerCloud.get_feature" title="Link to this definition"></a></dt>
+<dd><p>WFS GetFeature request
+Return the feature(s) as dict if found, otherwise return the response content as string</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="geoservercloud.GeoServerCloud.get_feature_info">
+<span class="sig-name descname"><span class="pre">get_feature_info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">layers</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bbox</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">srs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'EPSG:2056'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">info_format</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'application/json'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transparent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">styles</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">[0,</span> <span class="pre">0]</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ResponseWrapper</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="headerlink" href="#geoservercloud.GeoServerCloud.get_feature_info" title="Link to this definition"></a></dt>
+<dd><p>WMS GetFeatureInfo request</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="geoservercloud.GeoServerCloud.get_feature_type">
+<span class="sig-name descname"><span class="pre">get_feature_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">workspace_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">datastore_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">feature_type_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#geoservercloud.GeoServerCloud.get_feature_type" title="Link to this definition"></a></dt>
+<dd><p>Get a feature type by workspace, datastore and name</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="geoservercloud.GeoServerCloud.get_feature_types">
+<span class="sig-name descname"><span class="pre">get_feature_types</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">workspace_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">datastore_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#geoservercloud.GeoServerCloud.get_feature_types" title="Link to this definition"></a></dt>
+<dd><p>Get all feature types for a given workspace and datastore</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="geoservercloud.GeoServerCloud.get_gwc_layer">
+<span class="sig-name descname"><span class="pre">get_gwc_layer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">workspace_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#geoservercloud.GeoServerCloud.get_gwc_layer" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="geoservercloud.GeoServerCloud.get_layer_group">
+<span class="sig-name descname"><span class="pre">get_layer_group</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">workspace_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layer_group_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#geoservercloud.GeoServerCloud.get_layer_group" title="Link to this definition"></a></dt>
+<dd><p>Get a layer group by name</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="geoservercloud.GeoServerCloud.get_layer_groups">
+<span class="sig-name descname"><span class="pre">get_layer_groups</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">workspace_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#geoservercloud.GeoServerCloud.get_layer_groups" title="Link to this definition"></a></dt>
+<dd><p>Get all layer groups for a given workspace</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="geoservercloud.GeoServerCloud.get_legend_graphic">
+<span class="sig-name descname"><span class="pre">get_legend_graphic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">layer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">format</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'image/png'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">language</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">style</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">workspace_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Response</span></span></span><a class="headerlink" href="#geoservercloud.GeoServerCloud.get_legend_graphic" title="Link to this definition"></a></dt>
+<dd><p>WMS GetLegendGraphic request</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="geoservercloud.GeoServerCloud.get_map">
+<span class="sig-name descname"><span class="pre">get_map</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">layers</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bbox</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">srs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'EPSG:2056'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">format</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'image/png'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transparent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">styles</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">language</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ResponseWrapper</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="headerlink" href="#geoservercloud.GeoServerCloud.get_map" title="Link to this definition"></a></dt>
+<dd><p>WMS GetMap request</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="geoservercloud.GeoServerCloud.get_pg_datastore">
+<span class="sig-name descname"><span class="pre">get_pg_datastore</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">workspace_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">datastore_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#geoservercloud.GeoServerCloud.get_pg_datastore" title="Link to this definition"></a></dt>
+<dd><p>Get a datastore by workspace and name</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="geoservercloud.GeoServerCloud.get_property_value">
+<span class="sig-name descname"><span class="pre">get_property_value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">workspace_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">property</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">list</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span></span></span><a class="headerlink" href="#geoservercloud.GeoServerCloud.get_property_value" title="Link to this definition"></a></dt>
+<dd><p>WFS GetPropertyValue request
+Return the properties as dict (if one feature was found), a list (if multiple features were found),
+an empty dict if no feature was found or the response content as string</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="geoservercloud.GeoServerCloud.get_style_definition">
+<span class="sig-name descname"><span class="pre">get_style_definition</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">style</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">workspace_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#geoservercloud.GeoServerCloud.get_style_definition" title="Link to this definition"></a></dt>
+<dd><p>Get a style definition by name</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="geoservercloud.GeoServerCloud.get_styles">
+<span class="sig-name descname"><span class="pre">get_styles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">workspace_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#geoservercloud.GeoServerCloud.get_styles" title="Link to this definition"></a></dt>
+<dd><p>Get all styles for a given workspace. If no workspace is provided, get all global styles</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="geoservercloud.GeoServerCloud.get_tile">
+<span class="sig-name descname"><span class="pre">get_tile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">layer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">format</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tile_matrix_set</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tile_matrix</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">row</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ResponseWrapper</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="headerlink" href="#geoservercloud.GeoServerCloud.get_tile" title="Link to this definition"></a></dt>
+<dd><p>WMTS GetTile request</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="geoservercloud.GeoServerCloud.get_user_roles">
+<span class="sig-name descname"><span class="pre">get_user_roles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#geoservercloud.GeoServerCloud.get_user_roles" title="Link to this definition"></a></dt>
+<dd><p>Get all roles assigned to a GeoServer user</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="geoservercloud.GeoServerCloud.get_wfs_layers">
+<span class="sig-name descname"><span class="pre">get_wfs_layers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">workspace_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#geoservercloud.GeoServerCloud.get_wfs_layers" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="geoservercloud.GeoServerCloud.get_wms_layer">
+<span class="sig-name descname"><span class="pre">get_wms_layer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">workspace_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wms_store_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wms_layer_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#geoservercloud.GeoServerCloud.get_wms_layer" title="Link to this definition"></a></dt>
+<dd><p>Get a WMS layer by workspace, store and name</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="geoservercloud.GeoServerCloud.get_wms_layers">
+<span class="sig-name descname"><span class="pre">get_wms_layers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">workspace_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">accept_languages</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#geoservercloud.GeoServerCloud.get_wms_layers" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="geoservercloud.GeoServerCloud.get_wms_store">
+<span class="sig-name descname"><span class="pre">get_wms_store</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">workspace_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">datastore_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#geoservercloud.GeoServerCloud.get_wms_store" title="Link to this definition"></a></dt>
+<dd><p>Get a WMS by workspace and name</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="geoservercloud.GeoServerCloud.get_workspace">
+<span class="sig-name descname"><span class="pre">get_workspace</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">workspace_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#geoservercloud.GeoServerCloud.get_workspace" title="Link to this definition"></a></dt>
+<dd><p>Get a workspace by name</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="geoservercloud.GeoServerCloud.get_workspace_wms_settings">
+<span class="sig-name descname"><span class="pre">get_workspace_wms_settings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">workspace_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#geoservercloud.GeoServerCloud.get_workspace_wms_settings" title="Link to this definition"></a></dt>
+<dd><p>Get the WMS settings for a given workspace</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="geoservercloud.GeoServerCloud.get_workspaces">
+<span class="sig-name descname"><span class="pre">get_workspaces</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#geoservercloud.GeoServerCloud.get_workspaces" title="Link to this definition"></a></dt>
+<dd><p>Get all GeoServer workspaces</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="geoservercloud.GeoServerCloud.publish_gwc_layer">
+<span class="sig-name descname"><span class="pre">publish_gwc_layer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">workspace_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">4326</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#geoservercloud.GeoServerCloud.publish_gwc_layer" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="geoservercloud.GeoServerCloud.publish_workspace">
+<span class="sig-name descname"><span class="pre">publish_workspace</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">workspace_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">versions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">['1.1.1',</span> <span class="pre">'1.3.0']</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cite_compliant</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">schema_base_url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'http://schemas.opengis.net'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bbox_for_each_crs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">watermark</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">{'enabled':</span> <span class="pre">False,</span> <span class="pre">'position':</span> <span class="pre">'BOT_RIGHT',</span> <span class="pre">'transparency':</span> <span class="pre">100}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interpolation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'Nearest'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_feature_info_mime_type_checking_enabled</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_map_mime_type_checking_enabled</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dynamic_styling_disabled</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">features_reprojection_disabled</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_buffer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_request_memory</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_rendering_time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_rendering_errors</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_requested_dimension_values</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cache_configuration</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">{'enabled':</span> <span class="pre">False,</span> <span class="pre">'maxEntries':</span> <span class="pre">1000,</span> <span class="pre">'maxEntrySize':</span> <span class="pre">51200}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remote_style_max_request_time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">60000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remote_style_timeout</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">30000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_group_style_enabled</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transform_feature_info_disabled</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">auto_escape_template_values</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#geoservercloud.GeoServerCloud.publish_workspace" title="Link to this definition"></a></dt>
+<dd><p>Publish the WMS service for a given workspace</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="geoservercloud.GeoServerCloud.recreate_workspace">
+<span class="sig-name descname"><span class="pre">recreate_workspace</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">workspace_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">isolated</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">set_default_workspace</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#geoservercloud.GeoServerCloud.recreate_workspace" title="Link to this definition"></a></dt>
+<dd><p>Create a workspace in GeoServer, and first delete it if it already exists.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="geoservercloud.GeoServerCloud.remove_role_from_user">
+<span class="sig-name descname"><span class="pre">remove_role_from_user</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">role</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#geoservercloud.GeoServerCloud.remove_role_from_user" title="Link to this definition"></a></dt>
+<dd><p>Remove a role from a GeoServer user</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="geoservercloud.GeoServerCloud.set_default_layer_style">
+<span class="sig-name descname"><span class="pre">set_default_layer_style</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">layer_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">workspace_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">style</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#geoservercloud.GeoServerCloud.set_default_layer_style" title="Link to this definition"></a></dt>
+<dd><p>Set the default style for a layer</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="geoservercloud.GeoServerCloud.set_default_locale_for_service">
+<span class="sig-name descname"><span class="pre">set_default_locale_for_service</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">workspace_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">locale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#geoservercloud.GeoServerCloud.set_default_locale_for_service" title="Link to this definition"></a></dt>
+<dd><p>Set a default language for localized WMS requests</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="geoservercloud.GeoServerCloud.unset_default_locale_for_service">
+<span class="sig-name descname"><span class="pre">unset_default_locale_for_service</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">workspace_name</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#geoservercloud.GeoServerCloud.unset_default_locale_for_service" title="Link to this definition"></a></dt>
+<dd><p>Remove the default language for localized WMS requests</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="geoservercloud.GeoServerCloud.update_user">
+<span class="sig-name descname"><span class="pre">update_user</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">password</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enabled</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#geoservercloud.GeoServerCloud.update_user" title="Link to this definition"></a></dt>
+<dd><p>Update a GeoServer user</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="python-geoservercloud Documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="geoservercloudsync.html" class="btn btn-neutral float-right" title="geoservercloudsync.py" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Camptocamp.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

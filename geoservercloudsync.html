@@ -1,144 +1,286 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<title>Python: module geoservercloudsync</title>
-</head><body>
 
-<table class="heading">
-<tr class="heading-text decor">
-<td class="title">&nbsp;<br><strong class="title">geoservercloudsync</strong></td>
-<td class="extra"><a href=".">index</a><br><a href="file:/home/runner/work/python-geoservercloud/python-geoservercloud/geoservercloud/geoservercloudsync.py">/home/runner/work/python-geoservercloud/python-geoservercloud/geoservercloud/geoservercloudsync.py</a></td></tr></table>
-    <p></p>
-<p>
-<table class="section">
-<tr class="decor index-decor heading-text">
-<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Classes</strong></td></tr>
-    
-<tr><td class="decor index-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
-<td class="singlecolumn"><dl>
-<dt class="heading-text"><a href="builtins.html#object">builtins.object</a>
-</dt><dd>
-<dl>
-<dt class="heading-text"><a href="geoservercloudsync.html#GeoServerCloudSync">GeoServerCloudSync</a>
-</dt></dl>
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>geoservercloudsync.py &mdash; geoservercloud 0.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=7026087e"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="geoservercloud.py" href="geoservercloud.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            geoservercloud
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Modules:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="geoservercloud.html">geoservercloud.py</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">geoservercloudsync.py</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#geoservercloud.GeoServerCloudSync"><code class="docutils literal notranslate"><span class="pre">GeoServerCloudSync</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#geoservercloud.GeoServerCloudSync.src_url"><code class="docutils literal notranslate"><span class="pre">GeoServerCloudSync.src_url</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#geoservercloud.GeoServerCloudSync.src_user"><code class="docutils literal notranslate"><span class="pre">GeoServerCloudSync.src_user</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#geoservercloud.GeoServerCloudSync.src_password"><code class="docutils literal notranslate"><span class="pre">GeoServerCloudSync.src_password</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#geoservercloud.GeoServerCloudSync.dst_url"><code class="docutils literal notranslate"><span class="pre">GeoServerCloudSync.dst_url</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#geoservercloud.GeoServerCloudSync.dst_user"><code class="docutils literal notranslate"><span class="pre">GeoServerCloudSync.dst_user</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#geoservercloud.GeoServerCloudSync.dst_password"><code class="docutils literal notranslate"><span class="pre">GeoServerCloudSync.dst_password</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#geoservercloud.GeoServerCloudSync.copy_feature_type"><code class="docutils literal notranslate"><span class="pre">GeoServerCloudSync.copy_feature_type()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#geoservercloud.GeoServerCloudSync.copy_feature_types"><code class="docutils literal notranslate"><span class="pre">GeoServerCloudSync.copy_feature_types()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#geoservercloud.GeoServerCloudSync.copy_layer"><code class="docutils literal notranslate"><span class="pre">GeoServerCloudSync.copy_layer()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#geoservercloud.GeoServerCloudSync.copy_layer_group"><code class="docutils literal notranslate"><span class="pre">GeoServerCloudSync.copy_layer_group()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#geoservercloud.GeoServerCloudSync.copy_layer_groups"><code class="docutils literal notranslate"><span class="pre">GeoServerCloudSync.copy_layer_groups()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#geoservercloud.GeoServerCloudSync.copy_pg_datastore"><code class="docutils literal notranslate"><span class="pre">GeoServerCloudSync.copy_pg_datastore()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#geoservercloud.GeoServerCloudSync.copy_pg_datastores"><code class="docutils literal notranslate"><span class="pre">GeoServerCloudSync.copy_pg_datastores()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#geoservercloud.GeoServerCloudSync.copy_resource"><code class="docutils literal notranslate"><span class="pre">GeoServerCloudSync.copy_resource()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#geoservercloud.GeoServerCloudSync.copy_style"><code class="docutils literal notranslate"><span class="pre">GeoServerCloudSync.copy_style()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#geoservercloud.GeoServerCloudSync.copy_style_images"><code class="docutils literal notranslate"><span class="pre">GeoServerCloudSync.copy_style_images()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#geoservercloud.GeoServerCloudSync.copy_styles"><code class="docutils literal notranslate"><span class="pre">GeoServerCloudSync.copy_styles()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#geoservercloud.GeoServerCloudSync.copy_workspace"><code class="docutils literal notranslate"><span class="pre">GeoServerCloudSync.copy_workspace()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#geoservercloud.GeoServerCloudSync.not_ok"><code class="docutils literal notranslate"><span class="pre">GeoServerCloudSync.not_ok()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">geoservercloud</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">geoservercloudsync.py</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/geoservercloudsync.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="geoservercloudsync-py">
+<h1>geoservercloudsync.py<a class="headerlink" href="#geoservercloudsync-py" title="Link to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="geoservercloud.GeoServerCloudSync">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">geoservercloud.</span></span><span class="sig-name descname"><span class="pre">GeoServerCloudSync</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">src_url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">src_user</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">src_password</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dst_url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dst_user</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dst_password</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#geoservercloud.GeoServerCloudSync" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Facade class allowing synchronization of GeoServer resources between two GeoServer instances</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="geoservercloud.GeoServerCloudSync.src_url">
+<span class="sig-name descname"><span class="pre">src_url</span></span><a class="headerlink" href="#geoservercloud.GeoServerCloudSync.src_url" title="Link to this definition"></a></dt>
+<dd><p>base GeoServer URL for source GeoServer instance</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
 </dd>
 </dl>
- <p>
-<table class="section">
-<tr class="decor title-decor heading-text">
-<td class="section-title" colspan=3>&nbsp;<br><a name="GeoServerCloudSync">class <strong>GeoServerCloudSync</strong></a>(<a href="builtins.html#object">builtins.object</a>)</td></tr>
-    
-<tr><td class="decor title-decor" rowspan=2><span class="code">&nbsp;&nbsp;&nbsp;</span></td>
-<td class="decor title-decor" colspan=2><span class="code"><a href="#GeoServerCloudSync">GeoServerCloudSync</a>(<br>
-&nbsp;&nbsp;&nbsp;&nbsp;src_url:&nbsp;str,<br>
-&nbsp;&nbsp;&nbsp;&nbsp;src_user:&nbsp;str,<br>
-&nbsp;&nbsp;&nbsp;&nbsp;src_password:&nbsp;str,<br>
-&nbsp;&nbsp;&nbsp;&nbsp;dst_url:&nbsp;str,<br>
-&nbsp;&nbsp;&nbsp;&nbsp;dst_user:&nbsp;str,<br>
-&nbsp;&nbsp;&nbsp;&nbsp;dst_password:&nbsp;str<br>
-)&nbsp;-&amp;gt;&nbsp;None<br>
-&nbsp;<br>
-Facade&nbsp;class&nbsp;allowing&nbsp;synchronization&nbsp;of&nbsp;GeoServer&nbsp;resources&nbsp;between&nbsp;two&nbsp;GeoServer&nbsp;instances<br>
-&nbsp;<br>
-Attributes<br>
-----------<br>
-src_url&nbsp;:&nbsp;str<br>
-&nbsp;&nbsp;&nbsp;&nbsp;base&nbsp;GeoServer&nbsp;URL&nbsp;for&nbsp;source&nbsp;GeoServer&nbsp;instance<br>
-src_user&nbsp;:&nbsp;str<br>
-&nbsp;&nbsp;&nbsp;&nbsp;GeoServer&nbsp;username&nbsp;for&nbsp;source&nbsp;GeoServer&nbsp;instance<br>
-src_password&nbsp;:&nbsp;str<br>
-&nbsp;&nbsp;&nbsp;&nbsp;GeoServer&nbsp;password&nbsp;for&nbsp;source&nbsp;GeoServer&nbsp;instance<br>
-dst_url&nbsp;:&nbsp;str<br>
-&nbsp;&nbsp;&nbsp;&nbsp;base&nbsp;GeoServer&nbsp;URL&nbsp;for&nbsp;destination&nbsp;GeoServer&nbsp;instance<br>
-dst_user&nbsp;:&nbsp;str<br>
-&nbsp;&nbsp;&nbsp;&nbsp;GeoServer&nbsp;username&nbsp;for&nbsp;destination&nbsp;GeoServer&nbsp;instance<br>
-dst_password&nbsp;:&nbsp;str<br>
-&nbsp;&nbsp;&nbsp;&nbsp;GeoServer&nbsp;password&nbsp;for&nbsp;destination&nbsp;GeoServer&nbsp;instance<br>&nbsp;</span></td></tr>
-<tr><td>&nbsp;</td>
-<td class="singlecolumn">Methods defined here:<br>
-<dl><dt><a name="GeoServerCloudSync-__init__"><strong>__init__</strong></a>(
-    self,
-    src_url: str,
-    src_user: str,
-    src_password: str,
-    dst_url: str,
-    dst_user: str,
-    dst_password: str
-) -&gt; None</dt><dd><span class="code">Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</span></dd></dl>
+</dd></dl>
 
-<dl><dt><a name="GeoServerCloudSync-copy_feature_type"><strong>copy_feature_type</strong></a>(
-    self,
-    workspace_name: str,
-    datastore_name: str,
-    feature_type_name: str
-) -&gt; tuple[str, int]</dt><dd><span class="code">Copy&nbsp;a&nbsp;feature&nbsp;type&nbsp;from&nbsp;source&nbsp;to&nbsp;destination&nbsp;GeoServer&nbsp;instance</span></dd></dl>
-
-<dl><dt><a name="GeoServerCloudSync-copy_feature_types"><strong>copy_feature_types</strong></a>(
-    self,
-    workspace_name: str,
-    datastore_name: str,
-    copy_layers: bool = False
-) -&gt; tuple[str, int]</dt><dd><span class="code">Copy&nbsp;all&nbsp;feature&nbsp;types&nbsp;in&nbsp;a&nbsp;datastore&nbsp;from&nbsp;source&nbsp;to&nbsp;destination&nbsp;GeoServer&nbsp;instance</span></dd></dl>
-
-<dl><dt><a name="GeoServerCloudSync-copy_layer"><strong>copy_layer</strong></a>(self, workspace_name: str, feature_type_name: str) -&gt; tuple[str, int]</dt><dd><span class="code">Copy&nbsp;a&nbsp;layer&nbsp;from&nbsp;source&nbsp;to&nbsp;destination&nbsp;GeoServer&nbsp;instance</span></dd></dl>
-
-<dl><dt><a name="GeoServerCloudSync-copy_layer_group"><strong>copy_layer_group</strong></a>(self, workspace_name: str, layer_group_name: str) -&gt; tuple[str, int]</dt><dd><span class="code">Copy&nbsp;a&nbsp;layer&nbsp;group&nbsp;from&nbsp;source&nbsp;to&nbsp;destination&nbsp;GeoServer&nbsp;instance</span></dd></dl>
-
-<dl><dt><a name="GeoServerCloudSync-copy_layer_groups"><strong>copy_layer_groups</strong></a>(self, workspace_name: str) -&gt; tuple[str, int]</dt><dd><span class="code">Copy&nbsp;all&nbsp;layer&nbsp;groups&nbsp;in&nbsp;a&nbsp;workspace&nbsp;from&nbsp;source&nbsp;to&nbsp;destination&nbsp;GeoServer&nbsp;instance</span></dd></dl>
-
-<dl><dt><a name="GeoServerCloudSync-copy_pg_datastore"><strong>copy_pg_datastore</strong></a>(
-    self,
-    workspace_name: str,
-    datastore_name: str,
-    deep_copy: bool = False
-) -&gt; tuple[str, int]</dt><dd><span class="code">Copy&nbsp;a&nbsp;datastore&nbsp;from&nbsp;source&nbsp;to&nbsp;destination&nbsp;GeoServer&nbsp;instance<br>
-If&nbsp;deep_copy&nbsp;is&nbsp;True,&nbsp;copy&nbsp;all&nbsp;feature&nbsp;types&nbsp;and&nbsp;the&nbsp;corresponding&nbsp;layers</span></dd></dl>
-
-<dl><dt><a name="GeoServerCloudSync-copy_pg_datastores"><strong>copy_pg_datastores</strong></a>(self, workspace_name: str, deep_copy: bool = False) -&gt; tuple[str, int]</dt><dd><span class="code">Copy&nbsp;all&nbsp;the&nbsp;datastores&nbsp;in&nbsp;given&nbsp;workspace.<br>
-If&nbsp;deep_copy&nbsp;is&nbsp;True,&nbsp;copy&nbsp;all&nbsp;feature&nbsp;types&nbsp;and&nbsp;the&nbsp;corresponding&nbsp;layers&nbsp;in&nbsp;each&nbsp;datastore</span></dd></dl>
-
-<dl><dt><a name="GeoServerCloudSync-copy_resource"><strong>copy_resource</strong></a>(
-    self,
-    resource_dir: str,
-    resource_name: str,
-    content_type: str,
-    workspace_name: str | None = None
-) -&gt; tuple[str, int]</dt><dd><span class="code">Copy&nbsp;a&nbsp;resource&nbsp;from&nbsp;source&nbsp;to&nbsp;destination&nbsp;GeoServer&nbsp;instance</span></dd></dl>
-
-<dl><dt><a name="GeoServerCloudSync-copy_style"><strong>copy_style</strong></a>(self, style_name: str, workspace_name: str | None = None) -&gt; tuple[str, int]</dt><dd><span class="code">Copy&nbsp;a&nbsp;style&nbsp;from&nbsp;source&nbsp;to&nbsp;destination&nbsp;GeoServer&nbsp;instance</span></dd></dl>
-
-<dl><dt><a name="GeoServerCloudSync-copy_style_images"><strong>copy_style_images</strong></a>(self, workspace_name: str | None = None) -&gt; tuple[str, int]</dt><dd><span class="code">Copy&nbsp;all&nbsp;images&nbsp;in&nbsp;a&nbsp;workspace's&nbsp;style&nbsp;directory,&nbsp;or&nbsp;all&nbsp;global&nbsp;style&nbsp;images&nbsp;if&nbsp;no&nbsp;workspace&nbsp;is&nbsp;provided</span></dd></dl>
-
-<dl><dt><a name="GeoServerCloudSync-copy_styles"><strong>copy_styles</strong></a>(
-    self,
-    workspace_name: str | None = None,
-    include_images: bool = True
-) -&gt; tuple[str, int]</dt><dd><span class="code">Copy&nbsp;all&nbsp;styles&nbsp;in&nbsp;a&nbsp;workspace&nbsp;(if&nbsp;a&nbsp;workspace&nbsp;is&nbsp;provided)&nbsp;or&nbsp;all&nbsp;global&nbsp;styles</span></dd></dl>
-
-<dl><dt><a name="GeoServerCloudSync-copy_workspace"><strong>copy_workspace</strong></a>(self, workspace_name: str, deep_copy: bool = False) -&gt; tuple[str, int]</dt><dd><span class="code">Copy&nbsp;a&nbsp;workspace&nbsp;from&nbsp;the&nbsp;source&nbsp;to&nbsp;the&nbsp;destination&nbsp;GeoServer&nbsp;instance.<br>
-If&nbsp;deep_copy&nbsp;is&nbsp;True,&nbsp;the&nbsp;copy&nbsp;includes&nbsp;the&nbsp;PostGIS&nbsp;datastores,&nbsp;the&nbsp;feature&nbsp;types&nbsp;in&nbsp;the&nbsp;datastores,<br>
-the&nbsp;corresponding&nbsp;layers,&nbsp;the&nbsp;layer&nbsp;groups&nbsp;and&nbsp;the&nbsp;styles&nbsp;in&nbsp;the&nbsp;workspace&nbsp;(including&nbsp;images).</span></dd></dl>
-
-<hr>
-Static methods defined here:<br>
-<dl><dt><a name="GeoServerCloudSync-not_ok"><strong>not_ok</strong></a>(http_status_code: int) -&gt; bool</dt></dl>
-
-<hr>
-Data descriptors defined here:<br>
-<dl><dt><strong>__dict__</strong></dt>
-<dd><span class="code">dictionary&nbsp;for&nbsp;instance&nbsp;variables</span></dd>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="geoservercloud.GeoServerCloudSync.src_user">
+<span class="sig-name descname"><span class="pre">src_user</span></span><a class="headerlink" href="#geoservercloud.GeoServerCloudSync.src_user" title="Link to this definition"></a></dt>
+<dd><p>GeoServer username for source GeoServer instance</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
 </dl>
-<dl><dt><strong>__weakref__</strong></dt>
-<dd><span class="code">list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object</span></dd>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="geoservercloud.GeoServerCloudSync.src_password">
+<span class="sig-name descname"><span class="pre">src_password</span></span><a class="headerlink" href="#geoservercloud.GeoServerCloudSync.src_password" title="Link to this definition"></a></dt>
+<dd><p>GeoServer password for source GeoServer instance</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
 </dl>
-</td></tr></table></td></tr></table><p>
-<table class="section">
-<tr class="decor functions-decor heading-text">
-<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Functions</strong></td></tr>
-    
-<tr><td class="decor functions-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
-<td class="singlecolumn"><dl><dt><a name="-main"><strong>main</strong></a>()</dt></dl>
- <dl><dt><a name="-parse_args"><strong>parse_args</strong></a>()</dt></dl>
-</td></tr></table>
-</body></html>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="geoservercloud.GeoServerCloudSync.dst_url">
+<span class="sig-name descname"><span class="pre">dst_url</span></span><a class="headerlink" href="#geoservercloud.GeoServerCloudSync.dst_url" title="Link to this definition"></a></dt>
+<dd><p>base GeoServer URL for destination GeoServer instance</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="geoservercloud.GeoServerCloudSync.dst_user">
+<span class="sig-name descname"><span class="pre">dst_user</span></span><a class="headerlink" href="#geoservercloud.GeoServerCloudSync.dst_user" title="Link to this definition"></a></dt>
+<dd><p>GeoServer username for destination GeoServer instance</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="geoservercloud.GeoServerCloudSync.dst_password">
+<span class="sig-name descname"><span class="pre">dst_password</span></span><a class="headerlink" href="#geoservercloud.GeoServerCloudSync.dst_password" title="Link to this definition"></a></dt>
+<dd><p>GeoServer password for destination GeoServer instance</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="geoservercloud.GeoServerCloudSync.copy_feature_type">
+<span class="sig-name descname"><span class="pre">copy_feature_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">workspace_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">datastore_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">feature_type_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#geoservercloud.GeoServerCloudSync.copy_feature_type" title="Link to this definition"></a></dt>
+<dd><p>Copy a feature type from source to destination GeoServer instance</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="geoservercloud.GeoServerCloudSync.copy_feature_types">
+<span class="sig-name descname"><span class="pre">copy_feature_types</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">workspace_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">datastore_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">copy_layers</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#geoservercloud.GeoServerCloudSync.copy_feature_types" title="Link to this definition"></a></dt>
+<dd><p>Copy all feature types in a datastore from source to destination GeoServer instance</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="geoservercloud.GeoServerCloudSync.copy_layer">
+<span class="sig-name descname"><span class="pre">copy_layer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">workspace_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">feature_type_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#geoservercloud.GeoServerCloudSync.copy_layer" title="Link to this definition"></a></dt>
+<dd><p>Copy a layer from source to destination GeoServer instance</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="geoservercloud.GeoServerCloudSync.copy_layer_group">
+<span class="sig-name descname"><span class="pre">copy_layer_group</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">workspace_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layer_group_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#geoservercloud.GeoServerCloudSync.copy_layer_group" title="Link to this definition"></a></dt>
+<dd><p>Copy a layer group from source to destination GeoServer instance</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="geoservercloud.GeoServerCloudSync.copy_layer_groups">
+<span class="sig-name descname"><span class="pre">copy_layer_groups</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">workspace_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#geoservercloud.GeoServerCloudSync.copy_layer_groups" title="Link to this definition"></a></dt>
+<dd><p>Copy all layer groups in a workspace from source to destination GeoServer instance</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="geoservercloud.GeoServerCloudSync.copy_pg_datastore">
+<span class="sig-name descname"><span class="pre">copy_pg_datastore</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">workspace_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">datastore_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deep_copy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#geoservercloud.GeoServerCloudSync.copy_pg_datastore" title="Link to this definition"></a></dt>
+<dd><p>Copy a datastore from source to destination GeoServer instance
+If deep_copy is True, copy all feature types and the corresponding layers</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="geoservercloud.GeoServerCloudSync.copy_pg_datastores">
+<span class="sig-name descname"><span class="pre">copy_pg_datastores</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">workspace_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deep_copy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#geoservercloud.GeoServerCloudSync.copy_pg_datastores" title="Link to this definition"></a></dt>
+<dd><p>Copy all the datastores in given workspace.
+If deep_copy is True, copy all feature types and the corresponding layers in each datastore</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="geoservercloud.GeoServerCloudSync.copy_resource">
+<span class="sig-name descname"><span class="pre">copy_resource</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">resource_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resource_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">content_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">workspace_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#geoservercloud.GeoServerCloudSync.copy_resource" title="Link to this definition"></a></dt>
+<dd><p>Copy a resource from source to destination GeoServer instance</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="geoservercloud.GeoServerCloudSync.copy_style">
+<span class="sig-name descname"><span class="pre">copy_style</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">style_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">workspace_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#geoservercloud.GeoServerCloudSync.copy_style" title="Link to this definition"></a></dt>
+<dd><p>Copy a style from source to destination GeoServer instance</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="geoservercloud.GeoServerCloudSync.copy_style_images">
+<span class="sig-name descname"><span class="pre">copy_style_images</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">workspace_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#geoservercloud.GeoServerCloudSync.copy_style_images" title="Link to this definition"></a></dt>
+<dd><p>Copy all images in a workspace’s style directory, or all global style images if no workspace is provided</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="geoservercloud.GeoServerCloudSync.copy_styles">
+<span class="sig-name descname"><span class="pre">copy_styles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">workspace_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_images</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#geoservercloud.GeoServerCloudSync.copy_styles" title="Link to this definition"></a></dt>
+<dd><p>Copy all styles in a workspace (if a workspace is provided) or all global styles</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="geoservercloud.GeoServerCloudSync.copy_workspace">
+<span class="sig-name descname"><span class="pre">copy_workspace</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">workspace_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deep_copy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#geoservercloud.GeoServerCloudSync.copy_workspace" title="Link to this definition"></a></dt>
+<dd><p>Copy a workspace from the source to the destination GeoServer instance.
+If deep_copy is True, the copy includes the PostGIS datastores, the feature types in the datastores,
+the corresponding layers, the layer groups and the styles in the workspace (including images).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="geoservercloud.GeoServerCloudSync.not_ok">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">not_ok</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">http_status_code</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#geoservercloud.GeoServerCloudSync.not_ok" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="geoservercloud.html" class="btn btn-neutral float-left" title="geoservercloud.py" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Camptocamp.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
