@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Python: package geoservercloud</title>
+</head><body>
+
+<table class="heading">
+<tr class="heading-text decor">
+<td class="title">&nbsp;<br><strong class="title">geoservercloud</strong></td>
+<td class="extra"><a href=".">index</a><br><a href="file:/home/runner/work/python-geoservercloud/python-geoservercloud/geoservercloud/__init__.py">/home/runner/work/python-geoservercloud/python-geoservercloud/geoservercloud/__init__.py</a></td></tr></table>
+    <p></p>
+<p>
+<table class="section">
+<tr class="decor pkg-content-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Package Contents</strong></td></tr>
+    
+<tr><td class="decor pkg-content-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><table><tr><td class="multicolumn"><a href="geoservercloud.geoservercloud.html">geoservercloud</a><br>
+<a href="geoservercloud.geoservercloudsync.html">geoservercloudsync</a><br>
+</td><td class="multicolumn"><a href="geoservercloud.models.html"><strong>models</strong>&nbsp;(package)</a><br>
+<a href="geoservercloud.services.html"><strong>services</strong>&nbsp;(package)</a><br>
+</td><td class="multicolumn"><a href="geoservercloud.templates.html">templates</a><br>
+<a href="geoservercloud.utils.html">utils</a><br>
+</td><td class="multicolumn"></td></tr></table></td></tr></table><p>
+<table class="section">
+<tr class="decor index-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Classes</strong></td></tr>
+    
+<tr><td class="decor index-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><dl>
+<dt class="heading-text"><a href="builtins.html#object">builtins.object</a>
+</dt><dd>
+<dl>
+<dt class="heading-text"><a href="geoservercloud.geoservercloud.html#GeoServerCloud">geoservercloud.geoservercloud.GeoServerCloud</a>
+</dt><dt class="heading-text"><a href="geoservercloud.geoservercloudsync.html#GeoServerCloudSync">geoservercloud.geoservercloudsync.GeoServerCloudSync</a>
+</dt></dl>
+</dd>
+</dl>
+ <p>
+<table class="section">
+<tr class="decor title-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><a name="GeoServerCloud">class <strong>GeoServerCloud</strong></a>(<a href="builtins.html#object">builtins.object</a>)</td></tr>
+    
+<tr><td class="decor title-decor" rowspan=2><span class="code">&nbsp;&nbsp;&nbsp;</span></td>
+<td class="decor title-decor" colspan=2><span class="code"><a href="#GeoServerCloud">GeoServerCloud</a>(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;url:&nbsp;str&nbsp;=&nbsp;'<a href="http://localhost:9090/geoserver/cloud">http://localhost:9090/geoserver/cloud</a>',<br>
+&nbsp;&nbsp;&nbsp;&nbsp;user:&nbsp;str&nbsp;=&nbsp;'admin',<br>
+&nbsp;&nbsp;&nbsp;&nbsp;password:&nbsp;str&nbsp;=&nbsp;'geoserver'<br>
+)&nbsp;-&amp;gt;&nbsp;None<br>
+&nbsp;<br>
+Facade&nbsp;class&nbsp;allowing&nbsp;CRUD&nbsp;operations&nbsp;on&nbsp;GeoServer&nbsp;resources<br>
+&nbsp;<br>
+Attributes<br>
+----------<br>
+url&nbsp;:&nbsp;str<br>
+&nbsp;&nbsp;&nbsp;&nbsp;base&nbsp;GeoServer&nbsp;URL<br>
+user&nbsp;:&nbsp;str<br>
+&nbsp;&nbsp;&nbsp;&nbsp;GeoServer&nbsp;username<br>
+password&nbsp;:&nbsp;str<br>
+&nbsp;&nbsp;&nbsp;&nbsp;GeoServer&nbsp;password<br>&nbsp;</span></td></tr>
+<tr><td>&nbsp;</td>
+<td class="singlecolumn">Methods defined here:<br>
+<dl><dt><a name="GeoServerCloud-__init__"><strong>__init__</strong></a>(
+    self,
+    url: str = 'http://localhost:9090/geoserver/cloud',
+    user: str = 'admin',
+    password: str = 'geoserver'
+) -&gt; None</dt><dd><span class="code">Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</span></dd></dl>
+
+<dl><dt><a name="GeoServerCloud-assign_role_to_user"><strong>assign_role_to_user</strong></a>(self, user: str, role: str) -&gt; tuple[str, int]</dt><dd><span class="code">Assign&nbsp;a&nbsp;role&nbsp;to&nbsp;a&nbsp;GeoServer&nbsp;user</span></dd></dl>
+
+<dl><dt><a name="GeoServerCloud-create_acl_admin_rule"><strong>create_acl_admin_rule</strong></a>(
+    self,
+    priority: int = 0,
+    access: str = 'ADMIN',
+    role: str | None = None,
+    user: str | None = None,
+    workspace_name: str | None = None
+) -&gt; tuple[dict | str, int]</dt><dd><span class="code">Create&nbsp;a&nbsp;GeoServer&nbsp;ACL&nbsp;admin&nbsp;rule</span></dd></dl>
+
+<dl><dt><a name="GeoServerCloud-create_acl_rule"><strong>create_acl_rule</strong></a>(
+    self,
+    priority: int = 0,
+    access: str = 'DENY',
+    role: str | None = None,
+    user: str | None = None,
+    service: str | None = None,
+    request: str | None = None,
+    workspace_name: str | None = None
+) -&gt; tuple[dict | str, int]</dt><dd><span class="code">Create&nbsp;a&nbsp;GeoServer&nbsp;ACL&nbsp;data&nbsp;rule</span></dd></dl>
+
+<dl><dt><a name="GeoServerCloud-create_acl_rules_for_requests"><strong>create_acl_rules_for_requests</strong></a>(
+    self,
+    requests: list[str],
+    priority: int = 0,
+    access: str = 'DENY',
+    role: str | None = None,
+    service: str | None = None,
+    workspace_name: str | None = None
+) -&gt; list[tuple[dict | str, int]]</dt><dd><span class="code">Create&nbsp;ACL&nbsp;rules&nbsp;for&nbsp;multiple&nbsp;type&nbsp;of&nbsp;OGC&nbsp;requests</span></dd></dl>
+
+<dl><dt><a name="GeoServerCloud-create_feature_type"><strong>create_feature_type</strong></a>(
+    self,
+    layer_name: str,
+    workspace_name: str | None = None,
+    datastore_name: str | None = None,
+    title: str | dict = 'Default title',
+    abstract: str | dict = 'Default abstract',
+    attributes: dict = {'geom': {'type': 'Point', 'required': True}},
+    epsg: int = 4326,
+    keywords: list[str] = []
+) -&gt; tuple[str, int]</dt><dd><span class="code">Create&nbsp;a&nbsp;feature&nbsp;type&nbsp;or&nbsp;update&nbsp;it&nbsp;if&nbsp;it&nbsp;already&nbsp;exist.</span></dd></dl>
+
+<dl><dt><a name="GeoServerCloud-create_gridset"><strong>create_gridset</strong></a>(self, epsg: int) -&gt; tuple[str, int]</dt><dd><span class="code">Create&nbsp;a&nbsp;gridset&nbsp;for&nbsp;GeoWebCache&nbsp;for&nbsp;a&nbsp;given&nbsp;projection<br>
+Supported&nbsp;EPSG&nbsp;codes&nbsp;are&nbsp;2056,&nbsp;21781&nbsp;and&nbsp;3857</span></dd></dl>
+
+<dl><dt><a name="GeoServerCloud-create_jndi_datastore"><strong>create_jndi_datastore</strong></a>(
+    self,
+    workspace_name: str,
+    datastore_name: str,
+    jndi_reference: str,
+    pg_schema: str = 'public',
+    description: str | None = None,
+    set_default_datastore: bool = False
+) -&gt; tuple[str, int]</dt><dd><span class="code">Create&nbsp;a&nbsp;PostGIS&nbsp;datastore&nbsp;from&nbsp;JNDI&nbsp;resource,&nbsp;or&nbsp;update&nbsp;it&nbsp;if&nbsp;it&nbsp;already&nbsp;exist.</span></dd></dl>
+
+<dl><dt><a name="GeoServerCloud-create_layer_group"><strong>create_layer_group</strong></a>(
+    self,
+    group: str,
+    workspace_name: str | None,
+    layers: list[str],
+    title: str | dict,
+    abstract: str | dict,
+    epsg: int = 4326,
+    mode: str = 'SINGLE',
+    enabled: bool = True,
+    advertised: bool = True
+) -&gt; tuple[str, int]</dt><dd><span class="code">Create&nbsp;a&nbsp;layer&nbsp;group&nbsp;or&nbsp;update&nbsp;it&nbsp;if&nbsp;it&nbsp;already&nbsp;exists.</span></dd></dl>
+
+<dl><dt><a name="GeoServerCloud-create_pg_datastore"><strong>create_pg_datastore</strong></a>(
+    self,
+    workspace_name: str,
+    datastore_name: str,
+    pg_host: str,
+    pg_port: int,
+    pg_db: str,
+    pg_user: str,
+    pg_password: str,
+    pg_schema: str = 'public',
+    description: str | None = None,
+    set_default_datastore: bool = False
+) -&gt; tuple[str, int]</dt><dd><span class="code">Create&nbsp;a&nbsp;PostGIS&nbsp;datastore&nbsp;from&nbsp;the&nbsp;DB&nbsp;connection&nbsp;parameters,&nbsp;or&nbsp;update&nbsp;it&nbsp;if&nbsp;it&nbsp;already&nbsp;exist.</span></dd></dl>
+
+<dl><dt><a name="GeoServerCloud-create_role"><strong>create_role</strong></a>(self, role_name: str) -&gt; tuple[str, int]</dt><dd><span class="code">Create&nbsp;a&nbsp;GeoServer&nbsp;role&nbsp;if&nbsp;it&nbsp;does&nbsp;not&nbsp;already&nbsp;exist</span></dd></dl>
+
+<dl><dt><a name="GeoServerCloud-create_style_definition"><strong>create_style_definition</strong></a>(
+    self,
+    style_name: str,
+    filename: str,
+    workspace_name: str | None = None
+) -&gt; tuple[str, int]</dt><dd><span class="code">Create&nbsp;a&nbsp;style&nbsp;definition</span></dd></dl>
+
+<dl><dt><a name="GeoServerCloud-create_style_from_file"><strong>create_style_from_file</strong></a>(
+    self,
+    style_name: str,
+    file: str,
+    workspace_name: str | None = None
+) -&gt; tuple[str, int]</dt><dd><span class="code">Create&nbsp;a&nbsp;style&nbsp;(SLD)&nbsp;from&nbsp;a&nbsp;file,&nbsp;or&nbsp;update&nbsp;it&nbsp;if&nbsp;it&nbsp;already&nbsp;exists.<br>
+Supported&nbsp;file&nbsp;extensions&nbsp;are&nbsp;.sld&nbsp;and&nbsp;.zip.</span></dd></dl>
+
+<dl><dt><a name="GeoServerCloud-create_user"><strong>create_user</strong></a>(self, user: str, password: str, enabled: bool = True) -&gt; tuple[str, int]</dt><dd><span class="code">Create&nbsp;a&nbsp;GeoServer&nbsp;user</span></dd></dl>
+
+<dl><dt><a name="GeoServerCloud-create_wms"><strong>create_wms</strong></a>(self) -&gt; None</dt></dl>
+
+<dl><dt><a name="GeoServerCloud-create_wms_layer"><strong>create_wms_layer</strong></a>(
+    self,
+    workspace_name: str,
+    wms_store_name: str,
+    native_layer_name: str,
+    published_layer_name: str | None = None
+) -&gt; tuple[str, int]</dt><dd><span class="code">Publish&nbsp;a&nbsp;remote&nbsp;WMS&nbsp;layer<br>
+If&nbsp;it&nbsp;already&nbsp;exists,&nbsp;delete&nbsp;and&nbsp;recreate&nbsp;it&nbsp;(update&nbsp;is&nbsp;not&nbsp;supported&nbsp;by&nbsp;GeoServer)</span></dd></dl>
+
+<dl><dt><a name="GeoServerCloud-create_wms_store"><strong>create_wms_store</strong></a>(
+    self,
+    workspace_name: str,
+    wms_store_name: str,
+    capabilities_url: str
+) -&gt; tuple[str, int]</dt><dd><span class="code">Create&nbsp;a&nbsp;cascaded&nbsp;WMS&nbsp;store,&nbsp;or&nbsp;update&nbsp;it&nbsp;if&nbsp;it&nbsp;already&nbsp;exist.</span></dd></dl>
+
+<dl><dt><a name="GeoServerCloud-create_wmts"><strong>create_wmts</strong></a>(self) -&gt; None</dt></dl>
+
+<dl><dt><a name="GeoServerCloud-create_wmts_layer"><strong>create_wmts_layer</strong></a>(
+    self,
+    workspace_name: str,
+    wmts_store: str,
+    native_layer: str,
+    published_layer: str | None = None,
+    epsg: int = 4326,
+    international_title: dict[str, str] | None = None,
+    international_abstract: dict[str, str] | None = None
+) -&gt; tuple[str, int]</dt><dd><span class="code">Publish&nbsp;a&nbsp;remote&nbsp;WMTS&nbsp;layer&nbsp;(first&nbsp;delete&nbsp;it&nbsp;if&nbsp;it&nbsp;already&nbsp;exists)</span></dd></dl>
+
+<dl><dt><a name="GeoServerCloud-create_wmts_store"><strong>create_wmts_store</strong></a>(self, workspace_name: str, name: str, capabilities: str) -&gt; tuple[str, int]</dt><dd><span class="code">Create&nbsp;a&nbsp;cascaded&nbsp;WMTS&nbsp;store,&nbsp;or&nbsp;update&nbsp;it&nbsp;if&nbsp;it&nbsp;already&nbsp;exist.</span></dd></dl>
+
+<dl><dt><a name="GeoServerCloud-create_workspace"><strong>create_workspace</strong></a>(
+    self,
+    workspace_name: str,
+    isolated: bool = False,
+    set_default_workspace: bool = False
+) -&gt; tuple[str, int]</dt><dd><span class="code">Create&nbsp;a&nbsp;workspace&nbsp;in&nbsp;GeoServer,&nbsp;if&nbsp;it&nbsp;does&nbsp;not&nbsp;already&nbsp;exist.<br>
+It&nbsp;if&nbsp;exists,&nbsp;update&nbsp;it</span></dd></dl>
+
+<dl><dt><a name="GeoServerCloud-delete_acl_admin_rule"><strong>delete_acl_admin_rule</strong></a>(self, id: int | str) -&gt; tuple[str, int]</dt><dd><span class="code">Delete&nbsp;a&nbsp;GeoServer&nbsp;ACL&nbsp;admin&nbsp;rule&nbsp;by&nbsp;id</span></dd></dl>
+
+<dl><dt><a name="GeoServerCloud-delete_all_acl_admin_rules"><strong>delete_all_acl_admin_rules</strong></a>(self) -&gt; tuple[str, int]</dt><dd><span class="code">Delete&nbsp;all&nbsp;existing&nbsp;GeoServer&nbsp;ACL&nbsp;admin&nbsp;rules</span></dd></dl>
+
+<dl><dt><a name="GeoServerCloud-delete_all_acl_rules"><strong>delete_all_acl_rules</strong></a>(self) -&gt; tuple[str, int]</dt><dd><span class="code">Delete&nbsp;all&nbsp;existing&nbsp;GeoServer&nbsp;ACL&nbsp;data&nbsp;rules</span></dd></dl>
+
+<dl><dt><a name="GeoServerCloud-delete_feature_type"><strong>delete_feature_type</strong></a>(
+    self,
+    workspace_name: str,
+    datastore_name: str,
+    layer_name: str
+) -&gt; tuple[str, int]</dt><dd><span class="code">Delete&nbsp;a&nbsp;feature&nbsp;type&nbsp;and&nbsp;associated&nbsp;layer</span></dd></dl>
+
+<dl><dt><a name="GeoServerCloud-delete_gwc_layer"><strong>delete_gwc_layer</strong></a>(self, workspace_name: str, layer: str) -&gt; tuple[str, int]</dt></dl>
+
+<dl><dt><a name="GeoServerCloud-delete_layer_group"><strong>delete_layer_group</strong></a>(self, workspace_name: str, layer_group_name: str) -&gt; tuple[str, int]</dt><dd><span class="code">Delete&nbsp;a&nbsp;layer&nbsp;group</span></dd></dl>
+
+<dl><dt><a name="GeoServerCloud-delete_role"><strong>delete_role</strong></a>(self, role_name: str) -&gt; tuple[str, int]</dt><dd><span class="code">Delete&nbsp;a&nbsp;GeoServer&nbsp;role</span></dd></dl>
+
+<dl><dt><a name="GeoServerCloud-delete_user"><strong>delete_user</strong></a>(self, user: str) -&gt; tuple[str, int]</dt><dd><span class="code">Delete&nbsp;a&nbsp;GeoServer&nbsp;user</span></dd></dl>
+
+<dl><dt><a name="GeoServerCloud-delete_wms_layer"><strong>delete_wms_layer</strong></a>(
+    self,
+    workspace_name: str,
+    wms_store_name: str,
+    wms_layer_name: str
+) -&gt; tuple[str, int]</dt><dd><span class="code">Delete&nbsp;a&nbsp;WMS&nbsp;layer</span></dd></dl>
+
+<dl><dt><a name="GeoServerCloud-delete_wms_store"><strong>delete_wms_store</strong></a>(self, workspace_name: str, wms_store_name: str) -&gt; tuple[str, int]</dt><dd><span class="code">Delete&nbsp;a&nbsp;WMS&nbsp;store&nbsp;recursively</span></dd></dl>
+
+<dl><dt><a name="GeoServerCloud-delete_workspace"><strong>delete_workspace</strong></a>(self, workspace_name: str) -&gt; tuple[str, int]</dt><dd><span class="code">Delete&nbsp;a&nbsp;GeoServer&nbsp;workspace&nbsp;(recursively)</span></dd></dl>
+
+<dl><dt><a name="GeoServerCloud-describe_feature_type"><strong>describe_feature_type</strong></a>(
+    self,
+    workspace_name: str | None = None,
+    type_name: str | None = None,
+    format: str = 'application/json'
+) -&gt; dict[str, typing.Any] | str</dt><dd><span class="code">WFS&nbsp;DescribeFeatureType&nbsp;request<br>
+Return&nbsp;the&nbsp;feature&nbsp;type(s)&nbsp;as&nbsp;dict&nbsp;if&nbsp;found,&nbsp;otherwise&nbsp;return&nbsp;the&nbsp;response&nbsp;content&nbsp;as&nbsp;string</span></dd></dl>
+
+<dl><dt><a name="GeoServerCloud-get_acl_rules"><strong>get_acl_rules</strong></a>(self) -&gt; tuple[dict[str, typing.Any] | str, int]</dt><dd><span class="code">Return&nbsp;all&nbsp;GeoServer&nbsp;ACL&nbsp;data&nbsp;rules</span></dd></dl>
+
+<dl><dt><a name="GeoServerCloud-get_datastores"><strong>get_datastores</strong></a>(self, workspace_name: str) -&gt; tuple[list[str] | str, int]</dt><dd><span class="code">Get&nbsp;all&nbsp;datastores&nbsp;for&nbsp;a&nbsp;given&nbsp;workspace</span></dd></dl>
+
+<dl><dt><a name="GeoServerCloud-get_feature"><strong>get_feature</strong></a>(
+    self,
+    workspace_name: str,
+    type_name: str,
+    feature_id: int | None = None,
+    max_feature: int | None = None,
+    format: str = 'application/json'
+) -&gt; dict[str, typing.Any] | str</dt><dd><span class="code">WFS&nbsp;GetFeature&nbsp;request<br>
+Return&nbsp;the&nbsp;feature(s)&nbsp;as&nbsp;dict&nbsp;if&nbsp;found,&nbsp;otherwise&nbsp;return&nbsp;the&nbsp;response&nbsp;content&nbsp;as&nbsp;string</span></dd></dl>
+
+<dl><dt><a name="GeoServerCloud-get_feature_info"><strong>get_feature_info</strong></a>(
+    self,
+    layers: list[str],
+    bbox: tuple[float, float, float, float],
+    size: tuple[int, int],
+    srs: str = 'EPSG:2056',
+    info_format: str = 'application/json',
+    transparent: bool = True,
+    styles: list[str] | None = None,
+    xy: list[float] = [0, 0]
+) -&gt; owslib.util.ResponseWrapper | None</dt><dd><span class="code">WMS&nbsp;GetFeatureInfo&nbsp;request</span></dd></dl>
+
+<dl><dt><a name="GeoServerCloud-get_feature_type"><strong>get_feature_type</strong></a>(
+    self,
+    workspace_name: str,
+    datastore_name: str,
+    feature_type_name: str
+) -&gt; tuple[dict[str, typing.Any] | str, int]</dt><dd><span class="code">Get&nbsp;a&nbsp;feature&nbsp;type&nbsp;by&nbsp;workspace,&nbsp;datastore&nbsp;and&nbsp;name</span></dd></dl>
+
+<dl><dt><a name="GeoServerCloud-get_feature_types"><strong>get_feature_types</strong></a>(self, workspace_name: str, datastore_name: str) -&gt; tuple[list[dict[str, typing.Any]] | str, int]</dt><dd><span class="code">Get&nbsp;all&nbsp;feature&nbsp;types&nbsp;for&nbsp;a&nbsp;given&nbsp;workspace&nbsp;and&nbsp;datastore</span></dd></dl>
+
+<dl><dt><a name="GeoServerCloud-get_gwc_layer"><strong>get_gwc_layer</strong></a>(self, workspace_name: str, layer: str) -&gt; tuple[dict[str, typing.Any] | str, int]</dt></dl>
+
+<dl><dt><a name="GeoServerCloud-get_layer_group"><strong>get_layer_group</strong></a>(self, workspace_name: str, layer_group_name: str) -&gt; tuple[dict[str, typing.Any] | str, int]</dt><dd><span class="code">Get&nbsp;a&nbsp;layer&nbsp;group&nbsp;by&nbsp;name</span></dd></dl>
+
+<dl><dt><a name="GeoServerCloud-get_layer_groups"><strong>get_layer_groups</strong></a>(self, workspace_name: str) -&gt; tuple[list[dict[str, str]] | str, int]</dt><dd><span class="code">Get&nbsp;all&nbsp;layer&nbsp;groups&nbsp;for&nbsp;a&nbsp;given&nbsp;workspace</span></dd></dl>
+
+<dl><dt><a name="GeoServerCloud-get_legend_graphic"><strong>get_legend_graphic</strong></a>(
+    self,
+    layer: list[str],
+    format: str = 'image/png',
+    language: str | None = None,
+    style: str | None = None,
+    workspace_name: str | None = None
+) -&gt; requests.models.Response</dt><dd><span class="code">WMS&nbsp;GetLegendGraphic&nbsp;request</span></dd></dl>
+
+<dl><dt><a name="GeoServerCloud-get_map"><strong>get_map</strong></a>(
+    self,
+    layers: list[str],
+    bbox: tuple[float, float, float, float],
+    size: tuple[int, int],
+    srs: str = 'EPSG:2056',
+    format: str = 'image/png',
+    transparent: bool = True,
+    styles: list[str] | None = None,
+    language: str | None = None
+) -&gt; owslib.util.ResponseWrapper | None</dt><dd><span class="code">WMS&nbsp;GetMap&nbsp;request</span></dd></dl>
+
+<dl><dt><a name="GeoServerCloud-get_pg_datastore"><strong>get_pg_datastore</strong></a>(self, workspace_name: str, datastore_name: str) -&gt; tuple[dict[str, typing.Any] | str, int]</dt><dd><span class="code">Get&nbsp;a&nbsp;datastore&nbsp;by&nbsp;workspace&nbsp;and&nbsp;name</span></dd></dl>
+
+<dl><dt><a name="GeoServerCloud-get_property_value"><strong>get_property_value</strong></a>(self, workspace_name: str, type_name: str, property: str) -&gt; dict | list | str</dt><dd><span class="code">WFS&nbsp;GetPropertyValue&nbsp;request<br>
+Return&nbsp;the&nbsp;properties&nbsp;as&nbsp;dict&nbsp;(if&nbsp;one&nbsp;feature&nbsp;was&nbsp;found),&nbsp;a&nbsp;list&nbsp;(if&nbsp;multiple&nbsp;features&nbsp;were&nbsp;found),<br>
+an&nbsp;empty&nbsp;dict&nbsp;if&nbsp;no&nbsp;feature&nbsp;was&nbsp;found&nbsp;or&nbsp;the&nbsp;response&nbsp;content&nbsp;as&nbsp;string</span></dd></dl>
+
+<dl><dt><a name="GeoServerCloud-get_style_definition"><strong>get_style_definition</strong></a>(self, style: str, workspace_name: str | None = None) -&gt; tuple[dict[str, typing.Any] | str, int]</dt><dd><span class="code">Get&nbsp;a&nbsp;style&nbsp;definition&nbsp;by&nbsp;name</span></dd></dl>
+
+<dl><dt><a name="GeoServerCloud-get_styles"><strong>get_styles</strong></a>(self, workspace_name: str | None = None) -&gt; tuple[list[str] | str, int]</dt><dd><span class="code">Get&nbsp;all&nbsp;styles&nbsp;for&nbsp;a&nbsp;given&nbsp;workspace.&nbsp;If&nbsp;no&nbsp;workspace&nbsp;is&nbsp;provided,&nbsp;get&nbsp;all&nbsp;global&nbsp;styles</span></dd></dl>
+
+<dl><dt><a name="GeoServerCloud-get_tile"><strong>get_tile</strong></a>(self, layer, format, tile_matrix_set, tile_matrix, row, column) -&gt; owslib.util.ResponseWrapper | None</dt><dd><span class="code">WMTS&nbsp;GetTile&nbsp;request</span></dd></dl>
+
+<dl><dt><a name="GeoServerCloud-get_user_roles"><strong>get_user_roles</strong></a>(self, user: str) -&gt; tuple[list[str] | str, int]</dt><dd><span class="code">Get&nbsp;all&nbsp;roles&nbsp;assigned&nbsp;to&nbsp;a&nbsp;GeoServer&nbsp;user</span></dd></dl>
+
+<dl><dt><a name="GeoServerCloud-get_wfs_layers"><strong>get_wfs_layers</strong></a>(self, workspace_name: str) -&gt; typing.Any | dict[str, typing.Any]</dt></dl>
+
+<dl><dt><a name="GeoServerCloud-get_wms_layer"><strong>get_wms_layer</strong></a>(
+    self,
+    workspace_name: str,
+    wms_store_name: str,
+    wms_layer_name: str
+) -&gt; tuple[dict[str, typing.Any] | str, int]</dt><dd><span class="code">Get&nbsp;a&nbsp;WMS&nbsp;layer&nbsp;by&nbsp;workspace,&nbsp;store&nbsp;and&nbsp;name</span></dd></dl>
+
+<dl><dt><a name="GeoServerCloud-get_wms_layers"><strong>get_wms_layers</strong></a>(self, workspace_name: str, accept_languages: str | None = None) -&gt; typing.Any | dict[str, typing.Any]</dt></dl>
+
+<dl><dt><a name="GeoServerCloud-get_wms_store"><strong>get_wms_store</strong></a>(self, workspace_name: str, datastore_name: str) -&gt; tuple[dict[str, typing.Any] | str, int]</dt><dd><span class="code">Get&nbsp;a&nbsp;WMS&nbsp;by&nbsp;workspace&nbsp;and&nbsp;name</span></dd></dl>
+
+<dl><dt><a name="GeoServerCloud-get_workspace"><strong>get_workspace</strong></a>(self, workspace_name: str) -&gt; tuple[dict[str, str] | str, int]</dt><dd><span class="code">Get&nbsp;a&nbsp;workspace&nbsp;by&nbsp;name</span></dd></dl>
+
+<dl><dt><a name="GeoServerCloud-get_workspace_wms_settings"><strong>get_workspace_wms_settings</strong></a>(self, workspace_name: str) -&gt; tuple[dict[str, typing.Any] | str, int]</dt><dd><span class="code">Get&nbsp;the&nbsp;WMS&nbsp;settings&nbsp;for&nbsp;a&nbsp;given&nbsp;workspace</span></dd></dl>
+
+<dl><dt><a name="GeoServerCloud-get_workspaces"><strong>get_workspaces</strong></a>(self) -&gt; tuple[list[dict[str, str]] | str, int]</dt><dd><span class="code">Get&nbsp;all&nbsp;GeoServer&nbsp;workspaces</span></dd></dl>
+
+<dl><dt><a name="GeoServerCloud-publish_gwc_layer"><strong>publish_gwc_layer</strong></a>(self, workspace_name: str, layer: str, epsg: int = 4326) -&gt; tuple[str, int]</dt></dl>
+
+<dl><dt><a name="GeoServerCloud-publish_workspace"><strong>publish_workspace</strong></a>(
+    self,
+    workspace_name: str,
+    versions: list[str] = ['1.1.1', '1.3.0'],
+    cite_compliant: bool = False,
+    schema_base_url: str = 'http://schemas.opengis.net',
+    verbose: bool = False,
+    bbox_for_each_crs: bool = False,
+    watermark: dict = {'enabled': False, 'position': 'BOT_RIGHT', 'transparency': 100},
+    interpolation: str = 'Nearest',
+    get_feature_info_mime_type_checking_enabled: bool = False,
+    get_map_mime_type_checking_enabled: bool = False,
+    dynamic_styling_disabled: bool = False,
+    features_reprojection_disabled: bool = False,
+    max_buffer: int = 0,
+    max_request_memory: int = 0,
+    max_rendering_time: int = 0,
+    max_rendering_errors: int = 0,
+    max_requested_dimension_values: int = 100,
+    cache_configuration: dict = {'enabled': False, 'maxEntries': 1000, 'maxEntrySize': 51200},
+    remote_style_max_request_time: int = 60000,
+    remote_style_timeout: int = 30000,
+    default_group_style_enabled: bool = True,
+    transform_feature_info_disabled: bool = False,
+    auto_escape_template_values: bool = False
+) -&gt; tuple[str, int]</dt><dd><span class="code">Publish&nbsp;the&nbsp;WMS&nbsp;service&nbsp;for&nbsp;a&nbsp;given&nbsp;workspace</span></dd></dl>
+
+<dl><dt><a name="GeoServerCloud-recreate_workspace"><strong>recreate_workspace</strong></a>(
+    self,
+    workspace_name: str,
+    isolated: bool = False,
+    set_default_workspace: bool = False
+) -&gt; tuple[str, int]</dt><dd><span class="code">Create&nbsp;a&nbsp;workspace&nbsp;in&nbsp;GeoServer,&nbsp;and&nbsp;first&nbsp;delete&nbsp;it&nbsp;if&nbsp;it&nbsp;already&nbsp;exists.</span></dd></dl>
+
+<dl><dt><a name="GeoServerCloud-remove_role_from_user"><strong>remove_role_from_user</strong></a>(self, user: str, role: str) -&gt; tuple[str, int]</dt><dd><span class="code">Remove&nbsp;a&nbsp;role&nbsp;from&nbsp;a&nbsp;GeoServer&nbsp;user</span></dd></dl>
+
+<dl><dt><a name="GeoServerCloud-set_default_layer_style"><strong>set_default_layer_style</strong></a>(self, layer_name: str, workspace_name: str, style: str) -&gt; tuple[str, int]</dt><dd><span class="code">Set&nbsp;the&nbsp;default&nbsp;style&nbsp;for&nbsp;a&nbsp;layer</span></dd></dl>
+
+<dl><dt><a name="GeoServerCloud-set_default_locale_for_service"><strong>set_default_locale_for_service</strong></a>(self, workspace_name: str, locale: str | None) -&gt; tuple[str, int]</dt><dd><span class="code">Set&nbsp;a&nbsp;default&nbsp;language&nbsp;for&nbsp;localized&nbsp;WMS&nbsp;requests</span></dd></dl>
+
+<dl><dt><a name="GeoServerCloud-unset_default_locale_for_service"><strong>unset_default_locale_for_service</strong></a>(self, workspace_name) -&gt; tuple[str, int]</dt><dd><span class="code">Remove&nbsp;the&nbsp;default&nbsp;language&nbsp;for&nbsp;localized&nbsp;WMS&nbsp;requests</span></dd></dl>
+
+<dl><dt><a name="GeoServerCloud-update_user"><strong>update_user</strong></a>(
+    self,
+    user: str,
+    password: str | None = None,
+    enabled: bool | None = None
+) -&gt; tuple[str, int]</dt><dd><span class="code">Update&nbsp;a&nbsp;GeoServer&nbsp;user</span></dd></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><span class="code">dictionary&nbsp;for&nbsp;instance&nbsp;variables</span></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><span class="code">list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object</span></dd>
+</dl>
+</td></tr></table> <p>
+<table class="section">
+<tr class="decor title-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><a name="GeoServerCloudSync">class <strong>GeoServerCloudSync</strong></a>(<a href="builtins.html#object">builtins.object</a>)</td></tr>
+    
+<tr><td class="decor title-decor" rowspan=2><span class="code">&nbsp;&nbsp;&nbsp;</span></td>
+<td class="decor title-decor" colspan=2><span class="code"><a href="#GeoServerCloudSync">GeoServerCloudSync</a>(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;src_url:&nbsp;str,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;src_user:&nbsp;str,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;src_password:&nbsp;str,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;dst_url:&nbsp;str,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;dst_user:&nbsp;str,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;dst_password:&nbsp;str<br>
+)&nbsp;-&amp;gt;&nbsp;None<br>
+&nbsp;<br>
+Facade&nbsp;class&nbsp;allowing&nbsp;synchronization&nbsp;of&nbsp;GeoServer&nbsp;resources&nbsp;between&nbsp;two&nbsp;GeoServer&nbsp;instances<br>
+&nbsp;<br>
+Attributes<br>
+----------<br>
+src_url&nbsp;:&nbsp;str<br>
+&nbsp;&nbsp;&nbsp;&nbsp;base&nbsp;GeoServer&nbsp;URL&nbsp;for&nbsp;source&nbsp;GeoServer&nbsp;instance<br>
+src_user&nbsp;:&nbsp;str<br>
+&nbsp;&nbsp;&nbsp;&nbsp;GeoServer&nbsp;username&nbsp;for&nbsp;source&nbsp;GeoServer&nbsp;instance<br>
+src_password&nbsp;:&nbsp;str<br>
+&nbsp;&nbsp;&nbsp;&nbsp;GeoServer&nbsp;password&nbsp;for&nbsp;source&nbsp;GeoServer&nbsp;instance<br>
+dst_url&nbsp;:&nbsp;str<br>
+&nbsp;&nbsp;&nbsp;&nbsp;base&nbsp;GeoServer&nbsp;URL&nbsp;for&nbsp;destination&nbsp;GeoServer&nbsp;instance<br>
+dst_user&nbsp;:&nbsp;str<br>
+&nbsp;&nbsp;&nbsp;&nbsp;GeoServer&nbsp;username&nbsp;for&nbsp;destination&nbsp;GeoServer&nbsp;instance<br>
+dst_password&nbsp;:&nbsp;str<br>
+&nbsp;&nbsp;&nbsp;&nbsp;GeoServer&nbsp;password&nbsp;for&nbsp;destination&nbsp;GeoServer&nbsp;instance<br>&nbsp;</span></td></tr>
+<tr><td>&nbsp;</td>
+<td class="singlecolumn">Methods defined here:<br>
+<dl><dt><a name="GeoServerCloudSync-__init__"><strong>__init__</strong></a>(
+    self,
+    src_url: str,
+    src_user: str,
+    src_password: str,
+    dst_url: str,
+    dst_user: str,
+    dst_password: str
+) -&gt; None</dt><dd><span class="code">Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</span></dd></dl>
+
+<dl><dt><a name="GeoServerCloudSync-copy_feature_type"><strong>copy_feature_type</strong></a>(
+    self,
+    workspace_name: str,
+    datastore_name: str,
+    feature_type_name: str
+) -&gt; tuple[str, int]</dt><dd><span class="code">Copy&nbsp;a&nbsp;feature&nbsp;type&nbsp;from&nbsp;source&nbsp;to&nbsp;destination&nbsp;GeoServer&nbsp;instance</span></dd></dl>
+
+<dl><dt><a name="GeoServerCloudSync-copy_feature_types"><strong>copy_feature_types</strong></a>(
+    self,
+    workspace_name: str,
+    datastore_name: str,
+    copy_layers: bool = False
+) -&gt; tuple[str, int]</dt><dd><span class="code">Copy&nbsp;all&nbsp;feature&nbsp;types&nbsp;in&nbsp;a&nbsp;datastore&nbsp;from&nbsp;source&nbsp;to&nbsp;destination&nbsp;GeoServer&nbsp;instance</span></dd></dl>
+
+<dl><dt><a name="GeoServerCloudSync-copy_layer"><strong>copy_layer</strong></a>(self, workspace_name: str, feature_type_name: str) -&gt; tuple[str, int]</dt><dd><span class="code">Copy&nbsp;a&nbsp;layer&nbsp;from&nbsp;source&nbsp;to&nbsp;destination&nbsp;GeoServer&nbsp;instance</span></dd></dl>
+
+<dl><dt><a name="GeoServerCloudSync-copy_layer_group"><strong>copy_layer_group</strong></a>(self, workspace_name: str, layer_group_name: str) -&gt; tuple[str, int]</dt><dd><span class="code">Copy&nbsp;a&nbsp;layer&nbsp;group&nbsp;from&nbsp;source&nbsp;to&nbsp;destination&nbsp;GeoServer&nbsp;instance</span></dd></dl>
+
+<dl><dt><a name="GeoServerCloudSync-copy_layer_groups"><strong>copy_layer_groups</strong></a>(self, workspace_name: str) -&gt; tuple[str, int]</dt><dd><span class="code">Copy&nbsp;all&nbsp;layer&nbsp;groups&nbsp;in&nbsp;a&nbsp;workspace&nbsp;from&nbsp;source&nbsp;to&nbsp;destination&nbsp;GeoServer&nbsp;instance</span></dd></dl>
+
+<dl><dt><a name="GeoServerCloudSync-copy_pg_datastore"><strong>copy_pg_datastore</strong></a>(
+    self,
+    workspace_name: str,
+    datastore_name: str,
+    deep_copy: bool = False
+) -&gt; tuple[str, int]</dt><dd><span class="code">Copy&nbsp;a&nbsp;datastore&nbsp;from&nbsp;source&nbsp;to&nbsp;destination&nbsp;GeoServer&nbsp;instance<br>
+If&nbsp;deep_copy&nbsp;is&nbsp;True,&nbsp;copy&nbsp;all&nbsp;feature&nbsp;types&nbsp;and&nbsp;the&nbsp;corresponding&nbsp;layers</span></dd></dl>
+
+<dl><dt><a name="GeoServerCloudSync-copy_pg_datastores"><strong>copy_pg_datastores</strong></a>(self, workspace_name: str, deep_copy: bool = False) -&gt; tuple[str, int]</dt><dd><span class="code">Copy&nbsp;all&nbsp;the&nbsp;datastores&nbsp;in&nbsp;given&nbsp;workspace.<br>
+If&nbsp;deep_copy&nbsp;is&nbsp;True,&nbsp;copy&nbsp;all&nbsp;feature&nbsp;types&nbsp;and&nbsp;the&nbsp;corresponding&nbsp;layers&nbsp;in&nbsp;each&nbsp;datastore</span></dd></dl>
+
+<dl><dt><a name="GeoServerCloudSync-copy_resource"><strong>copy_resource</strong></a>(
+    self,
+    resource_dir: str,
+    resource_name: str,
+    content_type: str,
+    workspace_name: str | None = None
+) -&gt; tuple[str, int]</dt><dd><span class="code">Copy&nbsp;a&nbsp;resource&nbsp;from&nbsp;source&nbsp;to&nbsp;destination&nbsp;GeoServer&nbsp;instance</span></dd></dl>
+
+<dl><dt><a name="GeoServerCloudSync-copy_style"><strong>copy_style</strong></a>(self, style_name: str, workspace_name: str | None = None) -&gt; tuple[str, int]</dt><dd><span class="code">Copy&nbsp;a&nbsp;style&nbsp;from&nbsp;source&nbsp;to&nbsp;destination&nbsp;GeoServer&nbsp;instance</span></dd></dl>
+
+<dl><dt><a name="GeoServerCloudSync-copy_style_images"><strong>copy_style_images</strong></a>(self, workspace_name: str | None = None) -&gt; tuple[str, int]</dt><dd><span class="code">Copy&nbsp;all&nbsp;images&nbsp;in&nbsp;a&nbsp;workspace's&nbsp;style&nbsp;directory,&nbsp;or&nbsp;all&nbsp;global&nbsp;style&nbsp;images&nbsp;if&nbsp;no&nbsp;workspace&nbsp;is&nbsp;provided</span></dd></dl>
+
+<dl><dt><a name="GeoServerCloudSync-copy_styles"><strong>copy_styles</strong></a>(
+    self,
+    workspace_name: str | None = None,
+    include_images: bool = True
+) -&gt; tuple[str, int]</dt><dd><span class="code">Copy&nbsp;all&nbsp;styles&nbsp;in&nbsp;a&nbsp;workspace&nbsp;(if&nbsp;a&nbsp;workspace&nbsp;is&nbsp;provided)&nbsp;or&nbsp;all&nbsp;global&nbsp;styles</span></dd></dl>
+
+<dl><dt><a name="GeoServerCloudSync-copy_workspace"><strong>copy_workspace</strong></a>(self, workspace_name: str, deep_copy: bool = False) -&gt; tuple[str, int]</dt><dd><span class="code">Copy&nbsp;a&nbsp;workspace&nbsp;from&nbsp;the&nbsp;source&nbsp;to&nbsp;the&nbsp;destination&nbsp;GeoServer&nbsp;instance.<br>
+If&nbsp;deep_copy&nbsp;is&nbsp;True,&nbsp;the&nbsp;copy&nbsp;includes&nbsp;the&nbsp;PostGIS&nbsp;datastores,&nbsp;the&nbsp;feature&nbsp;types&nbsp;in&nbsp;the&nbsp;datastores,<br>
+the&nbsp;corresponding&nbsp;layers,&nbsp;the&nbsp;layer&nbsp;groups&nbsp;and&nbsp;the&nbsp;styles&nbsp;in&nbsp;the&nbsp;workspace&nbsp;(including&nbsp;images).</span></dd></dl>
+
+<hr>
+Static methods defined here:<br>
+<dl><dt><a name="GeoServerCloudSync-not_ok"><strong>not_ok</strong></a>(http_status_code: int) -&gt; bool</dt></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><span class="code">dictionary&nbsp;for&nbsp;instance&nbsp;variables</span></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><span class="code">list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object</span></dd>
+</dl>
+</td></tr></table></td></tr></table><p>
+<table class="section">
+<tr class="decor data-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Data</strong></td></tr>
+    
+<tr><td class="decor data-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><strong>__all__</strong> = ['GeoServerCloud', 'GeoServerCloudSync']<br>
+<strong>__annotations__</strong> = {'__all__': list[str]}</td></tr></table>
+</body></html>
