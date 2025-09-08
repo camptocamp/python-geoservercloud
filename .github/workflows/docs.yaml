@@ -11,50 +11,19 @@ jobs:
     timeout-minutes: 10
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
         with:
-          python-version: "3.x"
+          python-version: "3.13"
+      - run: echo "${HOME}/.local/bin" >> ${GITHUB_PATH}
+      - run: python3 -m pip install --requirement=ci/requirements.txt
+        name: Install CI requirements
 
-      - name: Install your package
-        run: |
-          pip install .
-
-      - name: Generate docs with pydoc
-        run: |
-          mkdir -p docs
-          python -m pydoc -w geoservercloud
-          find geoservercloud -name "*.py" -exec python -m pydoc -w {} \;
-          mv *.html docs/
-
-      - name: Build custom index.html (table of contents)
-        run: |
-          echo '<!DOCTYPE html>' > docs/index.html
-          echo '<html><head><meta charset="utf-8"><title>python-geoservercloud Documentation</title></head><body>' >> docs/index.html
-          echo '<h1>python-geoservercloud Documentation</h1>' >> docs/index.html
-          echo '<ul>' >> docs/index.html
-
-          # Add package overview first
-          if [ -f docs/geoservercloud.html ]; then
-            echo '<li><a href="geoservercloud.html">geoservercloud (overview)</a></li>' >> docs/index.html
-          fi
-
-          # Add links for all other HTML files
-          for f in docs/*.html; do
-            base=$(basename "$f")
-            if [ "$base" != "index.html" ] && [ "$base" != "geoservercloud.html" ]; then
-              modname="${base%.html}"
-              echo "<li><a href=\"$base\">$modname</a></li>" >> docs/index.html
-            fi
-          done
-
-          echo '</ul></body></html>' >> docs/index.html
+      - name: Generate Sphinx docs
+        run: poetry run sphinx-build -b html docs/source docs/build
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./docs
+          publish_dir: ./docs/build
