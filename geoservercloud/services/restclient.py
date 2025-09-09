@@ -69,7 +69,7 @@ class RestClient:
             verify=self.verifytls,
         )
         gs_logger.info(
-            "[GET] (%s) - %s",
+            "[POST] (%s) - %s",
             response.status_code,
             full_url,
             extra={"response": response},
@@ -98,7 +98,7 @@ class RestClient:
             verify=self.verifytls,
         )
         gs_logger.info(
-            "[GET] (%s) - %s",
+            "[PUT] (%s) - %s",
             response.status_code,
             full_url,
             extra={"response": response},
@@ -122,7 +122,7 @@ class RestClient:
             verify=self.verifytls,
         )
         gs_logger.info(
-            "[GET] (%s) - %s",
+            "[DELETE] (%s) - %s",
             response.status_code,
             full_url,
             extra={"response": response},
