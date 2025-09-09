@@ -634,6 +634,22 @@ class GeoServerCloud:
             style_name=style_name, style=style, workspace_name=workspace_name
         )
 
+    def create_style_from_string(
+        self,
+        style_name: str,
+        style_string: str,
+        workspace_name: str | None = None,
+    ) -> tuple[str, int]:
+        """Create a style (SLD) from its definition as a string or update it if it already exists."""
+        content, code = self.create_style_definition(
+            style_name, f"{style_name}.sld", workspace_name
+        )
+        if code >= 400:
+            return content, code
+        return self.rest_service.create_style(
+            style_name, style_string.encode("utf-8"), workspace_name, format="sld"
+        )
+
     def create_style_from_file(
         self,
         style_name: str,

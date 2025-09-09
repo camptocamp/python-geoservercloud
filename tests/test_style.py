@@ -151,6 +151,58 @@ def test_create_style_definition(mocker, geoserver: GeoServerCloud) -> None:
         )
 
 
+def test_create_style_from_string(geoserver: GeoServerCloud) -> None:
+    style_string = """<?xml version="1.0" encoding="ISO-8859-1"?>
+    <StyledLayerDescriptor>
+        <NamedLayer>
+            <Name>test_layer</Name>
+            <UserStyle>
+                <Title>Test Style</Title>
+                <FeatureTypeStyle>
+                    <Rule>
+                        <Name>rule1</Name>
+                        <Title>Rule 1</Title>
+                        <PolygonSymbolizer>
+                            <Fill>
+                                <CssParameter name="fill">#FF0000</CssParameter>
+                            </Fill>
+                        </PolygonSymbolizer>
+                    </Rule>
+                </FeatureTypeStyle>
+            </UserStyle>
+        </NamedLayer>
+    </StyledLayerDescriptor>
+    """
+    with responses.RequestsMock() as rsps:
+        rsps.get(
+            url=f"{geoserver.url}/rest/styles/{STYLE}",
+            status=200,
+        )
+        rsps.put(
+            url=f"{geoserver.url}/rest/styles/{STYLE}",
+            status=200,
+        )
+        rsps.put(
+            url=f"{geoserver.url}/rest/styles/{STYLE}.sld",
+            status=201,
+            body=b"test_style",
+            match=[
+                responses.matchers.header_matcher(
+                    {"Content-Type": "application/vnd.ogc.sld+xml"}
+                )
+            ],
+            # Matching of body content as string is not supported by responses
+        )
+
+        content, code = geoserver.create_style_from_string(
+            style_name=STYLE,
+            style_string=style_string,
+        )
+
+        assert content == STYLE
+        assert code == 201
+
+
 def test_create_style_from_file(geoserver: GeoServerCloud) -> None:
     file_path = (Path(__file__).parent / "resources/style.sld").resolve()
     with responses.RequestsMock() as rsps:
