@@ -9,6 +9,7 @@ class Layer(EntityModel):
         self,
         name: str,
         resource_name: str | None = None,
+        resource_href: str | None = None,
         type: str | None = None,
         default_style_name: str | None = None,
         styles: list | None = None,
@@ -19,7 +20,7 @@ class Layer(EntityModel):
         self.type: str | None = type
         self.resource: ReferencedObjectModel | None = None
         if resource_name:
-            self.resource = ReferencedObjectModel(resource_name)
+            self.resource = ReferencedObjectModel(resource_name, resource_href)
         self.default_style: ReferencedObjectModel | None = None
         if default_style_name:
             self.default_style = ReferencedObjectModel(default_style_name)
@@ -35,6 +36,15 @@ class Layer(EntityModel):
     def default_style_name(self) -> str | None:
         return self.default_style.name if self.default_style else None
 
+    @property
+    def all_style_names(self) -> set[str]:
+        all_styles = set()
+        if self.default_style_name is not None:
+            all_styles.add(self.default_style_name)
+        if self.styles is not None:
+            all_styles.update(self.styles)
+        return all_styles
+
     @classmethod
     def from_get_response_payload(cls, content: dict):
         layer = content["layer"]
@@ -45,6 +55,7 @@ class Layer(EntityModel):
         return cls(
             name=layer["name"],
             resource_name=layer["resource"]["name"],
+            resource_href=layer["resource"]["href"],
             type=layer["type"],
             default_style_name=layer["defaultStyle"]["name"],
             styles=styles,
@@ -59,11 +70,17 @@ class Layer(EntityModel):
         optional_items = {
             "name": self.name,
             "type": self.type,
-            "resource": self.resource_name,
-            "defaultStyle": self.default_style_name,
+            "defaultStyle": {
+                "name": self.default_style_name,
+            },
             "attribution": self.attribution,
             "queryable": self.queryable,
         }
+        if self.resource is not None:
+            optional_items["resource"] = {
+                "name": self.resource.name,
+                "href": self.resource.href,
+            }
         return EntityModel.add_items_to_dict(content, optional_items)
 
     def post_payload(self) -> dict[str, dict[str, Any]]:

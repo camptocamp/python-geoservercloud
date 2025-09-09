@@ -1,5 +1,10 @@
+import json
 from argparse import ArgumentParser
 
+from requests.exceptions import HTTPError
+
+from geoservercloud.exceptions import DatastoreMissing, GsDetail, WorkspaceMissing
+from geoservercloud.models.layer import Layer
 from geoservercloud.services import RestService
 
 
@@ -169,9 +174,47 @@ class GeoServerCloudSync:
         layer, status_code = self.src_instance.get_layer(
             workspace_name, feature_type_name
         )
-        if isinstance(layer, str):
-            return layer, status_code
-        return self.dst_instance.update_layer(layer, workspace_name)
+        if (status_code != 200) or isinstance(layer, str):
+            return f"Error: unexpected response {layer}", 500
+        resource, status_code = self.src_instance.get_resource_from_layer(layer)
+        layer_string = json.dumps(layer.asdict())
+        dst_layer = Layer.from_get_response_payload(
+            {
+                "layer": json.loads(
+                    layer_string.replace(self.src_instance.url, self.dst_instance.url)
+                )
+            }
+        )
+
+        xml_resource_route = self.src_instance.get_resource_route_from_layer(layer)
+        if xml_resource_route is None:
+            return f"Error: cannot get resource route for {layer}", 500
+        try:
+            self.dst_instance.create_layer_resource(resource, xml_resource_route)
+        except HTTPError:
+            dst_resource = resource.decode().replace(
+                self.src_instance.url, self.dst_instance.url
+            )
+            store = json.loads(dst_resource)["featureType"]["store"]
+            if not self.dst_instance.check_href(store):
+                raise DatastoreMissing(
+                    404,
+                    GsDetail(
+                        f"Datastore {store['name']} not found",
+                    ),
+                )
+            for ws_name, workspace in self.dst_instance.get_workspaces_from_store(
+                store
+            ).items():
+                if not self.dst_instance.check_href(workspace):
+                    raise WorkspaceMissing(
+                        404,
+                        GsDetail(
+                            f"Workspace {ws_name} not found",
+                        ),
+                    )
+
+        return self.dst_instance.update_layer(dst_layer, workspace_name)
 
     def copy_layer_groups(self, workspace_name: str) -> tuple[str, int]:
         """
@@ -234,20 +277,39 @@ class GeoServerCloudSync:
         """
         Copy a style from source to destination GeoServer instance
         """
-        style_definition, status_code = self.src_instance.get_style_definition(
+        style_info, status_code = self.src_instance.get_style_info(
             style_name, workspace_name
         )
-        if isinstance(style_definition, str):
-            return style_definition, status_code
-        content, status_code = self.dst_instance.create_style_definition(
-            style_name, style_definition, workspace_name
-        )
         if self.not_ok(status_code):
+            return f"Error getting {style_info}", status_code
+        style_definition_response = self.src_instance.get_raw_style_definition(
+            style_name, workspace_name, style_info.format
+        )
+        if self.not_ok(style_definition_response.status_code):
+            content: str = style_definition_response.content.decode()
             return content, status_code
-        style, status_code = self.src_instance.get_style(style_name, workspace_name)
-        if isinstance(style, str):
-            return style, status_code
-        return self.dst_instance.create_style(style_name, style, workspace_name)
+        try:
+            content, status_code = self.dst_instance.create_style_info(
+                style_name, style_info, workspace_name
+            )
+            if self.not_ok(status_code):
+                return content, status_code
+        except HTTPError:
+            if not self.dst_instance.check_workspace_for_style(style_info):
+                raise WorkspaceMissing(
+                    404,
+                    GsDetail(
+                        f"Workspace {style_info.workspace_name} not found",
+                    ),
+                )
+
+        return self.dst_instance.fill_style_definition(
+            style_name,
+            style_definition_response.content,
+            style_info.format,
+            style_definition_response.headers["content-type"],
+            workspace_name,
+        )
 
     def copy_style_images(self, workspace_name: str | None = None) -> tuple[str, int]:
         """
