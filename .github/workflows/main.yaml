@@ -13,14 +13,14 @@ jobs:
     timeout-minutes: 15
     if: "!startsWith(github.event.head_commit.message, '[skip ci] ')"
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: camptocamp/initialise-gopass-summon-action@v2
         with:
           ci-gpg-private-key: ${{secrets.CI_GPG_PRIVATE_KEY}}
           github-gopass-ci-token: ${{secrets.GOPASS_CI_GITHUB_TOKEN}}
           patterns: pypi docker
         if: env.HAS_SECRETS == 'HAS_SECRETS'
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: "3.13"
       - run: echo "${HOME}/.local/bin" >> ${GITHUB_PATH}

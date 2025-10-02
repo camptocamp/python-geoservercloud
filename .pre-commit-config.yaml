@@ -6,7 +6,7 @@ repos:
         additional_dependencies:
           - prettier@2.8.4
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v5.0.0
+    rev: v6.0.0
     hooks:
       - id: detect-private-key
       - id: check-merge-conflict
@@ -49,7 +49,7 @@ repos:
           - github-workflows-require-timeout
       - id: check-renovate
         additional_dependencies:
-          - pyjson5==1.6.9 # pypi
+          - pyjson5==2.0.0 # pypi
   - repo: https://github.com/sirwart/ripsecrets
     rev: v0.1.11
     hooks:
