@@ -1,6 +1,6 @@
 c2cciutils[publish]==1.7.4
 poetry-dynamic-versioning[plugin]==1.9.1
-pre-commit==4.2.0
+pre-commit==4.3.0
 pytest==8.4.2
 poetry-plugin-tweak-dependencies-version==1.5.2
 poetry-dynamic-versioning==1.9.1
