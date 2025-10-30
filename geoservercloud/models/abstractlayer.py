@@ -5,7 +5,6 @@ from geoservercloud.utils import EPSG_BBOX
 
 
 class AbstractLayer(EntityModel):
-
     def __init__(
         self,
         # Mandatory fields

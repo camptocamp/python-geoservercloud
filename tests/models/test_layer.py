@@ -7,7 +7,10 @@ def test_layer_post_payload():
         resource_name="test_workspace:test_point",
         type="VECTOR",
         default_style_name="point",
-        styles=["burg", "capitals"],
+        styles=[
+            {"name": "burg"},
+            {"name": "capitals"},
+        ],
         queryable=True,
         attribution={"logoWidth": 0, "logoHeight": 0},
     )
@@ -73,6 +76,15 @@ def test_from_get_response_payload():
     assert layer.resource_name == "test_workspace:test_point"
     assert layer.type == "VECTOR"
     assert layer.default_style_name == "point"
-    assert layer.styles == ["burg", "capitals"]
+    assert layer.styles == [
+        {
+            "name": "burg",
+            "href": "http://localhost:9099/geoserver/rest/styles/burg.json",
+        },
+        {
+            "name": "capitals",
+            "href": "http://localhost:9099/geoserver/rest/styles/capitals.json",
+        },
+    ]
     assert layer.attribution == {"logoWidth": 0, "logoHeight": 0}
     assert layer.queryable is None

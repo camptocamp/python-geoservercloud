@@ -1,5 +1,7 @@
 import json
-from typing import Any
+from typing import Any, Generic, TypeVar
+
+T = TypeVar("T")
 
 
 class BaseModel:
@@ -31,9 +33,43 @@ class EntityModel(BaseModel):
         return content
 
 
-class ListModel(BaseModel):
-    def aslist(self) -> list:
-        raise NotImplementedError
+class ListModel(BaseModel, Generic[T]):
+    """Base class for list-based models with configurable list and item names."""
+
+    # These should be overridden in subclasses
+    _list_key: str = ""  # e.g., "workspaces", "dataStores"
+    _item_key: str = ""  # e.g., "workspace", "dataStore"
+
+    def __init__(self, items: list[T] | None = None) -> None:
+        self._items: list[T] = items or []
+
+    def aslist(self) -> list[T]:
+        """Return the list of items."""
+        return self._items
+
+    def find(self, name: str) -> T | None:
+        """Find an item by name (assumes items are dicts with 'name' key)."""
+        for item in self._items:
+            if isinstance(item, dict) and item.get("name") == name:
+                return item
+        return None
+
+    @classmethod
+    def from_get_response_payload(cls, content: dict):
+        """Create instance from API response payload."""
+        if not cls._list_key or not cls._item_key:
+            raise NotImplementedError("Subclasses must define _list_key and _item_key")
+
+        data = content.get(cls._list_key)
+        if not data:
+            return cls()
+
+        items = data[cls._item_key]
+        return cls(items)
+
+    def __repr__(self) -> str:
+        """String representation of the list."""
+        return json.dumps(self._items, indent=4)
 
 
 class ReferencedObjectModel(BaseModel):

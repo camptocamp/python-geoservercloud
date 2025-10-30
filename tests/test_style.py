@@ -12,55 +12,49 @@ STYLE = "test_style"
 
 
 def test_get_styles_no_workspace(geoserver: GeoServerCloud):
+    styles = [
+        {
+            "name": "style1",
+            "href": f"{geoserver.url}/rest/styles/style1.json",
+        },
+        {
+            "name": "style2",
+            "href": f"{geoserver.url}/rest/styles/style2.json",
+        },
+    ]
     with responses.RequestsMock() as rsps:
         rsps.get(
             url=f"{geoserver.url}/rest/styles.json",
             status=200,
-            json={
-                "styles": {
-                    "style": [
-                        {
-                            "name": "style1",
-                            "href": f"{geoserver.url}/rest/styles/style1.json",
-                        },
-                        {
-                            "name": "style2",
-                            "href": f"{geoserver.url}/rest/styles/style2.json",
-                        },
-                    ]
-                }
-            },
+            json={"styles": {"style": styles}},
         )
         content, code = geoserver.get_styles()
 
-    assert content == ["style1", "style2"]
+    assert content == styles
     assert code == 200
 
 
 def test_get_styles_with_workspace(geoserver: GeoServerCloud):
     workspace_name = "test_workspace"
+    styles = [
+        {
+            "name": "style3",
+            "href": f"{geoserver.url}/rest/workspaces/{workspace_name}/styles/style3.json",
+        },
+        {
+            "name": "style4",
+            "href": f"{geoserver.url}/rest/workspaces/{workspace_name}/styles/style4.json",
+        },
+    ]
     with responses.RequestsMock() as rsps:
         rsps.get(
             url=f"{geoserver.url}/rest/workspaces/{workspace_name}/styles.json",
             status=200,
-            json={
-                "styles": {
-                    "style": [
-                        {
-                            "name": "style3",
-                            "href": f"{geoserver.url}/rest/workspaces/{workspace_name}/styles/style3.json",
-                        },
-                        {
-                            "name": "style4",
-                            "href": f"{geoserver.url}/rest/workspaces/{workspace_name}/styles/style4.json",
-                        },
-                    ]
-                }
-            },
+            json={"styles": {"style": styles}},
         )
         content, code = geoserver.get_styles(workspace_name)
 
-    assert content == ["style3", "style4"]
+    assert content == styles
     assert code == 200
 
 
