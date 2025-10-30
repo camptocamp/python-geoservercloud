@@ -91,9 +91,9 @@ class GeoServerCloudSync:
             return datastores, status_code
         elif datastores.aslist() == []:
             return "", status_code
-        for datastore_name in datastores.aslist():
+        for datastore in datastores.aslist():
             content, status_code = self.copy_pg_datastore(
-                workspace_name, datastore_name, deep_copy=deep_copy
+                workspace_name, datastore["name"], deep_copy=deep_copy
             )
             if self.not_ok(status_code):
                 return content, status_code
@@ -217,7 +217,7 @@ class GeoServerCloudSync:
         elif styles.aslist() == []:
             return "", status_code
         for style in styles.aslist():
-            content, status_code = self.copy_style(style, workspace_name)
+            content, status_code = self.copy_style(style["name"], workspace_name)
             if self.not_ok(status_code):
                 return content, status_code
         if include_images:

@@ -132,7 +132,12 @@ def test_get_datastores(
         )
 
         datastores, status_code = geoserver.get_datastores(workspace_name=WORKSPACE)
-        assert datastores == ["test_store"]
+        assert datastores == [
+            {
+                "name": "test_store",
+                "href": "http://localhost:8080/geoserver/rest/workspaces/test_workspace/datastores/test_store.json",
+            }
+        ]
         assert status_code == 200
 
 

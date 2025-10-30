@@ -227,7 +227,9 @@ class GeoServerCloud:
         """
         return self.set_default_locale_for_service(workspace_name, None)
 
-    def get_datastores(self, workspace_name: str) -> tuple[list[str] | str, int]:
+    def get_datastores(
+        self, workspace_name: str
+    ) -> tuple[list[dict[str, str]] | str, int]:
         """
         Get all datastores for a given workspace
         """
@@ -602,7 +604,7 @@ class GeoServerCloud:
 
     def get_styles(
         self, workspace_name: str | None = None
-    ) -> tuple[list[str] | str, int]:
+    ) -> tuple[list[dict[str, str]] | str, int]:
         """
         Get all styles for a given workspace. If no workspace is provided, get all global styles
         """

@@ -28,7 +28,10 @@ def empty_styles_get_response_payload():
 
 def test_styles_initialization():
     workspace = "test_workspace"
-    styles = ["style1", "style2"]
+    styles = [
+        {"name": "style1", "href": "http://localhost/style1.json"},
+        {"name": "style2", "href": "http://localhost/style2.json"},
+    ]
 
     styles_instance = Styles(styles, workspace)
 
@@ -39,7 +42,11 @@ def test_styles_initialization():
 def test_styles_from_get_response(styles_get_response_payload):
     styles_instance = Styles.from_get_response_payload(styles_get_response_payload)
 
-    assert styles_instance.aslist() == ["style1", "style2"]
+    expected = [
+        {"name": "style1", "href": "http://localhost/style1.json"},
+        {"name": "style2", "href": "http://localhost/style2.json"},
+    ]
+    assert styles_instance.aslist() == expected
 
 
 def test_styles_from_get_response_empty(empty_styles_get_response_payload):
@@ -52,7 +59,10 @@ def test_styles_from_get_response_empty(empty_styles_get_response_payload):
 
 
 def test_styles_post_payload():
-    styles = ["style1", "style2"]
+    styles = [
+        {"name": "style1", "href": "http://localhost/style1.json"},
+        {"name": "style2", "href": "http://localhost/style2.json"},
+    ]
 
     styles_instance = Styles(styles)
 

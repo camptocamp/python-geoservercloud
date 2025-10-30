@@ -9,7 +9,6 @@ from geoservercloud.models.common import (
 
 
 class FeatureType(AbstractLayer):
-
     def __init__(
         self,
         # Mandatory fields
