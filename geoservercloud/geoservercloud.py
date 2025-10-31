@@ -446,6 +446,32 @@ class GeoServerCloud:
             return content, code
         return content.asdict(), code
 
+    def get_coverages(
+        self, workspace_name: str, coveragestore_name: str
+    ) -> tuple[list[dict[str, str]] | str, int]:
+        """
+        Get all coverages for a given workspace and coverage store
+        """
+        coverages, status_code = self.rest_service.get_coverages(
+            workspace_name, coveragestore_name
+        )
+        if isinstance(coverages, str):
+            return coverages, status_code
+        return coverages.aslist(), status_code
+
+    def get_coverage(
+        self, workspace_name: str, coveragestore_name: str, coverage_name: str
+    ) -> tuple[dict[str, object] | str, int]:
+        """
+        Get a single coverage for a given workspace, coverage store, and coverage name
+        """
+        coverage, status_code = self.rest_service.get_coverage(
+            workspace_name, coveragestore_name, coverage_name
+        )
+        if isinstance(coverage, str):
+            return coverage, status_code
+        return coverage.asdict(), status_code
+
     def create_feature_type(
         self,
         layer_name: str,

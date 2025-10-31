@@ -17,5 +17,10 @@ class Styles(ListModel[dict[str, str]]):
 
     def post_payload(self) -> dict[str, dict[str, list[dict[str, str]]]]:
         # Convert items to the expected format for POST requests
-        items: list[dict[str, str]] = [{"name": item["name"]} for item in self._items]
+        items = []
+        for item in self._items:
+            if isinstance(item, dict):
+                items.append({"name": item["name"]})
+            else:
+                items.append({"name": item})
         return {"styles": {"style": items}}
