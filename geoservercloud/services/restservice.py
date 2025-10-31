@@ -6,6 +6,8 @@ from owslib.wmts import WebMapTileService
 from requests import Response
 
 from geoservercloud.models.common import BaseModel
+from geoservercloud.models.coverage import Coverage
+from geoservercloud.models.coverages import Coverages
 from geoservercloud.models.datastore import PostGisDataStore
 from geoservercloud.models.datastores import DataStores
 from geoservercloud.models.featuretype import FeatureType
@@ -336,6 +338,27 @@ class RestService:
             )
         )
         return self.deserialize_response(response, FeatureType)
+
+    def get_coverages(
+        self, workspace_name: str, coveragestore_name: str
+    ) -> tuple[Coverages | str, int]:
+        """Get all coverages for a given workspace and coverage store"""
+        response: Response = self.rest_client.get(
+            path=self.rest_endpoints.coverages(workspace_name, coveragestore_name),
+            params={"list": "all"},
+        )
+        return self.deserialize_response(response, Coverages)
+
+    def get_coverage(
+        self, workspace_name: str, coveragestore_name: str, coverage_name: str
+    ) -> tuple[Coverage | str, int]:
+        """Get a single coverage for a given workspace, coverage store, and coverage name"""
+        response: Response = self.rest_client.get(
+            self.rest_endpoints.coverage(
+                workspace_name, coveragestore_name, coverage_name
+            )
+        )
+        return self.deserialize_response(response, Coverage)
 
     def create_feature_type(self, feature_type: FeatureType) -> tuple[str, int]:
         path: str = self.rest_endpoints.featuretypes(
