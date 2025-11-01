@@ -22,7 +22,7 @@ jobs:
         if: env.HAS_SECRETS == 'HAS_SECRETS'
       - uses: actions/setup-python@v6
         with:
-          python-version: "3.13"
+          python-version: "3.14"
       - run: echo "${HOME}/.local/bin" >> ${GITHUB_PATH}
       - run: python3 -m pip install --requirement=ci/requirements.txt
         name: Install CI requirements
