@@ -472,6 +472,16 @@ class GeoServerCloud:
             return coverage, status_code
         return coverage.asdict(), status_code
 
+    def delete_coverage_store(
+        self, workspace_name: str, coveragestore_name: str
+    ) -> tuple[str, int]:
+        """
+        Delete a coverage store recursively
+        """
+        return self.rest_service.delete_coverage_store(
+            workspace_name, coveragestore_name
+        )
+
     def create_feature_type(
         self,
         layer_name: str,
