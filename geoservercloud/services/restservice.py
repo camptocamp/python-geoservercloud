@@ -360,6 +360,15 @@ class RestService:
         )
         return self.deserialize_response(response, Coverage)
 
+    def delete_coverage_store(
+        self, workspace_name: str, coveragestore_name: str
+    ) -> tuple[str, int]:
+        """Delete a coverage store recursively"""
+        path = self.rest_endpoints.coveragestore(workspace_name, coveragestore_name)
+        params: dict[str, str] = {"recurse": "true"}
+        response: Response = self.rest_client.delete(path, params=params)
+        return response.content.decode(), response.status_code
+
     def create_feature_type(self, feature_type: FeatureType) -> tuple[str, int]:
         path: str = self.rest_endpoints.featuretypes(
             feature_type.workspace_name, feature_type.store_name
