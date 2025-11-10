@@ -472,6 +472,19 @@ class GeoServerCloud:
             return coverage, status_code
         return coverage.asdict(), status_code
 
+    def get_coverage_store(
+        self, workspace_name: str, coveragestore_name: str
+    ) -> tuple[dict[str, Any] | str, int]:
+        """
+        Get a coverage store by workspace and name
+        """
+        coverage_store, status_code = self.rest_service.get_coverage_store(
+            workspace_name, coveragestore_name
+        )
+        if isinstance(coverage_store, str):
+            return coverage_store, status_code
+        return coverage_store.asdict(), status_code
+
     def delete_coverage_store(
         self, workspace_name: str, coveragestore_name: str
     ) -> tuple[str, int]:
