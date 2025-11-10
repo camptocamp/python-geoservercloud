@@ -8,6 +8,7 @@ from requests import Response
 from geoservercloud.models.common import BaseModel
 from geoservercloud.models.coverage import Coverage
 from geoservercloud.models.coverages import Coverages
+from geoservercloud.models.coveragestore import CoverageStore
 from geoservercloud.models.datastore import PostGisDataStore
 from geoservercloud.models.datastores import DataStores
 from geoservercloud.models.featuretype import FeatureType
@@ -359,6 +360,15 @@ class RestService:
             )
         )
         return self.deserialize_response(response, Coverage)
+
+    def get_coverage_store(
+        self, workspace_name: str, coveragestore_name: str
+    ) -> tuple[CoverageStore | str, int]:
+        """Get a coverage store for a given workspace and coverage store name"""
+        response: Response = self.rest_client.get(
+            self.rest_endpoints.coveragestore(workspace_name, coveragestore_name)
+        )
+        return self.deserialize_response(response, CoverageStore)
 
     def delete_coverage_store(
         self, workspace_name: str, coveragestore_name: str
