@@ -48,6 +48,46 @@ def test_get_coverage_store(geoserver: GeoServerCloud):
         assert content.get("_default") is False
 
 
+def test_create_coverage_store(geoserver: GeoServerCloud):
+    workspace_name = "test_coverage_ws"
+    coveragestore_name = "test_coveragestore_name"
+    store_type = "GeoTIFF"
+    url = "cog://http://example"
+    post_payload = {
+        "coverageStore": {
+            "name": coveragestore_name,
+            "workspace": {
+                "name": workspace_name,
+            },
+            "type": store_type,
+            "enabled": True,
+            "url": url,
+            "metadata": {
+                "entry": {
+                    "@key": "CogSettings.Key",
+                    "cogSettings": {"rangeReaderSettings": "HTTP"},
+                }
+            },
+        }
+    }
+
+    with responses.RequestsMock() as rsps:
+        rsps.post(
+            url=f"http://localhost:8080/geoserver/rest/workspaces/{workspace_name}/coveragestores.json",
+            status=201,
+            body=b"test_coveragestore_name",
+            match=[responses.matchers.json_params_matcher(post_payload)],
+        )
+        content, code = geoserver.create_coverage_store(
+            workspace_name=workspace_name,
+            coveragestore_name=coveragestore_name,
+            type=store_type,
+            url=url,
+            metadata={"cogSettings": {"rangeReaderSettings": "HTTP"}},
+        )
+        assert content == coveragestore_name
+
+
 def test_delete_coverage_store(geoserver: GeoServerCloud):
     workspace_name = "test_coverage_ws"
     coveragestore_name = "test_coveragestore_name"

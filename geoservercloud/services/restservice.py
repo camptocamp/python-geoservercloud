@@ -370,6 +370,16 @@ class RestService:
         )
         return self.deserialize_response(response, CoverageStore)
 
+    def create_coverage_store(self, coverage_store: CoverageStore) -> tuple[str, int]:
+        """
+        Create a coverage store from a coverage store definition
+        """
+        response: Response = self.rest_client.post(
+            self.rest_endpoints.coveragestores(coverage_store.workspace.name),
+            json=coverage_store.post_payload(),
+        )
+        return response.content.decode(), response.status_code
+
     def delete_coverage_store(
         self, workspace_name: str, coveragestore_name: str
     ) -> tuple[str, int]:

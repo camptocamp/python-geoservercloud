@@ -1,6 +1,9 @@
 import json
 
-from geoservercloud.models.common import EntityModel, ReferencedObjectModel
+from geoservercloud.models.common import (
+    EntityModel,
+    ReferencedObjectModel,
+)
 
 
 class CoverageStore(EntityModel):
@@ -21,6 +24,7 @@ class CoverageStore(EntityModel):
         dateCreated: str | None = None,
         disableOnConnFailure: bool | None = None,
         coverages: str | None = None,
+        metadata: dict | None = None,
     ):
         self.name: str = name
         self.workspace: ReferencedObjectModel = ReferencedObjectModel(workspace_name)
@@ -32,6 +36,7 @@ class CoverageStore(EntityModel):
         self.dateCreated: str | None = dateCreated
         self.disableOnConnFailure: bool | None = disableOnConnFailure
         self.coverages: str | None = coverages
+        self.metadata: dict | None = metadata
 
     @classmethod
     def from_get_response_payload(cls, content: dict):
@@ -63,11 +68,19 @@ class CoverageStore(EntityModel):
             "dateCreated": self.dateCreated,
             "disableOnConnFailure": self.disableOnConnFailure,
             "coverages": self.coverages,
+            "metadata": self.metadata,
         }
         return EntityModel.add_items_to_dict(content, optional_items)
 
     def post_payload(self) -> dict[str, object]:
-        raise NotImplementedError
+        content = self.asdict()
+        content["workspace"] = {"name": self.workspace.name}
+        if self.metadata:
+            content["metadata"] = {
+                "entry": {"@key": f"{key[0].upper()}{key[1:]}.Key", key: value}
+                for key, value in self.metadata.items()
+            }
+        return {"coverageStore": content}
 
     def put_payload(self) -> dict[str, object]:
         raise NotImplementedError
