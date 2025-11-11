@@ -7,6 +7,7 @@ from owslib.wmts import WebMapTileService
 from requests import Response
 
 from geoservercloud import utils
+from geoservercloud.models.coveragestore import CoverageStore
 from geoservercloud.models.datastore import PostGisDataStore
 from geoservercloud.models.featuretype import FeatureType
 from geoservercloud.models.layer import Layer
@@ -484,6 +485,36 @@ class GeoServerCloud:
         if isinstance(coverage_store, str):
             return coverage_store, status_code
         return coverage_store.asdict(), status_code
+
+    def create_coverage_store(
+        self,
+        workspace_name: str,
+        coveragestore_name: str,
+        url: str,
+        type: str = "ImageMosaic",
+        enabled: bool = True,
+        metadata: dict | None = None,
+    ) -> tuple[dict[str, Any] | str, int]:
+        """
+        Create a coverage store from a store definition. When using a directory path as URL, coverages will be auto-discovered
+
+        :param workspace_name: Name of the workspace
+        :param coveragestore_name: Name of the coverage store
+        :param url: Directory path on the server or URL of the granules (raster images)
+        :param type: Type of the coverage store, e.g. ImageMosaic, GeoTIFF (default: ImageMosaic)
+        :param enabled: Whether the coverage store is enabled (default: True)
+        :param metadata: Optional metadata dictionary (e.g. {"cogSettings": {"rangeReaderSettings": "HTTP"}})
+        """
+        return self.rest_service.create_coverage_store(
+            CoverageStore(
+                workspace_name=workspace_name,
+                name=coveragestore_name,
+                url=url,
+                type=type,
+                enabled=enabled,
+                metadata=metadata,
+            )
+        )
 
     def delete_coverage_store(
         self, workspace_name: str, coveragestore_name: str
