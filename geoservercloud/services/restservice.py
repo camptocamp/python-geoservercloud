@@ -399,6 +399,23 @@ class RestService:
         else:
             return coverage_store.name, status_code
 
+    def create_imagemosaic_store_from_properties_zip(
+        self, workspace_name: str, coveragestore_name: str, properties_zip: bytes
+    ) -> tuple[str, int]:
+        """
+        Create an empty ImageMosaic coverage store from a ZIP containing the
+        configuration files indexer.properties and datastore.properties
+        """
+        response: Response = self.rest_client.put(
+            self.rest_endpoints.coveragestore(
+                workspace_name, coveragestore_name, "file", "imagemosaic"
+            ),
+            params={"configure": "none"},
+            data=properties_zip,
+            headers={"Content-Type": "application/zip", "Accept": "application/json"},
+        )
+        return response.content.decode(), response.status_code
+
     def delete_coverage_store(
         self, workspace_name: str, coveragestore_name: str
     ) -> tuple[str, int]:

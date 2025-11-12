@@ -124,6 +124,31 @@ def test_create_coverage_store_from_directory(geoserver: GeoServerCloud):
         assert content == coveragestore_name
 
 
+def test_create_imagemosaic_store_from_properties_zip(geoserver: GeoServerCloud):
+    workspace_name = "test_coverage_ws"
+    coveragestore_name = "test_coveragestore_name"
+    zip_content = b"some properties"
+
+    with responses.RequestsMock() as rsps:
+        rsps.put(
+            f"http://localhost:8080/geoserver/rest/workspaces/{workspace_name}/coveragestores/{coveragestore_name}/file.imagemosaic?configure=none",
+            status=201,
+            body="",
+            match=[
+                responses.matchers.header_matcher(
+                    {"Content-Type": "application/zip", "Accept": "application/json"}
+                )
+            ],
+        )
+        content, code = geoserver.create_imagemosaic_store_from_properties_zip(
+            workspace_name=workspace_name,
+            coveragestore_name=coveragestore_name,
+            properties_zip=zip_content,
+        )
+        assert code == 201
+        assert content == ""
+
+
 def test_delete_coverage_store(geoserver: GeoServerCloud):
     workspace_name = "test_coverage_ws"
     coveragestore_name = "test_coveragestore_name"

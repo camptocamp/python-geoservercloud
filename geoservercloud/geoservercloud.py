@@ -528,6 +528,18 @@ class GeoServerCloud:
             workspace_name, coveragestore_name, directory_path
         )
 
+    def create_imagemosaic_store_from_properties_zip(
+        self, workspace_name: str, coveragestore_name: str, properties_zip: bytes
+    ) -> tuple[str, int]:
+        """
+        Upload an ImageMosaic coverage store configuration as ZIP to create an empty coverage store.
+        The ZIP contains two files: indexer.properties and datastore.properties
+        Calls /workspaces/{workspace_name}/coveragestores/{coveragestore_name}/file.imagemosaic?configure=none
+        """
+        return self.rest_service.create_imagemosaic_store_from_properties_zip(
+            workspace_name, coveragestore_name, properties_zip
+        )
+
     def delete_coverage_store(
         self, workspace_name: str, coveragestore_name: str
     ) -> tuple[str, int]:
