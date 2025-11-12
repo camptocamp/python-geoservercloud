@@ -7,6 +7,7 @@ from owslib.wmts import WebMapTileService
 from requests import Response
 
 from geoservercloud import utils
+from geoservercloud.models.coverage import Coverage
 from geoservercloud.models.coveragestore import CoverageStore
 from geoservercloud.models.datastore import PostGisDataStore
 from geoservercloud.models.featuretype import FeatureType
@@ -472,6 +473,26 @@ class GeoServerCloud:
         if isinstance(coverage, str):
             return coverage, status_code
         return coverage.asdict(), status_code
+
+    def create_coverage(
+        self,
+        workspace_name: str,
+        coveragestore_name: str,
+        coverage_name: str,
+        title: str | None = None,
+        native_name: str | None = None,
+    ) -> tuple[str, int]:
+        """
+        Publish a coverage layer from a given coverage store
+        """
+        coverage = Coverage(
+            workspace_name=workspace_name,
+            store_name=coveragestore_name,
+            name=coverage_name,
+            title=title or coverage_name,
+            native_name=native_name or coverage_name,
+        )
+        return self.rest_service.create_coverage(coverage)
 
     def get_coverage_store(
         self, workspace_name: str, coveragestore_name: str

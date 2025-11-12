@@ -1,4 +1,5 @@
 import responses
+import responses.matchers
 
 from geoservercloud import GeoServerCloud
 
@@ -172,3 +173,41 @@ def test_get_coverage(geoserver: GeoServerCloud):
         assert content.get("title") == f"Title {coverage}"
         assert content.get("nativeName") == coverage
         assert content.get("enabled") is True
+
+
+def test_create_coverage(geoserver: GeoServerCloud):
+    workspace_name = "test_coverage_ws"
+    coveragestore_name = "test_coveragestore_name"
+    coverage_name = "test_coverage_name"
+    native_name = "native_coverage_name"
+    title = "Test Coverage Title"
+
+    with responses.RequestsMock() as rsps:
+        rsps.post(
+            url=f"{geoserver.url}/rest/workspaces/{workspace_name}/coveragestores/{coveragestore_name}/coverages.json",
+            status=201,
+            body=coverage_name,
+            match=[
+                responses.matchers.json_params_matcher(
+                    {
+                        "coverage": {
+                            "name": coverage_name,
+                            "title": title,
+                            "nativeName": native_name,
+                            "store": {"name": f"{workspace_name}:{coveragestore_name}"},
+                            "enabled": True,
+                        }
+                    }
+                )
+            ],
+        )
+        content, code = geoserver.create_coverage(
+            workspace_name,
+            coveragestore_name,
+            coverage_name,
+            title=title,
+            native_name=native_name,
+        )
+        assert isinstance(content, str)
+        assert content == coverage_name
+        assert code == 201
