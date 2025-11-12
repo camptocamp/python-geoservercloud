@@ -173,6 +173,29 @@ def test_publish_granule_to_coverage_store(geoserver: GeoServerCloud):
         assert code == 201
 
 
+def test_harvest_granules_to_coverage_store(geoserver: GeoServerCloud):
+    workspace_name = "test_coverage_ws"
+    coveragestore_name = "test_coveragestore_name"
+    directory_path = "/mnt/path/to/data/"
+
+    with responses.RequestsMock() as rsps:
+        rsps.post(
+            url=f"http://localhost:8080/geoserver/rest/workspaces/{workspace_name}/coveragestores/{coveragestore_name}/external.imagemosaic",
+            status=201,
+            body="",
+            match=[
+                responses.matchers.header_matcher(
+                    {"Content-Type": "text/plain", "Accept": "application/json"}
+                ),
+            ],
+        )
+        content, code = geoserver.harvest_granules_to_coverage_store(
+            workspace_name, coveragestore_name, directory_path
+        )
+        assert content == ""
+        assert code == 201
+
+
 def test_delete_coverage_store(geoserver: GeoServerCloud):
     workspace_name = "test_coverage_ws"
     coveragestore_name = "test_coveragestore_name"
