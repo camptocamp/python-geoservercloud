@@ -564,6 +564,16 @@ class GeoServerCloud:
             workspace_name, coveragestore_name, method, granule_path
         )
 
+    def harvest_granules_to_coverage_store(
+        self, workspace_name: str, coveragestore_name: str, directory_path: str
+    ) -> tuple[str, int]:
+        """
+        Harvest granules (raster files) from a server directory into an existing ImageMosaic coverage store
+        """
+        return self.rest_service.harvest_granules_to_coverage_store(
+            workspace_name, coveragestore_name, directory_path
+        )
+
     def delete_coverage_store(
         self, workspace_name: str, coveragestore_name: str
     ) -> tuple[str, int]:
