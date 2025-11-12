@@ -380,6 +380,25 @@ class RestService:
         )
         return response.content.decode(), response.status_code
 
+    def create_imagemosaic_store_from_directory(
+        self, workspace_name: str, coveragestore_name: str, directory_path: str
+    ) -> tuple[str, int]:
+        """
+        Create an ImageMosaic coverage store from a directory on the server
+        """
+        response: Response = self.rest_client.put(
+            self.rest_endpoints.coveragestore(
+                workspace_name, coveragestore_name, "external", "imagemosaic"
+            ),
+            data=directory_path,
+            headers={"Content-Type": "text/plain", "Accept": "application/json"},
+        )
+        coverage_store, status_code = self.deserialize_response(response, CoverageStore)
+        if isinstance(coverage_store, str):
+            return coverage_store, status_code
+        else:
+            return coverage_store.name, status_code
+
     def delete_coverage_store(
         self, workspace_name: str, coveragestore_name: str
     ) -> tuple[str, int]:
@@ -866,8 +885,17 @@ class RestService:
         def coveragestores(self, workspace_name: str) -> str:
             return f"{self.base_url}/workspaces/{workspace_name}/coveragestores.json"
 
-        def coveragestore(self, workspace_name: str, coveragestore_name: str) -> str:
-            return f"{self.base_url}/workspaces/{workspace_name}/coveragestores/{coveragestore_name}.json"
+        def coveragestore(
+            self,
+            workspace_name: str,
+            coveragestore_name: str,
+            method: str | None = None,
+            store_type: str | None = None,
+        ) -> str:
+            if method is None and store_type is None:
+                return f"{self.base_url}/workspaces/{workspace_name}/coveragestores/{coveragestore_name}.json"
+            else:
+                return f"{self.base_url}/workspaces/{workspace_name}/coveragestores/{coveragestore_name}/{method}.{store_type}"
 
         def coverages(self, workspace_name: str, coveragestore_name: str) -> str:
             return f"{self.base_url}/workspaces/{workspace_name}/coveragestores/{coveragestore_name}/coverages.json"

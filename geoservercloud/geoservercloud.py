@@ -516,6 +516,18 @@ class GeoServerCloud:
             )
         )
 
+    def create_imagemosaic_store_from_directory(
+        self, workspace_name: str, coveragestore_name: str, directory_path: str
+    ) -> tuple[str, int]:
+        """
+        Create an ImageMosaic coverage store from a directory on the server which contains granules (raster images).
+        Granules and coverages will be auto-discovered. Similar to creating a store from the WebUI.
+        Calls /workspaces/{workspace_name}/coveragestores/{coveragestore_name}/external.imagemosaic
+        """
+        return self.rest_service.create_imagemosaic_store_from_directory(
+            workspace_name, coveragestore_name, directory_path
+        )
+
     def delete_coverage_store(
         self, workspace_name: str, coveragestore_name: str
     ) -> tuple[str, int]:

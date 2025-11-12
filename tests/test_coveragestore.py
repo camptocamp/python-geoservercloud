@@ -1,4 +1,5 @@
 import responses
+import responses.matchers
 
 from geoservercloud.geoservercloud import GeoServerCloud
 
@@ -85,6 +86,41 @@ def test_create_coverage_store(geoserver: GeoServerCloud):
             url=url,
             metadata={"cogSettings": {"rangeReaderSettings": "HTTP"}},
         )
+        assert content == coveragestore_name
+
+
+def test_create_coverage_store_from_directory(geoserver: GeoServerCloud):
+    workspace_name = "test_coverage_ws"
+    coveragestore_name = "test_coveragestore_name"
+    directory_path = "/mnt/path/to/data/"
+
+    with responses.RequestsMock() as rsps:
+        rsps.put(
+            f"http://localhost:8080/geoserver/rest/workspaces/{workspace_name}/coveragestores/{coveragestore_name}/external.imagemosaic",
+            status=201,
+            json={
+                "coverageStore": {
+                    "name": coveragestore_name,
+                    "workspace": {"name": workspace_name},
+                    "type": "ImageMosaic",
+                    "enabled": True,
+                    "url": "file:/mnt/path/to/data/",
+                    "_default": False,
+                    "disableOnConnFailure": False,
+                }
+            },
+            match=[
+                responses.matchers.header_matcher(
+                    {"Content-Type": "text/plain", "Accept": "application/json"}
+                )
+            ],
+        )
+        content, code = geoserver.create_imagemosaic_store_from_directory(
+            workspace_name=workspace_name,
+            coveragestore_name=coveragestore_name,
+            directory_path=directory_path,
+        )
+        assert code == 201
         assert content == coveragestore_name
 
 
