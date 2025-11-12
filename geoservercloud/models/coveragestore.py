@@ -86,4 +86,4 @@ class CoverageStore(EntityModel):
         raise NotImplementedError
 
     def __repr__(self) -> str:
-        return json.dumps(self.put_payload(), indent=4)
+        return json.dumps(self.post_payload(), indent=4)
