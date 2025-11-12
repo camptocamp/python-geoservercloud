@@ -54,7 +54,9 @@ class Coverage(AbstractLayer):
         )
         self.description: str | None = description
         self.native_crs: str | None = native_crs
-        self.metadata = KeyDollarListDict(input_dict=metadata)
+        self.metadata: KeyDollarListDict | None = None
+        if metadata is not None:
+            self.metadata = KeyDollarListDict(input_dict=metadata)
         self.simple_conversion_format: str | None = simple_conversion_format
         self.native_format: str | None = native_format
         self.grid: dict | None = grid
@@ -71,7 +73,6 @@ class Coverage(AbstractLayer):
         optional_items = {
             "description": self.description,
             "nativeCRS": self.native_crs,
-            "metadata": {"entry": dict(self.metadata)},
             "simpleConversionFormat": self.simple_conversion_format,
             "nativeFormat": self.native_format,
             "grid": self.grid,
@@ -83,6 +84,8 @@ class Coverage(AbstractLayer):
             "parameters": self.parameters,
             "nativeCoverageName": self.native_coverage_name,
         }
+        if self.metadata:
+            optional_items["metadata"] = {"entry": dict(self.metadata)}
         return EntityModel.add_items_to_dict(content, optional_items)
 
     def post_payload(self) -> dict[str, object]:
@@ -94,7 +97,9 @@ class Coverage(AbstractLayer):
     @classmethod
     def from_get_response_payload(cls, content: dict):
         coverage = content["coverage"]
-
+        metadata: dict[str, object] | None = None
+        if coverage.get("metadata"):
+            metadata = {"entry": dict(coverage.get("metadata", {}).get("entry", {}))}
         return cls(
             name=coverage["name"],
             workspace_name=coverage["namespace"]["name"],
@@ -106,7 +111,7 @@ class Coverage(AbstractLayer):
             enabled=coverage.get("enabled", True),
             description=coverage.get("description", None),
             native_crs=coverage.get("nativeCRS", None),
-            metadata={"entry": dict(coverage.get("metadata", {}).get("entry", {}))},
+            metadata=metadata,
             simple_conversion_format=coverage.get("simpleConversionFormat", None),
             native_format=coverage.get("nativeFormat", None),
             grid=coverage.get("grid", None),
