@@ -540,6 +540,30 @@ class GeoServerCloud:
             workspace_name, coveragestore_name, properties_zip
         )
 
+    def publish_granule_to_coverage_store(
+        self,
+        workspace_name: str,
+        coveragestore_name: str,
+        method: str,
+        granule_path: str,
+    ) -> tuple[str, int]:
+        """
+        Publish a single granule (raster image) to an existing ImageMosaic coverage store.
+        The granule is an existing file stored either on the server or remotely.
+
+        :param workspace_name: Name of the workspace
+        :param coveragestore_name: Name of the coverage store
+        :param method: "external" for a file on the server, "remote" for a remote file
+        :param granule_path: file path (for external granules) or URL (for remote granules)
+        """
+        if method not in ["external", "remote"]:
+            raise ValueError(
+                "Unsupported method, must be either 'external' or 'remote'"
+            )
+        return self.rest_service.publish_granule_to_coverage_store(
+            workspace_name, coveragestore_name, method, granule_path
+        )
+
     def delete_coverage_store(
         self, workspace_name: str, coveragestore_name: str
     ) -> tuple[str, int]:

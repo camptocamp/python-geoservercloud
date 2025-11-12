@@ -149,6 +149,30 @@ def test_create_imagemosaic_store_from_properties_zip(geoserver: GeoServerCloud)
         assert content == ""
 
 
+def test_publish_granule_to_coverage_store(geoserver: GeoServerCloud):
+    workspace_name = "test_coverage_ws"
+    coveragestore_name = "test_coveragestore_name"
+    granule_path = "http://example.com/granule.tif"
+    method = "remote"
+
+    with responses.RequestsMock() as rsps:
+        rsps.post(
+            url=f"http://localhost:8080/geoserver/rest/workspaces/{workspace_name}/coveragestores/{coveragestore_name}/{method}.imagemosaic",
+            status=201,
+            body="",
+            match=[
+                responses.matchers.header_matcher(
+                    {"Content-Type": "text/plain", "Accept": "application/json"}
+                ),
+            ],
+        )
+        content, code = geoserver.publish_granule_to_coverage_store(
+            workspace_name, coveragestore_name, method, granule_path
+        )
+        assert content == ""
+        assert code == 201
+
+
 def test_delete_coverage_store(geoserver: GeoServerCloud):
     workspace_name = "test_coverage_ws"
     coveragestore_name = "test_coveragestore_name"

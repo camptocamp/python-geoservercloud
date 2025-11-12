@@ -416,6 +416,22 @@ class RestService:
         )
         return response.content.decode(), response.status_code
 
+    def publish_granule_to_coverage_store(
+        self,
+        workspace_name: str,
+        coveragestore_name: str,
+        method: str,
+        granule_path: str,
+    ) -> tuple[str, int]:
+        response: Response = self.rest_client.post(
+            self.rest_endpoints.coveragestore(
+                workspace_name, coveragestore_name, method, "imagemosaic"
+            ),
+            data=granule_path,
+            headers={"Content-Type": "text/plain", "Accept": "application/json"},
+        )
+        return response.content.decode(), response.status_code
+
     def delete_coverage_store(
         self, workspace_name: str, coveragestore_name: str
     ) -> tuple[str, int]:
