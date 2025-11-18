@@ -422,6 +422,14 @@ class GeoServerCloud:
         """
         return self.rest_service.create_wmts_store(workspace_name, name, capabilities)
 
+    def delete_wmts_store(
+        self, workspace_name: str, wmts_store_name: str
+    ) -> tuple[str, int]:
+        """
+        Delete a WMTS store recursively
+        """
+        return self.rest_service.delete_wmts_store(workspace_name, wmts_store_name)
+
     def get_feature_types(
         self, workspace_name: str, datastore_name: str
     ) -> tuple[list[dict[str, Any]] | str, int]:

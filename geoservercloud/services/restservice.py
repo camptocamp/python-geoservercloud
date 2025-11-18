@@ -218,6 +218,17 @@ class RestService:
             )
         return response.content.decode(), response.status_code
 
+    def delete_wmts_store(
+        self, workspace_name: str, wmts_store_name: str
+    ) -> tuple[str, int]:
+        """
+        Delete a WMTS store recursively
+        """
+        path = self.rest_endpoints.wmtsstore(workspace_name, wmts_store_name)
+        params: dict[str, str] = {"recurse": "true"}
+        response: Response = self.rest_client.delete(path, params=params)
+        return response.content.decode(), response.status_code
+
     def create_wmts_layer(
         self,
         workspace_name: str,
