@@ -93,6 +93,21 @@ def test_create_wmts_store(
         assert code == 201
 
 
+def test_delete_wmts_store(geoserver: GeoServerCloud) -> None:
+    with responses.RequestsMock() as rsps:
+        rsps.delete(
+            f"{geoserver.url}/rest/workspaces/{WORKSPACE}/wmtsstores/{STORE}.json",
+            status=200,
+            match=[responses.matchers.query_param_matcher({"recurse": "true"})],
+        )
+        content, code = geoserver.delete_wmts_store(
+            workspace_name=WORKSPACE, wmts_store_name=STORE
+        )
+
+        assert content == ""
+        assert code == 200
+
+
 def test_update_wmts_store(
     geoserver: GeoServerCloud, wmts_store_payload: dict[str, dict[str, Any]]
 ) -> None:
