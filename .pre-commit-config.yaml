@@ -95,7 +95,8 @@ repos:
     hooks:
       - id: mypy
         args: [--show-error-codes, --ignore-missing-imports]
-        additional_dependencies: ["types-requests", "types-xmltodict"]
+        additional_dependencies:
+          ["types-requests", "types-xmltodict", "types-PyYAML"]
 
 ci:
   autoupdate_schedule: quarterly

@@ -5,23 +5,28 @@ description = "Lightweight Python client to interact with GeoServer Cloud REST A
 authors = ["Camptocamp <info@camptocamp.com>"]
 license = "BSD-2-Clause"
 readme = "README.md"
-packages = [{ include = "geoservercloud" }]
+packages = [
+  { include = "geoservercloud" },
+  { include = "geoserver_acceptance_tests" },
+]
 
 [tool.poetry.dependencies]
 python = ">=3.10,<4.0"
 requests = "2.32.5"
 OWSLib = "0.35.0"
 xmltodict = "1.0.2"
-types-requests = "2.32.4.20250913"
-types-xmltodict = "1.0.1.20250920"
-pytest-mock = "^3.14.0"
+psycopg2-binary = "^2.9.9"
+sqlalchemy = "2.0.35"
+pytest = "8.4.2"
 
 [tool.poetry.group.dev.dependencies]
-pytest = "8.4.2"
 responses = "0.25.8"
 coverage = "7.11.0"
 sphinx = "<8.2.4"
 sphinx-rtd-theme = "3.0.2"
+types-requests = "2.32.4.20250913"
+types-xmltodict = "1.0.1.20250920"
+pytest-mock = "^3.14.0"
 
 [build-system]
 requires = [
@@ -33,6 +38,8 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
 copy-workspace = "geoservercloud.geoservercloudsync:main"
+copy-test-data = "geoserver_acceptance_tests.cli:copy_test_data"
+extract-test-data = "geoserver_acceptance_tests.cli:extract_test_data"
 
 [tool.poetry-dynamic-versioning]
 enable = true

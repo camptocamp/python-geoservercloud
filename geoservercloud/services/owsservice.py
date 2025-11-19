@@ -29,9 +29,13 @@ class OwsService:
             password=self.auth[1],
         )
 
-    def create_wmts(self) -> WebMapTileService:
+    def create_wmts(self, workspace_name: str | None = None) -> WebMapTileService:
+        if workspace_name is None:
+            path: str = self.ows_endpoints.wmts()
+        else:
+            path = self.ows_endpoints.workspace_wmts(workspace_name)
         return WebMapTileService(
-            f"{self.url}{self.ows_endpoints.wmts()}",
+            f"{self.url}{path}",
             version="1.0.0",
             username=self.auth[0],
             password=self.auth[1],
@@ -53,19 +57,22 @@ class OwsService:
 
     def get_wms_layers(
         self, workspace_name: str, accept_languages: str | None = None
-    ) -> Any | dict[str, Any]:
+    ) -> Any | dict[str, Any] | list[dict]:
 
         capabilities: dict[str, Any] = self.get_wms_capabilities(
             workspace_name, accept_languages
         )
         try:
-            return capabilities["WMS_Capabilities"]["Capability"]["Layer"]
+            layers = capabilities["WMS_Capabilities"]["Capability"]["Layer"]
+            if isinstance(layers, dict):
+                return layers["Layer"]
+            return layers
         except KeyError:
             return capabilities
 
     def get_legend_graphic(
         self,
-        layer: list[str],
+        layer: str | list[str],
         format: str = "image/png",
         language: str | None = None,
         style: str | None = None,
@@ -211,3 +218,6 @@ class OwsService:
 
         def workspace_wcs(self, workspace_name: str) -> str:
             return f"{self.base_url}/{workspace_name}/wcs"
+
+        def workspace_wmts(self, workspace_name: str) -> str:
+            return f"{self.base_url}/{workspace_name}/gwc/service/wmts"
