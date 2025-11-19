@@ -1,0 +1,13 @@
+<Transaction xmlns="http://www.opengis.net/wfs" service="WFS" version="1.1.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.opengis.net/wfs http://schemas.opengis.net/wfs/1.1.0/wfs.xsd"
+    xmlns:ogc="http://www.opengis.net/ogc">
+    <Delete typeName="test_wfs:test_wfs">
+        <ogc:Filter>
+            <ogc:PropertyIsEqualTo>
+                <ogc:PropertyName>id</ogc:PropertyName>
+                <ogc:Literal>10</ogc:Literal>
+            </ogc:PropertyIsEqualTo>
+        </ogc:Filter>
+    </Delete>
+</Transaction>

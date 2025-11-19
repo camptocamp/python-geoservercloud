@@ -52,7 +52,9 @@ CAPABILITIES = f"""<?xml version="1.0" encoding="UTF-8"?>
       </GetFeatureInfo>
     </Request>
     <Layer>
-      <Name>test_layer</Name>
+      <Layer>
+        <Name>test_layer</Name>
+      </Layer>
     </Layer>
   </Capability>
 </WMS_Capabilities>

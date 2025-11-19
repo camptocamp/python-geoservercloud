@@ -55,14 +55,30 @@ class GeoServerCloud:
         self.default_workspace: str | None = None
         self.default_datastore: str | None = None
 
-    def create_wms(self) -> None:
-        if self.default_workspace:
+    def create_wms(self, workspace: str | None = None) -> None:
+        if workspace:
+            self.wms = self.ows_service.create_wms(workspace)
+        elif self.default_workspace:
             self.wms = self.ows_service.create_wms(self.default_workspace)
         else:
             self.wms = self.ows_service.create_wms()
 
-    def create_wmts(self) -> None:
-        self.wmts = self.ows_service.create_wmts()
+    def create_wmts(self, workspace_name: str | None = None) -> None:
+        if workspace_name:
+            self.wmts = self.ows_service.create_wmts(workspace_name)
+        elif self.default_workspace:
+            self.wmts = self.ows_service.create_wmts(self.default_workspace)
+        else:
+            self.wmts = self.ows_service.create_wmts()
+
+    def cleanup(self):
+        """
+        Cleanup internal state
+        """
+        self.wms = None
+        self.wmts = None
+        self.default_workspace = None
+        self.default_datastore = None
 
     def get_workspaces(self) -> tuple[list[dict[str, str]] | str, int]:
         """
@@ -905,12 +921,13 @@ class GeoServerCloud:
         transparent: bool = True,
         styles: list[str] | None = None,
         xy: list[float] = [0, 0],
+        workspace_name: str | None = None,
     ) -> ResponseWrapper | None:
         """
         WMS GetFeatureInfo request
         """
         if not self.wms:
-            self.create_wms()
+            self.create_wms(workspace_name)
         params = {
             "layers": layers,
             "srs": srs,
@@ -929,7 +946,7 @@ class GeoServerCloud:
 
     def get_legend_graphic(
         self,
-        layer: list[str],
+        layer: str | list[str],
         format: str = "image/png",
         language: str | None = None,
         style: str | None = None,
@@ -943,13 +960,29 @@ class GeoServerCloud:
         )
 
     def get_tile(
-        self, layer, format, tile_matrix_set, tile_matrix, row, column
+        self,
+        layer: str,
+        format: str,
+        tile_matrix_set: str,
+        tile_matrix: str,
+        row: int,
+        column: int,
+        workspace_name: str | None = None,
     ) -> ResponseWrapper | None:
         """
         WMTS GetTile request
+
+        :param layer: Name of the WMTS layer
+        :param format: Image format (e.g. "image/png")
+        :param tile_matrix_set: Tile matrix set (e.g. "EPSG:3857")
+        :param tile_matrix: Tile matrix (zoom level)
+        :param row: Tile row
+        :param column: Tile column
+        :param workspace_name: Optional workspace name
+        :return: owslib.util.ResponseWrapper with the tile image or None
         """
         if not self.wmts:
-            self.create_wmts()
+            self.create_wmts(workspace_name=workspace_name)
         if self.wmts:
             return self.wmts.gettile(
                 layer=layer,

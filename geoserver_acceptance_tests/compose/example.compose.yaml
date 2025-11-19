@@ -1,0 +1,37 @@
+volumes:
+  geoserver_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ./geoserver_data
+
+services:
+  geoserver:
+    image: docker.osgeo.org/geoserver:2.28.x
+    ports:
+      - "8080:8080"
+    environment:
+      GEOSERVER_DATA_DIR: /opt/app/data_dir
+      RUN_WITH_USER_UID: ${UID}
+      CHANGE_OWNERSHIP_ON_FOLDERS: "/opt/app/data_dir /opt/geoserver_data"
+      POSTGRES_JNDI_ENABLED: true
+      POSTGRES_HOST: geodatabase
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: geoserver
+      POSTGRES_USERNAME: geoserver
+      POSTGRES_PASSWORD: geoserver
+      POSTGRES_JNDI_RESOURCE_NAME: jdbc/postgis
+    volumes:
+      - geoserver_data:/opt/geoserver_data
+  geodatabase:
+    #image with arm/64 support:
+    image: imresamu/postgis:15-3.4
+    environment:
+      POSTGRES_DB: acceptance
+      POSTGRES_USER: geoserver
+      POSTGRES_PASSWORD: geoserver
+    volumes:
+      - ./geodatabase:/docker-entrypoint-initdb.d:ro
+    ports:
+      - "6432:5432"
