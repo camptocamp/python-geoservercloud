@@ -38,13 +38,13 @@ pip install -e ..
 - Internet access (from GeoServer)
 
 The ImageMosaic sample data is provided as an archive at data/sampledata.tgz.
-A script is provided to copy the sample data:
+A script is provided to copy the sample data and is available in the venv once the package is installed:
 
 ```shell
 copy-test-data /example/path/
 ```
 
-And to directly extract it to the destination:
+And to directly extract the sample data to its destination:
 
 ```shell
 extract-test-data /example/path/
