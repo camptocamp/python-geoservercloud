@@ -636,7 +636,7 @@ class GeoServerCloud:
         datastore_name: str | None = None,
         title: str | dict = "Default title",
         abstract: str | dict = "Default abstract",
-        attributes: dict = Templates.geom_point_attribute(),  # TODO: remove default value, because if should be None
+        attributes: dict | None = None,
         epsg: int = 4326,
         keywords: list[str] = [],
     ) -> tuple[str, int]:
@@ -657,7 +657,7 @@ class GeoServerCloud:
             srs=f"EPSG:{epsg}",
             title=title,
             abstract=abstract,
-            attributes=utils.convert_attributes(attributes),
+            attributes=utils.convert_attributes(attributes) if attributes else None,
             epsg_code=epsg,
             keywords=keywords,
         )

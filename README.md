@@ -26,6 +26,7 @@ poetry install
 
 ```python
 from geoservercloud import GeoServerCloud
+
 geoserver = GeoServerCloud(
     url="http://localhost:9090/geoserver/cloud/",
     user="admin",

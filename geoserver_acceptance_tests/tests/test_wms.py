@@ -5,6 +5,7 @@ import pytest
 from sqlalchemy.sql import text
 
 from geoservercloud import GeoServerCloud
+from geoservercloud.templates import Templates
 
 from .utils import compare_images, write_actual_image
 
@@ -33,6 +34,7 @@ def test_create_feature_type_and_get_map(
     )
     _, status = geoserver.create_feature_type(
         feature_type,
+        attributes=Templates.geom_point_attribute(),
         epsg=2056,
         workspace_name=workspace,
     )
