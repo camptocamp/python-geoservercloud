@@ -103,6 +103,8 @@ def test_i18n_layer_title(geoserver, language, expected_title):
     assert layer.get("Title") == expected_title
 ```
 
+A test suite is provided in the directory `geoserver_acceptance_tests`.
+
 ### Syncing
 
 Copying a workspace from one GeoServer instance to another, including PG datastores, layers, styles and style images.
