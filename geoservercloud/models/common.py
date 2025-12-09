@@ -264,7 +264,7 @@ class TimeDimensionInfo(BaseModel):
     ):
         self.dimension: str = "time"
         self.enabled: bool = True
-        self.attribute: str | None = attribute
+        self.attribute: str = attribute
         self.end_attribute: str | None = end_attribute
         self.presentation: Presentation = Presentation(presentation)
         self.start_value: str | None = start_value
@@ -294,7 +294,7 @@ class TimeDimensionInfo(BaseModel):
             end_value=time_dimension_info.get("endValue"),
             resolution=time_dimension_info.get("resolution"),
             default_value_strategy=time_dimension_info.get("defaultValue", {}).get(
-                "strategy", ""
+                "strategy"
             ),
             reference_value=time_dimension_info.get("defaultValue", {}).get(
                 "referenceValue"
@@ -363,7 +363,6 @@ class DefaultValueStrategy(Enum):
     MINIMUM = "MINIMUM"
     NEAREST = "NEAREST"
     FIXED = "FIXED"
-    EMPTY = ""
 
 
 class Presentation(Enum):
