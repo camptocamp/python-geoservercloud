@@ -4,7 +4,8 @@ from typing import Any
 from geoservercloud.models.abstractlayer import AbstractLayer
 from geoservercloud.models.common import (
     EntityModel,
-    MetadataLink, TimeDimensionInfo,
+    MetadataLink,
+    TimeDimensionInfo,
 )
 
 
@@ -100,7 +101,9 @@ class FeatureType(AbstractLayer):
             metadata: list[Any] = feature_type["metadata"]["entry"]
             for metadata_entry in metadata:
                 if metadata_entry["@key"] == FeatureType.TIME_DIMENSION_KEY:
-                    time_dimension_info = TimeDimensionInfo.from_get_response_payload(metadata_entry)
+                    time_dimension_info = TimeDimensionInfo.from_get_response_payload(
+                        metadata_entry
+                    )
 
         return cls(
             namespace_name=feature_type["namespace"]["name"],

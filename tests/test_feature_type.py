@@ -44,18 +44,19 @@ def feature_type_common_attributes() -> dict[str, Any]:
         "internationalAbstract": {"en": "English"},
     }
 
+
 @pytest.fixture(scope="module")
 def feature_type_time_dimension_info() -> dict[str, Any]:
     time_dimension_info = TimeDimensionInfo(
-        attribute="timestamp",
-        presentation="LIST",
-        default_value_strategy="MAXIMUM"
+        attribute="timestamp", presentation="LIST", default_value_strategy="MAXIMUM"
     )
     return time_dimension_info.asdict()
 
 
 @pytest.fixture(scope="module")
-def feature_type_get_response_payload(feature_type_common_attributes, feature_type_time_dimension_info) -> dict[str, Any]:
+def feature_type_get_response_payload(
+    feature_type_common_attributes, feature_type_time_dimension_info
+) -> dict[str, Any]:
     content = feature_type_common_attributes.copy()
     content["namespace"] = {
         "name": WORKSPACE,
@@ -93,7 +94,9 @@ def feature_type_get_response_payload(feature_type_common_attributes, feature_ty
 
 
 @pytest.fixture(scope="module")
-def feature_type_as_dict(feature_type_common_attributes, feature_type_time_dimension_info) -> dict[str, Any]:
+def feature_type_as_dict(
+    feature_type_common_attributes, feature_type_time_dimension_info
+) -> dict[str, Any]:
     content = feature_type_common_attributes.copy()
     content["namespace"] = {"name": WORKSPACE}
     content["attributes"] = [
@@ -127,8 +130,7 @@ def feature_type_as_dict(feature_type_common_attributes, feature_type_time_dimen
 
 @pytest.fixture(scope="module")
 def feature_type_post_payload(
-    feature_type_common_attributes,
-    feature_type_time_dimension_info
+    feature_type_common_attributes, feature_type_time_dimension_info
 ) -> dict[str, dict[str, Any]]:
     content = feature_type_common_attributes.copy()
     content["attributes"] = {
@@ -234,8 +236,8 @@ def test_create_feature_type(
             time_dimension_info=TimeDimensionInfo(
                 attribute="timestamp",
                 presentation="LIST",
-                default_value_strategy="MAXIMUM"
-            )
+                default_value_strategy="MAXIMUM",
+            ),
         )
 
         assert content == ""
@@ -266,9 +268,8 @@ def test_update_feature_type(
             time_dimension_info=TimeDimensionInfo(
                 attribute="timestamp",
                 presentation="LIST",
-                default_value_strategy="MAXIMUM"
-            )
-
+                default_value_strategy="MAXIMUM",
+            ),
         )
 
         assert content == ""
