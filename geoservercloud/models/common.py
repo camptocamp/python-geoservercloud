@@ -271,7 +271,7 @@ class TimeDimensionInfo(BaseModel):
         self.default_value_strategy: DefaultValueStrategy | None = DefaultValueStrategy(default_value_strategy)
         self.reference_value: str | None = reference_value
         self.nearest_match_enabled: bool | None = nearest_match_enabled
-        self.nearest_fail_behavior: NearestFailBehavior | None = NearestFailBehavior(nearest_fail_behavior)
+        self.nearest_fail_behavior: NearestFailBehavior | None = NearestFailBehavior(nearest_fail_behavior) if nearest_fail_behavior else None
         self.acceptable_interval: str | None = acceptable_interval
 
     @classmethod

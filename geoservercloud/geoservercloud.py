@@ -7,6 +7,7 @@ from owslib.wmts import WebMapTileService
 from requests import Response
 
 from geoservercloud import utils
+from geoservercloud.models.common import TimeDimensionInfo
 from geoservercloud.models.coverage import Coverage
 from geoservercloud.models.coveragestore import CoverageStore
 from geoservercloud.models.datastore import PostGisDataStore
@@ -639,7 +640,7 @@ class GeoServerCloud:
         attributes: dict = Templates.geom_point_attribute(),  # TODO: remove default value, because if should be None
         epsg: int = 4326,
         keywords: list[str] = [],
-        time_dimension_info: dict | None = None,
+        time_dimension_info: TimeDimensionInfo | None = None,
     ) -> tuple[str, int]:
         """
         Create a feature type or update it if it already exist.
@@ -661,6 +662,7 @@ class GeoServerCloud:
             attributes=utils.convert_attributes(attributes),
             epsg_code=epsg,
             keywords=keywords,
+            time_dimension_info=time_dimension_info,
         )
         return self.rest_service.create_feature_type(feature_type=feature_type)
 
