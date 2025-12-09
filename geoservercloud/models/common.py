@@ -247,18 +247,21 @@ class TimeDimensionInfo(BaseModel):
         Defines the acceptable interval for the nearest match behavior.
         A single value, or two values separated by slash. Time values must use the ISO period syntax (e.g., PT1H)
     """
-    def __init__(self,
-                 attribute: str,
-                 presentation: str,
-                 end_attribute: str | None = None,
-                 start_value: str | None = None,
-                 end_value: str | None = None,
-                 resolution: int | None = None,
-                 default_value_strategy: str | None = None,
-                 reference_value: str | None = None,
-                 nearest_match_enabled: bool | None = None,
-                 nearest_fail_behavior: str | None = None,
-                 acceptable_interval: str | None = None):
+
+    def __init__(
+        self,
+        attribute: str,
+        presentation: str,
+        end_attribute: str | None = None,
+        start_value: str | None = None,
+        end_value: str | None = None,
+        resolution: int | None = None,
+        default_value_strategy: str | None = None,
+        reference_value: str | None = None,
+        nearest_match_enabled: bool | None = None,
+        nearest_fail_behavior: str | None = None,
+        acceptable_interval: str | None = None,
+    ):
         self.dimension: str = "time"
         self.enabled: bool = True
         self.attribute: str | None = attribute
@@ -268,10 +271,16 @@ class TimeDimensionInfo(BaseModel):
         self.end_value: str | None = end_value
         self.resolution: int | None = resolution
         self.units: str | None = "ISO8601"
-        self.default_value_strategy: DefaultValueStrategy | None = DefaultValueStrategy(default_value_strategy)
+        self.default_value_strategy: DefaultValueStrategy | None = DefaultValueStrategy(
+            default_value_strategy
+        )
         self.reference_value: str | None = reference_value
         self.nearest_match_enabled: bool | None = nearest_match_enabled
-        self.nearest_fail_behavior: NearestFailBehavior | None = NearestFailBehavior(nearest_fail_behavior) if nearest_fail_behavior else None
+        self.nearest_fail_behavior: NearestFailBehavior | None = (
+            NearestFailBehavior(nearest_fail_behavior)
+            if nearest_fail_behavior
+            else None
+        )
         self.acceptable_interval: str | None = acceptable_interval
 
     @classmethod
@@ -284,10 +293,16 @@ class TimeDimensionInfo(BaseModel):
             start_value=time_dimension_info.get("startValue"),
             end_value=time_dimension_info.get("endValue"),
             resolution=time_dimension_info.get("resolution"),
-            default_value_strategy=time_dimension_info.get("defaultValue", {}).get("strategy", ""),
-            reference_value=time_dimension_info.get("defaultValue", {}).get("referenceValue"),
+            default_value_strategy=time_dimension_info.get("defaultValue", {}).get(
+                "strategy", ""
+            ),
+            reference_value=time_dimension_info.get("defaultValue", {}).get(
+                "referenceValue"
+            ),
             nearest_match_enabled=time_dimension_info.get("nearestMatchEnabled"),
-            nearest_fail_behavior=time_dimension_info.get("nearestFailBehavior", {}).get("value"),
+            nearest_fail_behavior=time_dimension_info.get(
+                "nearestFailBehavior", {}
+            ).get("value"),
             acceptable_interval=time_dimension_info.get("acceptableInterval"),
         )
 
@@ -306,23 +321,37 @@ class TimeDimensionInfo(BaseModel):
         optional_items: dict[str, Any] = {
             "endAttribute": self.end_attribute,
             "nearestMatchEnabled": self.nearest_match_enabled,
-            "nearestFailBehavior": self.nearest_fail_behavior.value if self.nearest_fail_behavior else None,
+            "nearestFailBehavior": (
+                self.nearest_fail_behavior.value if self.nearest_fail_behavior else None
+            ),
             "acceptableInterval": self.acceptable_interval,
         }
 
-        if self.presentation == Presentation.DISCRETE_INTERVAL or self.presentation == Presentation.CONTINUOUS_INTERVAL:
+        if (
+            self.presentation == Presentation.DISCRETE_INTERVAL
+            or self.presentation == Presentation.CONTINUOUS_INTERVAL
+        ):
             EntityModel.add_item_to_dict(optional_items, "startValue", self.start_value)
             EntityModel.add_item_to_dict(optional_items, "endValue", self.end_value)
             if self.presentation == Presentation.DISCRETE_INTERVAL:
-                EntityModel.add_item_to_dict(optional_items, "resolution", self.resolution)
+                EntityModel.add_item_to_dict(
+                    optional_items, "resolution", self.resolution
+                )
 
         if self.default_value_strategy:
-            default_value_strategy: dict [str, str] = {
+            default_value_strategy: dict[str, str] = {
                 "strategy": self.default_value_strategy.value,
             }
-            if self.default_value_strategy == DefaultValueStrategy.FIXED or self.default_value_strategy == DefaultValueStrategy.NEAREST:
-                EntityModel.add_item_to_dict(default_value_strategy, "referenceValue", self.reference_value)
-            EntityModel.add_item_to_dict(dimension_info, "defaultValue", default_value_strategy)
+            if (
+                self.default_value_strategy == DefaultValueStrategy.FIXED
+                or self.default_value_strategy == DefaultValueStrategy.NEAREST
+            ):
+                EntityModel.add_item_to_dict(
+                    default_value_strategy, "referenceValue", self.reference_value
+                )
+            EntityModel.add_item_to_dict(
+                dimension_info, "defaultValue", default_value_strategy
+            )
 
         EntityModel.add_items_to_dict(dimension_info, optional_items)
         EntityModel.add_item_to_dict(content, "dimensionInfo", dimension_info)
