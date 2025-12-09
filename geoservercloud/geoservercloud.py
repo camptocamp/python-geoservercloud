@@ -639,6 +639,7 @@ class GeoServerCloud:
         attributes: dict = Templates.geom_point_attribute(),  # TODO: remove default value, because if should be None
         epsg: int = 4326,
         keywords: list[str] = [],
+        time_dimension_info: dict | None = None,
     ) -> tuple[str, int]:
         """
         Create a feature type or update it if it already exist.
