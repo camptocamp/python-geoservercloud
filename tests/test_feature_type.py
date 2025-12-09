@@ -5,6 +5,7 @@ import responses
 
 from geoservercloud import GeoServerCloud
 from geoservercloud.models.common import TimeDimensionInfo
+from geoservercloud.templates import Templates
 
 LAYER = "test_layer"
 WORKSPACE = "test_workspace"
@@ -230,6 +231,7 @@ def test_create_feature_type(
             workspace_name=WORKSPACE,
             datastore_name=STORE,
             layer_name=LAYER,
+            attributes=Templates.geom_point_attribute(),
             title={"en": "English"},
             abstract={"en": "English"},
             keywords=["example"],
@@ -262,6 +264,7 @@ def test_update_feature_type(
             workspace_name=WORKSPACE,
             datastore_name=STORE,
             layer_name=LAYER,
+            attributes=Templates.geom_point_attribute(),
             title={"en": "English"},
             abstract={"en": "English"},
             keywords=["example"],
