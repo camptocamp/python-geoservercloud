@@ -5,10 +5,14 @@ from geoservercloud.models.abstractlayer import AbstractLayer
 from geoservercloud.models.common import (
     EntityModel,
     MetadataLink,
+    TimeDimensionInfo,
 )
 
 
 class FeatureType(AbstractLayer):
+
+    TIME_DIMENSION_KEY: str = "time"
+
     def __init__(
         self,
         # Mandatory fields
@@ -40,6 +44,7 @@ class FeatureType(AbstractLayer):
         circular_arc_present: bool | None = None,
         encode_measures: bool | None = None,
         metadata_links: list[MetadataLink] | None = None,
+        time_dimension_info: TimeDimensionInfo | None = None,
     ) -> None:
         super().__init__(
             name=name,
@@ -70,6 +75,7 @@ class FeatureType(AbstractLayer):
         self.circular_arc_present: bool | None = circular_arc_present
         self.encode_measures: bool | None = encode_measures
         self.metadata_links: list[MetadataLink] | None = metadata_links
+        self.time_dimension_info: TimeDimensionInfo | None = time_dimension_info
 
     @classmethod
     def from_get_response_payload(cls, content: dict):
@@ -88,6 +94,16 @@ class FeatureType(AbstractLayer):
             ]
         else:
             metadata_links = None
+
+        # Check if the feature type contains information about the dimensions "time"
+        time_dimension_info: TimeDimensionInfo | None = None
+        if feature_type.get("metadata"):
+            metadata: list[Any] = feature_type["metadata"]["entry"]
+            for metadata_entry in metadata:
+                if metadata_entry["@key"] == FeatureType.TIME_DIMENSION_KEY:
+                    time_dimension_info = TimeDimensionInfo.from_get_response_payload(
+                        metadata_entry
+                    )
 
         return cls(
             namespace_name=feature_type["namespace"]["name"],
@@ -114,6 +130,7 @@ class FeatureType(AbstractLayer):
             forced_decimals=feature_type.get("forcedDecimals"),
             simple_conversion_enabled=feature_type.get("simpleConversionEnabled"),
             skip_number_match=feature_type.get("skipNumberMatch"),
+            time_dimension_info=time_dimension_info,
         )
 
     def asdict(self) -> dict[str, Any]:
@@ -132,6 +149,11 @@ class FeatureType(AbstractLayer):
             "circularArcPresent": self.circular_arc_present,
             "encodeMeasures": self.encode_measures,
         }
+
+        if self.time_dimension_info:
+            metadata = {"entry": [self.time_dimension_info.asdict()]}
+            EntityModel.add_item_to_dict(optional_items, "metadata", metadata)
+
         return EntityModel.add_items_to_dict(content, optional_items)
 
     def post_payload(self) -> dict[str, Any]:

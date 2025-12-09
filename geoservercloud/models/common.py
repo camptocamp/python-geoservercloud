@@ -1,4 +1,5 @@
 import json
+from enum import Enum
 from typing import Any, Generic, TypeVar
 
 T = TypeVar("T")
@@ -206,3 +207,170 @@ class MetadataLink:
             "metadataType": self.metadata_type,
             "type": self.type,
         }
+
+
+class TimeDimensionInfo(BaseModel):
+    """
+    This class represents the required configuration needed for the dimension "time" to create a
+    time enabled :py:class:`geoservercloud.models.FeatureType`
+
+    Parameters
+    ----------
+    attribute: str
+        Name of the attribute that will be used for the temporal dimension
+    presentation: str
+        How the time dimension will be represented in the capabilities document
+        Possible values are: LIST, DISCRETE_INTERVAL, CONTINUOUS_INTERVAL
+        This property will be resolved as a :py:class:`geoservercloud.models.common.Presentation` enum.
+    end_attribute: str | None, optional
+        Defines the attribute that will be used to define the end of the temporal interval.
+    start_value: str | None, optional
+        If presentation is DISCRETE_INTERVAL or CONTINUOUS_INTERVAL, this attribute will be used to define the start of the temporal interval.
+    end_value: str | None, optional
+        If presentation is DISCRETE_INTERVAL or CONTINUOUS_INTERVAL, this attribute will be used to define the end of the temporal interval.
+    resolution: int | None, optional
+        If presentation is DISCRETE_INTERVAL, this attribute will be used to define the resolution of the temporal interval.
+    default_value_strategy: str | None, optional
+        Defines which value of the attribute will be used as a default
+        Possible values are: MAXIMUM, MINIMUM, NEAREST, FIXED, EMPTY
+        This property will be resolved as a :py:class:`geoservercloud.models.common.DefaultValueStrategy` enum.
+    reference_value: str | None, optional
+        This value will be used as the reference value for the :py:class:`geoservercloud.models.common.DefaultValueStrategy`
+        NEAREST and FIXED strategy.
+    nearest_match_enabled: bool | None, optional
+        Defines whether the nearest match should be used for the attribute values.
+    nearest_fail_behavior: str | None, optional
+        Fail behavior for the nearest match.
+        Possible values are: IGNORE, EXCEPTION.
+        This property will be resolved as a :py:class:`geoservercloud.models.common.NearestFailBehavior` enum.
+    acceptable_interval: str | None, optional
+        Defines the acceptable interval for the nearest match behavior.
+        A single value, or two values separated by slash. Time values must use the ISO period syntax (e.g., PT1H)
+    """
+
+    def __init__(
+        self,
+        attribute: str,
+        presentation: str,
+        end_attribute: str | None = None,
+        start_value: str | None = None,
+        end_value: str | None = None,
+        resolution: int | None = None,
+        default_value_strategy: str | None = None,
+        reference_value: str | None = None,
+        nearest_match_enabled: bool | None = None,
+        nearest_fail_behavior: str | None = None,
+        acceptable_interval: str | None = None,
+    ):
+        self.dimension: str = "time"
+        self.enabled: bool = True
+        self.attribute: str = attribute
+        self.end_attribute: str | None = end_attribute
+        self.presentation: Presentation = Presentation(presentation)
+        self.start_value: str | None = start_value
+        self.end_value: str | None = end_value
+        self.resolution: int | None = resolution
+        self.units: str | None = "ISO8601"
+        self.default_value_strategy: DefaultValueStrategy | None = DefaultValueStrategy(
+            default_value_strategy
+        )
+        self.reference_value: str | None = reference_value
+        self.nearest_match_enabled: bool | None = nearest_match_enabled
+        self.nearest_fail_behavior: NearestFailBehavior | None = (
+            NearestFailBehavior(nearest_fail_behavior)
+            if nearest_fail_behavior
+            else None
+        )
+        self.acceptable_interval: str | None = acceptable_interval
+
+    @classmethod
+    def from_get_response_payload(cls, content: dict):
+        time_dimension_info: dict[str, Any] = content["dimensionInfo"]
+        return cls(
+            attribute=time_dimension_info["attribute"],
+            presentation=time_dimension_info["presentation"],
+            end_attribute=time_dimension_info.get("endAttribute"),
+            start_value=time_dimension_info.get("startValue"),
+            end_value=time_dimension_info.get("endValue"),
+            resolution=time_dimension_info.get("resolution"),
+            default_value_strategy=time_dimension_info.get("defaultValue", {}).get(
+                "strategy"
+            ),
+            reference_value=time_dimension_info.get("defaultValue", {}).get(
+                "referenceValue"
+            ),
+            nearest_match_enabled=time_dimension_info.get("nearestMatchEnabled"),
+            nearest_fail_behavior=time_dimension_info.get(
+                "nearestFailBehavior", {}
+            ).get("value"),
+            acceptable_interval=time_dimension_info.get("acceptableInterval"),
+        )
+
+    def asdict(self) -> dict[str, Any]:
+        content: dict[str, Any] = {
+            "@key": self.dimension,
+        }
+
+        dimension_info: dict[str, Any] = {
+            "enabled": self.enabled,
+            "attribute": self.attribute,
+            "presentation": self.presentation.value,
+            "units": self.units,
+        }
+
+        optional_items: dict[str, Any] = {
+            "endAttribute": self.end_attribute,
+            "nearestMatchEnabled": self.nearest_match_enabled,
+            "nearestFailBehavior": (
+                self.nearest_fail_behavior.value if self.nearest_fail_behavior else None
+            ),
+            "acceptableInterval": self.acceptable_interval,
+        }
+
+        if (
+            self.presentation == Presentation.DISCRETE_INTERVAL
+            or self.presentation == Presentation.CONTINUOUS_INTERVAL
+        ):
+            EntityModel.add_item_to_dict(optional_items, "startValue", self.start_value)
+            EntityModel.add_item_to_dict(optional_items, "endValue", self.end_value)
+            if self.presentation == Presentation.DISCRETE_INTERVAL:
+                EntityModel.add_item_to_dict(
+                    optional_items, "resolution", self.resolution
+                )
+
+        if self.default_value_strategy:
+            default_value_strategy: dict[str, str] = {
+                "strategy": self.default_value_strategy.value,
+            }
+            if (
+                self.default_value_strategy == DefaultValueStrategy.FIXED
+                or self.default_value_strategy == DefaultValueStrategy.NEAREST
+            ):
+                EntityModel.add_item_to_dict(
+                    default_value_strategy, "referenceValue", self.reference_value
+                )
+            EntityModel.add_item_to_dict(
+                dimension_info, "defaultValue", default_value_strategy
+            )
+
+        EntityModel.add_items_to_dict(dimension_info, optional_items)
+        EntityModel.add_item_to_dict(content, "dimensionInfo", dimension_info)
+        return content
+
+
+class DefaultValueStrategy(Enum):
+    MAXIMUM = "MAXIMUM"
+    MINIMUM = "MINIMUM"
+    NEAREST = "NEAREST"
+    FIXED = "FIXED"
+
+
+class Presentation(Enum):
+    LIST = "LIST"
+    DISCRETE_INTERVAL = "DISCRETE_INTERVAL"
+    CONTINUOUS_INTERVAL = "CONTINUOUS_INTERVAL"
+
+
+class NearestFailBehavior(Enum):
+    IGNORE = "IGNORE"
+    EXCEPTION = "EXCEPTION"

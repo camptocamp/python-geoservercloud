@@ -4,6 +4,7 @@ import pytest
 import responses
 
 from geoservercloud import GeoServerCloud
+from geoservercloud.models.common import TimeDimensionInfo
 from geoservercloud.templates import Templates
 
 LAYER = "test_layer"
@@ -46,7 +47,17 @@ def feature_type_common_attributes() -> dict[str, Any]:
 
 
 @pytest.fixture(scope="module")
-def feature_type_get_response_payload(feature_type_common_attributes) -> dict[str, Any]:
+def feature_type_time_dimension_info() -> dict[str, Any]:
+    time_dimension_info = TimeDimensionInfo(
+        attribute="timestamp", presentation="LIST", default_value_strategy="MAXIMUM"
+    )
+    return time_dimension_info.asdict()
+
+
+@pytest.fixture(scope="module")
+def feature_type_get_response_payload(
+    feature_type_common_attributes, feature_type_time_dimension_info
+) -> dict[str, Any]:
     content = feature_type_common_attributes.copy()
     content["namespace"] = {
         "name": WORKSPACE,
@@ -79,11 +90,14 @@ def feature_type_get_response_payload(feature_type_common_attributes) -> dict[st
             "encodeMeasures": False,
         }
     )
+    content["metadata"] = {"entry": [feature_type_time_dimension_info]}
     return {"featureType": content}
 
 
 @pytest.fixture(scope="module")
-def feature_type_as_dict(feature_type_common_attributes) -> dict[str, Any]:
+def feature_type_as_dict(
+    feature_type_common_attributes, feature_type_time_dimension_info
+) -> dict[str, Any]:
     content = feature_type_common_attributes.copy()
     content["namespace"] = {"name": WORKSPACE}
     content["attributes"] = [
@@ -111,12 +125,13 @@ def feature_type_as_dict(feature_type_common_attributes) -> dict[str, Any]:
             "encodeMeasures": False,
         }
     )
+    content["metadata"] = {"entry": [feature_type_time_dimension_info]}
     return content
 
 
 @pytest.fixture(scope="module")
 def feature_type_post_payload(
-    feature_type_common_attributes,
+    feature_type_common_attributes, feature_type_time_dimension_info
 ) -> dict[str, dict[str, Any]]:
     content = feature_type_common_attributes.copy()
     content["attributes"] = {
@@ -145,6 +160,7 @@ def feature_type_post_payload(
         "minx": -180,
         "miny": -90,
     }
+    content["metadata"] = {"entry": [feature_type_time_dimension_info]}
     return {"featureType": content}
 
 
@@ -219,6 +235,11 @@ def test_create_feature_type(
             title={"en": "English"},
             abstract={"en": "English"},
             keywords=["example"],
+            time_dimension_info=TimeDimensionInfo(
+                attribute="timestamp",
+                presentation="LIST",
+                default_value_strategy="MAXIMUM",
+            ),
         )
 
         assert content == ""
@@ -247,6 +268,11 @@ def test_update_feature_type(
             title={"en": "English"},
             abstract={"en": "English"},
             keywords=["example"],
+            time_dimension_info=TimeDimensionInfo(
+                attribute="timestamp",
+                presentation="LIST",
+                default_value_strategy="MAXIMUM",
+            ),
         )
 
         assert content == ""
