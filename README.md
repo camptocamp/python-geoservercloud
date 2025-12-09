@@ -26,6 +26,7 @@ poetry install
 
 ```python
 from geoservercloud import GeoServerCloud
+
 geoserver = GeoServerCloud(
     url="http://localhost:9090/geoserver/cloud/",
     user="admin",
@@ -101,6 +102,8 @@ def test_i18n_layer_title(geoserver, language, expected_title):
     layer = capabilities.get("Layer")
     assert layer.get("Title") == expected_title
 ```
+
+A test suite is provided in the directory `geoserver_acceptance_tests`.
 
 ### Syncing
 

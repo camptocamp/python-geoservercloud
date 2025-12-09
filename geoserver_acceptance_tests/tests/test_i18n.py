@@ -7,6 +7,7 @@ from sqlalchemy import Connection
 from sqlalchemy.sql import text
 
 from geoservercloud import GeoServerCloud
+from geoservercloud.templates import Templates
 
 from .utils import compare_images, write_actual_image
 
@@ -77,17 +78,23 @@ def geoserver_with_i18n_layers(geoserver_i18n: GeoServerCloud):
     # Create feature type with all languages
     layer1 = "layer_all_languages"
     title1 = international_title(default=True, de=True, fr=True, it=True, rm=True)
-    geoserver_i18n.create_feature_type(layer1, title=title1, epsg=2056)
+    geoserver_i18n.create_feature_type(
+        layer1, title=title1, attributes=Templates.geom_point_attribute(), epsg=2056
+    )
 
     # Create feature type without Rumantsch
     layer2 = "layer_no_rumantsch"
     title2 = international_title(default=True, de=True, fr=True, it=True, rm=False)
-    geoserver_i18n.create_feature_type(layer2, title=title2, epsg=2056)
+    geoserver_i18n.create_feature_type(
+        layer2, title=title2, attributes=Templates.geom_point_attribute(), epsg=2056
+    )
 
     # Create feature type without default language nor Rumantsch
     layer3 = "layer_no_default_no_rumantsch"
     title3 = international_title(default=False, de=True, fr=True, it=True, rm=False)
-    geoserver_i18n.create_feature_type(layer3, title=title3, epsg=2056)
+    geoserver_i18n.create_feature_type(
+        layer3, title=title3, attributes=Templates.geom_point_attribute(), epsg=2056
+    )
 
     yield geoserver_i18n
 
@@ -101,7 +108,9 @@ def geoserver_default_locale_it(geoserver_with_i18n_layers: GeoServerCloud):
 
 @pytest.fixture(scope="module")
 def geoserver_i18n_legend_layer(geoserver_i18n: GeoServerCloud, resource_dir: Path):
-    geoserver_i18n.create_feature_type("i18n_legend", epsg=2056)
+    geoserver_i18n.create_feature_type(
+        "i18n_legend", attributes=Templates.geom_point_attribute(), epsg=2056
+    )
     geoserver_i18n.create_style_from_file(
         "localized_with_default",
         str(resource_dir / "localized_with_default.sld"),
