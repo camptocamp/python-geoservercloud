@@ -31,6 +31,22 @@ EPSG_BBOX = {
             "miny": -90,
         },
     },
+    3857: {
+        "nativeBoundingBox": {
+            "crs": {"$": "EPSG:3857", "@class": "projected"},
+            "maxx": 20037508.34,
+            "maxy": 20037508.34,
+            "minx": -20037508.34,
+            "miny": -20037508.34,
+        },
+        "latLonBoundingBox": {
+            "crs": "EPSG:4326",
+            "maxx": 180.0,
+            "maxy": 85.0511287798,
+            "minx": -180.0,
+            "miny": -85.0511287798,
+        },
+    },
 }
 
 
