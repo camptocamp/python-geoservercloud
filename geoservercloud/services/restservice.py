@@ -48,6 +48,26 @@ class RestService:
         self.gwc_endpoints = self.GwcEndpoints()
         self.rest_endpoints = self.RestEndpoints()
 
+    def get_version(self) -> tuple[dict[str, dict[str, list]] | str, int]:
+        """
+        Get GeoServer version information
+
+        Returns
+        -------
+        tuple
+            A tuple containing:
+                - content (dict[str, dict[str, list]] or str): The version information as a dictionary if the
+                  request is successful ({'about': {'resource': [...]}}) or an error message as a string if
+                  the request fails.
+                - status (int): The HTTP status code of the response.
+        """
+        response: Response = self.rest_client.get(self.rest_endpoints.version())
+        try:
+            content = response.json()
+        except JSONDecodeError:
+            content = response.content.decode()
+        return content, response.status_code
+
     def get_workspaces(self) -> tuple[Workspaces | str, int]:
         response: Response = self.rest_client.get(self.rest_endpoints.workspaces())
         return self.deserialize_response(response, Workspaces)
@@ -887,6 +907,9 @@ class RestService:
     class RestEndpoints:
         def __init__(self, base_url: str = "/rest") -> None:
             self.base_url: str = base_url
+
+        def version(self) -> str:
+            return f"{self.base_url}/about/version.json"
 
         def styles(
             self, workspace_name: str | None = None, format: str = "json"

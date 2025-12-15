@@ -56,6 +56,21 @@ class GeoServerCloud:
         self.default_workspace: str | None = None
         self.default_datastore: str | None = None
 
+    def get_version(self) -> tuple[dict[str, dict[str, list]] | str, int]:
+        """
+        Get GeoServer version information
+
+        Returns
+        -------
+        tuple
+            A tuple containing:
+                - content (dict[str, dict[str, list]] or str): The version information as a dictionary if the
+                  request is successful ({'about': {'resource': [...]}}) or an error message as a string if
+                  the request fails.
+                - status (int): The HTTP status code of the response.
+        """
+        return self.rest_service.get_version()
+
     def create_wms(self, workspace: str | None = None) -> None:
         if workspace:
             self.wms = self.ows_service.create_wms(workspace)
