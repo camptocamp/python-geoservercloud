@@ -1,3 +1,4 @@
+import logging
 import os
 
 import yaml
@@ -54,4 +55,28 @@ def load_config():
     if override_pg_schema:
         config["db"]["pg_schema"] = override_pg_schema
 
+    # Configure logging for geoservercloud library
+    _setup_logging(config)
+
     return config
+
+
+def _setup_logging(config: dict):
+    """Set up logging for the geoservercloud library based on configuration."""
+    # Get logging configuration from config file or use defaults
+    log_config = config.get("logging", {})
+    log_level_str = log_config.get("level", "INFO").upper()
+    log_level = getattr(logging, log_level_str, logging.INFO)
+    log_format = log_config.get(
+        "format", "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+    )
+
+    # Configure the geoservercloud logger
+    logger = logging.getLogger("geoservercloud")
+    logger.setLevel(log_level)
+
+    # Add console handler if not already present
+    if not logger.handlers:
+        handler = logging.StreamHandler()
+        handler.setFormatter(logging.Formatter(log_format))
+        logger.addHandler(handler)

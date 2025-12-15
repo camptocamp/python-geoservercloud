@@ -6,6 +6,10 @@ credentials:
   user: "admin"
   pass: "geoserver"
 
+logging:
+  level: "DEBUG"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+
 db:
   pg_host:
     docker: "geodatabase"
