@@ -131,3 +131,13 @@ First install the package in your current virtual environment (see [Installation
 ```shell
 copy-workspace --src_url "http://localhost:8080/geoserver" --src_user admin --src_password geoserver --dst_url "http://localhost:9099/geoserver" --dst_user admin --dst_password geoserver --workspace workspace_name
 ```
+
+### Logging
+
+Set the log level using the standard `logging` module, e.g.:
+
+```python
+import logging
+
+logging.getLogger("geoservercloud").setLevel(logging.DEBUG)
+```

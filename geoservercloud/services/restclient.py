@@ -58,6 +58,7 @@ class RestClient:
         data: bytes | str | None = None,
     ) -> requests.Response:
         full_url = f"{self.url}{path}"
+        self.log_payload("POST", json, data)
         response: requests.Response = requests.post(
             full_url,
             params=params,
@@ -87,6 +88,7 @@ class RestClient:
         data: bytes | str | None = None,
     ) -> requests.Response:
         full_url = f"{self.url}{path}"
+        self.log_payload("PUT", json, data)
         response: requests.Response = requests.put(
             full_url,
             params=params,
@@ -130,3 +132,16 @@ class RestClient:
         if response.status_code != 404:
             response.raise_for_status()
         return response
+
+    def log_payload(
+        self, method: str, json: dict | None, data: bytes | str | None
+    ) -> None:
+        payload_string = None
+        if json is not None:
+            payload_string = str(json)
+        elif data is not None:
+            if isinstance(data, str):
+                payload_string = data
+            else:
+                payload_string = f"<binary data, {len(data)} bytes>"
+        gs_logger.debug("Doing %s request with payload: %s", method, payload_string)
