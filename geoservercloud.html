@@ -109,6 +109,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#geoservercloud.GeoServerCloud.get_styles"><code class="docutils literal notranslate"><span class="pre">GeoServerCloud.get_styles()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#geoservercloud.GeoServerCloud.get_tile"><code class="docutils literal notranslate"><span class="pre">GeoServerCloud.get_tile()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#geoservercloud.GeoServerCloud.get_user_roles"><code class="docutils literal notranslate"><span class="pre">GeoServerCloud.get_user_roles()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#geoservercloud.GeoServerCloud.get_version"><code class="docutils literal notranslate"><span class="pre">GeoServerCloud.get_version()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#geoservercloud.GeoServerCloud.get_wfs_layers"><code class="docutils literal notranslate"><span class="pre">GeoServerCloud.get_wfs_layers()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#geoservercloud.GeoServerCloud.get_wms_layer"><code class="docutils literal notranslate"><span class="pre">GeoServerCloud.get_wms_layer()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#geoservercloud.GeoServerCloud.get_wms_layers"><code class="docutils literal notranslate"><span class="pre">GeoServerCloud.get_wms_layers()</span></code></a></li>
@@ -591,6 +592,29 @@ an empty dict if no feature was found or the response content as string</p>
 <dt class="sig sig-object py" id="geoservercloud.GeoServerCloud.get_user_roles">
 <span class="sig-name descname"><span class="pre">get_user_roles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#geoservercloud.GeoServerCloud.get_user_roles" title="Link to this definition"></a></dt>
 <dd><p>Get all roles assigned to a GeoServer user</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="geoservercloud.GeoServerCloud.get_version">
+<span class="sig-name descname"><span class="pre">get_version</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#geoservercloud.GeoServerCloud.get_version" title="Link to this definition"></a></dt>
+<dd><p>Get GeoServer version information</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><dl class="simple">
+<dt>A tuple containing:</dt><dd><ul class="simple">
+<li><p>content (dict[str, dict[str, list]] or str): The version information as a dictionary if the
+request is successful ({‘about’: {‘resource’: […]}}) or an error message as a string if
+the request fails.</p></li>
+<li><p>status (int): The HTTP status code of the response.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>tuple</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
