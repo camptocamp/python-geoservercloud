@@ -15,3 +15,8 @@ install: ## Install package
 tests: ## Run unit tests with coverage
 	poetry run coverage run --source=geoservercloud -m pytest tests -vvv --color=yes
 	poetry run coverage report
+
+.PHONY: docs
+docs: ## Generate documentation with Sphinx in docs/build
+	rm -rf docs/build
+	poetry run sphinx-build -b html docs/source docs/build

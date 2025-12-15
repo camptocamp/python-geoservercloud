@@ -3,3 +3,4 @@
 /.pytest_cache/
 /.venv/
 .coverage
+docs/build
