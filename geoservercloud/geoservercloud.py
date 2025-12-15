@@ -49,8 +49,8 @@ class GeoServerCloud:
         self.user: str = user
         self.password: str = password
         self.auth: tuple[str, str] = (user, password)
-        self.rest_service: RestService = RestService(url, self.auth, verifytls)
-        self.ows_service: OwsService = OwsService(url, self.auth, verifytls)
+        self.rest_service: RestService = RestService(self.url, self.auth, verifytls)
+        self.ows_service: OwsService = OwsService(self.url, self.auth, verifytls)
         self.wms: WebMapService_1_3_0 | None = None
         self.wmts: WebMapTileService | None = None
         self.default_workspace: str | None = None
