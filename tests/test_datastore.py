@@ -97,7 +97,7 @@ def datastore_get_response() -> Generator[dict[str, Any], Any, None]:
                     {"@key": "jndiReferenceName", "$": JNDI},
                     {"@key": "Expose primary keys", "$": "true"},
                     {"@key": "dbtype", "$": "postgis"},
-                    {"@key": "namespace", "$": "http://{WORKSPACE}"},
+                    {"@key": "namespace", "$": f"http://{WORKSPACE}"},
                 ]
             },
             "_default": False,
@@ -141,6 +141,38 @@ def test_get_datastores(
         assert status_code == 200
 
 
+def test_get_datastore_ok(
+    geoserver: GeoServerCloud, datastore_get_response: dict[str, Any]
+) -> None:
+    expected_datastore = {
+        "name": STORE,
+        "description": DESCRIPTION,
+        "type": "PostGIS (JNDI)",
+        "enabled": True,
+        "workspace": WORKSPACE,
+        "connectionParameters": {
+            "entry": {
+                "schema": "test_schema",
+                "jndiReferenceName": "java:comp/env/jdbc/data",
+                "Expose primary keys": "true",
+                "dbtype": "postgis",
+                "namespace": f"http://{WORKSPACE}",
+            }
+        },
+        "_default": False,
+        "disableOnConnFailure": False,
+    }
+    with responses.RequestsMock() as rsps:
+        rsps.get(
+            url=f"{GEOSERVER_URL}/rest/workspaces/{WORKSPACE}/datastores/{STORE}.json",
+            status=200,
+            json=datastore_get_response,
+        )
+        content, status_code = geoserver.get_datastore(WORKSPACE, STORE)
+        assert content == expected_datastore
+        assert status_code == 200
+
+
 def test_get_pg_datastore_ok(
     geoserver: GeoServerCloud, datastore_get_response: dict[str, Any]
 ) -> None:
@@ -156,7 +188,7 @@ def test_get_pg_datastore_ok(
                 "jndiReferenceName": "java:comp/env/jdbc/data",
                 "Expose primary keys": "true",
                 "dbtype": "postgis",
-                "namespace": "http://{WORKSPACE}",
+                "namespace": f"http://{WORKSPACE}",
             }
         },
         "_default": False,
@@ -183,6 +215,44 @@ def test_get_pg_datastore_not_found(geoserver: GeoServerCloud) -> None:
         content, status_code = geoserver.get_pg_datastore(WORKSPACE, STORE)
         assert content == "No such datastore: test_workspace,test_datastore"
         assert status_code == 404
+
+
+def test_create_datastore(
+    geoserver: GeoServerCloud, pg_payload: dict[str, dict[str, Any]]
+) -> None:
+    with responses.RequestsMock() as rsps:
+        rsps.get(
+            url=f"{GEOSERVER_URL}/rest/workspaces/{WORKSPACE}/datastores/{STORE}.json",
+            status=404,
+        )
+        rsps.post(
+            url=f"{GEOSERVER_URL}/rest/workspaces/{WORKSPACE}/datastores.json",
+            status=201,
+            body=b"test_store",
+            match=[matchers.json_params_matcher(pg_payload)],
+        )
+
+        connection_parameters = {
+            "dbtype": "postgis",
+            "host": HOST,
+            "port": PORT,
+            "database": DATABASE,
+            "user": USER,
+            "passwd": PASSWORD,
+            "schema": SCHEMA,
+            "namespace": f"http://{WORKSPACE}",
+            "Expose primary keys": "true",
+        }
+
+        content, code = geoserver.create_datastore(
+            workspace_name=WORKSPACE,
+            datastore_name=STORE,
+            datastore_type="PostGIS",
+            connection_parameters=connection_parameters,
+        )
+
+        assert content == STORE
+        assert code == 201
 
 
 def test_create_pg_datastore(

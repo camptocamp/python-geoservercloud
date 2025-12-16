@@ -9,7 +9,7 @@ from geoservercloud.models.common import BaseModel
 from geoservercloud.models.coverage import Coverage
 from geoservercloud.models.coverages import Coverages
 from geoservercloud.models.coveragestore import CoverageStore
-from geoservercloud.models.datastore import PostGisDataStore
+from geoservercloud.models.datastore import DataStore
 from geoservercloud.models.datastores import DataStores
 from geoservercloud.models.featuretype import FeatureType
 from geoservercloud.models.featuretypes import FeatureTypes
@@ -113,33 +113,16 @@ class RestService:
         )
         return self.deserialize_response(response, DataStores)
 
-    def get_pg_datastore(
+    def get_datastore(
         self, workspace_name: str, datastore_name: str
-    ) -> tuple[PostGisDataStore | str, int]:
+    ) -> tuple[DataStore | str, int]:
         response: Response = self.rest_client.get(
             self.rest_endpoints.datastore(workspace_name, datastore_name)
         )
-        return self.deserialize_response(response, PostGisDataStore)
+        return self.deserialize_response(response, DataStore)
 
-    def create_pg_datastore(
-        self, workspace_name: str, datastore: PostGisDataStore
-    ) -> tuple[str, int]:
-        if not self.resource_exists(
-            self.rest_endpoints.datastore(workspace_name, datastore.name)
-        ):
-            response: Response = self.rest_client.post(
-                self.rest_endpoints.datastores(workspace_name),
-                json=datastore.post_payload(),
-            )
-        else:
-            response = self.rest_client.put(
-                self.rest_endpoints.datastore(workspace_name, datastore.name),
-                json=datastore.put_payload(),
-            )
-        return response.content.decode(), response.status_code
-
-    def create_jndi_datastore(
-        self, workspace_name: str, datastore: PostGisDataStore
+    def create_datastore(
+        self, workspace_name: str, datastore: DataStore
     ) -> tuple[str, int]:
         if not self.resource_exists(
             self.rest_endpoints.datastore(workspace_name, datastore.name)

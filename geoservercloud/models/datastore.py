@@ -8,13 +8,13 @@ from geoservercloud.models.common import (
 )
 
 
-class PostGisDataStore(EntityModel):
+class DataStore(EntityModel):
     def __init__(
         self,
         workspace_name: str,
         name: str,
         connection_parameters: dict,
-        type: str = "PostGIS",
+        type: str,
         enabled: bool = True,
         description: str | None = None,
         default: bool | None = None,
@@ -73,7 +73,7 @@ class PostGisDataStore(EntityModel):
             data_store["workspace"]["name"],
             data_store["name"],
             connection_parameters,
-            data_store.get("type", "PostGIS"),
+            data_store["type"],
             data_store.get("enabled", True),
             data_store.get("description", None),
             data_store.get("_default", None),
