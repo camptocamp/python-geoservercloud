@@ -56,6 +56,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#geoservercloud.GeoServerCloud.create_acl_rules_for_requests"><code class="docutils literal notranslate"><span class="pre">GeoServerCloud.create_acl_rules_for_requests()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#geoservercloud.GeoServerCloud.create_coverage"><code class="docutils literal notranslate"><span class="pre">GeoServerCloud.create_coverage()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#geoservercloud.GeoServerCloud.create_coverage_store"><code class="docutils literal notranslate"><span class="pre">GeoServerCloud.create_coverage_store()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#geoservercloud.GeoServerCloud.create_datastore"><code class="docutils literal notranslate"><span class="pre">GeoServerCloud.create_datastore()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#geoservercloud.GeoServerCloud.create_feature_type"><code class="docutils literal notranslate"><span class="pre">GeoServerCloud.create_feature_type()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#geoservercloud.GeoServerCloud.create_gridset"><code class="docutils literal notranslate"><span class="pre">GeoServerCloud.create_gridset()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#geoservercloud.GeoServerCloud.create_imagemosaic_store_from_directory"><code class="docutils literal notranslate"><span class="pre">GeoServerCloud.create_imagemosaic_store_from_directory()</span></code></a></li>
@@ -93,6 +94,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#geoservercloud.GeoServerCloud.get_coverage"><code class="docutils literal notranslate"><span class="pre">GeoServerCloud.get_coverage()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#geoservercloud.GeoServerCloud.get_coverage_store"><code class="docutils literal notranslate"><span class="pre">GeoServerCloud.get_coverage_store()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#geoservercloud.GeoServerCloud.get_coverages"><code class="docutils literal notranslate"><span class="pre">GeoServerCloud.get_coverages()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#geoservercloud.GeoServerCloud.get_datastore"><code class="docutils literal notranslate"><span class="pre">GeoServerCloud.get_datastore()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#geoservercloud.GeoServerCloud.get_datastores"><code class="docutils literal notranslate"><span class="pre">GeoServerCloud.get_datastores()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#geoservercloud.GeoServerCloud.get_feature"><code class="docutils literal notranslate"><span class="pre">GeoServerCloud.get_feature()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#geoservercloud.GeoServerCloud.get_feature_info"><code class="docutils literal notranslate"><span class="pre">GeoServerCloud.get_feature_info()</span></code></a></li>
@@ -250,6 +252,51 @@
 </ul>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="geoservercloud.GeoServerCloud.create_datastore">
+<span class="sig-name descname"><span class="pre">create_datastore</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">workspace_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">datastore_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">datastore_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">connection_parameters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enabled</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">set_default_datastore</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#geoservercloud.GeoServerCloud.create_datastore" title="Link to this definition"></a></dt>
+<dd><p>Create a generic datastore of any type in GeoServer, or update if it already exists. This method
+accepts flexible connection parameters, allowing to create any type of datastore.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>workspace_name</strong> (<em>str</em>) – Name of the workspace</p></li>
+<li><p><strong>datastore_name</strong> (<em>str</em>) – Name for the datastore</p></li>
+<li><p><strong>datastore_type</strong> (<em>str</em>) – Type of datastore (e.g., “PostGIS”, “Shapefile”, “Directory of spatial files (shapefiles)”)</p></li>
+<li><p><strong>connection_parameters</strong> (<em>dict</em>) – Dict of connection parameters specific to the datastore type</p></li>
+<li><p><strong>description</strong> (<em>str</em><em>, </em><em>optional</em>) – Optional description</p></li>
+<li><p><strong>enabled</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether the datastore should be enabled (default: True)</p></li>
+<li><p><strong>set_default_datastore</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to set as default datastore (default: False)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Tuple of (datastore_name, status_code)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+<dt class="field-even">Example<span class="colon">:</span></dt>
+<dd class="field-even"><p></p></dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">create_datastore</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">workspace_name</span><span class="o">=</span><span class="s2">&quot;myworkspace&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">datastore_name</span><span class="o">=</span><span class="s2">&quot;my_store&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">datastore_type</span><span class="o">=</span><span class="s2">&quot;PostGIS&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">connection_parameters</span><span class="o">=</span><span class="p">{</span>
+<span class="gp">... </span>        <span class="s2">&quot;dbtype&quot;</span><span class="p">:</span> <span class="s2">&quot;postgis&quot;</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="s2">&quot;host&quot;</span><span class="p">:</span> <span class="s2">&quot;localhost&quot;</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="s2">&quot;port&quot;</span><span class="p">:</span> <span class="mi">5432</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="s2">&quot;database&quot;</span><span class="p">:</span> <span class="s2">&quot;mydb&quot;</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="s2">&quot;user&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="s2">&quot;passwd&quot;</span><span class="p">:</span> <span class="s2">&quot;password&quot;</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="s2">&quot;schema&quot;</span><span class="p">:</span> <span class="s2">&quot;public&quot;</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="s2">&quot;Expose primary keys&quot;</span><span class="p">:</span> <span class="s2">&quot;true&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="p">}</span>
+<span class="gp">... </span><span class="p">)</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="py method">
@@ -478,6 +525,12 @@ Return the feature type(s) as dict if found, otherwise return the response conte
 <dt class="sig sig-object py" id="geoservercloud.GeoServerCloud.get_coverages">
 <span class="sig-name descname"><span class="pre">get_coverages</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">workspace_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coveragestore_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#geoservercloud.GeoServerCloud.get_coverages" title="Link to this definition"></a></dt>
 <dd><p>Get all coverages for a given workspace and coverage store</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="geoservercloud.GeoServerCloud.get_datastore">
+<span class="sig-name descname"><span class="pre">get_datastore</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">workspace_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">datastore_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#geoservercloud.GeoServerCloud.get_datastore" title="Link to this definition"></a></dt>
+<dd><p>Get a datastore by workspace and name</p>
 </dd></dl>
 
 <dl class="py method">
