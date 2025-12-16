@@ -10,7 +10,7 @@ from geoservercloud import utils
 from geoservercloud.models.common import TimeDimensionInfo
 from geoservercloud.models.coverage import Coverage
 from geoservercloud.models.coveragestore import CoverageStore
-from geoservercloud.models.datastore import PostGisDataStore
+from geoservercloud.models.datastore import DataStore
 from geoservercloud.models.featuretype import FeatureType
 from geoservercloud.models.layer import Layer
 from geoservercloud.models.layergroup import LayerGroup
@@ -272,18 +272,93 @@ class GeoServerCloud:
             return datastores, status_code
         return datastores.aslist(), status_code
 
+    def get_datastore(
+        self, workspace_name: str, datastore_name: str
+    ) -> tuple[dict[str, Any] | str, int]:
+        """
+        Get a datastore by workspace and name
+        """
+        datastore, status_code = self.rest_service.get_datastore(
+            workspace_name, datastore_name
+        )
+        if isinstance(datastore, str):
+            return datastore, status_code
+        return datastore.asdict(), status_code
+
     def get_pg_datastore(
         self, workspace_name: str, datastore_name: str
     ) -> tuple[dict[str, Any] | str, int]:
         """
         Get a datastore by workspace and name
         """
-        datastore, status_code = self.rest_service.get_pg_datastore(
-            workspace_name, datastore_name
+        return self.get_datastore(workspace_name, datastore_name)
+
+    def create_datastore(
+        self,
+        workspace_name: str,
+        datastore_name: str,
+        datastore_type: str,
+        connection_parameters: dict[str, Any],
+        description: str | None = None,
+        enabled: bool = True,
+        set_default_datastore: bool = False,
+    ) -> tuple[str, int]:
+        """
+        Create a generic datastore of any type in GeoServer, or update if it already exists. This method
+        accepts flexible connection parameters, allowing to create any type of datastore.
+
+        :param workspace_name: Name of the workspace
+        :type workspace_name: str
+        :param datastore_name: Name for the datastore
+        :type datastore_name: str
+        :param datastore_type: Type of datastore (e.g., "PostGIS", "Shapefile", "Directory of spatial files (shapefiles)")
+        :type datastore_type: str
+        :param connection_parameters: Dict of connection parameters specific to the datastore type
+        :type connection_parameters: dict
+        :param description: Optional description
+        :type description: str, optional
+        :param enabled: Whether the datastore should be enabled (default: True)
+        :type enabled: bool, optional
+        :param set_default_datastore: Whether to set as default datastore (default: False)
+        :type set_default_datastore: bool, optional
+
+        :return: Tuple of (datastore_name, status_code)
+        :rtype: tuple
+
+        :Example:
+
+        >>> create_datastore(
+        ...     workspace_name="myworkspace",
+        ...     datastore_name="my_store",
+        ...     datastore_type="PostGIS",
+        ...     connection_parameters={
+        ...         "dbtype": "postgis",
+        ...         "host": "localhost",
+        ...         "port": 5432,
+        ...         "database": "mydb",
+        ...         "user": "user",
+        ...         "passwd": "password",
+        ...         "schema": "public",
+        ...         "Expose primary keys": "true",
+        ...     }
+        ... )
+        """
+        datastore = DataStore(
+            workspace_name,
+            datastore_name,
+            connection_parameters=connection_parameters,
+            type=datastore_type,
+            description=description,
+            enabled=enabled,
         )
-        if isinstance(datastore, str):
-            return datastore, status_code
-        return datastore.asdict(), status_code
+        content, status_code = self.rest_service.create_datastore(
+            workspace_name, datastore
+        )
+
+        if set_default_datastore:
+            self.default_datastore = datastore_name
+
+        return content, status_code
 
     def create_pg_datastore(
         self,
@@ -301,7 +376,7 @@ class GeoServerCloud:
         """
         Create a PostGIS datastore from the DB connection parameters, or update it if it already exist.
         """
-        datastore = PostGisDataStore(
+        datastore = DataStore(
             workspace_name,
             datastore_name,
             connection_parameters={
@@ -318,7 +393,7 @@ class GeoServerCloud:
             type="PostGIS",
             description=description,
         )
-        content, status_code = self.rest_service.create_pg_datastore(
+        content, status_code = self.rest_service.create_datastore(
             workspace_name, datastore
         )
 
@@ -339,7 +414,7 @@ class GeoServerCloud:
         """
         Create a PostGIS datastore from JNDI resource, or update it if it already exist.
         """
-        datastore = PostGisDataStore(
+        datastore = DataStore(
             workspace_name,
             datastore_name,
             connection_parameters={
@@ -352,9 +427,7 @@ class GeoServerCloud:
             type="PostGIS (JNDI)",
             description=description,
         )
-        content, code = self.rest_service.create_jndi_datastore(
-            workspace_name, datastore
-        )
+        content, code = self.rest_service.create_datastore(workspace_name, datastore)
 
         if set_default_datastore:
             self.default_datastore = datastore_name

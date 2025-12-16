@@ -106,12 +106,12 @@ class GeoServerCloudSync:
         Copy a datastore from source to destination GeoServer instance
         If deep_copy is True, copy all feature types and the corresponding layers
         """
-        datastore, status_code = self.src_instance.get_pg_datastore(
+        datastore, status_code = self.src_instance.get_datastore(
             workspace_name, datastore_name
         )
         if isinstance(datastore, str):
             return datastore, status_code
-        new_ds, new_ds_status_code = self.dst_instance.create_pg_datastore(
+        new_ds, new_ds_status_code = self.dst_instance.create_datastore(
             workspace_name, datastore
         )
         if self.not_ok(new_ds_status_code):
