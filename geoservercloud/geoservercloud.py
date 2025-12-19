@@ -434,6 +434,58 @@ class GeoServerCloud:
 
         return content, code
 
+    def create_pmtiles_datastore(
+        self,
+        workspace_name: str,
+        datastore_name: str,
+        pmtiles_url: str,
+        description: str | None = None,
+        range_reader_provider: str = "file",
+        caching_enabled: bool = True,
+        caching_block_aligned: bool = True,
+        http_timeout_millis: int = 5000,
+        http_trust_all_certificates: bool = False,
+        s3_use_default_credentials_provider: bool = False,
+        s3_force_path_style: bool = True,
+        gcs_default_credentials_chain: bool = False,
+    ) -> tuple[str, int]:
+        """
+        Create a PMTiles datastore, or update it if it already exists.
+        """
+        datastore = DataStore(
+            workspace_name,
+            datastore_name,
+            connection_parameters={
+                "pmtiles": pmtiles_url,
+                "namespace": f"http://{workspace_name}",
+                "io.tileverse.rangereader.provider": range_reader_provider,
+                "io.tileverse.rangereader.caching.enabled": str(
+                    caching_enabled
+                ).lower(),
+                "io.tileverse.rangereader.caching.blockaligned": str(
+                    caching_block_aligned
+                ).lower(),
+                "io.tileverse.rangereader.http.timeout-millis": str(
+                    http_timeout_millis
+                ),
+                "io.tileverse.rangereader.http.trust-all-certificates": str(
+                    http_trust_all_certificates
+                ).lower(),
+                "io.tileverse.rangereader.s3.use-default-credentials-provider": str(
+                    s3_use_default_credentials_provider
+                ).lower(),
+                "io.tileverse.rangereader.s3.force-path-style": str(
+                    s3_force_path_style
+                ).lower(),
+                "io.tileverse.rangereader.gcs.default-credentials-chain": str(
+                    gcs_default_credentials_chain
+                ).lower(),
+            },
+            type="PMTiles",
+            description=description,
+        )
+        return self.rest_service.create_datastore(workspace_name, datastore)
+
     def get_wms_store(
         self, workspace_name: str, datastore_name: str
     ) -> tuple[dict[str, Any] | str, int]:
@@ -792,9 +844,10 @@ class GeoServerCloud:
         self,
         group: str,
         workspace_name: str | None,
-        layers: list[str],
-        title: str | dict,
-        abstract: str | dict,
+        layers: list[str] | None = None,
+        styles: list[str] | None = None,
+        title: str | dict = "Default title",
+        abstract: str | dict = "Default abstract",
         epsg: int = 4326,
         mode: str = "SINGLE",
         enabled: bool = True,
@@ -806,10 +859,15 @@ class GeoServerCloud:
         workspace_name = workspace_name or self.default_workspace
         if not workspace_name:
             raise ValueError("Workspace not provided")
-        if not mode in LayerGroup.modes:
+        if mode not in LayerGroup.modes:
             raise ValueError(
                 f"Invalid mode: {mode}, possible values are: {LayerGroup.modes}"
             )
+        if not layers and not styles:
+            raise ValueError(
+                "Either layers or styles must be provided for a layer group"
+            )
+
         bounds = {
             "minx": utils.EPSG_BBOX[epsg]["nativeBoundingBox"]["minx"],
             "maxx": utils.EPSG_BBOX[epsg]["nativeBoundingBox"]["maxx"],
@@ -817,13 +875,23 @@ class GeoServerCloud:
             "maxy": utils.EPSG_BBOX[epsg]["nativeBoundingBox"]["maxy"],
             "crs": f"EPSG:{epsg}",
         }
+
+        publishables = None
+        if layers:
+            publishables = [f"{workspace_name}:{layer}" for layer in layers]
+
+        formatted_styles = None
+        if styles:
+            formatted_styles = [f"{workspace_name}:{style}" for style in styles]
+
         layer_group = LayerGroup(
             name=group,
             mode=mode,
             workspace_name=workspace_name,
             title=title,
             abstract=abstract,
-            publishables=[f"{workspace_name}:{layer}" for layer in layers],
+            publishables=publishables,
+            styles=formatted_styles,
             bounds=bounds,
             enabled=enabled,
             advertised=advertised,
@@ -903,9 +971,15 @@ class GeoServerCloud:
         style_name: str,
         filename: str,
         workspace_name: str | None = None,
+        format: str = "sld",
     ) -> tuple[str, int]:
         """Create a style definition"""
-        style = Style(name=style_name, filename=filename, workspace_name=workspace_name)
+        style = Style(
+            name=style_name,
+            filename=filename,
+            workspace_name=workspace_name,
+            format=format,
+        )
         return self.rest_service.create_style_definition(
             style_name=style_name, style=style, workspace_name=workspace_name
         )
@@ -932,21 +1006,31 @@ class GeoServerCloud:
         file: str,
         workspace_name: str | None = None,
     ) -> tuple[str, int]:
-        """Create a style (SLD) from a file, or update it if it already exists.
-        Supported file extensions are .sld and .zip."""
-        file_base_name = Path(file).name
-        file_ext = Path(file).suffix
+        """Create a style from a file, or update it if it already exists.
+        Supported file extensions are .sld, .zip and .mbstyle."""
+        file_ext = Path(file).suffix.lower()
+        if file_ext == ".sld":
+            style_format = "sld"
+            style_definition_filename = f"{style_name}.sld"
+            file_format = "sld"
+        elif file_ext == ".zip":
+            style_format = "sld"
+            style_definition_filename = f"{style_name}.sld"
+            file_format = "zip"
+        elif file_ext == ".mbstyle":
+            style_format = "mbstyle"
+            style_definition_filename = f"{style_name}.mbstyle"
+            file_format = "mbstyle"
+        else:
+            raise ValueError(f"Unsupported file extension: {file_ext}")
         content, code = self.create_style_definition(
-            style_name, f"{file_base_name}.sld", workspace_name
+            style_name,
+            style_definition_filename,
+            workspace_name,
+            format=style_format,
         )
         if code >= 400:
             return content, code
-        if file_ext == ".sld":
-            file_format = "sld"
-        elif file_ext == ".zip":
-            file_format = "zip"
-        else:
-            raise ValueError(f"Unsupported file extension: {file_ext}")
         with open(f"{file}", "rb") as fs:
             style: bytes = fs.read()
         return self.rest_service.create_style(

@@ -261,6 +261,36 @@ def test_update_style_from_file(geoserver: GeoServerCloud) -> None:
         assert code == 200
 
 
+def test_create_style_from_file_mbstyle(geoserver: GeoServerCloud) -> None:
+    file_path = (Path(__file__).parent / "resources/style.mbstyle").resolve()
+    with responses.RequestsMock() as rsps:
+        rsps.get(
+            url=f"{geoserver.url}/rest/styles/{STYLE}",
+            status=200,
+        )
+        rsps.put(
+            url=f"{geoserver.url}/rest/styles/{STYLE}",
+            status=200,
+        )
+        rsps.put(
+            url=f"{geoserver.url}/rest/styles/{STYLE}.mbstyle",
+            status=201,
+            body=b"test_style",
+            match=[
+                responses.matchers.header_matcher(
+                    {"Content-Type": "application/vnd.geoserver.mbstyle+json"}
+                )
+            ],
+        )
+        content, code = geoserver.create_style_from_file(
+            style_name=STYLE,
+            file=str(file_path),
+        )
+
+        assert content == STYLE
+        assert code == 201
+
+
 def test_create_style_from_file_zip(geoserver: GeoServerCloud) -> None:
     file_path = (Path(__file__).parent / "resources/style.zip").resolve()
     with responses.RequestsMock() as rsps:
@@ -292,18 +322,9 @@ def test_create_style_from_file_zip(geoserver: GeoServerCloud) -> None:
 
 
 def test_create_style_from_file_unsupported_format(geoserver: GeoServerCloud) -> None:
-    with responses.RequestsMock() as rsps:
-        rsps.get(
-            url=f"{geoserver.url}/rest/styles/{STYLE}",
-            status=200,
+    with pytest.raises(ValueError) as excinfo:
+        geoserver.create_style_from_file(
+            style_name=STYLE,
+            file="resources/style.txt",
         )
-        rsps.put(
-            url=f"{geoserver.url}/rest/styles/{STYLE}",
-            status=200,
-        )
-        with pytest.raises(ValueError) as excinfo:
-            geoserver.create_style_from_file(
-                style_name=STYLE,
-                file="resources/style.txt",
-            )
-        assert "Unsupported file extension" in str(excinfo.value)
+    assert "Unsupported file extension" in str(excinfo.value)
