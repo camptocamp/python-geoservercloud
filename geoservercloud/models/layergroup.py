@@ -93,6 +93,10 @@ class LayerGroup(EntityModel):
                     {"@type": "layer", "name": p.name} for p in self.publishables
                 ]
             }
+        elif self.styles:
+            # Style group: empty publishables with styles
+            content["publishables"] = {"published": ""}
+
         if self.styles:
             content["styles"] = {"style": [s.asdict() for s in self.styles]}
         elif self.publishables:
