@@ -451,7 +451,46 @@ class GeoServerCloud:
     ) -> tuple[str, int]:
         """
         Create a PMTiles datastore, or update it if it already exists.
+
+        :param workspace_name: Name of the workspace
+        :type workspace_name: str
+        :param datastore_name: Name for the PMTiles datastore
+        :type datastore_name: str
+        :param pmtiles_url: URL or path to the PMTiles file
+        :type pmtiles_url: str
+        :param description: Optional description for the datastore
+        :type description: str, optional
+        :param range_reader_provider: Range reader provider type (default: "file")
+        :type range_reader_provider: str, optional
+        :param caching_enabled: Enable caching for range reader (default: True)
+        :type caching_enabled: bool, optional
+        :param caching_block_aligned: Enable block-aligned caching (default: True)
+        :type caching_block_aligned: bool, optional
+        :param http_timeout_millis: HTTP timeout in milliseconds (default: 5000)
+        :type http_timeout_millis: int, optional
+        :param http_trust_all_certificates: Trust all SSL certificates for HTTP (default: False)
+        :type http_trust_all_certificates: bool, optional
+        :param s3_use_default_credentials_provider: Use default AWS credentials provider for S3 (default: False)
+        :type s3_use_default_credentials_provider: bool, optional
+        :param s3_force_path_style: Force path-style access for S3 (default: True)
+        :type s3_force_path_style: bool, optional
+        :param gcs_default_credentials_chain: Use default credentials chain for Google Cloud Storage (default: False)
+        :type gcs_default_credentials_chain: bool, optional
+
+        :return: Tuple of (datastore_name, status_code)
+        :rtype: tuple
+
+        :Example:
+
+        >>> create_pmtiles_datastore(
+        ...     workspace_name="pmtiles_workspace",
+        ...     datastore_name="pmtiles_store",
+        ...     pmtiles_url="file:///mnt/pmtiles/mypmtilesfile.pmtiles",
+        ...     description="My PMTiles datastore",
+        ...     range_reader_provider="file",
+        ... )
         """
+
         datastore = DataStore(
             workspace_name,
             datastore_name,
@@ -775,8 +814,8 @@ class GeoServerCloud:
         layer_name: str,
         workspace_name: str | None = None,
         datastore_name: str | None = None,
-        title: str | dict = "Default title",
-        abstract: str | dict = "Default abstract",
+        title: str | dict | None = None,
+        abstract: str | dict | None = None,
         attributes: dict | None = None,
         epsg: int = 4326,
         keywords: list[str] = [],
@@ -846,8 +885,8 @@ class GeoServerCloud:
         workspace_name: str | None,
         layers: list[str] | None = None,
         styles: list[str] | None = None,
-        title: str | dict = "Default title",
-        abstract: str | dict = "Default abstract",
+        title: str | dict | None = None,
+        abstract: str | dict | None = None,
         epsg: int = 4326,
         mode: str = "SINGLE",
         enabled: bool = True,

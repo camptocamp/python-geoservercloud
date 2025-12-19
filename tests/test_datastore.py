@@ -18,6 +18,7 @@ PASSWORD = "test_password"
 SCHEMA = "test_schema"
 JNDI = "java:comp/env/jdbc/data"
 DESCRIPTION = "test description"
+PMTILES_URL = "file:///mnt/pmtiles/test.pmtiles"
 
 
 @pytest.fixture(scope="module")
@@ -72,6 +73,53 @@ def jndi_payload() -> Generator[dict[str, dict[str, Any]], Any, None]:
                         "$": f"http://{WORKSPACE}",
                     },
                     {"@key": "Expose primary keys", "$": "true"},
+                ]
+            },
+            "workspace": {"name": WORKSPACE},
+        }
+    }
+
+
+@pytest.fixture(scope="module")
+def pmtiles_payload() -> Generator[dict[str, dict[str, Any]], Any, None]:
+    yield {
+        "dataStore": {
+            "name": STORE,
+            "type": "PMTiles",
+            "enabled": True,
+            "connectionParameters": {
+                "entry": [
+                    {"@key": "pmtiles", "$": PMTILES_URL},
+                    {"@key": "namespace", "$": f"http://{WORKSPACE}"},
+                    {"@key": "io.tileverse.rangereader.provider", "$": "file"},
+                    {
+                        "@key": "io.tileverse.rangereader.caching.enabled",
+                        "$": "true",
+                    },
+                    {
+                        "@key": "io.tileverse.rangereader.caching.blockaligned",
+                        "$": "true",
+                    },
+                    {
+                        "@key": "io.tileverse.rangereader.http.timeout-millis",
+                        "$": "5000",
+                    },
+                    {
+                        "@key": "io.tileverse.rangereader.http.trust-all-certificates",
+                        "$": "false",
+                    },
+                    {
+                        "@key": "io.tileverse.rangereader.s3.use-default-credentials-provider",
+                        "$": "false",
+                    },
+                    {
+                        "@key": "io.tileverse.rangereader.s3.force-path-style",
+                        "$": "true",
+                    },
+                    {
+                        "@key": "io.tileverse.rangereader.gcs.default-credentials-chain",
+                        "$": "false",
+                    },
                 ]
             },
             "workspace": {"name": WORKSPACE},
@@ -363,6 +411,56 @@ def test_update_jndi_datastore(
             jndi_reference=JNDI,
             pg_schema=SCHEMA,
             description=DESCRIPTION,
+        )
+
+        assert content == ""
+        assert code == 200
+
+
+def test_create_pmtiles_datastore(
+    geoserver: GeoServerCloud, pmtiles_payload: dict[str, dict[str, Any]]
+) -> None:
+    with responses.RequestsMock() as rsps:
+        rsps.get(
+            url=f"{GEOSERVER_URL}/rest/workspaces/{WORKSPACE}/datastores/{STORE}.json",
+            status=404,
+        )
+        rsps.post(
+            url=f"{GEOSERVER_URL}/rest/workspaces/{WORKSPACE}/datastores.json",
+            status=201,
+            body=b"test_store",
+            match=[matchers.json_params_matcher(pmtiles_payload)],
+        )
+
+        content, code = geoserver.create_pmtiles_datastore(
+            workspace_name=WORKSPACE,
+            datastore_name=STORE,
+            pmtiles_url=PMTILES_URL,
+        )
+
+        assert content == STORE
+        assert code == 201
+
+
+def test_update_pmtiles_datastore(
+    geoserver: GeoServerCloud, pmtiles_payload: dict[str, dict[str, Any]]
+) -> None:
+    with responses.RequestsMock() as rsps:
+        rsps.get(
+            url=f"{GEOSERVER_URL}/rest/workspaces/{WORKSPACE}/datastores/{STORE}.json",
+            status=200,
+        )
+        rsps.put(
+            url=f"{GEOSERVER_URL}/rest/workspaces/{WORKSPACE}/datastores/{STORE}.json",
+            status=200,
+            body=b"",
+            match=[matchers.json_params_matcher(pmtiles_payload)],
+        )
+
+        content, code = geoserver.create_pmtiles_datastore(
+            workspace_name=WORKSPACE,
+            datastore_name=STORE,
+            pmtiles_url=PMTILES_URL,
         )
 
         assert content == ""
