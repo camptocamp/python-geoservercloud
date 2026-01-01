@@ -16,8 +16,8 @@ requests = "2.32.5"
 OWSLib = "0.35.0"
 xmltodict = "1.0.2"
 psycopg2-binary = "^2.9.9"
-sqlalchemy = "2.0.44"
-pytest = "9.0.1"
+sqlalchemy = "2.0.45"
+pytest = "9.0.2"
 
 [tool.poetry.group.dev.dependencies]
 responses = "0.25.8"
