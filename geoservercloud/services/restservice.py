@@ -599,16 +599,18 @@ class RestService:
         resource_path = self.rest_endpoints.style(
             workspace_name=workspace_name, style_name=style_name, format=format
         )
+        params = None
         if format == "sld":
             headers = {"Content-Type": "application/vnd.ogc.sld+xml"}
         elif format == "zip":
             headers = {"Content-Type": "application/zip"}
         elif format == "mbstyle":
             headers = {"Content-Type": "application/vnd.geoserver.mbstyle+json"}
+            params = {"raw": "true"}
         # Do not check for existence because GeoServer throws a 500 if the style definition exists and not
         # the SLD. Besides PUT is also supported on creation
         response: Response = self.rest_client.put(
-            resource_path, data=style, headers=headers
+            resource_path, data=style, headers=headers, params=params
         )
         return response.content.decode(), response.status_code
 
