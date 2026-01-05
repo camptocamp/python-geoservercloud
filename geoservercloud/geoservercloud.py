@@ -822,7 +822,64 @@ class GeoServerCloud:
         time_dimension_info: TimeDimensionInfo | None = None,
     ) -> tuple[str, int]:
         """
-        Create a feature type or update it if it already exist.
+        Create a feature type or update it if it already exists.
+
+        :param layer_name: Name of the feature type / layer
+        :type layer_name: str
+        :param workspace_name: Name of the workspace
+        :type workspace_name: str
+        :param datastore_name: Name for the datastore
+        :type datastore_name: str
+        :param title: Title for the feature type (can be internationalized as dict)
+        :type title: str or dict, optional
+        :param abstract: Abstract for the feature type (can be internationalized as dict)
+        :type abstract: str or dict, optional
+        :param attributes: Dict defining the feature type attributes (name and type). If omitted, GeoServer will infer the attributes from the native table
+        :type attributes: dict, optional
+        :param epsg: EPSG code for the feature type SRS (default: 4326)
+        :type epsg: int, optional
+        :param keywords: List of keywords for the feature type
+        :type keywords: list of str, optional
+        :param time_dimension_info: Time dimension configuration for the feature type
+        :type time_dimension_info: TimeDimensionInfo, optional
+
+        :return: Tuple of (datastore_name, status_code)
+        :rtype: tuple
+
+        :Example:
+
+        >>> create_feature_type(
+        ...     layer_name="mylayer",
+        ...     workspace_name="myworkspace",
+        ...     datastore_name="mystore",
+        ...     title={"en": "English Title"},
+        ...     abstract={"en": "English Abstract"},
+        ...     attributes={
+        ...         "geom": {
+        ...             "type": "Point",
+        ...             "required": True,
+        ...         },
+        ...         "id": {
+        ...             "type": "integer",
+        ...             "required": True,
+        ...         },
+        ...         "title": {
+        ...             "type": "string",
+        ...             "required": False,
+        ...              },
+        ...         "timestamp": {
+        ...             "type": "datetime",
+        ...             "required": False,
+        ...         },
+        ...     },
+        ...     epsg=4326,
+        ...     keywords=["example"],
+        ...     time_dimension_info=TimeDimensionInfo(
+        ...         attribute="timestamp",
+        ...         presentation="LIST",
+        ...         default_value_strategy="MAXIMUM",
+        ...     ),
+        ... )
         """
         workspace_name = workspace_name or self.default_workspace
         if not workspace_name:
