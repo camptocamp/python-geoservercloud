@@ -891,6 +891,7 @@ class GeoServerCloud:
         mode: str = "SINGLE",
         enabled: bool = True,
         advertised: bool = True,
+        global_styles: bool = False,
     ) -> tuple[str, int]:
         """
         Create a layer group or update it if it already exists.
@@ -921,7 +922,10 @@ class GeoServerCloud:
 
         formatted_styles = None
         if styles:
-            formatted_styles = [f"{workspace_name}:{style}" for style in styles]
+            if global_styles:
+                formatted_styles = styles
+            else:
+                formatted_styles = [f"{workspace_name}:{style}" for style in styles]
 
         layer_group = LayerGroup(
             name=group,
