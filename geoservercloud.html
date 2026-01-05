@@ -303,7 +303,64 @@ accepts flexible connection parameters, allowing to create any type of datastore
 <dl class="py method">
 <dt class="sig sig-object py" id="geoservercloud.GeoServerCloud.create_feature_type">
 <span class="sig-name descname"><span class="pre">create_feature_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">layer_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">workspace_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">datastore_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">abstract</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attributes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">4326</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keywords</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_dimension_info</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">TimeDimensionInfo</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#geoservercloud.GeoServerCloud.create_feature_type" title="Link to this definition"></a></dt>
-<dd><p>Create a feature type or update it if it already exist.</p>
+<dd><p>Create a feature type or update it if it already exists.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>layer_name</strong> (<em>str</em>) – Name of the feature type / layer</p></li>
+<li><p><strong>workspace_name</strong> (<em>str</em>) – Name of the workspace</p></li>
+<li><p><strong>datastore_name</strong> (<em>str</em>) – Name for the datastore</p></li>
+<li><p><strong>title</strong> (<em>str</em><em> or </em><em>dict</em><em>, </em><em>optional</em>) – Title for the feature type (can be internationalized as dict)</p></li>
+<li><p><strong>abstract</strong> (<em>str</em><em> or </em><em>dict</em><em>, </em><em>optional</em>) – Abstract for the feature type (can be internationalized as dict)</p></li>
+<li><p><strong>attributes</strong> (<em>dict</em><em>, </em><em>optional</em>) – Dict defining the feature type attributes (name and type). If omitted, GeoServer will infer the attributes from the native table</p></li>
+<li><p><strong>epsg</strong> (<em>int</em><em>, </em><em>optional</em>) – EPSG code for the feature type SRS (default: 4326)</p></li>
+<li><p><strong>keywords</strong> (<em>list</em><em> of </em><em>str</em><em>, </em><em>optional</em>) – List of keywords for the feature type</p></li>
+<li><p><strong>time_dimension_info</strong> (<em>TimeDimensionInfo</em><em>, </em><em>optional</em>) – Time dimension configuration for the feature type</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Tuple of (datastore_name, status_code)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+<dt class="field-even">Example<span class="colon">:</span></dt>
+<dd class="field-even"><p></p></dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">create_feature_type</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">layer_name</span><span class="o">=</span><span class="s2">&quot;mylayer&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">workspace_name</span><span class="o">=</span><span class="s2">&quot;myworkspace&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">datastore_name</span><span class="o">=</span><span class="s2">&quot;mystore&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">title</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;en&quot;</span><span class="p">:</span> <span class="s2">&quot;English Title&quot;</span><span class="p">},</span>
+<span class="gp">... </span>    <span class="n">abstract</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;en&quot;</span><span class="p">:</span> <span class="s2">&quot;English Abstract&quot;</span><span class="p">},</span>
+<span class="gp">... </span>    <span class="n">attributes</span><span class="o">=</span><span class="p">{</span>
+<span class="gp">... </span>        <span class="s2">&quot;geom&quot;</span><span class="p">:</span> <span class="p">{</span>
+<span class="gp">... </span>            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;Point&quot;</span><span class="p">,</span>
+<span class="gp">... </span>            <span class="s2">&quot;required&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="p">},</span>
+<span class="gp">... </span>        <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="p">{</span>
+<span class="gp">... </span>            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;integer&quot;</span><span class="p">,</span>
+<span class="gp">... </span>            <span class="s2">&quot;required&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="p">},</span>
+<span class="gp">... </span>        <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="p">{</span>
+<span class="gp">... </span>            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+<span class="gp">... </span>            <span class="s2">&quot;required&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+<span class="gp">... </span>             <span class="p">},</span>
+<span class="gp">... </span>        <span class="s2">&quot;timestamp&quot;</span><span class="p">:</span> <span class="p">{</span>
+<span class="gp">... </span>            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;datetime&quot;</span><span class="p">,</span>
+<span class="gp">... </span>            <span class="s2">&quot;required&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="p">},</span>
+<span class="gp">... </span>    <span class="p">},</span>
+<span class="gp">... </span>    <span class="n">epsg</span><span class="o">=</span><span class="mi">4326</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">keywords</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;example&quot;</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="n">time_dimension_info</span><span class="o">=</span><span class="n">TimeDimensionInfo</span><span class="p">(</span>
+<span class="gp">... </span>        <span class="n">attribute</span><span class="o">=</span><span class="s2">&quot;timestamp&quot;</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="n">presentation</span><span class="o">=</span><span class="s2">&quot;LIST&quot;</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="n">default_value_strategy</span><span class="o">=</span><span class="s2">&quot;MAXIMUM&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="p">),</span>
+<span class="gp">... </span><span class="p">)</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="py method">
