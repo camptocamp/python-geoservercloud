@@ -62,6 +62,7 @@ class FeatureType(AbstractLayer):
             enabled=enabled,
             epsg_code=epsg_code,
             service_configuration=service_configuration,
+            metadata_links=metadata_links,
         )
         self.attributes: list[dict[str, Any]] | None = attributes
         self.advertised: bool | None = advertised
@@ -148,8 +149,10 @@ class FeatureType(AbstractLayer):
             "skipNumberMatch": self.skip_number_match,
             "circularArcPresent": self.circular_arc_present,
             "encodeMeasures": self.encode_measures,
+            "metadatalinks": self.metadata_links,
         }
-
+        print(self.metadata_links)
+        print(json.dumps(self.metadata_links, indent=4))
         if self.time_dimension_info:
             metadata = {"entry": [self.time_dimension_info.asdict()]}
             EntityModel.add_item_to_dict(optional_items, "metadata", metadata)

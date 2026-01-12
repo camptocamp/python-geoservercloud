@@ -7,7 +7,7 @@ from owslib.wmts import WebMapTileService
 from requests import Response
 
 from geoservercloud import utils
-from geoservercloud.models.common import TimeDimensionInfo
+from geoservercloud.models.common import TimeDimensionInfo, MetadataLink
 from geoservercloud.models.coverage import Coverage
 from geoservercloud.models.coveragestore import CoverageStore
 from geoservercloud.models.datastore import DataStore
@@ -820,6 +820,7 @@ class GeoServerCloud:
         epsg: int = 4326,
         keywords: list[str] = [],
         time_dimension_info: TimeDimensionInfo | None = None,
+        layer_links: list[MetadataLink] | None = None,
     ) -> tuple[str, int]:
         """
         Create a feature type or update it if it already exists.
@@ -879,6 +880,7 @@ class GeoServerCloud:
         ...         presentation="LIST",
         ...         default_value_strategy="MAXIMUM",
         ...     ),
+                layer_links=[MetadataLink(url="mymetadataurl", metadata_type="string", mime_type="text/xml")]
         ... )
         """
         workspace_name = workspace_name or self.default_workspace
@@ -899,7 +901,9 @@ class GeoServerCloud:
             epsg_code=epsg,
             keywords=keywords,
             time_dimension_info=time_dimension_info,
+            metadata_links=[MetadataLink(url="mymetadataurl", metadata_type="string", mime_type="text/xml")],
         )
+        print(feature_type)
         return self.rest_service.create_feature_type(feature_type=feature_type)
 
     def delete_feature_type(

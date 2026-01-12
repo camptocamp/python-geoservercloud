@@ -1,6 +1,6 @@
 from typing import Any
 
-from geoservercloud.models.common import I18N, EntityModel, ReferencedObjectModel
+from geoservercloud.models.common import I18N, EntityModel, MetadataLink, ReferencedObjectModel
 from geoservercloud.utils import EPSG_BBOX
 
 
@@ -24,6 +24,7 @@ class AbstractLayer(EntityModel):
         enabled: bool | None = None,
         epsg_code: int | None = None,
         service_configuration: bool | None = None,
+        metadata_links: list[MetadataLink] | None = None,
     ):
 
         self.name: str = name
@@ -49,6 +50,7 @@ class AbstractLayer(EntityModel):
         self.enabled: bool | None = enabled
         self.epsg_code: int | None = epsg_code
         self.service_configuration: bool | None = service_configuration
+        self.metadata_links: list[MetadataLink] | None = metadata_links
 
     @property
     def store_name(self) -> str:
@@ -88,5 +90,6 @@ class AbstractLayer(EntityModel):
             "projectionPolicy": self.projection_policy,
             "enabled": self.enabled,
             "serviceConfiguration": self.service_configuration,
+            "metadatalinks": self.metadata_links,
         }
         return EntityModel.add_items_to_dict(content, optional_items)
