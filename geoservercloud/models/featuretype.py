@@ -151,8 +151,6 @@ class FeatureType(AbstractLayer):
             "encodeMeasures": self.encode_measures,
             "metadatalinks": self.metadata_links,
         }
-        print(self.metadata_links)
-        print(json.dumps(self.metadata_links, indent=4))
         if self.time_dimension_info:
             metadata = {"entry": [self.time_dimension_info.asdict()]}
             EntityModel.add_item_to_dict(optional_items, "metadata", metadata)

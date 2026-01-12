@@ -903,7 +903,6 @@ class GeoServerCloud:
             time_dimension_info=time_dimension_info,
             metadata_links=layer_links,
         )
-        print(feature_type)
         return self.rest_service.create_feature_type(feature_type=feature_type)
 
     def delete_feature_type(
