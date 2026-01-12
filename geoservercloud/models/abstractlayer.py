@@ -1,6 +1,11 @@
 from typing import Any
 
-from geoservercloud.models.common import I18N, EntityModel, MetadataLink, ReferencedObjectModel
+from geoservercloud.models.common import (
+    I18N,
+    EntityModel,
+    MetadataLink,
+    ReferencedObjectModel,
+)
 from geoservercloud.utils import EPSG_BBOX
 
 
