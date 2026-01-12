@@ -89,12 +89,17 @@ class AbstractLayer(EntityModel):
             content["latLonBoundingBox"] = EPSG_BBOX[self.epsg_code][
                 "latLonBoundingBox"
             ]
+        if self.metadata_links is not None:
+            content["metadataLinks"] = {
+                "metadataLink": [
+                    metadata_link.asdict() for metadata_link in self.metadata_links
+                ]
+            }
         optional_items = {
             "srs": self.srs,
             "keywords": self.keywords,
             "projectionPolicy": self.projection_policy,
             "enabled": self.enabled,
             "serviceConfiguration": self.service_configuration,
-            "metadatalinks": self.metadata_links,
         }
         return EntityModel.add_items_to_dict(content, optional_items)

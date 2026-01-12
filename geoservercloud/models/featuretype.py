@@ -75,7 +75,6 @@ class FeatureType(AbstractLayer):
         self.skip_number_match: bool | None = skip_number_match
         self.circular_arc_present: bool | None = circular_arc_present
         self.encode_measures: bool | None = encode_measures
-        self.metadata_links: list[MetadataLink] | None = metadata_links
         self.time_dimension_info: TimeDimensionInfo | None = time_dimension_info
 
     @classmethod
@@ -149,7 +148,6 @@ class FeatureType(AbstractLayer):
             "skipNumberMatch": self.skip_number_match,
             "circularArcPresent": self.circular_arc_present,
             "encodeMeasures": self.encode_measures,
-            "metadatalinks": self.metadata_links,
         }
         if self.time_dimension_info:
             metadata = {"entry": [self.time_dimension_info.asdict()]}
@@ -163,8 +161,6 @@ class FeatureType(AbstractLayer):
             content["attributes"] = {"attribute": self.attributes}
         if self.keywords is not None:
             content["keywords"] = {"string": self.keywords}
-        if self.metadata_links is not None:
-            content["metadataLinks"] = {"metadataLink": self.metadata_links}
         return {"featureType": content}
 
     def put_payload(self) -> dict[str, Any]:
