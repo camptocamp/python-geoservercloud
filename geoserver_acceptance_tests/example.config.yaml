@@ -21,3 +21,7 @@ db:
   pg_user: "geoserver"
   pg_password: "geoserver"
   pg_schema: "test1"
+
+installed_fonts:
+  - "DejaVu Sans"
+  - "DejaVu Sans Bold"

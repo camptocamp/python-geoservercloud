@@ -31,6 +31,7 @@ class RestClient:
         headers: dict[str, str] | None = None,
     ) -> requests.Response:
         full_url = f"{self.url}{path}"
+        gs_logger.debug("Doing GET request to: %s", full_url)
         response: requests.Response = requests.get(
             full_url,
             params=params,
