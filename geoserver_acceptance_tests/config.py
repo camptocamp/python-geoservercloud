@@ -55,6 +55,8 @@ def load_config():
     if override_pg_schema:
         config["db"]["pg_schema"] = override_pg_schema
 
+    config["expected_fonts"] = config.get("installed_fonts", [])
+
     # Configure logging for geoservercloud library
     _setup_logging(config)
 
