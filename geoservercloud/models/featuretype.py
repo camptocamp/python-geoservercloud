@@ -163,6 +163,8 @@ class FeatureType(AbstractLayer):
             content["attributes"] = {"attribute": self.attributes}
         if self.keywords is not None:
             content["keywords"] = {"string": self.keywords}
+        if self.metadata_links is not None:
+            content["metadataLinks"] = { "metadataLink": self.metadata_links }
         return {"featureType": content}
 
     def put_payload(self) -> dict[str, Any]:

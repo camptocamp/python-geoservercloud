@@ -880,7 +880,7 @@ class GeoServerCloud:
         ...         presentation="LIST",
         ...         default_value_strategy="MAXIMUM",
         ...     ),
-                layer_links=[{'url':"mymetadataurl", 'metadata_type':"ISO19115:2003", 'mime_type':"text/xml"}]
+                layer_links=[{'content':"mymetadataurl", 'metadataType':"ISO19115:2003", 'type':"text/xml"}]
         ... )
         """
         workspace_name = workspace_name or self.default_workspace
