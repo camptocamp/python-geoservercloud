@@ -212,15 +212,6 @@ class MetadataLink:
         """String representation of the list."""
         return json.dumps(self.asdict(), indent=4)
 
-    def __dict__(self):
-        return self.asdict()
-
-    def __str__(self):
-        return json.dumps(self.asdict())
-
-    def __json__(self):
-        return json.dumps(self.asdict())
-
 class TimeDimensionInfo(BaseModel):
     """
     This class represents the required configuration needed for the dimension "time" to create a

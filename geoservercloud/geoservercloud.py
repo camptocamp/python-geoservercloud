@@ -880,7 +880,7 @@ class GeoServerCloud:
         ...         presentation="LIST",
         ...         default_value_strategy="MAXIMUM",
         ...     ),
-                layer_links=[MetadataLink(url="mymetadataurl", metadata_type="string", mime_type="text/xml")]
+                layer_links=[{'url':"mymetadataurl", 'metadata_type':"ISO19115:2003", 'mime_type':"text/xml"}]
         ... )
         """
         workspace_name = workspace_name or self.default_workspace
@@ -901,7 +901,7 @@ class GeoServerCloud:
             epsg_code=epsg,
             keywords=keywords,
             time_dimension_info=time_dimension_info,
-            metadata_links=[MetadataLink(url="mymetadataurl", metadata_type="string", mime_type="text/xml")],
+            metadata_links=layer_links,
         )
         print(feature_type)
         return self.rest_service.create_feature_type(feature_type=feature_type)
