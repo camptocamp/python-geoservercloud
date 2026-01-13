@@ -62,6 +62,7 @@ class FeatureType(AbstractLayer):
             enabled=enabled,
             epsg_code=epsg_code,
             service_configuration=service_configuration,
+            metadata_links=metadata_links,
         )
         self.attributes: list[dict[str, Any]] | None = attributes
         self.advertised: bool | None = advertised
@@ -74,7 +75,6 @@ class FeatureType(AbstractLayer):
         self.skip_number_match: bool | None = skip_number_match
         self.circular_arc_present: bool | None = circular_arc_present
         self.encode_measures: bool | None = encode_measures
-        self.metadata_links: list[MetadataLink] | None = metadata_links
         self.time_dimension_info: TimeDimensionInfo | None = time_dimension_info
 
     @classmethod
@@ -149,7 +149,6 @@ class FeatureType(AbstractLayer):
             "circularArcPresent": self.circular_arc_present,
             "encodeMeasures": self.encode_measures,
         }
-
         if self.time_dimension_info:
             metadata = {"entry": [self.time_dimension_info.asdict()]}
             EntityModel.add_item_to_dict(optional_items, "metadata", metadata)

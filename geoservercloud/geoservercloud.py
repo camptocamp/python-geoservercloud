@@ -7,7 +7,7 @@ from owslib.wmts import WebMapTileService
 from requests import Response
 
 from geoservercloud import utils
-from geoservercloud.models.common import TimeDimensionInfo
+from geoservercloud.models.common import MetadataLink, TimeDimensionInfo
 from geoservercloud.models.coverage import Coverage
 from geoservercloud.models.coveragestore import CoverageStore
 from geoservercloud.models.datastore import DataStore
@@ -820,6 +820,7 @@ class GeoServerCloud:
         epsg: int = 4326,
         keywords: list[str] = [],
         time_dimension_info: TimeDimensionInfo | None = None,
+        layer_links: list[dict[str, str]] = [],
     ) -> tuple[str, int]:
         """
         Create a feature type or update it if it already exists.
@@ -842,6 +843,8 @@ class GeoServerCloud:
         :type keywords: list of str, optional
         :param time_dimension_info: Time dimension configuration for the feature type
         :type time_dimension_info: TimeDimensionInfo, optional
+        :param layer_links: List of metadata links for the feature type, e.g. [{'content':"mymetadataurl", 'metadataType':"ISO19115:2003", 'type':"text/xml"}]
+        :type layer_links: list of dict, optional
 
         :return: Tuple of (datastore_name, status_code)
         :rtype: tuple
@@ -879,6 +882,7 @@ class GeoServerCloud:
         ...         presentation="LIST",
         ...         default_value_strategy="MAXIMUM",
         ...     ),
+        ...     layer_links=[{'content':"mymetadataurl", 'metadataType':"ISO19115:2003", 'type':"text/xml"}]
         ... )
         """
         workspace_name = workspace_name or self.default_workspace
@@ -887,6 +891,14 @@ class GeoServerCloud:
         datastore_name = datastore_name or self.default_datastore
         if not datastore_name:
             raise ValueError("Datastore not provided")
+        metadata_links = [
+            MetadataLink(
+                url=link["content"],
+                metadata_type=link["metadataType"],
+                mime_type=link["type"],
+            )
+            for link in (layer_links or [])
+        ]
         feature_type = FeatureType(
             name=layer_name,
             native_name=layer_name,
@@ -899,6 +911,7 @@ class GeoServerCloud:
             epsg_code=epsg,
             keywords=keywords,
             time_dimension_info=time_dimension_info,
+            metadata_links=metadata_links,
         )
         return self.rest_service.create_feature_type(feature_type=feature_type)
 

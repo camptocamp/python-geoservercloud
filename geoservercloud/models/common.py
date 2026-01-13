@@ -208,6 +208,10 @@ class MetadataLink:
             "type": self.type,
         }
 
+    def __repr__(self) -> str:
+        """String representation of the list."""
+        return json.dumps(self.asdict(), indent=4)
+
 
 class TimeDimensionInfo(BaseModel):
     """
