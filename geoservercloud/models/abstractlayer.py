@@ -89,7 +89,7 @@ class AbstractLayer(EntityModel):
             content["latLonBoundingBox"] = EPSG_BBOX[self.epsg_code][
                 "latLonBoundingBox"
             ]
-        if self.metadata_links is not None:
+        if self.metadata_links:
             content["metadataLinks"] = {
                 "metadataLink": [
                     metadata_link.asdict() for metadata_link in self.metadata_links
