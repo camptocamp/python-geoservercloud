@@ -112,6 +112,7 @@ def pytest_configure(config):
         "cog: mark test as related to COG ImageMosaic",
         "jndi: mark test as requiring JNDI resource (jdbc/postgis) for DB access",
         "slow: mark test as slow to skip or run conditionally",
+        "aws_s3: mark test as requiring AWS S3 access",
     ]
     for marker in markers:
         config.addinivalue_line("markers", marker)
@@ -162,3 +163,12 @@ def pytest_collection_modifyitems(config, items):
         for item in items:
             if "jndi" in item.keywords:
                 item.add_marker(skip_jndi)
+
+    # Run AWS S3 test (default: false)
+    if not env_var_is_true("GEOSERVER_ACCEPTANCE_RUN_AWS_S3_TESTS", False):
+        skip_aws_s3 = pytest.mark.skip(
+            reason="use env var GEOSERVER_ACCEPTANCE_RUN_AWS_S3_TESTS=true to run"
+        )
+        for item in items:
+            if "aws_s3" in item.keywords:
+                item.add_marker(skip_aws_s3)

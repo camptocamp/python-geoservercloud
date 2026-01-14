@@ -90,12 +90,13 @@ GEOSERVER_ACCEPTANCE_CONFIG=./config.yaml pytest --pyargs geoserver_acceptance_t
 
 Certain kinds of tests can be enabled or disabled through environment variables:
 
-| Environment Variable                  | Description                                                   | Default |
-| ------------------------------------- | ------------------------------------------------------------- | ------- |
-| `GEOSERVER_ACCEPTANCE_RUN_DB_TESTS`   | Enable/disable tests requiring DB access                      | `true`  |
-| `GEOSERVER_ACCEPTANCE_RUN_SLOW_TESTS` | Enable/disable slow tests                                     | `false` |
-| `GEOSERVER_ACCEPTANCE_RUN_COG_TESTS`  | Enable/disable COG tests                                      | `false` |
-| `GEOSERVER_ACCEPTANCE_RUN_JNDI_TESTS` | Enable/disable tests requiring a JNDI resource (jdbc/postgis) | `false` |
+| Environment Variable                    | Description                                                   | Default |
+| --------------------------------------- | ------------------------------------------------------------- | ------- |
+| `GEOSERVER_ACCEPTANCE_RUN_DB_TESTS`     | Enable/disable tests requiring DB access                      | `true`  |
+| `GEOSERVER_ACCEPTANCE_RUN_SLOW_TESTS`   | Enable/disable slow tests                                     | `false` |
+| `GEOSERVER_ACCEPTANCE_RUN_COG_TESTS`    | Enable/disable COG tests                                      | `false` |
+| `GEOSERVER_ACCEPTANCE_RUN_JNDI_TESTS`   | Enable/disable tests requiring a JNDI resource (jdbc/postgis) | `false` |
+| `GEOSERVER_ACCEPTANCE_RUN_AWS_S3_TESTS` | Enable/disable tests that use S3 buckets with AWS credentials | `false` |
 
 ### Run the example docker composition
 
