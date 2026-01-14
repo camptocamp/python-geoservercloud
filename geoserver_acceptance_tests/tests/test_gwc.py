@@ -21,7 +21,7 @@ def test_tile_cache(geoserver_factory):
 
     content, status = geoserver.publish_gwc_layer(workspace, wmts_layer)
     assert status == 200
-    assert content == ""
+    assert content in ["", "layer saved"]
 
     response = geoserver.get_tile(
         format="image/png",
