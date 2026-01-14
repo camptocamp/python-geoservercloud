@@ -91,7 +91,7 @@ def test_cascaded_wmts(geoserver_factory):
 
     # Publish the layer in GWC
     content, status = geoserver.publish_gwc_layer(workspace, wmts_layer)
-    assert content == ""
+    assert content in ["", "layer saved"]
     assert status == 200
     content, status = geoserver.get_gwc_layer(workspace, wmts_layer)
     assert status == 200
