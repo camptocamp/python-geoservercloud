@@ -16,16 +16,16 @@ requests = "2.32.5"
 OWSLib = "0.35.0"
 xmltodict = "1.0.2"
 psycopg2-binary = "^2.9.9"
-sqlalchemy = "2.0.45"
+sqlalchemy = "2.0.46"
 pytest = "9.0.2"
 
 [tool.poetry.group.dev.dependencies]
 responses = "0.25.8"
-coverage = "7.13.1"
+coverage = "7.13.2"
 sphinx = "<8.2.4"
 sphinx-rtd-theme = "3.0.2"
-types-requests = "2.32.4.20250913"
-types-xmltodict = "1.0.1.20250920"
+types-requests = "2.32.4.20260107"
+types-xmltodict = "1.0.1.20260113"
 pytest-mock = "^3.14.0"
 
 [build-system]
