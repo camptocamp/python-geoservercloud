@@ -100,13 +100,24 @@ class FeatureType(AbstractLayer):
         if feature_type.get("metadata"):
             metadata: list[Any] = feature_type["metadata"]["entry"]
             for metadata_entry in metadata:
-                if (
-                    feature_type["metadata"]["entry"][metadata_entry]
-                    == FeatureType.TIME_DIMENSION_KEY
-                ):
-                    time_dimension_info = TimeDimensionInfo.from_get_response_payload(
-                        feature_type["metadata"]["entry"]
-                    )
+                if isinstance(metadata, dict):
+                    if (
+                        feature_type["metadata"]["entry"][metadata_entry]
+                        == FeatureType.TIME_DIMENSION_KEY
+                    ):
+                        time_dimension_info = (
+                            TimeDimensionInfo.from_get_response_payload(
+                                feature_type["metadata"]["entry"]
+                            )
+                        )
+                elif isinstance(metadata, list):
+                    if metadata_entry["@key"] == FeatureType.TIME_DIMENSION_KEY:
+                        time_dimension_info = (
+                            TimeDimensionInfo.from_get_response_payload(metadata_entry)
+                        )
+                else:
+                    # probably something wrong in received ["metadata"]["entry"]
+                    pass
 
         return cls(
             namespace_name=feature_type["namespace"]["name"],
