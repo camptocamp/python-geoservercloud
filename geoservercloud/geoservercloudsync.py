@@ -299,13 +299,11 @@ class GeoServerCloudSync:
 
 
 def parse_args():
-    parser = ArgumentParser(
-        description="""
+    parser = ArgumentParser(description="""
         Copy a workspace from a GeoServer instance to another, including PG datastores,
         layers, styles and style images.
         If using JNDI, the JNDI reference must exist in the destination GeoServer instance.
-        """
-    )
+        """)
     parser.add_argument(
         "--src_url",
         help="URL of the source GeoServer instance",
