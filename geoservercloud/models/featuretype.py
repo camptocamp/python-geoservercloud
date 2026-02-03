@@ -100,7 +100,10 @@ class FeatureType(AbstractLayer):
         if feature_type.get("metadata"):
             metadata: list[Any] = feature_type["metadata"]["entry"]
             for metadata_entry in metadata:
-                if feature_type["metadata"]["entry"][metadata_entry] == FeatureType.TIME_DIMENSION_KEY:
+                if (
+                    feature_type["metadata"]["entry"][metadata_entry]
+                    == FeatureType.TIME_DIMENSION_KEY
+                ):
                     time_dimension_info = TimeDimensionInfo.from_get_response_payload(
                         feature_type["metadata"]["entry"]
                     )
