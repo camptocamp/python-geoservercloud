@@ -139,5 +139,11 @@ Set the log level using the standard `logging` module, e.g.:
 ```python
 import logging
 
-logging.getLogger("geoservercloud").setLevel(logging.DEBUG)
+gs_logger = logging.getLogger("geoservercloud")
+gs_logger.setLevel(logging.DEBUG)
+handler = logging.StreamHandler()
+handler.setLevel(logging.DEBUG)
+formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+handler.setFormatter(formatter)
+gs_logger.addHandler(handler)
 ```
