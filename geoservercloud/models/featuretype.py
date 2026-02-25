@@ -88,10 +88,15 @@ class FeatureType(AbstractLayer):
         )
         if feature_type.get("metadataLinks"):
             metadata_links_payload = feature_type["metadataLinks"]["metadataLink"]
-            metadata_links = [
-                MetadataLink.from_get_response_payload(metadata_link)
-                for metadata_link in metadata_links_payload
-            ]
+            if type(metadata_links_payload) is dict:
+                metadata_links = [
+                    MetadataLink.from_get_response_payload(metadata_links_payload)
+                ]
+            else:
+                metadata_links = [
+                    MetadataLink.from_get_response_payload(metadata_link)
+                    for metadata_link in metadata_links_payload
+                ]
         else:
             metadata_links = None
 
@@ -112,9 +117,12 @@ class FeatureType(AbstractLayer):
                         )
                 elif isinstance(metadata, list):
                     if metadata_entry["@key"] == FeatureType.TIME_DIMENSION_KEY:
-                        time_dimension_info = (
-                            TimeDimensionInfo.from_get_response_payload(metadata_entry)
-                        )
+                        if metadata_entry["dimensionInfo"]["enabled"] == True:
+                            time_dimension_info = (
+                                TimeDimensionInfo.from_get_response_payload(
+                                    metadata_entry
+                                )
+                            )
                 else:
                     # probably something wrong in received ["metadata"]["entry"]
                     pass
