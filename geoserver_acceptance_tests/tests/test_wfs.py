@@ -77,7 +77,7 @@ def test_wfs(config, geoserver_factory, test_source_directory):
     with open(str(resource_dir / "wfs_delete_payload.xml")) as file:
         data = file.read()
         response = geoserver.rest_service.rest_client.post(
-            f"/{workspace}/wfs/", data=data
+            f"/{workspace}/wfs", data=data
         )
         assert response.status_code == 200
     feature_collection = geoserver.get_feature(workspace, feature_type)
