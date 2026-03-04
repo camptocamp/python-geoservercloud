@@ -2,13 +2,16 @@ name: Continuous integration
 
 on:
   push:
+    branches:
+      - master
+  pull_request:
 
 env:
   HAS_SECRETS: ${{ secrets.HAS_SECRETS }}
 
 jobs:
   build:
-    name: Continuous integration
+    name: Build and test
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     if: "!startsWith(github.event.head_commit.message, '[skip ci] ')"
@@ -22,7 +25,7 @@ jobs:
         if: env.HAS_SECRETS == 'HAS_SECRETS'
       - uses: actions/setup-python@v6
         with:
-          python-version: "3.14"
+          python-version: "3.12"
       - run: echo "${HOME}/.local/bin" >> ${GITHUB_PATH}
       - run: python3 -m pip install --requirement=ci/requirements.txt
         name: Install CI requirements
@@ -46,3 +49,76 @@ jobs:
       - name: Publish
         run: c2cciutils-publish
         if: env.HAS_SECRETS == 'HAS_SECRETS'
+
+  acceptance-tests:
+    name: Run acceptance tests
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    if: "!startsWith(github.event.head_commit.message, '[skip ci] ')"
+
+    env:
+      GEOSERVER_ACCEPTANCE_CONFIG: ${{ github.workspace }}/geoserver_acceptance_tests/ci.config.yaml
+      GEOSERVER_URL: http://localhost:8080/geoserver
+      GEOSERVER_USER: admin
+      GEOSERVER_PASSWORD: geoserver
+      GEOSERVER_PG_HOST_LOCAL: localhost
+      GEOSERVER_PG_PORT_LOCAL: 6432
+      GEOSERVER_PG_HOST_DOCKER: geodatabase
+      GEOSERVER_PG_PORT_DOCKER: 5432
+      GEOSERVER_PG_DB: acceptance
+      GEOSERVER_PG_USER: geoserver
+      GEOSERVER_PG_PASSWORD: geoserver
+      GEOSERVER_PG_SCHEMA: public
+      # Minimal test suite - only enable basic tests
+      GEOSERVER_ACCEPTANCE_RUN_DB_TESTS: true
+      GEOSERVER_ACCEPTANCE_RUN_SLOW_TESTS: false
+      GEOSERVER_ACCEPTANCE_RUN_COG_TESTS: false
+      GEOSERVER_ACCEPTANCE_RUN_JNDI_TESTS: true
+      GEOSERVER_ACCEPTANCE_RUN_AWS_S3_TESTS: false
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Setup Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - run: echo "${HOME}/.local/bin" >> ${GITHUB_PATH}
+      - run: python3 -m pip install --requirement=ci/requirements.txt
+
+      - name: Install python-geoservercloud from source
+        run: make install
+
+      - name: Extract test data
+        run: |
+          make acceptance-tests-setup
+
+      - name: Pull GeoServer Docker image
+        run: docker pull docker.osgeo.org/geoserver:3.0.x
+
+      - name: Start Docker Compose services
+        run: |
+          make acceptance-tests-up
+
+      - name: Run acceptance tests
+        run: |
+          poetry run pytest --pyargs geoserver_acceptance_tests.tests -v --color=yes
+
+      - name: Upload failed test artifacts
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: acceptance-test-failures
+          path: |
+            geoserver_acceptance_tests/compose/geoserver_data/
+            **/*.log
+
+      - name: Print Docker logs
+        if: always()
+        run: make acceptance-tests-logs
+
+      - name: Shutdown Docker Compose
+        if: always()
+        run: make acceptance-tests-down
