@@ -20,11 +20,11 @@ sqlalchemy = "2.0.47"
 pytest = "9.0.2"
 
 [tool.poetry.group.dev.dependencies]
-responses = "0.25.8"
+responses = "0.26.0"
 coverage = "7.13.4"
 sphinx = "<8.2.4"
 sphinx-rtd-theme = "3.1.0"
-types-requests = "2.32.4.20260107"
+types-requests = "2.33.0.20260327"
 types-xmltodict = "1.0.1.20260113"
 pytest-mock = "^3.14.0"
 
