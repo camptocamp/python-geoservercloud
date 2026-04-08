@@ -525,6 +525,14 @@ class GeoServerCloud:
         )
         return self.rest_service.create_datastore(workspace_name, datastore)
 
+    def delete_datastore(
+        self, workspace_name: str, datastore_name: str
+    ) -> tuple[str, int]:
+        """
+        Delete a datastore recursively
+        """
+        return self.rest_service.delete_datastore(workspace_name, datastore_name)
+
     def get_wms_store(
         self, workspace_name: str, datastore_name: str
     ) -> tuple[dict[str, Any] | str, int]:
