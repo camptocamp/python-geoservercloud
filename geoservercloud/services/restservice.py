@@ -138,6 +138,15 @@ class RestService:
             )
         return response.content.decode(), response.status_code
 
+    def delete_datastore(
+        self, workspace_name: str, datastore_name: str
+    ) -> tuple[str, int]:
+        """Delete a datastore recursively"""
+        path = self.rest_endpoints.datastore(workspace_name, datastore_name)
+        params: dict[str, str] = {"recurse": "true"}
+        response: Response = self.rest_client.delete(path, params=params)
+        return response.content.decode(), response.status_code
+
     def get_wms_store(
         self, workspace_name: str, wms_store_name: str
     ) -> tuple[WmsStore | str, int]:
