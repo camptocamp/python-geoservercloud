@@ -38,11 +38,12 @@ def feature_types_get_response_payload() -> dict[str, Any]:
 def feature_type_common_attributes() -> dict[str, Any]:
     return {
         "name": LAYER,
-        "nativeName": LAYER,
+        "nativeName": "test_native_name",
         "srs": "EPSG:4326",
         "store": {"name": f"{WORKSPACE}:{STORE}"},
         "internationalTitle": {"en": "English"},
         "internationalAbstract": {"en": "English"},
+        "cqlFilter": "key='Value'",
     }
 
 
@@ -231,6 +232,7 @@ def test_create_feature_type(
             workspace_name=WORKSPACE,
             datastore_name=STORE,
             layer_name=LAYER,
+            native_name="test_native_name",
             attributes=Templates.geom_point_attribute(),
             title={"en": "English"},
             abstract={"en": "English"},
@@ -240,6 +242,7 @@ def test_create_feature_type(
                 presentation="LIST",
                 default_value_strategy="MAXIMUM",
             ),
+            cql_filter="key='Value'",
         )
 
         assert content == ""
@@ -264,6 +267,7 @@ def test_update_feature_type(
             workspace_name=WORKSPACE,
             datastore_name=STORE,
             layer_name=LAYER,
+            native_name="test_native_name",
             attributes=Templates.geom_point_attribute(),
             title={"en": "English"},
             abstract={"en": "English"},
@@ -273,6 +277,7 @@ def test_update_feature_type(
                 presentation="LIST",
                 default_value_strategy="MAXIMUM",
             ),
+            cql_filter="key='Value'",
         )
 
         assert content == ""
