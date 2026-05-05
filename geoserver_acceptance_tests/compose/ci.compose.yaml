@@ -1,6 +1,6 @@
 services:
   geoserver:
-    image: docker.osgeo.org/geoserver:3.0.x
+    image: docker.osgeo.org/geoserver:3.0-RC
     ports:
       - "8080:8080"
     environment:

@@ -45,6 +45,7 @@ class FeatureType(AbstractLayer):
         encode_measures: bool | None = None,
         metadata_links: list[MetadataLink] | None = None,
         time_dimension_info: TimeDimensionInfo | None = None,
+        cql_filter: str | None = None,
     ) -> None:
         super().__init__(
             name=name,
@@ -76,6 +77,7 @@ class FeatureType(AbstractLayer):
         self.circular_arc_present: bool | None = circular_arc_present
         self.encode_measures: bool | None = encode_measures
         self.time_dimension_info: TimeDimensionInfo | None = time_dimension_info
+        self.cql_filter: str | None = cql_filter
 
     @classmethod
     def from_get_response_payload(cls, content: dict):
@@ -153,6 +155,7 @@ class FeatureType(AbstractLayer):
             simple_conversion_enabled=feature_type.get("simpleConversionEnabled"),
             skip_number_match=feature_type.get("skipNumberMatch"),
             time_dimension_info=time_dimension_info,
+            cql_filter=feature_type.get("cqlFilter"),
         )
 
     def asdict(self) -> dict[str, Any]:
@@ -170,6 +173,7 @@ class FeatureType(AbstractLayer):
             "skipNumberMatch": self.skip_number_match,
             "circularArcPresent": self.circular_arc_present,
             "encodeMeasures": self.encode_measures,
+            "cqlFilter": self.cql_filter,
         }
         if self.time_dimension_info:
             metadata = {"entry": [self.time_dimension_info.asdict()]}
