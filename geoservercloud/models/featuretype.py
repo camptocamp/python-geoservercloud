@@ -45,6 +45,7 @@ class FeatureType(AbstractLayer):
         encode_measures: bool | None = None,
         metadata_links: list[MetadataLink] | None = None,
         time_dimension_info: TimeDimensionInfo | None = None,
+        cql_filter: str | None = None,
     ) -> None:
         super().__init__(
             name=name,
@@ -76,6 +77,7 @@ class FeatureType(AbstractLayer):
         self.circular_arc_present: bool | None = circular_arc_present
         self.encode_measures: bool | None = encode_measures
         self.time_dimension_info: TimeDimensionInfo | None = time_dimension_info
+        self.cql_filter: str | None = cql_filter
 
     @classmethod
     def from_get_response_payload(cls, content: dict):
@@ -88,10 +90,15 @@ class FeatureType(AbstractLayer):
         )
         if feature_type.get("metadataLinks"):
             metadata_links_payload = feature_type["metadataLinks"]["metadataLink"]
-            metadata_links = [
-                MetadataLink.from_get_response_payload(metadata_link)
-                for metadata_link in metadata_links_payload
-            ]
+            if type(metadata_links_payload) is dict:
+                metadata_links = [
+                    MetadataLink.from_get_response_payload(metadata_links_payload)
+                ]
+            else:
+                metadata_links = [
+                    MetadataLink.from_get_response_payload(metadata_link)
+                    for metadata_link in metadata_links_payload
+                ]
         else:
             metadata_links = None
 
@@ -112,9 +119,12 @@ class FeatureType(AbstractLayer):
                         )
                 elif isinstance(metadata, list):
                     if metadata_entry["@key"] == FeatureType.TIME_DIMENSION_KEY:
-                        time_dimension_info = (
-                            TimeDimensionInfo.from_get_response_payload(metadata_entry)
-                        )
+                        if metadata_entry["dimensionInfo"]["enabled"] == True:
+                            time_dimension_info = (
+                                TimeDimensionInfo.from_get_response_payload(
+                                    metadata_entry
+                                )
+                            )
                 else:
                     # probably something wrong in received ["metadata"]["entry"]
                     pass
@@ -145,6 +155,7 @@ class FeatureType(AbstractLayer):
             simple_conversion_enabled=feature_type.get("simpleConversionEnabled"),
             skip_number_match=feature_type.get("skipNumberMatch"),
             time_dimension_info=time_dimension_info,
+            cql_filter=feature_type.get("cqlFilter"),
         )
 
     def asdict(self) -> dict[str, Any]:
@@ -162,6 +173,7 @@ class FeatureType(AbstractLayer):
             "skipNumberMatch": self.skip_number_match,
             "circularArcPresent": self.circular_arc_present,
             "encodeMeasures": self.encode_measures,
+            "cqlFilter": self.cql_filter,
         }
         if self.time_dimension_info:
             metadata = {"entry": [self.time_dimension_info.asdict()]}

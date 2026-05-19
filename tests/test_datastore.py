@@ -265,6 +265,29 @@ def test_get_pg_datastore_not_found(geoserver: GeoServerCloud) -> None:
         assert status_code == 404
 
 
+def test_delete_datastore(geoserver: GeoServerCloud) -> None:
+    with responses.RequestsMock() as rsps:
+        rsps.delete(
+            url=f"{GEOSERVER_URL}/rest/workspaces/{WORKSPACE}/datastores/{STORE}.json?recurse=true",
+            status=200,
+        )
+        content, status_code = geoserver.delete_datastore(WORKSPACE, STORE)
+        assert content == ""
+        assert status_code == 200
+
+
+def test_delete_datastore_not_found(geoserver: GeoServerCloud) -> None:
+    with responses.RequestsMock() as rsps:
+        rsps.delete(
+            url=f"{GEOSERVER_URL}/rest/workspaces/{WORKSPACE}/datastores/{STORE}.json?recurse=true",
+            status=404,
+            body=b"No such datastore: test_workspace,test_datastore",
+        )
+        content, status_code = geoserver.delete_datastore(WORKSPACE, STORE)
+        assert content == "No such datastore: test_workspace,test_datastore"
+        assert status_code == 404
+
+
 def test_create_datastore(
     geoserver: GeoServerCloud, pg_payload: dict[str, dict[str, Any]]
 ) -> None:

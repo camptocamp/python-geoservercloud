@@ -20,7 +20,6 @@ from geoservercloud.models.wmssettings import WmsSettings
 from geoservercloud.models.wmsstore import WmsStore
 from geoservercloud.models.workspace import Workspace
 from geoservercloud.services import OwsService, RestService
-from geoservercloud.templates import Templates
 
 
 class GeoServerCloud:
@@ -525,6 +524,14 @@ class GeoServerCloud:
         )
         return self.rest_service.create_datastore(workspace_name, datastore)
 
+    def delete_datastore(
+        self, workspace_name: str, datastore_name: str
+    ) -> tuple[str, int]:
+        """
+        Delete a datastore recursively
+        """
+        return self.rest_service.delete_datastore(workspace_name, datastore_name)
+
     def get_wms_store(
         self, workspace_name: str, datastore_name: str
     ) -> tuple[dict[str, Any] | str, int]:
@@ -818,9 +825,11 @@ class GeoServerCloud:
         abstract: str | dict | None = None,
         attributes: dict | None = None,
         epsg: int = 4326,
-        keywords: list[str] = [],
+        keywords: list[str] | None = None,
         time_dimension_info: TimeDimensionInfo | None = None,
-        layer_links: list[dict[str, str]] = [],
+        layer_links: list[dict[str, str]] | None = None,
+        native_name: str | None = None,
+        cql_filter: str | None = None,
     ) -> tuple[str, int]:
         """
         Create a feature type or update it if it already exists.
@@ -845,7 +854,10 @@ class GeoServerCloud:
         :type time_dimension_info: TimeDimensionInfo, optional
         :param layer_links: List of metadata links for the feature type, e.g. [{'content':"mymetadataurl", 'metadataType':"ISO19115:2003", 'type':"text/xml"}]
         :type layer_links: list of dict, optional
-
+        :param native_name: Native name of the feature type (default: same as layer_name)
+        :type native_name: str, optional
+        :param cql_filter: CQL filter to filter the data, e.g. key='Value'
+        :type cql_filter: str, optional
         :return: Tuple of (datastore_name, status_code)
         :rtype: tuple
 
@@ -855,6 +867,7 @@ class GeoServerCloud:
         ...     layer_name="mylayer",
         ...     workspace_name="myworkspace",
         ...     datastore_name="mystore",
+        ...     native_name="nativename",
         ...     title={"en": "English Title"},
         ...     abstract={"en": "English Abstract"},
         ...     attributes={
@@ -882,7 +895,8 @@ class GeoServerCloud:
         ...         presentation="LIST",
         ...         default_value_strategy="MAXIMUM",
         ...     ),
-        ...     layer_links=[{'content':"mymetadataurl", 'metadataType':"ISO19115:2003", 'type':"text/xml"}]
+        ...     layer_links=[{'content':"mymetadataurl", 'metadataType':"ISO19115:2003", 'type':"text/xml"}],
+        ...     cql_filter="key='Value'"
         ... )
         """
         workspace_name = workspace_name or self.default_workspace
@@ -901,7 +915,7 @@ class GeoServerCloud:
         ]
         feature_type = FeatureType(
             name=layer_name,
-            native_name=layer_name,
+            native_name=native_name or layer_name,
             workspace_name=workspace_name,
             store_name=datastore_name,
             srs=f"EPSG:{epsg}",
@@ -912,6 +926,7 @@ class GeoServerCloud:
             keywords=keywords,
             time_dimension_info=time_dimension_info,
             metadata_links=metadata_links,
+            cql_filter=cql_filter,
         )
         return self.rest_service.create_feature_type(feature_type=feature_type)
 

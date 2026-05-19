@@ -24,3 +24,11 @@ def test_create_get_and_delete_datastore(config, geoserver_factory):
     content, code = geoserver.get_pg_datastore(workspace, datastore)
     assert content.get("name") == datastore
     assert code == 200
+
+    # Delete datastore
+    content, code = geoserver.delete_datastore(workspace, datastore)
+    assert code == 200
+
+    # Ensure datastore is deleted
+    content, code = geoserver.get_pg_datastore(workspace, datastore)
+    assert code == 404
