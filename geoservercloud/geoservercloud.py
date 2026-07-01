@@ -1190,6 +1190,7 @@ class GeoServerCloud:
         transparent: bool = True,
         styles: list[str] | None = None,
         language: str | None = None,
+        time: str | None = None,
     ) -> ResponseWrapper | None:
         """
         WMS GetMap request
@@ -1204,6 +1205,7 @@ class GeoServerCloud:
             "format": format,
             "transparent": transparent,
             "styles": styles,
+            "time": time,
         }
         if language is not None:
             params["language"] = language
@@ -1224,6 +1226,7 @@ class GeoServerCloud:
         transparent: bool = True,
         styles: list[str] | None = None,
         xy: list[float] = [0, 0],
+        time: str | None = None,
         workspace_name: str | None = None,
     ) -> ResponseWrapper | None:
         """
@@ -1240,6 +1243,7 @@ class GeoServerCloud:
             "transparent": transparent,
             "styles": styles,
             "xy": xy,
+            "time": time,
         }
         if self.wms:
             return self.wms.getfeatureinfo(
