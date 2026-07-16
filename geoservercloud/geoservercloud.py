@@ -12,6 +12,7 @@ from geoservercloud.models.coverage import Coverage
 from geoservercloud.models.coveragestore import CoverageStore
 from geoservercloud.models.datastore import DataStore
 from geoservercloud.models.featuretype import FeatureType
+from geoservercloud.models.gwclayer import GridSubset, GwcLayer, ParameterFilter
 from geoservercloud.models.layer import Layer
 from geoservercloud.models.layergroup import LayerGroup
 from geoservercloud.models.style import Style
@@ -1065,9 +1066,36 @@ class GeoServerCloud:
         return self.rest_service.get_gwc_layer(workspace_name, layer)
 
     def publish_gwc_layer(
-        self, workspace_name: str, layer: str, epsg: int = 4326
+        self,
+        workspace_name: str,
+        layer: str,
+        epsg: int = 4326,
+        id: str | None = None,
+        enabled: bool = True,
+        grid_subsets: list[GridSubset] | None = None,
+        mime_formats: list[str] | None = None,
+        parameter_filters: list[ParameterFilter] | None = None,
+        meta_width_height: list[int] | None = None,
+        gutter: int | None = None,
+        expire_cache: int | None = None,
+        expire_clients: int | None = None,
+        cache_warning_skips: list[Any] | None = None,
     ) -> tuple[str, int]:
-        return self.rest_service.publish_gwc_layer(workspace_name, layer, epsg)
+        gwc_layer = GwcLayer(
+            workspace_name=workspace_name,
+            layer_name=layer,
+            id=id,
+            enabled=enabled,
+            grid_subsets=grid_subsets or [GridSubset(grid_set_name=f"EPSG:{epsg}")],
+            mime_formats=mime_formats,
+            parameter_filters=parameter_filters,
+            meta_width_height=meta_width_height,
+            gutter=gutter,
+            expire_cache=expire_cache,
+            expire_clients=expire_clients,
+            cache_warning_skips=cache_warning_skips,
+        )
+        return self.rest_service.publish_gwc_layer(gwc_layer)
 
     def delete_gwc_layer(self, workspace_name: str, layer: str) -> tuple[str, int]:
         return self.rest_service.delete_gwc_layer(workspace_name, layer)

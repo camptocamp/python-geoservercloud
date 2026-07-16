@@ -13,6 +13,7 @@ from geoservercloud.models.datastore import DataStore
 from geoservercloud.models.datastores import DataStores
 from geoservercloud.models.featuretype import FeatureType
 from geoservercloud.models.featuretypes import FeatureTypes
+from geoservercloud.models.gwclayer import GwcLayer
 from geoservercloud.models.layer import Layer
 from geoservercloud.models.layergroup import LayerGroup
 from geoservercloud.models.layergroups import LayerGroups
@@ -299,9 +300,7 @@ class RestService:
             content = response.content.decode()
         return content, response.status_code
 
-    def publish_gwc_layer(
-        self, workspace_name: str, layer: str, epsg: int
-    ) -> tuple[str, int]:
+    def publish_gwc_layer(self, gwc_layer: GwcLayer) -> tuple[str, int]:
         # Reload config to make sure GWC is aware of GeoServer layers
         self.rest_client.post(
             self.gwc_endpoints.reload(),
@@ -311,13 +310,14 @@ class RestService:
         # Do not re-publish an existing layer
         # TODO: fix template so that we can PUT an existing layer (/!\ check with an OGC client that the
         # layer is not corrupted after the second PUT)
-        content, code = self.get_gwc_layer(workspace_name, layer)
+        content, code = self.get_gwc_layer(
+            gwc_layer.workspace_name, gwc_layer.layer_name
+        )
         if code == 200:
             return "", code
-        payload = Templates.gwc_layer(workspace_name, layer, f"EPSG:{epsg}")
         response: Response = self.rest_client.put(
-            self.gwc_endpoints.layer(workspace_name, layer),
-            json=payload,
+            self.gwc_endpoints.layer(gwc_layer.workspace_name, gwc_layer.layer_name),
+            json=gwc_layer.put_payload(),
         )
         return response.content.decode(), response.status_code
 

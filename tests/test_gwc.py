@@ -48,7 +48,7 @@ def test_publish_gwc_layer(geoserver: GeoServerCloud) -> None:
                     {
                         "GeoServerLayer": {
                             "name": f"{WORKSPACE}:{LAYER}",
-                            "enabled": "true",
+                            "enabled": True,
                             "gridSubsets": {
                                 "gridSubset": [{"gridSetName": f"EPSG:{EPSG}"}]
                             },
