@@ -70,15 +70,3 @@ class Templates:
         if international_abstract:
             template["wmtsLayer"]["internationalAbstract"] = international_abstract
         return template
-
-    @staticmethod
-    def gwc_layer(
-        workspace: str, layer: str, gridset: str
-    ) -> dict[str, dict[str, Any]]:
-        return {
-            "GeoServerLayer": {
-                "name": f"{workspace}:{layer}",
-                "enabled": "true",
-                "gridSubsets": {"gridSubset": [{"gridSetName": gridset}]},
-            }
-        }
