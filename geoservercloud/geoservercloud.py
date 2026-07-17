@@ -73,6 +73,12 @@ class GeoServerCloud:
         return self.rest_service.get_version()
 
     def create_wms(self, workspace: str | None = None) -> None:
+        """
+        Initialize a WMS OWSLib client scoped to the given workspace
+
+        :param workspace: Name of the workspace, or None to use the default workspace
+        :type workspace: str, optional
+        """
         if workspace:
             self.wms = self.ows_service.create_wms(workspace)
         elif self.default_workspace:
@@ -81,6 +87,12 @@ class GeoServerCloud:
             self.wms = self.ows_service.create_wms()
 
     def create_wmts(self, workspace_name: str | None = None) -> None:
+        """
+        Initialize a WMTS OWSLib client scoped to the given workspace
+
+        :param workspace_name: Name of the workspace, or None to use the default workspace
+        :type workspace_name: str, optional
+        """
         if workspace_name:
             self.wmts = self.ows_service.create_wmts(workspace_name)
         elif self.default_workspace:
@@ -100,6 +112,9 @@ class GeoServerCloud:
     def get_workspaces(self) -> tuple[list[dict[str, str]] | str, int]:
         """
         Get all GeoServer workspaces
+
+        :return: Tuple of (workspaces, status_code)
+        :rtype: tuple
         """
         workspaces, status_code = self.rest_service.get_workspaces()
         if isinstance(workspaces, str):
@@ -109,6 +124,11 @@ class GeoServerCloud:
     def get_workspace(self, workspace_name: str) -> tuple[dict[str, str] | str, int]:
         """
         Get a workspace by name
+
+        :param workspace_name: Name of the workspace
+        :type workspace_name: str
+        :return: Tuple of (workspace, status_code)
+        :rtype: tuple
         """
         workspace, status_code = self.rest_service.get_workspace(workspace_name)
         if isinstance(workspace, str):
@@ -123,7 +143,16 @@ class GeoServerCloud:
     ) -> tuple[str, int]:
         """
         Create a workspace in GeoServer, if it does not already exist.
-        It if exists, update it
+        If it exists, update it.
+
+        :param workspace_name: Name of the workspace
+        :type workspace_name: str
+        :param isolated: Whether the workspace should be isolated (default: False)
+        :type isolated: bool, optional
+        :param set_default_workspace: Whether to set as the default workspace (default: False)
+        :type set_default_workspace: bool, optional
+        :return: Tuple of (content, status_code)
+        :rtype: tuple
         """
         workspace = Workspace(workspace_name, isolated)
         content, status_code = self.rest_service.create_workspace(workspace)
@@ -134,6 +163,11 @@ class GeoServerCloud:
     def delete_workspace(self, workspace_name: str) -> tuple[str, int]:
         """
         Delete a GeoServer workspace (recursively)
+
+        :param workspace_name: Name of the workspace
+        :type workspace_name: str
+        :return: Tuple of (content, status_code)
+        :rtype: tuple
         """
         content, status_code = self.rest_service.delete_workspace(
             Workspace(workspace_name)
@@ -152,6 +186,15 @@ class GeoServerCloud:
     ) -> tuple[str, int]:
         """
         Create a workspace in GeoServer, and first delete it if it already exists.
+
+        :param workspace_name: Name of the workspace
+        :type workspace_name: str
+        :param isolated: Whether the workspace should be isolated (default: False)
+        :type isolated: bool, optional
+        :param set_default_workspace: Whether to set as the default workspace (default: False)
+        :type set_default_workspace: bool, optional
+        :return: Tuple of (content, status_code)
+        :rtype: tuple
         """
         self.delete_workspace(workspace_name)
         return self.create_workspace(
@@ -165,6 +208,11 @@ class GeoServerCloud:
     ) -> tuple[dict[str, Any] | str, int]:
         """
         Get the WMS settings for a given workspace
+
+        :param workspace_name: Name of the workspace
+        :type workspace_name: str
+        :return: Tuple of (wms_settings, status_code)
+        :rtype: tuple
         """
         wms_settings, status_code = self.rest_service.get_workspace_wms_settings(
             workspace_name
@@ -209,6 +257,55 @@ class GeoServerCloud:
     ) -> tuple[str, int]:
         """
         Publish the WMS service for a given workspace
+
+        :param workspace_name: Name of the workspace
+        :type workspace_name: str
+        :param versions: WMS versions to enable (default: ["1.1.1", "1.3.0"])
+        :type versions: list of str, optional
+        :param cite_compliant: Whether the service should be CITE compliant (default: False)
+        :type cite_compliant: bool, optional
+        :param schema_base_url: Base URL for OGC schemas (default: "http://schemas.opengis.net")
+        :type schema_base_url: str, optional
+        :param verbose: Enable verbose XML output (default: False)
+        :type verbose: bool, optional
+        :param bbox_for_each_crs: Whether to compute the bounding box for each supported CRS (default: False)
+        :type bbox_for_each_crs: bool, optional
+        :param watermark: Watermark configuration (default: disabled)
+        :type watermark: dict, optional
+        :param interpolation: Default interpolation method (default: "Nearest")
+        :type interpolation: str, optional
+        :param get_feature_info_mime_type_checking_enabled: Restrict allowed MIME types for GetFeatureInfo (default: False)
+        :type get_feature_info_mime_type_checking_enabled: bool, optional
+        :param get_map_mime_type_checking_enabled: Restrict allowed MIME types for GetMap (default: False)
+        :type get_map_mime_type_checking_enabled: bool, optional
+        :param dynamic_styling_disabled: Disable the SLD_BODY parameter in requests (default: False)
+        :type dynamic_styling_disabled: bool, optional
+        :param features_reprojection_disabled: Disable on-the-fly feature reprojection (default: False)
+        :type features_reprojection_disabled: bool, optional
+        :param max_buffer: Maximum buffer size in pixels for rendering, 0 for unlimited (default: 0)
+        :type max_buffer: int, optional
+        :param max_request_memory: Maximum memory in KB usable per request, 0 for unlimited (default: 0)
+        :type max_request_memory: int, optional
+        :param max_rendering_time: Maximum rendering time in seconds, 0 for unlimited (default: 0)
+        :type max_rendering_time: int, optional
+        :param max_rendering_errors: Maximum number of rendering errors tolerated, 0 for unlimited (default: 0)
+        :type max_rendering_errors: int, optional
+        :param max_requested_dimension_values: Maximum number of dimension values that can be requested (default: 100)
+        :type max_requested_dimension_values: int, optional
+        :param cache_configuration: GetMap caching configuration (default: disabled)
+        :type cache_configuration: dict, optional
+        :param remote_style_max_request_time: Maximum time in ms allowed to fetch a remote style (default: 60000)
+        :type remote_style_max_request_time: int, optional
+        :param remote_style_timeout: Timeout in ms for fetching a remote style (default: 30000)
+        :type remote_style_timeout: int, optional
+        :param default_group_style_enabled: Whether a default style is generated for layer groups (default: True)
+        :type default_group_style_enabled: bool, optional
+        :param transform_feature_info_disabled: Disable XSLT transformation of GetFeatureInfo output (default: False)
+        :type transform_feature_info_disabled: bool, optional
+        :param auto_escape_template_values: Automatically escape template values in GetFeatureInfo output (default: False)
+        :type auto_escape_template_values: bool, optional
+        :return: Tuple of (content, status_code)
+        :rtype: tuple
         """
         wms_settings = WmsSettings(
             workspace_name=workspace_name,
@@ -250,6 +347,13 @@ class GeoServerCloud:
     ) -> tuple[str, int]:
         """
         Set a default language for localized WMS requests
+
+        :param workspace_name: Name of the workspace
+        :type workspace_name: str
+        :param locale: Locale code to set as default (e.g. "en"), or None to unset
+        :type locale: str, optional
+        :return: Tuple of (content, status_code)
+        :rtype: tuple
         """
         wms_settings = WmsSettings(default_locale=locale)
         return self.rest_service.put_workspace_wms_settings(
@@ -259,6 +363,11 @@ class GeoServerCloud:
     def unset_default_locale_for_service(self, workspace_name) -> tuple[str, int]:
         """
         Remove the default language for localized WMS requests
+
+        :param workspace_name: Name of the workspace
+        :type workspace_name: str
+        :return: Tuple of (content, status_code)
+        :rtype: tuple
         """
         return self.set_default_locale_for_service(workspace_name, None)
 
@@ -267,6 +376,11 @@ class GeoServerCloud:
     ) -> tuple[list[dict[str, str]] | str, int]:
         """
         Get all datastores for a given workspace
+
+        :param workspace_name: Name of the workspace
+        :type workspace_name: str
+        :return: Tuple of (datastores, status_code)
+        :rtype: tuple
         """
         datastores, status_code = self.rest_service.get_datastores(workspace_name)
         if isinstance(datastores, str):
@@ -278,6 +392,13 @@ class GeoServerCloud:
     ) -> tuple[dict[str, Any] | str, int]:
         """
         Get a datastore by workspace and name
+
+        :param workspace_name: Name of the workspace
+        :type workspace_name: str
+        :param datastore_name: Name of the datastore
+        :type datastore_name: str
+        :return: Tuple of (datastore, status_code)
+        :rtype: tuple
         """
         datastore, status_code = self.rest_service.get_datastore(
             workspace_name, datastore_name
@@ -291,6 +412,13 @@ class GeoServerCloud:
     ) -> tuple[dict[str, Any] | str, int]:
         """
         Get a datastore by workspace and name
+
+        :param workspace_name: Name of the workspace
+        :type workspace_name: str
+        :param datastore_name: Name of the datastore
+        :type datastore_name: str
+        :return: Tuple of (datastore, status_code)
+        :rtype: tuple
         """
         return self.get_datastore(workspace_name, datastore_name)
 
@@ -375,7 +503,31 @@ class GeoServerCloud:
         set_default_datastore: bool = False,
     ) -> tuple[str, int]:
         """
-        Create a PostGIS datastore from the DB connection parameters, or update it if it already exist.
+        Create a PostGIS datastore from the DB connection parameters, or update it if it already exists.
+
+        :param workspace_name: Name of the workspace
+        :type workspace_name: str
+        :param datastore_name: Name for the datastore
+        :type datastore_name: str
+        :param pg_host: PostgreSQL host
+        :type pg_host: str
+        :param pg_port: PostgreSQL port
+        :type pg_port: int
+        :param pg_db: PostgreSQL database name
+        :type pg_db: str
+        :param pg_user: PostgreSQL user
+        :type pg_user: str
+        :param pg_password: PostgreSQL password
+        :type pg_password: str
+        :param pg_schema: PostgreSQL schema (default: "public")
+        :type pg_schema: str, optional
+        :param description: Optional description
+        :type description: str, optional
+        :param set_default_datastore: Whether to set as default datastore (default: False)
+        :type set_default_datastore: bool, optional
+
+        :return: Tuple of (datastore_name, status_code)
+        :rtype: tuple
         """
         datastore = DataStore(
             workspace_name,
@@ -413,7 +565,23 @@ class GeoServerCloud:
         set_default_datastore: bool = False,
     ) -> tuple[str, int]:
         """
-        Create a PostGIS datastore from JNDI resource, or update it if it already exist.
+        Create a PostGIS datastore from a JNDI resource, or update it if it already exists.
+
+        :param workspace_name: Name of the workspace
+        :type workspace_name: str
+        :param datastore_name: Name for the datastore
+        :type datastore_name: str
+        :param jndi_reference: JNDI resource reference name
+        :type jndi_reference: str
+        :param pg_schema: PostgreSQL schema (default: "public")
+        :type pg_schema: str, optional
+        :param description: Optional description
+        :type description: str, optional
+        :param set_default_datastore: Whether to set as default datastore (default: False)
+        :type set_default_datastore: bool, optional
+
+        :return: Tuple of (datastore_name, status_code)
+        :rtype: tuple
         """
         datastore = DataStore(
             workspace_name,
@@ -531,6 +699,13 @@ class GeoServerCloud:
     ) -> tuple[str, int]:
         """
         Delete a datastore recursively
+
+        :param workspace_name: Name of the workspace
+        :type workspace_name: str
+        :param datastore_name: Name of the datastore
+        :type datastore_name: str
+        :return: Tuple of (content, status_code)
+        :rtype: tuple
         """
         return self.rest_service.delete_datastore(workspace_name, datastore_name)
 
@@ -538,7 +713,14 @@ class GeoServerCloud:
         self, workspace_name: str, datastore_name: str
     ) -> tuple[dict[str, Any] | str, int]:
         """
-        Get a WMS by workspace and name
+        Get a WMS store by workspace and name
+
+        :param workspace_name: Name of the workspace
+        :type workspace_name: str
+        :param datastore_name: Name of the WMS store
+        :type datastore_name: str
+        :return: Tuple of (wms_store, status_code)
+        :rtype: tuple
         """
         wms_store, status_code = self.rest_service.get_wms_store(
             workspace_name, datastore_name
@@ -554,7 +736,16 @@ class GeoServerCloud:
         capabilities_url: str,
     ) -> tuple[str, int]:
         """
-        Create a cascaded WMS store, or update it if it already exist.
+        Create a cascaded WMS store, or update it if it already exists.
+
+        :param workspace_name: Name of the workspace
+        :type workspace_name: str
+        :param wms_store_name: Name for the WMS store
+        :type wms_store_name: str
+        :param capabilities_url: URL of the remote WMS GetCapabilities document
+        :type capabilities_url: str
+        :return: Tuple of (content, status_code)
+        :rtype: tuple
         """
         wms_store = WmsStore(
             workspace_name,
@@ -568,6 +759,13 @@ class GeoServerCloud:
     ) -> tuple[str, int]:
         """
         Delete a WMS store recursively
+
+        :param workspace_name: Name of the workspace
+        :type workspace_name: str
+        :param wms_store_name: Name of the WMS store
+        :type wms_store_name: str
+        :return: Tuple of (content, status_code)
+        :rtype: tuple
         """
         return self.rest_service.delete_wms_store(workspace_name, wms_store_name)
 
@@ -576,6 +774,15 @@ class GeoServerCloud:
     ) -> tuple[dict[str, Any] | str, int]:
         """
         Get a WMS layer by workspace, store and name
+
+        :param workspace_name: Name of the workspace
+        :type workspace_name: str
+        :param wms_store_name: Name of the WMS store
+        :type wms_store_name: str
+        :param wms_layer_name: Name of the WMS layer
+        :type wms_layer_name: str
+        :return: Tuple of (wms_layer, status_code)
+        :rtype: tuple
         """
         wms_layer, status_code = self.rest_service.get_wms_layer(
             workspace_name, wms_store_name, wms_layer_name
@@ -592,8 +799,19 @@ class GeoServerCloud:
         published_layer_name: str | None = None,
     ) -> tuple[str, int]:
         """
-        Publish a remote WMS layer
+        Publish a remote WMS layer.
         If it already exists, delete and recreate it (update is not supported by GeoServer)
+
+        :param workspace_name: Name of the workspace
+        :type workspace_name: str
+        :param wms_store_name: Name of the WMS store
+        :type wms_store_name: str
+        :param native_layer_name: Name of the layer on the remote WMS server
+        :type native_layer_name: str
+        :param published_layer_name: Name for the published layer (default: same as native_layer_name)
+        :type published_layer_name: str, optional
+        :return: Tuple of (content, status_code)
+        :rtype: tuple
         """
         published_layer_name = published_layer_name or native_layer_name
         wms_layer = WmsLayer(
@@ -611,6 +829,15 @@ class GeoServerCloud:
     ) -> tuple[str, int]:
         """
         Delete a WMS layer
+
+        :param workspace_name: Name of the workspace
+        :type workspace_name: str
+        :param wms_store_name: Name of the WMS store
+        :type wms_store_name: str
+        :param wms_layer_name: Name of the WMS layer
+        :type wms_layer_name: str
+        :return: Tuple of (content, status_code)
+        :rtype: tuple
         """
         return self.rest_service.delete_wms_layer(
             workspace_name, wms_store_name, wms_layer_name
@@ -631,6 +858,29 @@ class GeoServerCloud:
     ) -> tuple[str, int]:
         """
         Create a cascaded WMTS store, or update it if it already exists.
+
+        :param workspace_name: Name of the workspace
+        :type workspace_name: str
+        :param name: Name for the WMTS store
+        :type name: str
+        :param capabilities: URL of the remote WMTS GetCapabilities document
+        :type capabilities: str
+        :param enabled: Whether the store should be enabled (default: True)
+        :type enabled: bool, optional
+        :param default: Whether this is the default WMTS store
+        :type default: bool, optional
+        :param disable_on_conn_failure: Disable the store on connection failure
+        :type disable_on_conn_failure: bool, optional
+        :param use_connection_pooling: Whether to use connection pooling (default: True)
+        :type use_connection_pooling: bool, optional
+        :param max_connections: Maximum number of connections
+        :type max_connections: int, optional
+        :param read_timeout: Read timeout in seconds
+        :type read_timeout: int, optional
+        :param connect_timeout: Connect timeout in seconds
+        :type connect_timeout: int, optional
+        :return: Tuple of (content, status_code)
+        :rtype: tuple
         """
         wmts_store = WmtsStore(
             workspace_name=workspace_name,
@@ -651,6 +901,13 @@ class GeoServerCloud:
     ) -> tuple[str, int]:
         """
         Delete a WMTS store recursively
+
+        :param workspace_name: Name of the workspace
+        :type workspace_name: str
+        :param wmts_store_name: Name of the WMTS store
+        :type wmts_store_name: str
+        :return: Tuple of (content, status_code)
+        :rtype: tuple
         """
         return self.rest_service.delete_wmts_store(workspace_name, wmts_store_name)
 
@@ -659,6 +916,13 @@ class GeoServerCloud:
     ) -> tuple[list[dict[str, Any]] | str, int]:
         """
         Get all feature types for a given workspace and datastore
+
+        :param workspace_name: Name of the workspace
+        :type workspace_name: str
+        :param datastore_name: Name of the datastore
+        :type datastore_name: str
+        :return: Tuple of (feature_types, status_code)
+        :rtype: tuple
         """
         feature_types, status_code = self.rest_service.get_feature_types(
             workspace_name, datastore_name
@@ -672,6 +936,15 @@ class GeoServerCloud:
     ) -> tuple[dict[str, Any] | str, int]:
         """
         Get a feature type by workspace, datastore and name
+
+        :param workspace_name: Name of the workspace
+        :type workspace_name: str
+        :param datastore_name: Name of the datastore
+        :type datastore_name: str
+        :param feature_type_name: Name of the feature type
+        :type feature_type_name: str
+        :return: Tuple of (feature_type, status_code)
+        :rtype: tuple
         """
         content, code = self.rest_service.get_feature_type(
             workspace_name, datastore_name, feature_type_name
@@ -685,6 +958,13 @@ class GeoServerCloud:
     ) -> tuple[list[dict[str, str]] | str, int]:
         """
         Get all coverages for a given workspace and coverage store
+
+        :param workspace_name: Name of the workspace
+        :type workspace_name: str
+        :param coveragestore_name: Name of the coverage store
+        :type coveragestore_name: str
+        :return: Tuple of (coverages, status_code)
+        :rtype: tuple
         """
         coverages, status_code = self.rest_service.get_coverages(
             workspace_name, coveragestore_name
@@ -698,6 +978,15 @@ class GeoServerCloud:
     ) -> tuple[dict[str, object] | str, int]:
         """
         Get a single coverage for a given workspace, coverage store, and coverage name
+
+        :param workspace_name: Name of the workspace
+        :type workspace_name: str
+        :param coveragestore_name: Name of the coverage store
+        :type coveragestore_name: str
+        :param coverage_name: Name of the coverage
+        :type coverage_name: str
+        :return: Tuple of (coverage, status_code)
+        :rtype: tuple
         """
         coverage, status_code = self.rest_service.get_coverage(
             workspace_name, coveragestore_name, coverage_name
@@ -716,6 +1005,19 @@ class GeoServerCloud:
     ) -> tuple[str, int]:
         """
         Publish a coverage layer from a given coverage store
+
+        :param workspace_name: Name of the workspace
+        :type workspace_name: str
+        :param coveragestore_name: Name of the coverage store
+        :type coveragestore_name: str
+        :param coverage_name: Name for the coverage
+        :type coverage_name: str
+        :param title: Optional title for the coverage (default: same as coverage_name)
+        :type title: str, optional
+        :param native_name: Native name of the coverage (default: same as coverage_name)
+        :type native_name: str, optional
+        :return: Tuple of (content, status_code)
+        :rtype: tuple
         """
         coverage = Coverage(
             workspace_name=workspace_name,
@@ -731,6 +1033,13 @@ class GeoServerCloud:
     ) -> tuple[dict[str, Any] | str, int]:
         """
         Get a coverage store by workspace and name
+
+        :param workspace_name: Name of the workspace
+        :type workspace_name: str
+        :param coveragestore_name: Name of the coverage store
+        :type coveragestore_name: str
+        :return: Tuple of (coverage_store, status_code)
+        :rtype: tuple
         """
         coverage_store, status_code = self.rest_service.get_coverage_store(
             workspace_name, coveragestore_name
@@ -752,11 +1061,19 @@ class GeoServerCloud:
         Create a coverage store from a store definition. When using a directory path as URL, coverages will be auto-discovered
 
         :param workspace_name: Name of the workspace
+        :type workspace_name: str
         :param coveragestore_name: Name of the coverage store
+        :type coveragestore_name: str
         :param url: Directory path on the server or URL of the granules (raster images)
-        :param type: Type of the coverage store, e.g. ImageMosaic, GeoTIFF (default: ImageMosaic)
+        :type url: str
+        :param type: Type of the coverage store, e.g. ImageMosaic, GeoTIFF (default: "ImageMosaic")
+        :type type: str, optional
         :param enabled: Whether the coverage store is enabled (default: True)
+        :type enabled: bool, optional
         :param metadata: Optional metadata dictionary (e.g. {"cogSettings": {"rangeReaderSettings": "HTTP"}})
+        :type metadata: dict, optional
+        :return: Tuple of (content, status_code)
+        :rtype: tuple
         """
         return self.rest_service.create_coverage_store(
             CoverageStore(
@@ -776,6 +1093,15 @@ class GeoServerCloud:
         Create an ImageMosaic coverage store from a directory on the server which contains granules (raster images).
         Granules and coverages will be auto-discovered. Similar to creating a store from the WebUI.
         Calls /workspaces/{workspace_name}/coveragestores/{coveragestore_name}/external.imagemosaic
+
+        :param workspace_name: Name of the workspace
+        :type workspace_name: str
+        :param coveragestore_name: Name of the coverage store
+        :type coveragestore_name: str
+        :param directory_path: Directory path on the server containing the granules
+        :type directory_path: str
+        :return: Tuple of (content, status_code)
+        :rtype: tuple
         """
         return self.rest_service.create_imagemosaic_store_from_directory(
             workspace_name, coveragestore_name, directory_path
@@ -788,6 +1114,15 @@ class GeoServerCloud:
         Upload an ImageMosaic coverage store configuration as ZIP to create an empty coverage store.
         The ZIP contains two files: indexer.properties and datastore.properties
         Calls /workspaces/{workspace_name}/coveragestores/{coveragestore_name}/file.imagemosaic?configure=none
+
+        :param workspace_name: Name of the workspace
+        :type workspace_name: str
+        :param coveragestore_name: Name of the coverage store
+        :type coveragestore_name: str
+        :param properties_zip: ZIP archive content containing indexer.properties and datastore.properties
+        :type properties_zip: bytes
+        :return: Tuple of (content, status_code)
+        :rtype: tuple
         """
         return self.rest_service.create_imagemosaic_store_from_properties_zip(
             workspace_name, coveragestore_name, properties_zip
@@ -805,9 +1140,15 @@ class GeoServerCloud:
         The granule is an existing file stored either on the server or remotely.
 
         :param workspace_name: Name of the workspace
+        :type workspace_name: str
         :param coveragestore_name: Name of the coverage store
+        :type coveragestore_name: str
         :param method: "external" for a file on the server, "remote" for a remote file
+        :type method: str
         :param granule_path: file path (for external granules) or URL (for remote granules)
+        :type granule_path: str
+        :return: Tuple of (content, status_code)
+        :rtype: tuple
         """
         if method not in ["external", "remote"]:
             raise ValueError(
@@ -822,6 +1163,15 @@ class GeoServerCloud:
     ) -> tuple[str, int]:
         """
         Harvest granules (raster files) from a server directory into an existing ImageMosaic coverage store
+
+        :param workspace_name: Name of the workspace
+        :type workspace_name: str
+        :param coveragestore_name: Name of the coverage store
+        :type coveragestore_name: str
+        :param directory_path: Directory path on the server containing the granules
+        :type directory_path: str
+        :return: Tuple of (content, status_code)
+        :rtype: tuple
         """
         return self.rest_service.harvest_granules_to_coverage_store(
             workspace_name, coveragestore_name, directory_path
@@ -832,6 +1182,13 @@ class GeoServerCloud:
     ) -> tuple[str, int]:
         """
         Delete a coverage store recursively
+
+        :param workspace_name: Name of the workspace
+        :type workspace_name: str
+        :param coveragestore_name: Name of the coverage store
+        :type coveragestore_name: str
+        :return: Tuple of (content, status_code)
+        :rtype: tuple
         """
         return self.rest_service.delete_coverage_store(
             workspace_name, coveragestore_name
@@ -956,6 +1313,15 @@ class GeoServerCloud:
     ) -> tuple[str, int]:
         """
         Delete a feature type and associated layer
+
+        :param workspace_name: Name of the workspace
+        :type workspace_name: str
+        :param datastore_name: Name of the datastore
+        :type datastore_name: str
+        :param layer_name: Name of the feature type / layer
+        :type layer_name: str
+        :return: Tuple of (content, status_code)
+        :rtype: tuple
         """
         return self.rest_service.delete_feature_type(
             workspace_name, datastore_name, layer_name
@@ -966,6 +1332,11 @@ class GeoServerCloud:
     ) -> tuple[list[dict[str, str]] | str, int]:
         """
         Get all layer groups for a given workspace
+
+        :param workspace_name: Name of the workspace
+        :type workspace_name: str
+        :return: Tuple of (layer_groups, status_code)
+        :rtype: tuple
         """
         layer_groups, status_code = self.rest_service.get_layer_groups(workspace_name)
         if isinstance(layer_groups, str):
@@ -977,6 +1348,13 @@ class GeoServerCloud:
     ) -> tuple[dict[str, Any] | str, int]:
         """
         Get a layer group by name
+
+        :param workspace_name: Name of the workspace
+        :type workspace_name: str
+        :param layer_group_name: Name of the layer group
+        :type layer_group_name: str
+        :return: Tuple of (layer_group, status_code)
+        :rtype: tuple
         """
         layer_group, status_code = self.rest_service.get_layer_group(
             workspace_name, layer_group_name
@@ -1000,7 +1378,32 @@ class GeoServerCloud:
         global_styles: bool = False,
     ) -> tuple[str, int]:
         """
-        Create a layer group or update it if it already exists.
+        Create a layer group, or update it if it already exists.
+
+        :param group: Name for the layer group
+        :type group: str
+        :param workspace_name: Name of the workspace
+        :type workspace_name: str, optional
+        :param layers: List of layer names to include in the group
+        :type layers: list of str, optional
+        :param styles: List of style names associated with each layer
+        :type styles: list of str, optional
+        :param title: Title for the layer group (can be internationalized as dict)
+        :type title: str or dict, optional
+        :param abstract: Abstract for the layer group (can be internationalized as dict)
+        :type abstract: str or dict, optional
+        :param epsg: EPSG code used to compute the layer group bounds (default: 4326)
+        :type epsg: int, optional
+        :param mode: Layer group mode, e.g. "SINGLE", "NAMED", "CONTAINER", "EO" (default: "SINGLE")
+        :type mode: str, optional
+        :param enabled: Whether the layer group is enabled (default: True)
+        :type enabled: bool, optional
+        :param advertised: Whether the layer group is advertised (default: True)
+        :type advertised: bool, optional
+        :param global_styles: Whether the provided styles are global styles rather than workspace styles (default: False)
+        :type global_styles: bool, optional
+        :return: Tuple of (content, status_code)
+        :rtype: tuple
         """
         workspace_name = workspace_name or self.default_workspace
         if not workspace_name:
@@ -1052,6 +1455,13 @@ class GeoServerCloud:
     ) -> tuple[str, int]:
         """
         Delete a layer group
+
+        :param workspace_name: Name of the workspace
+        :type workspace_name: str
+        :param layer_group_name: Name of the layer group
+        :type layer_group_name: str
+        :return: Tuple of (content, status_code)
+        :rtype: tuple
         """
         return self.rest_service.delete_layer_group(workspace_name, layer_group_name)
 
@@ -1067,6 +1477,23 @@ class GeoServerCloud:
     ) -> tuple[str, int]:
         """
         Publish a remote WMTS layer (first delete it if it already exists)
+
+        :param workspace_name: Name of the workspace
+        :type workspace_name: str
+        :param wmts_store: Name of the WMTS store
+        :type wmts_store: str
+        :param native_layer: Name of the layer on the remote WMTS server
+        :type native_layer: str
+        :param published_layer: Name for the published layer (default: same as native_layer)
+        :type published_layer: str, optional
+        :param epsg: EPSG code for the layer SRS (default: 4326)
+        :type epsg: int, optional
+        :param international_title: Internationalized title, e.g. {"en": "English Title"}
+        :type international_title: dict, optional
+        :param international_abstract: Internationalized abstract, e.g. {"en": "English Abstract"}
+        :type international_abstract: dict, optional
+        :return: Tuple of (content, status_code)
+        :rtype: tuple
         """
         if not published_layer:
             published_layer = native_layer
@@ -1083,6 +1510,16 @@ class GeoServerCloud:
     def get_gwc_layer(
         self, workspace_name: str, layer: str
     ) -> tuple[dict[str, Any] | str, int]:
+        """
+        Get a GeoWebCache layer by workspace and layer name
+
+        :param workspace_name: Name of the workspace
+        :type workspace_name: str
+        :param layer: Name of the layer
+        :type layer: str
+        :return: Tuple of (content, status_code)
+        :rtype: tuple
+        """
         return self.rest_service.get_gwc_layer(workspace_name, layer)
 
     def publish_gwc_layer(
@@ -1101,6 +1538,38 @@ class GeoServerCloud:
         expire_clients: int | None = None,
         cache_warning_skips: list[Any] | None = None,
     ) -> tuple[str, int]:
+        """
+        Publish a GeoWebCache layer, or update it if it already exists.
+
+        :param workspace_name: Name of the workspace
+        :type workspace_name: str
+        :param layer: Name of the layer to cache
+        :type layer: str
+        :param epsg: EPSG code used to derive the default grid subset (default: 4326)
+        :type epsg: int, optional
+        :param id: Optional GeoWebCache layer id
+        :type id: str, optional
+        :param enabled: Whether the cached layer is enabled (default: True)
+        :type enabled: bool, optional
+        :param grid_subsets: List of grid subsets to cache (default: derived from epsg)
+        :type grid_subsets: list of GridSubset, optional
+        :param mime_formats: List of MIME types to cache, e.g. ["image/png"]
+        :type mime_formats: list of str, optional
+        :param parameter_filters: List of parameter filters applied to the cache
+        :type parameter_filters: list of ParameterFilter, optional
+        :param meta_width_height: Meta-tiling factors as [width, height]
+        :type meta_width_height: list of int, optional
+        :param gutter: Gutter size in pixels
+        :type gutter: int, optional
+        :param expire_cache: Cache expiration time in seconds
+        :type expire_cache: int, optional
+        :param expire_clients: Client cache expiration time in seconds
+        :type expire_clients: int, optional
+        :param cache_warning_skips: List of warnings to skip when seeding the cache
+        :type cache_warning_skips: list, optional
+        :return: Tuple of (content, status_code)
+        :rtype: tuple
+        """
         gwc_layer = GwcLayer(
             workspace_name=workspace_name,
             layer_name=layer,
@@ -1118,6 +1587,16 @@ class GeoServerCloud:
         return self.rest_service.publish_gwc_layer(gwc_layer)
 
     def delete_gwc_layer(self, workspace_name: str, layer: str) -> tuple[str, int]:
+        """
+        Delete a GeoWebCache layer
+
+        :param workspace_name: Name of the workspace
+        :type workspace_name: str
+        :param layer: Name of the layer
+        :type layer: str
+        :return: Tuple of (content, status_code)
+        :rtype: tuple
+        """
         return self.rest_service.delete_gwc_layer(workspace_name, layer)
 
     def get_styles(
@@ -1125,6 +1604,11 @@ class GeoServerCloud:
     ) -> tuple[list[dict[str, str]] | str, int]:
         """
         Get all styles for a given workspace. If no workspace is provided, get all global styles
+
+        :param workspace_name: Name of the workspace, or None for global styles
+        :type workspace_name: str, optional
+        :return: Tuple of (styles, status_code)
+        :rtype: tuple
         """
         content, code = self.rest_service.get_styles(workspace_name)
         if isinstance(content, str):
@@ -1136,6 +1620,13 @@ class GeoServerCloud:
     ) -> tuple[dict[str, Any] | str, int]:
         """
         Get a style definition by name
+
+        :param style: Name of the style
+        :type style: str
+        :param workspace_name: Name of the workspace, or None for a global style
+        :type workspace_name: str, optional
+        :return: Tuple of (style_definition, status_code)
+        :rtype: tuple
         """
         content, code = self.rest_service.get_style_definition(style, workspace_name)
         if isinstance(content, str):
@@ -1149,7 +1640,20 @@ class GeoServerCloud:
         workspace_name: str | None = None,
         format: str = "sld",
     ) -> tuple[str, int]:
-        """Create a style definition"""
+        """
+        Create a style definition, or update it if it already exists.
+
+        :param style_name: Name for the style
+        :type style_name: str
+        :param filename: Filename of the style resource, e.g. "mystyle.sld"
+        :type filename: str
+        :param workspace_name: Name of the workspace, or None for a global style
+        :type workspace_name: str, optional
+        :param format: Style format, e.g. "sld" or "mbstyle" (default: "sld")
+        :type format: str, optional
+        :return: Tuple of (content, status_code)
+        :rtype: tuple
+        """
         style = Style(
             name=style_name,
             filename=filename,
@@ -1166,7 +1670,18 @@ class GeoServerCloud:
         style_string: str,
         workspace_name: str | None = None,
     ) -> tuple[str, int]:
-        """Create a style (SLD) from its definition as a string or update it if it already exists."""
+        """
+        Create a style (SLD) from its definition as a string, or update it if it already exists.
+
+        :param style_name: Name for the style
+        :type style_name: str
+        :param style_string: SLD style definition as a string
+        :type style_string: str
+        :param workspace_name: Name of the workspace, or None for a global style
+        :type workspace_name: str, optional
+        :return: Tuple of (content, status_code)
+        :rtype: tuple
+        """
         content, code = self.create_style_definition(
             style_name, f"{style_name}.sld", workspace_name
         )
@@ -1182,8 +1697,19 @@ class GeoServerCloud:
         file: str,
         workspace_name: str | None = None,
     ) -> tuple[str, int]:
-        """Create a style from a file, or update it if it already exists.
-        Supported file extensions are .sld, .zip and .mbstyle."""
+        """
+        Create a style from a file, or update it if it already exists.
+        Supported file extensions are .sld, .zip and .mbstyle.
+
+        :param style_name: Name for the style
+        :type style_name: str
+        :param file: Path to the style file (.sld, .zip or .mbstyle)
+        :type file: str
+        :param workspace_name: Name of the workspace, or None for a global style
+        :type workspace_name: str, optional
+        :return: Tuple of (content, status_code)
+        :rtype: tuple
+        """
         file_ext = Path(file).suffix.lower()
         if file_ext == ".sld":
             style_format = "sld"
@@ -1216,16 +1742,45 @@ class GeoServerCloud:
     def set_default_layer_style(
         self, layer_name: str, workspace_name: str, style: str
     ) -> tuple[str, int]:
-        """Set the default style for a layer"""
+        """
+        Set the default style for a layer
+
+        :param layer_name: Name of the layer
+        :type layer_name: str
+        :param workspace_name: Name of the workspace
+        :type workspace_name: str
+        :param style: Name of the style to set as default
+        :type style: str
+        :return: Tuple of (content, status_code)
+        :rtype: tuple
+        """
         layer = Layer(layer_name, default_style_name=style)
         return self.rest_service.update_layer(layer, workspace_name)
 
     def get_wms_layers(
         self, workspace_name: str, accept_languages: str | None = None
     ) -> Any | dict[str, Any]:
+        """
+        Get the capabilities of all WMS layers for a given workspace
+
+        :param workspace_name: Name of the workspace
+        :type workspace_name: str
+        :param accept_languages: Optional comma-separated list of preferred languages for localized content
+        :type accept_languages: str, optional
+        :return: Parsed WMS capabilities document
+        :rtype: Any or dict
+        """
         return self.ows_service.get_wms_layers(workspace_name, accept_languages)
 
     def get_wfs_layers(self, workspace_name: str) -> Any | dict[str, Any]:
+        """
+        Get the capabilities of all WFS layers for a given workspace
+
+        :param workspace_name: Name of the workspace
+        :type workspace_name: str
+        :return: Parsed WFS capabilities document
+        :rtype: Any or dict
+        """
         return self.ows_service.get_wfs_layers(workspace_name)
 
     def get_map(
@@ -1242,6 +1797,27 @@ class GeoServerCloud:
     ) -> ResponseWrapper | None:
         """
         WMS GetMap request
+
+        :param layers: List of layer names to render
+        :type layers: list of str
+        :param bbox: Bounding box as (minx, miny, maxx, maxy)
+        :type bbox: tuple of float
+        :param size: Image size as (width, height) in pixels
+        :type size: tuple of int
+        :param srs: Spatial reference system (default: "EPSG:2056")
+        :type srs: str, optional
+        :param format: Image format (default: "image/png")
+        :type format: str, optional
+        :param transparent: Whether the background should be transparent (default: True)
+        :type transparent: bool, optional
+        :param styles: List of style names to apply to the layers
+        :type styles: list of str, optional
+        :param language: Optional language code for localized content
+        :type language: str, optional
+        :param time: Optional time value for time-enabled layers
+        :type time: str, optional
+        :return: owslib.util.ResponseWrapper with the map image, or None
+        :rtype: ResponseWrapper, optional
         """
         if not self.wms:
             self.create_wms()
@@ -1279,6 +1855,29 @@ class GeoServerCloud:
     ) -> ResponseWrapper | None:
         """
         WMS GetFeatureInfo request
+
+        :param layers: List of layer names to query
+        :type layers: list of str
+        :param bbox: Bounding box as (minx, miny, maxx, maxy)
+        :type bbox: tuple of float
+        :param size: Image size as (width, height) in pixels
+        :type size: tuple of int
+        :param srs: Spatial reference system (default: "EPSG:2056")
+        :type srs: str, optional
+        :param info_format: Format of the returned feature info (default: "application/json")
+        :type info_format: str, optional
+        :param transparent: Whether the background should be transparent (default: True)
+        :type transparent: bool, optional
+        :param styles: List of style names to apply to the layers
+        :type styles: list of str, optional
+        :param xy: Pixel coordinates (x, y) to query (default: [0, 0])
+        :type xy: list of float, optional
+        :param time: Optional time value for time-enabled layers
+        :type time: str, optional
+        :param workspace_name: Optional workspace name
+        :type workspace_name: str, optional
+        :return: owslib.util.ResponseWrapper with the feature info, or None
+        :rtype: ResponseWrapper, optional
         """
         if not self.wms:
             self.create_wms(workspace_name)
@@ -1309,6 +1908,19 @@ class GeoServerCloud:
     ) -> Response:
         """
         WMS GetLegendGraphic request
+
+        :param layer: Name of the layer(s) to get a legend for
+        :type layer: str or list of str
+        :param format: Image format (default: "image/png")
+        :type format: str, optional
+        :param language: Optional language code for localized content
+        :type language: str, optional
+        :param style: Optional style name to use for the legend
+        :type style: str, optional
+        :param workspace_name: Optional workspace name
+        :type workspace_name: str, optional
+        :return: HTTP response with the legend image
+        :rtype: requests.Response
         """
         return self.ows_service.get_legend_graphic(
             layer, format, language, style, workspace_name
@@ -1357,8 +1969,22 @@ class GeoServerCloud:
         max_feature: int | None = None,
         format: str = "application/json",
     ) -> dict[str, Any] | str:
-        """WFS GetFeature request
+        """
+        WFS GetFeature request
         Return the feature(s) as dict if found, otherwise return the response content as string
+
+        :param workspace_name: Name of the workspace
+        :type workspace_name: str
+        :param type_name: Name of the feature type
+        :type type_name: str
+        :param feature_id: Optional feature id to fetch a single feature
+        :type feature_id: int, optional
+        :param max_feature: Maximum number of features to return
+        :type max_feature: int, optional
+        :param format: Response format (default: "application/json")
+        :type format: str, optional
+        :return: Feature(s) as a dict, or the response content as a string
+        :rtype: dict or str
         """
         # FIXME: we should consider also the global wfs endpoint
         return self.ows_service.get_feature(
@@ -1371,8 +1997,18 @@ class GeoServerCloud:
         type_name: str | None = None,
         format: str = "application/json",
     ) -> dict[str, Any] | str:
-        """WFS DescribeFeatureType request
+        """
+        WFS DescribeFeatureType request
         Return the feature type(s) as dict if found, otherwise return the response content as string
+
+        :param workspace_name: Optional workspace name
+        :type workspace_name: str, optional
+        :param type_name: Optional name of the feature type
+        :type type_name: str, optional
+        :param format: Response format (default: "application/json")
+        :type format: str, optional
+        :return: Feature type(s) as a dict, or the response content as a string
+        :rtype: dict or str
         """
         return self.ows_service.describe_feature_type(workspace_name, type_name, format)
 
@@ -1382,9 +2018,19 @@ class GeoServerCloud:
         type_name: str,
         property: str,
     ) -> dict | list | str:
-        """WFS GetPropertyValue request
+        """
+        WFS GetPropertyValue request
         Return the properties as dict (if one feature was found), a list (if multiple features were found),
         an empty dict if no feature was found or the response content as string
+
+        :param workspace_name: Name of the workspace
+        :type workspace_name: str
+        :param type_name: Name of the feature type
+        :type type_name: str
+        :param property: Name of the property to fetch
+        :type property: str
+        :return: Property value(s) as a dict or list, or the response content as a string
+        :rtype: dict or list or str
         """
         # FIXME: we should consider also the global wfs endpoint
         return self.ows_service.get_property_value(workspace_name, type_name, property)
@@ -1394,6 +2040,15 @@ class GeoServerCloud:
     ) -> tuple[str, int]:
         """
         Create a GeoServer user
+
+        :param user: Username
+        :type user: str
+        :param password: Password for the user
+        :type password: str
+        :param enabled: Whether the user should be enabled (default: True)
+        :type enabled: bool, optional
+        :return: Tuple of (content, status_code)
+        :rtype: tuple
         """
         return self.rest_service.create_user(user, password, enabled)
 
@@ -1402,42 +2057,85 @@ class GeoServerCloud:
     ) -> tuple[str, int]:
         """
         Update a GeoServer user
+
+        :param user: Username
+        :type user: str
+        :param password: New password for the user
+        :type password: str, optional
+        :param enabled: Whether the user should be enabled
+        :type enabled: bool, optional
+        :return: Tuple of (content, status_code)
+        :rtype: tuple
         """
         return self.rest_service.update_user(user, password, enabled)
 
     def delete_user(self, user: str) -> tuple[str, int]:
         """
         Delete a GeoServer user
+
+        :param user: Username
+        :type user: str
+        :return: Tuple of (content, status_code)
+        :rtype: tuple
         """
         return self.rest_service.delete_user(user)
 
     def create_role(self, role_name: str) -> tuple[str, int]:
         """
         Create a GeoServer role if it does not already exist
+
+        :param role_name: Name of the role
+        :type role_name: str
+        :return: Tuple of (content, status_code)
+        :rtype: tuple
         """
         return self.rest_service.create_role_if_not_exists(role_name)
 
     def delete_role(self, role_name: str) -> tuple[str, int]:
         """
         Delete a GeoServer role
+
+        :param role_name: Name of the role
+        :type role_name: str
+        :return: Tuple of (content, status_code)
+        :rtype: tuple
         """
         return self.rest_service.delete_role(role_name)
 
     def get_user_roles(self, user: str) -> tuple[list[str] | str, int]:
         """
         Get all roles assigned to a GeoServer user
+
+        :param user: Username
+        :type user: str
+        :return: Tuple of (roles, status_code)
+        :rtype: tuple
         """
         return self.rest_service.get_user_roles(user)
 
     def assign_role_to_user(self, user: str, role: str) -> tuple[str, int]:
         """
         Assign a role to a GeoServer user
+
+        :param user: Username
+        :type user: str
+        :param role: Name of the role
+        :type role: str
+        :return: Tuple of (content, status_code)
+        :rtype: tuple
         """
         return self.rest_service.assign_role_to_user(user, role)
 
     def remove_role_from_user(self, user: str, role: str) -> tuple[str, int]:
         """
         Remove a role from a GeoServer user
+
+        :param user: Username
+        :type user: str
+        :param role: Name of the role
+        :type role: str
+        :return: Tuple of (content, status_code)
+        :rtype: tuple
         """
         return self.rest_service.remove_role_from_user(user, role)
 
@@ -1451,6 +2149,19 @@ class GeoServerCloud:
     ) -> tuple[dict | str, int]:
         """
         Create a GeoServer ACL admin rule
+
+        :param priority: Rule priority (default: 0)
+        :type priority: int, optional
+        :param access: Access level, e.g. "ADMIN" (default: "ADMIN")
+        :type access: str, optional
+        :param role: Optional role the rule applies to
+        :type role: str, optional
+        :param user: Optional user the rule applies to
+        :type user: str, optional
+        :param workspace_name: Optional workspace the rule applies to
+        :type workspace_name: str, optional
+        :return: Tuple of (content, status_code)
+        :rtype: tuple
         """
         return self.rest_service.create_acl_admin_rule(
             priority, access, role, user, workspace_name
@@ -1459,18 +2170,29 @@ class GeoServerCloud:
     def delete_acl_admin_rule(self, id: int | str) -> tuple[str, int]:
         """
         Delete a GeoServer ACL admin rule by id
+
+        :param id: Id of the ACL admin rule
+        :type id: int or str
+        :return: Tuple of (content, status_code)
+        :rtype: tuple
         """
         return self.rest_service.delete_acl_admin_rule(str(id))
 
     def delete_all_acl_admin_rules(self) -> tuple[str, int]:
         """
         Delete all existing GeoServer ACL admin rules
+
+        :return: Tuple of (content, status_code)
+        :rtype: tuple
         """
         return self.rest_service.delete_all_acl_admin_rules()
 
     def get_acl_rules(self) -> tuple[dict[str, Any] | str, int]:
         """
         Return all GeoServer ACL data rules
+
+        :return: Tuple of (rules, status_code)
+        :rtype: tuple
         """
         return self.rest_service.get_acl_rules()
 
@@ -1484,7 +2206,22 @@ class GeoServerCloud:
         workspace_name: str | None = None,
     ) -> list[tuple[dict | str, int]]:
         """
-        Create ACL rules for multiple type of OGC requests
+        Create ACL rules for multiple types of OGC requests
+
+        :param requests: List of request types, e.g. ["GetMap", "GetFeatureInfo"]
+        :type requests: list of str
+        :param priority: Base priority for the rules (default: 0)
+        :type priority: int, optional
+        :param access: Access level, e.g. "DENY" (default: "DENY")
+        :type access: str, optional
+        :param role: Optional role the rules apply to
+        :type role: str, optional
+        :param service: Optional OGC service the rules apply to, e.g. "WMS"
+        :type service: str, optional
+        :param workspace_name: Optional workspace the rules apply to
+        :type workspace_name: str, optional
+        :return: List of tuples of (content, status_code), one per created rule
+        :rtype: list of tuple
         """
         return self.rest_service.create_acl_rules_for_requests(
             requests, priority, access, role, service, workspace_name
@@ -1502,6 +2239,23 @@ class GeoServerCloud:
     ) -> tuple[dict | str, int]:
         """
         Create a GeoServer ACL data rule
+
+        :param priority: Rule priority (default: 0)
+        :type priority: int, optional
+        :param access: Access level, e.g. "DENY" (default: "DENY")
+        :type access: str, optional
+        :param role: Optional role the rule applies to
+        :type role: str, optional
+        :param user: Optional user the rule applies to
+        :type user: str, optional
+        :param service: Optional OGC service the rule applies to, e.g. "WMS"
+        :type service: str, optional
+        :param request: Optional request type the rule applies to, e.g. "GetMap"
+        :type request: str, optional
+        :param workspace_name: Optional workspace the rule applies to
+        :type workspace_name: str, optional
+        :return: Tuple of (content, status_code)
+        :rtype: tuple
         """
         return self.rest_service.create_acl_rule(
             priority, access, role, user, service, request, workspace_name
@@ -1510,6 +2264,9 @@ class GeoServerCloud:
     def delete_all_acl_rules(self) -> tuple[str, int]:
         """
         Delete all existing GeoServer ACL data rules
+
+        :return: Tuple of (content, status_code)
+        :rtype: tuple
         """
         return self.rest_service.delete_all_acl_rules()
 
@@ -1517,5 +2274,10 @@ class GeoServerCloud:
         """
         Create a gridset for GeoWebCache for a given projection
         Supported EPSG codes are 2056, 21781 and 3857
+
+        :param epsg: EPSG code for the gridset
+        :type epsg: int
+        :return: Tuple of (content, status_code)
+        :rtype: tuple
         """
         return self.rest_service.create_gridset(epsg)
