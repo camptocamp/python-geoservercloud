@@ -34,7 +34,7 @@ def wmts_store_payload() -> dict[str, dict[str, Any]]:
             "capabilitiesURL": CAPABILITIES_URL,
             "workspace": {"name": WORKSPACE},
             "enabled": True,
-            "metadata": {"entry": {"@key": "useConnectionPooling", "text": True}},
+            "metadata": {"entry": [{"@key": "useConnectionPooling", "$": "true"}]},
         }
     }
 

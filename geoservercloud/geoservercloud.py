@@ -19,6 +19,7 @@ from geoservercloud.models.style import Style
 from geoservercloud.models.wmslayer import WmsLayer
 from geoservercloud.models.wmssettings import WmsSettings
 from geoservercloud.models.wmsstore import WmsStore
+from geoservercloud.models.wmtsstore import WmtsStore
 from geoservercloud.models.workspace import Workspace
 from geoservercloud.services import OwsService, RestService
 
@@ -620,11 +621,30 @@ class GeoServerCloud:
         workspace_name: str,
         name: str,
         capabilities: str,
+        enabled: bool = True,
+        default: bool | None = None,
+        disable_on_conn_failure: bool | None = None,
+        use_connection_pooling: bool | None = True,
+        max_connections: int | None = None,
+        read_timeout: int | None = None,
+        connect_timeout: int | None = None,
     ) -> tuple[str, int]:
         """
-        Create a cascaded WMTS store, or update it if it already exist.
+        Create a cascaded WMTS store, or update it if it already exists.
         """
-        return self.rest_service.create_wmts_store(workspace_name, name, capabilities)
+        wmts_store = WmtsStore(
+            workspace_name=workspace_name,
+            name=name,
+            capabilities_url=capabilities,
+            enabled=enabled,
+            default=default,
+            disable_on_conn_failure=disable_on_conn_failure,
+            use_connection_pooling=use_connection_pooling,
+            max_connections=max_connections,
+            read_timeout=read_timeout,
+            connect_timeout=connect_timeout,
+        )
+        return self.rest_service.create_wmts_store(workspace_name, wmts_store)
 
     def delete_wmts_store(
         self, workspace_name: str, wmts_store_name: str

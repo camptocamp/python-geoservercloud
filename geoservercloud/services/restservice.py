@@ -23,6 +23,7 @@ from geoservercloud.models.styles import Styles
 from geoservercloud.models.wmslayer import WmsLayer
 from geoservercloud.models.wmssettings import WmsSettings
 from geoservercloud.models.wmsstore import WmsStore
+from geoservercloud.models.wmtsstore import WmtsStore
 from geoservercloud.models.workspace import Workspace
 from geoservercloud.models.workspaces import Workspaces
 from geoservercloud.services.restclient import RestClient
@@ -213,21 +214,19 @@ class RestService:
         return response.content.decode(), response.status_code
 
     def create_wmts_store(
-        self,
-        workspace_name: str,
-        name: str,
-        capabilities: str,
+        self, workspace_name: str, wmts_store: WmtsStore
     ) -> tuple[str, int]:
-        payload = Templates.wmts_store(workspace_name, name, capabilities)
         if not self.resource_exists(
-            self.rest_endpoints.wmtsstore(workspace_name, name)
+            self.rest_endpoints.wmtsstore(workspace_name, wmts_store.name)
         ):
             response: Response = self.rest_client.post(
-                self.rest_endpoints.wmtsstores(workspace_name), json=payload
+                self.rest_endpoints.wmtsstores(workspace_name),
+                json=wmts_store.post_payload(),
             )
         else:
             response = self.rest_client.put(
-                self.rest_endpoints.wmtsstore(workspace_name, name), json=payload
+                self.rest_endpoints.wmtsstore(workspace_name, wmts_store.name),
+                json=wmts_store.put_payload(),
             )
         return response.content.decode(), response.status_code
 
