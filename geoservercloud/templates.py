@@ -5,21 +5,6 @@ from geoservercloud.utils import EPSG_BBOX
 
 class Templates:
     @staticmethod
-    def wmts_store(
-        workspace: str, name: str, capabilities: str
-    ) -> dict[str, dict[str, Any]]:
-        return {
-            "wmtsStore": {
-                "name": name,
-                "type": "WMTS",
-                "capabilitiesURL": capabilities,
-                "workspace": {"name": workspace},
-                "enabled": True,
-                "metadata": {"entry": {"@key": "useConnectionPooling", "text": True}},
-            }
-        }
-
-    @staticmethod
     def geom_point_attribute() -> dict[str, Any]:
         return {
             "geom": {
