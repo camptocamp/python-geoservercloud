@@ -128,6 +128,92 @@ def test_create_gridset(geoserver: GeoServerCloud) -> None:
         assert code == 201
 
 
+def test_create_gwc_blobstore(geoserver: GeoServerCloud) -> None:
+    with responses.RequestsMock() as rsps:
+        rsps.put(
+            url=f"{geoserver.url}/gwc/rest/blobstores/test_blobstore.json",
+            status=200,
+            body=b"",
+            match=[
+                responses.matchers.json_params_matcher(
+                    {
+                        "S3BlobStore": {
+                            "id": "test_blobstore",
+                            "bucket": "test_bucket",
+                            "maxConnections": 10,
+                        }
+                    }
+                )
+            ],
+        )
+
+        content, code = geoserver.create_gwc_blobstore(
+            id="test_blobstore",
+            bucket="test_bucket",
+            max_connections=10,
+        )
+        assert content == ""
+        assert code == 200
+
+
+def test_create_gwc_blobstore_full_payload(geoserver: GeoServerCloud) -> None:
+    with responses.RequestsMock() as rsps:
+        rsps.put(
+            url=f"{geoserver.url}/gwc/rest/blobstores/test_blobstore.json",
+            status=200,
+            body=b"",
+            match=[
+                responses.matchers.json_params_matcher(
+                    {
+                        "S3BlobStore": {
+                            "id": "test_blobstore",
+                            "bucket": "test_bucket",
+                            "maxConnections": 10,
+                            "awsAccessKey": "access_key",
+                            "awsSecretKey": "secret_key",
+                            "prefix": "tiles",
+                            "enabled": True,
+                            "default": False,
+                            "access": "PUBLIC",
+                            "useHTTPS": True,
+                            "proxyDomain": "domain",
+                            "proxyWorkstation": "workstation",
+                            "proxyHost": "proxy.example.com",
+                            "proxyPort": "8080",
+                            "proxyUsername": "proxy_user",
+                            "proxyPassword": "proxy_pass",
+                            "useGzip": True,
+                            "endpoint": "s3.example.com",
+                        }
+                    }
+                )
+            ],
+        )
+
+        content, code = geoserver.create_gwc_blobstore(
+            id="test_blobstore",
+            bucket="test_bucket",
+            max_connections=10,
+            aws_access_key="access_key",
+            aws_secret_key="secret_key",
+            prefix="tiles",
+            enabled=True,
+            default=False,
+            access="PUBLIC",
+            use_https=True,
+            proxy_domain="domain",
+            proxy_workstation="workstation",
+            proxy_host="proxy.example.com",
+            proxy_port="8080",
+            proxy_username="proxy_user",
+            proxy_password="proxy_pass",
+            use_gzip=True,
+            endpoint="s3.example.com",
+        )
+        assert content == ""
+        assert code == 200
+
+
 def test_get_tile(geoserver: GeoServerCloud) -> None:
     with responses.RequestsMock() as rsps:
         rsps.get(

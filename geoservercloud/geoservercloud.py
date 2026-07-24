@@ -15,6 +15,7 @@ from geoservercloud.models.featuretype import FeatureType
 from geoservercloud.models.gwclayer import GridSubset, GwcLayer, ParameterFilter
 from geoservercloud.models.layer import Layer
 from geoservercloud.models.layergroup import LayerGroup
+from geoservercloud.models.s3blobstore import S3Blobstore
 from geoservercloud.models.style import Style
 from geoservercloud.models.wmslayer import WmsLayer
 from geoservercloud.models.wmssettings import WmsSettings
@@ -2281,3 +2282,71 @@ class GeoServerCloud:
         :rtype: tuple
         """
         return self.rest_service.create_gridset(epsg)
+
+    def create_gwc_blobstore(
+        self,
+        id: str,
+        bucket: str,
+        max_connections: int,
+        aws_access_key: str | None = None,
+        aws_secret_key: str | None = None,
+        prefix: str | None = None,
+        enabled: bool | None = None,
+        default: bool | None = None,
+        access: str | None = None,
+        use_https: bool | None = None,
+        proxy_domain: str | None = None,
+        proxy_workstation: str | None = None,
+        proxy_host: str | None = None,
+        proxy_port: str | None = None,
+        proxy_username: str | None = None,
+        proxy_password: str | None = None,
+        use_gzip: bool | None = None,
+        endpoint: str | None = None,
+    ) -> tuple[str, int]:
+        """
+        Create or update a blobstore for GeoWebCache cache storage
+
+        :param id: Identifier of the blobstore
+        :param bucket: Name of the AWS S3 bucket where to store tiles
+        :param max_connections: Maximum number of allowed open HTTP connections
+        :param aws_access_key: AWS access key, not required if using anonymous or role-based credentials
+        :param aws_secret_key: AWS secret key, not required if using anonymous or role-based credentials
+        :param prefix: Optional base prefix path to use as the root to store tiles under the bucket
+        :param enabled: Whether the blobstore is enabled
+        :param default: Whether this blobstore is the default one
+        :param access: Access control for stored tiles, either "PUBLIC" or "PRIVATE"
+        :param use_https: Whether to use HTTPS (True) or HTTP (False) when talking to S3 (GeoServer defaults to True if omitted)
+        :param proxy_domain: Optional Windows domain name for configuring an NTLM proxy
+        :param proxy_workstation: Optional Windows workstation name for configuring NTLM proxy support
+        :param proxy_host: Optional proxy host the client will connect through
+        :param proxy_port: Optional proxy port the client will connect through
+        :param proxy_username: Optional proxy user name to use if connecting through a proxy
+        :param proxy_password: Optional proxy password to use when connecting through a proxy
+        :param use_gzip: Whether to use gzip compression
+        :param endpoint: Host of the S3-compatible server (if not AWS)
+        :return: Tuple of (content, status_code)
+        :rtype: tuple
+        """
+
+        blobstore = S3Blobstore(
+            id=id,
+            bucket=bucket,
+            max_connections=max_connections,
+            aws_access_key=aws_access_key,
+            aws_secret_key=aws_secret_key,
+            prefix=prefix,
+            enabled=enabled,
+            default=default,
+            access=access,
+            use_https=use_https,
+            proxy_domain=proxy_domain,
+            proxy_workstation=proxy_workstation,
+            proxy_host=proxy_host,
+            proxy_port=proxy_port,
+            proxy_username=proxy_username,
+            proxy_password=proxy_password,
+            use_gzip=use_gzip,
+            endpoint=endpoint,
+        )
+        return self.rest_service.create_gwc_blobstore(blobstore)
