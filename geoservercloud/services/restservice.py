@@ -18,6 +18,7 @@ from geoservercloud.models.layer import Layer
 from geoservercloud.models.layergroup import LayerGroup
 from geoservercloud.models.layergroups import LayerGroups
 from geoservercloud.models.resourcedirectory import ResourceDirectory
+from geoservercloud.models.s3blobstore import S3Blobstore
 from geoservercloud.models.style import Style
 from geoservercloud.models.styles import Styles
 from geoservercloud.models.wmslayer import WmsLayer
@@ -341,6 +342,13 @@ class RestService:
             raise ValueError(f"No gridset definition found for EPSG:{epsg}")
         response: Response = self.rest_client.put(
             self.gwc_endpoints.gridset(epsg), data=data, headers=headers
+        )
+        return response.content.decode(), response.status_code
+
+    def create_gwc_blobstore(self, blobstore: S3Blobstore) -> tuple[str, int]:
+        response: Response = self.rest_client.put(
+            self.gwc_endpoints.blobstore(blobstore.id),
+            json=blobstore.put_payload(),
         )
         return response.content.decode(), response.status_code
 
@@ -898,6 +906,12 @@ class RestService:
 
         def gridset(self, epsg: int) -> str:
             return f"{self.base_url}/gridsets/EPSG:{str(epsg)}.xml"
+
+        def blobstores(self) -> str:
+            return f"{self.base_url}/blobstores.json"
+
+        def blobstore(self, id: str) -> str:
+            return f"{self.base_url}/blobstores/{id}.json"
 
     class RestEndpoints:
         def __init__(self, base_url: str = "/rest") -> None:
