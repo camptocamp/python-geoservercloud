@@ -136,7 +136,11 @@ class GwcLayer(EntityModel):
                 if self.grid_subsets is not None
                 else None
             ),
-            "mimeFormats": self.mime_formats,
+            "mimeFormats": (
+                [{"string": mime_format} for mime_format in self.mime_formats]
+                if self.mime_formats is not None
+                else None
+            ),
             "parameterFilters": (
                 [item.asdict() for item in self.parameter_filters]
                 if self.parameter_filters is not None

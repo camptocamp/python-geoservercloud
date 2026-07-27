@@ -5,6 +5,7 @@ from geoservercloud import GeoServerCloud
 WORKSPACE = "test_workspace"
 LAYER = "test_layer"
 EPSG = 3857
+MIME_FORMAT = "image/png"
 CAPABILITIES = """<?xml version="1.0" encoding="UTF-8"?>
 <Capabilities xmlns="http://www.opengis.net/wmts/1.0" version="1.0.0" xmlns:ows="http://www.opengis.net/ows/1.1">
     <Contents>
@@ -52,13 +53,19 @@ def test_publish_gwc_layer(geoserver: GeoServerCloud) -> None:
                             "gridSubsets": {
                                 "gridSubset": [{"gridSetName": f"EPSG:{EPSG}"}]
                             },
+                            "mimeFormats": [{"string": MIME_FORMAT}],
                         }
                     }
                 )
             ],
         )
 
-        content, code = geoserver.publish_gwc_layer(WORKSPACE, LAYER, EPSG)
+        content, code = geoserver.publish_gwc_layer(
+            workspace_name=WORKSPACE,
+            layer=LAYER,
+            epsg=EPSG,
+            mime_formats=[MIME_FORMAT],
+        )
         assert content == "layer saved"
         assert code == 200
 
