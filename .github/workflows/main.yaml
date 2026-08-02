@@ -18,20 +18,20 @@ jobs:
     timeout-minutes: 15
     if: "!startsWith(github.event.head_commit.message, '[skip ci] ')"
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: camptocamp/initialise-gopass-summon-action@v2
         with:
           ci-gpg-private-key: ${{secrets.CI_GPG_PRIVATE_KEY}}
           github-gopass-ci-token: ${{secrets.GOPASS_CI_GITHUB_TOKEN}}
           patterns: pypi docker
         if: env.HAS_SECRETS == 'HAS_SECRETS'
-      - uses: actions/setup-python@v6
+      - uses: actions/setup-python@v7
         with:
           python-version: "3.14"
       - run: echo "${HOME}/.local/bin" >> ${GITHUB_PATH}
       - run: python3 -m pip install --requirement=ci/requirements.txt
         name: Install CI requirements
-      - uses: actions/cache@v5
+      - uses: actions/cache@v6
         with:
           path: ~/.cache/pre-commit
           key: pre-commit-${{ hashFiles('.pre-commit-config.yaml') }}
@@ -80,10 +80,10 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Setup Python
-        uses: actions/setup-python@v6
+        uses: actions/setup-python@v7
         with:
           python-version: "3.14"
 
