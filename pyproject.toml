@@ -16,11 +16,11 @@ requests = "2.34.2"
 OWSLib = "0.35.0"
 xmltodict = "1.0.4"
 psycopg2-binary = "^2.9.9"
-sqlalchemy = "2.0.51"
+sqlalchemy = "2.0.52"
 pytest = "9.0.3"
 
 [tool.poetry.group.dev.dependencies]
-responses = "0.26.2"
+responses = "0.26.3"
 coverage = "7.14.3"
 sphinx = "<8.2.4"
 sphinx-rtd-theme = "3.1.0"
