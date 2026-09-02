@@ -375,18 +375,18 @@ accepts flexible connection parameters, allowing to create any type of datastore
 <dd class="field-even"><p></p></dd>
 </dl>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">create_datastore</span><span class="p">(</span>
-<span class="gp">... </span>    <span class="n">workspace_name</span><span class="o">=</span><span class="s2">&quot;myworkspace&quot;</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">datastore_name</span><span class="o">=</span><span class="s2">&quot;my_store&quot;</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">datastore_type</span><span class="o">=</span><span class="s2">&quot;PostGIS&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">workspace_name</span><span class="o">=</span><span class="s2">"myworkspace"</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">datastore_name</span><span class="o">=</span><span class="s2">"my_store"</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">datastore_type</span><span class="o">=</span><span class="s2">"PostGIS"</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">connection_parameters</span><span class="o">=</span><span class="p">{</span>
-<span class="gp">... </span>        <span class="s2">&quot;dbtype&quot;</span><span class="p">:</span> <span class="s2">&quot;postgis&quot;</span><span class="p">,</span>
-<span class="gp">... </span>        <span class="s2">&quot;host&quot;</span><span class="p">:</span> <span class="s2">&quot;localhost&quot;</span><span class="p">,</span>
-<span class="gp">... </span>        <span class="s2">&quot;port&quot;</span><span class="p">:</span> <span class="mi">5432</span><span class="p">,</span>
-<span class="gp">... </span>        <span class="s2">&quot;database&quot;</span><span class="p">:</span> <span class="s2">&quot;mydb&quot;</span><span class="p">,</span>
-<span class="gp">... </span>        <span class="s2">&quot;user&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span>
-<span class="gp">... </span>        <span class="s2">&quot;passwd&quot;</span><span class="p">:</span> <span class="s2">&quot;password&quot;</span><span class="p">,</span>
-<span class="gp">... </span>        <span class="s2">&quot;schema&quot;</span><span class="p">:</span> <span class="s2">&quot;public&quot;</span><span class="p">,</span>
-<span class="gp">... </span>        <span class="s2">&quot;Expose primary keys&quot;</span><span class="p">:</span> <span class="s2">&quot;true&quot;</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="s2">"dbtype"</span><span class="p">:</span> <span class="s2">"postgis"</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="s2">"host"</span><span class="p">:</span> <span class="s2">"localhost"</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="s2">"port"</span><span class="p">:</span> <span class="mi">5432</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="s2">"database"</span><span class="p">:</span> <span class="s2">"mydb"</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="s2">"user"</span><span class="p">:</span> <span class="s2">"user"</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="s2">"passwd"</span><span class="p">:</span> <span class="s2">"password"</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="s2">"schema"</span><span class="p">:</span> <span class="s2">"public"</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="s2">"Expose primary keys"</span><span class="p">:</span> <span class="s2">"true"</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="p">}</span>
 <span class="gp">... </span><span class="p">)</span>
 </pre></div>
@@ -424,39 +424,39 @@ accepts flexible connection parameters, allowing to create any type of datastore
 <dd class="field-even"><p></p></dd>
 </dl>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">create_feature_type</span><span class="p">(</span>
-<span class="gp">... </span>    <span class="n">layer_name</span><span class="o">=</span><span class="s2">&quot;mylayer&quot;</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">workspace_name</span><span class="o">=</span><span class="s2">&quot;myworkspace&quot;</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">datastore_name</span><span class="o">=</span><span class="s2">&quot;mystore&quot;</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">native_name</span><span class="o">=</span><span class="s2">&quot;nativename&quot;</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">title</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;en&quot;</span><span class="p">:</span> <span class="s2">&quot;English Title&quot;</span><span class="p">},</span>
-<span class="gp">... </span>    <span class="n">abstract</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;en&quot;</span><span class="p">:</span> <span class="s2">&quot;English Abstract&quot;</span><span class="p">},</span>
+<span class="gp">... </span>    <span class="n">layer_name</span><span class="o">=</span><span class="s2">"mylayer"</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">workspace_name</span><span class="o">=</span><span class="s2">"myworkspace"</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">datastore_name</span><span class="o">=</span><span class="s2">"mystore"</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">native_name</span><span class="o">=</span><span class="s2">"nativename"</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">title</span><span class="o">=</span><span class="p">{</span><span class="s2">"en"</span><span class="p">:</span> <span class="s2">"English Title"</span><span class="p">},</span>
+<span class="gp">... </span>    <span class="n">abstract</span><span class="o">=</span><span class="p">{</span><span class="s2">"en"</span><span class="p">:</span> <span class="s2">"English Abstract"</span><span class="p">},</span>
 <span class="gp">... </span>    <span class="n">attributes</span><span class="o">=</span><span class="p">{</span>
-<span class="gp">... </span>        <span class="s2">&quot;geom&quot;</span><span class="p">:</span> <span class="p">{</span>
-<span class="gp">... </span>            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;Point&quot;</span><span class="p">,</span>
-<span class="gp">... </span>            <span class="s2">&quot;required&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="s2">"geom"</span><span class="p">:</span> <span class="p">{</span>
+<span class="gp">... </span>            <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"Point"</span><span class="p">,</span>
+<span class="gp">... </span>            <span class="s2">"required"</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
 <span class="gp">... </span>        <span class="p">},</span>
-<span class="gp">... </span>        <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="p">{</span>
-<span class="gp">... </span>            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;integer&quot;</span><span class="p">,</span>
-<span class="gp">... </span>            <span class="s2">&quot;required&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="s2">"id"</span><span class="p">:</span> <span class="p">{</span>
+<span class="gp">... </span>            <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"integer"</span><span class="p">,</span>
+<span class="gp">... </span>            <span class="s2">"required"</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
 <span class="gp">... </span>        <span class="p">},</span>
-<span class="gp">... </span>        <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="p">{</span>
-<span class="gp">... </span>            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
-<span class="gp">... </span>            <span class="s2">&quot;required&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="s2">"title"</span><span class="p">:</span> <span class="p">{</span>
+<span class="gp">... </span>            <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"string"</span><span class="p">,</span>
+<span class="gp">... </span>            <span class="s2">"required"</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
 <span class="gp">... </span>             <span class="p">},</span>
-<span class="gp">... </span>        <span class="s2">&quot;timestamp&quot;</span><span class="p">:</span> <span class="p">{</span>
-<span class="gp">... </span>            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;datetime&quot;</span><span class="p">,</span>
-<span class="gp">... </span>            <span class="s2">&quot;required&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="s2">"timestamp"</span><span class="p">:</span> <span class="p">{</span>
+<span class="gp">... </span>            <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"datetime"</span><span class="p">,</span>
+<span class="gp">... </span>            <span class="s2">"required"</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
 <span class="gp">... </span>        <span class="p">},</span>
 <span class="gp">... </span>    <span class="p">},</span>
 <span class="gp">... </span>    <span class="n">epsg</span><span class="o">=</span><span class="mi">4326</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">keywords</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;example&quot;</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="n">keywords</span><span class="o">=</span><span class="p">[</span><span class="s2">"example"</span><span class="p">],</span>
 <span class="gp">... </span>    <span class="n">time_dimension_info</span><span class="o">=</span><span class="n">TimeDimensionInfo</span><span class="p">(</span>
-<span class="gp">... </span>        <span class="n">attribute</span><span class="o">=</span><span class="s2">&quot;timestamp&quot;</span><span class="p">,</span>
-<span class="gp">... </span>        <span class="n">presentation</span><span class="o">=</span><span class="s2">&quot;LIST&quot;</span><span class="p">,</span>
-<span class="gp">... </span>        <span class="n">default_value_strategy</span><span class="o">=</span><span class="s2">&quot;MAXIMUM&quot;</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="n">attribute</span><span class="o">=</span><span class="s2">"timestamp"</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="n">presentation</span><span class="o">=</span><span class="s2">"LIST"</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="n">default_value_strategy</span><span class="o">=</span><span class="s2">"MAXIMUM"</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="p">),</span>
-<span class="gp">... </span>    <span class="n">layer_links</span><span class="o">=</span><span class="p">[{</span><span class="s1">&#39;content&#39;</span><span class="p">:</span><span class="s2">&quot;mymetadataurl&quot;</span><span class="p">,</span> <span class="s1">&#39;metadataType&#39;</span><span class="p">:</span><span class="s2">&quot;ISO19115:2003&quot;</span><span class="p">,</span> <span class="s1">&#39;type&#39;</span><span class="p">:</span><span class="s2">&quot;text/xml&quot;</span><span class="p">}],</span>
-<span class="gp">... </span>    <span class="n">cql_filter</span><span class="o">=</span><span class="s2">&quot;key=&#39;Value&#39;&quot;</span>
+<span class="gp">... </span>    <span class="n">layer_links</span><span class="o">=</span><span class="p">[{</span><span class="s1">'content'</span><span class="p">:</span><span class="s2">"mymetadataurl"</span><span class="p">,</span> <span class="s1">'metadataType'</span><span class="p">:</span><span class="s2">"ISO19115:2003"</span><span class="p">,</span> <span class="s1">'type'</span><span class="p">:</span><span class="s2">"text/xml"</span><span class="p">}],</span>
+<span class="gp">... </span>    <span class="n">cql_filter</span><span class="o">=</span><span class="s2">"key='Value'"</span>
 <span class="gp">... </span><span class="p">)</span>
 </pre></div>
 </div>
@@ -674,11 +674,11 @@ Calls /workspaces/{workspace_name}/coveragestores/{coveragestore_name}/file.imag
 <dd class="field-even"><p></p></dd>
 </dl>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">create_pmtiles_datastore</span><span class="p">(</span>
-<span class="gp">... </span>    <span class="n">workspace_name</span><span class="o">=</span><span class="s2">&quot;pmtiles_workspace&quot;</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">datastore_name</span><span class="o">=</span><span class="s2">&quot;pmtiles_store&quot;</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">pmtiles_url</span><span class="o">=</span><span class="s2">&quot;file:///mnt/pmtiles/mypmtilesfile.pmtiles&quot;</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">description</span><span class="o">=</span><span class="s2">&quot;My PMTiles datastore&quot;</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">range_reader_provider</span><span class="o">=</span><span class="s2">&quot;file&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">workspace_name</span><span class="o">=</span><span class="s2">"pmtiles_workspace"</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">datastore_name</span><span class="o">=</span><span class="s2">"pmtiles_store"</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">pmtiles_url</span><span class="o">=</span><span class="s2">"file:///mnt/pmtiles/mypmtilesfile.pmtiles"</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">description</span><span class="o">=</span><span class="s2">"My PMTiles datastore"</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">range_reader_provider</span><span class="o">=</span><span class="s2">"file"</span><span class="p">,</span>
 <span class="gp">... </span><span class="p">)</span>
 </pre></div>
 </div>
