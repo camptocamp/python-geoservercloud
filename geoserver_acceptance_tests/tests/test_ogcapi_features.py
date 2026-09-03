@@ -14,12 +14,44 @@ Tests verify compliance with OGC API Features Core specification:
 
 import json
 from collections.abc import Generator
+from xml.etree import ElementTree
 
 import pytest
 from sqlalchemy import Connection
 from sqlalchemy.sql import text
 
 from geoservercloud import GeoServerCloud
+
+WFS_SETTINGS_PATH = "/rest/services/wfs/settings"
+
+PROPERTY_SELECTION_CONFORMANCE = (
+    "http://www.opengis.net/spec/ogcapi-features-6/1.0/conf/properties-features"
+)
+
+XML_HEADERS = {"Content-Type": "application/xml"}
+
+CONFORMANCE_SETTINGS = """
+<wfs>
+  <metadata>
+    <entry key="ogcapiFeatures">
+      <ogcapiFeatures>
+        <core>true</core>
+        <propertySelection>true</propertySelection>
+      </ogcapiFeatures>
+    </entry>
+  </metadata>
+</wfs>
+"""
+
+DEFAULT_CONFORMANCE_SETTINGS = """
+<wfs>
+  <metadata>
+    <entry key="ogcapiFeatures">
+      <ogcapiFeatures/>
+    </entry>
+  </metadata>
+</wfs>
+"""
 
 
 @pytest.fixture()
@@ -399,3 +431,88 @@ def test_ogcapi_conformance(ogcapi_workspace: str, geoserver_ogcapi_workspace):
     assert any(
         "ogcapi-features" in cc or "features/core" in cc for cc in conformance_classes
     )
+
+
+@pytest.fixture()
+def wfs_ogcapi_conformance(geoserver: GeoServerCloud) -> Generator[None, None, None]:
+    """Leaves the OGC API Features conformance settings back at their defaults."""
+    yield
+    geoserver.rest_service.rest_client.put(
+        f"{WFS_SETTINGS_PATH}.xml",
+        headers=XML_HEADERS,
+        data=DEFAULT_CONFORMANCE_SETTINGS,
+    )
+
+
+def read_conformance_settings(geoserver: GeoServerCloud) -> ElementTree.Element:
+    """
+    Returns the ogcapiFeatures conformance element of the WFS settings, failing if
+    the REST API answered with the object rendered as a string instead.
+    """
+    response = geoserver.rest_service.rest_client.get(f"{WFS_SETTINGS_PATH}.xml")
+    assert response.status_code == 200
+
+    settings = ElementTree.fromstring(response.content)
+    entry = settings.find("./metadata/entry[@key='ogcapiFeatures']")
+    assert entry is not None, "the ogcapiFeatures metadata entry is missing"
+    assert not (entry.text or "").strip(), (
+        "the conformance object was stored as a string instead of an object: "
+        f"{entry.text!r}"
+    )
+
+    conformance = entry.find("ogcapiFeatures")
+    assert conformance is not None, "the ogcapiFeatures metadata entry has no object"
+    return conformance
+
+
+def test_wfs_settings_rest_roundtrip_preserves_ogcapi_conformance(
+    geoserver: GeoServerCloud, wfs_ogcapi_conformance: None
+):
+    """
+    Reading the WFS settings and writing the same document back must not replace the OGC API Features conformance
+    object with the string returned by its toString(), which later breaks the service with a ClassCastException.
+
+    See https://github.com/geoserver/geoserver-cloud/issues/872
+    """
+    geoserver.rest_service.rest_client.put(
+        f"{WFS_SETTINGS_PATH}.xml", headers=XML_HEADERS, data=CONFORMANCE_SETTINGS
+    )
+
+    conformance = read_conformance_settings(geoserver)
+    assert conformance.findtext("core") == "true"
+    assert conformance.findtext("propertySelection") == "true"
+
+    # the round trip from the issue: read the settings and write them back unchanged
+    settings = geoserver.rest_service.rest_client.get(f"{WFS_SETTINGS_PATH}.xml")
+    geoserver.rest_service.rest_client.put(
+        f"{WFS_SETTINGS_PATH}.xml", headers=XML_HEADERS, data=settings.content
+    )
+
+    conformance = read_conformance_settings(geoserver)
+    assert conformance.findtext("core") == "true"
+    assert conformance.findtext("propertySelection") == "true"
+
+
+def test_ogcapi_conformance_after_wfs_settings_rest_roundtrip(
+    geoserver: GeoServerCloud, wfs_ogcapi_conformance: None
+):
+    """
+    The OGC API Features service must still answer after the WFS settings went through a REST round trip.
+
+    See https://github.com/geoserver/geoserver-cloud/issues/872
+    """
+    geoserver.rest_service.rest_client.put(
+        f"{WFS_SETTINGS_PATH}.xml", headers=XML_HEADERS, data=CONFORMANCE_SETTINGS
+    )
+    settings = geoserver.rest_service.rest_client.get(f"{WFS_SETTINGS_PATH}.xml")
+    geoserver.rest_service.rest_client.put(
+        f"{WFS_SETTINGS_PATH}.xml", headers=XML_HEADERS, data=settings.content
+    )
+
+    response = geoserver.rest_service.rest_client.get(
+        "/ogc/features/v1/conformance", params={"f": "application/json"}
+    )
+    assert response.status_code == 200
+
+    conformance_classes = json.loads(response.content.decode("utf-8"))["conformsTo"]
+    assert PROPERTY_SELECTION_CONFORMANCE in conformance_classes
