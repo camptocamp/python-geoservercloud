@@ -176,15 +176,6 @@ def test_create_wmts_layer_already_exists(
             f"{geoserver.url}/rest/workspaces/{WORKSPACE}/wmtsstores/{STORE}/layers/{LAYER}.json",
             status=200,
         )
-        rsps.delete(
-            f"{geoserver.url}/rest/workspaces/{WORKSPACE}/wmtsstores/{STORE}/layers/{LAYER}.json",
-            status=200,
-            match=[responses.matchers.query_param_matcher({"recurse": "true"})],
-        )
-        rsps.delete(
-            url=f"{geoserver.url}/gwc/rest/layers/{WORKSPACE}:{LAYER}.json",
-            status=200,
-        )
         rsps.get(
             f"{geoserver.url}/rest/workspaces/{WORKSPACE}/wmtsstores/{STORE}.json",
             status=200,
@@ -196,8 +187,8 @@ def test_create_wmts_layer_already_exists(
             body=CAPABILITIES,
             headers={"Content-Type": "application/xml"},
         )
-        rsps.post(
-            f"{geoserver.url}/rest/workspaces/{WORKSPACE}/wmtsstores/{STORE}/layers.json",
+        rsps.put(
+            f"{geoserver.url}/rest/workspaces/{WORKSPACE}/wmtsstores/{STORE}/layers/{LAYER}.json",
             match=[responses.matchers.json_params_matcher(wmts_layer_payload)],
             status=201,
             body=b"test_layer",
