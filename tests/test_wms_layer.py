@@ -126,16 +126,10 @@ def test_update_wms_layer(
             f"{geoserver.url}/rest/workspaces/{WORKSPACE}/wmsstores/{STORE}/wmslayers/{LAYER}.json",
             status=200,
         )
-        rsps.delete(
+        rsps.put(
             f"{geoserver.url}/rest/workspaces/{WORKSPACE}/wmsstores/{STORE}/wmslayers/{LAYER}.json",
-            status=200,
-            body=b"",
-            match=[responses.matchers.query_param_matcher({"recurse": "true"})],
-        )
-        rsps.post(
-            f"{geoserver.url}/rest/workspaces/{WORKSPACE}/wmsstores/{STORE}/wmslayers.json",
             match=[responses.matchers.json_params_matcher(wms_layer_post_payload)],
-            status=201,
+            status=200,
             body=b"",
         )
         content, code = geoserver.create_wms_layer(
@@ -145,7 +139,7 @@ def test_update_wms_layer(
         )
 
         assert content == ""
-        assert code == 201
+        assert code == 200
 
 
 def test_delete_wms_layer(geoserver: GeoServerCloud) -> None:
