@@ -801,7 +801,7 @@ class GeoServerCloud:
     ) -> tuple[str, int]:
         """
         Publish a remote WMS layer.
-        If it already exists, delete and recreate it (update is not supported by GeoServer)
+        If it already exists, update it in place, keeping the fields absent from the payload.
 
         :param workspace_name: Name of the workspace
         :type workspace_name: str
@@ -1477,7 +1477,8 @@ class GeoServerCloud:
         international_abstract: dict[str, str] | None = None,
     ) -> tuple[str, int]:
         """
-        Publish a remote WMTS layer (first delete it if it already exists)
+        Publish a remote WMTS layer.
+        If it already exists, update it in place, keeping the fields absent from the payload.
 
         :param workspace_name: Name of the workspace
         :type workspace_name: str

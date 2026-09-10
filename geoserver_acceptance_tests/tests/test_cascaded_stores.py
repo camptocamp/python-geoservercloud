@@ -120,3 +120,99 @@ def test_cascaded_wmts(geoserver_factory):
     )
     assert content == ""
     assert status == 200
+
+
+def test_cascaded_wms_republish_keeps_the_layer(geoserver_factory):
+    """Publishing a cascaded WMS layer that already exists updates it instead of replacing it."""
+    workspace = "test_cascaded_wms_republish"
+    wms_store = "test_cascaded_wms_republish_store"
+    wms_url = (
+        "https://wms.geo.admin.ch/?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities"
+    )
+    wms_layer = "ch.swisstopo.swissboundaries3d-gemeinde-flaeche.fill"
+    title = "title set outside the publish payload"
+    geoserver: GeoServerCloud = geoserver_factory(workspace)
+
+    # Create WMS store
+    content, status = geoserver.create_wms_store(
+        workspace_name=workspace,
+        wms_store_name=wms_store,
+        capabilities_url=wms_url,
+    )
+    assert status == 201
+
+    # Publish layer
+    content, status = geoserver.create_wms_layer(
+        workspace_name=workspace,
+        wms_store_name=wms_store,
+        native_layer_name=wms_layer,
+    )
+    assert status == 201
+
+    # Set a title, a setting the publish payload never sends
+    geoserver.rest_service.rest_client.put(
+        f"/rest/workspaces/{workspace}/wmsstores/{wms_store}/wmslayers/{wms_layer}.json",
+        json={"wmsLayer": {"title": title}},
+    )
+
+    # Publish the same layer again
+    content, status = geoserver.create_wms_layer(
+        workspace_name=workspace,
+        wms_store_name=wms_store,
+        native_layer_name=wms_layer,
+    )
+    assert status == 200
+
+    # The title survives, which a replaced layer would not have
+    content, status = geoserver.get_wms_layer(
+        workspace_name=workspace, wms_store_name=wms_store, wms_layer_name=wms_layer
+    )
+    assert status == 200
+    assert content["title"] == title
+
+
+def test_cascaded_wmts_republish_keeps_the_layer(geoserver_factory):
+    """Publishing a cascaded WMTS layer that already exists updates it instead of replacing it."""
+    workspace = "test_cascaded_wmts_republish"
+    wmts_store = "test_cascaded_wmts_republish_store"
+    wmts_url = "https://wmts.geo.admin.ch/EPSG/4326/1.0.0/WMTSCapabilities.xml"
+    wmts_layer = "ch.swisstopo.pixelkarte-grau"
+    title = "title set outside the publish payload"
+    geoserver: GeoServerCloud = geoserver_factory(workspace)
+    layer_path = (
+        f"/rest/workspaces/{workspace}/wmtsstores/{wmts_store}/layers/{wmts_layer}.json"
+    )
+
+    # Create WMTS store
+    content, status = geoserver.create_wmts_store(
+        workspace_name=workspace,
+        name=wmts_store,
+        capabilities=wmts_url,
+    )
+    assert status == 201
+
+    # Publish layer
+    content, status = geoserver.create_wmts_layer(
+        workspace_name=workspace,
+        wmts_store=wmts_store,
+        native_layer=wmts_layer,
+    )
+    assert status == 201
+
+    # Set a title, a setting the publish payload never sends
+    geoserver.rest_service.rest_client.put(
+        layer_path, json={"wmtsLayer": {"title": title}}
+    )
+
+    # Publish the same layer again
+    content, status = geoserver.create_wmts_layer(
+        workspace_name=workspace,
+        wmts_store=wmts_store,
+        native_layer=wmts_layer,
+    )
+    assert status == 200
+
+    # The title survives, which a replaced layer would not have
+    response = geoserver.rest_service.rest_client.get(layer_path)
+    assert response.status_code == 200
+    assert response.json()["wmtsLayer"]["title"] == title

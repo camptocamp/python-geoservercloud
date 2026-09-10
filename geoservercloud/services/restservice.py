@@ -194,14 +194,17 @@ class RestService:
     def create_wms_layer(
         self, workspace_name: str, wms_store_name: str, wms_layer: WmsLayer
     ) -> tuple[str, int]:
-        if self.resource_exists(
-            self.rest_endpoints.wmslayer(workspace_name, wms_store_name, wms_layer.name)
-        ):
-            self.delete_wms_layer(workspace_name, wms_store_name, wms_layer.name)
-        response: Response = self.rest_client.post(
-            self.rest_endpoints.wmslayers(workspace_name, wms_store_name),
-            json=wms_layer.post_payload(),
+        resource_path: str = self.rest_endpoints.wmslayer(
+            workspace_name, wms_store_name, wms_layer.name
         )
+        response: Response
+        if not self.resource_exists(resource_path):
+            response = self.rest_client.post(
+                self.rest_endpoints.wmslayers(workspace_name, wms_store_name),
+                json=wms_layer.post_payload(),
+            )
+        else:
+            response = self.rest_client.put(resource_path, json=wms_layer.put_payload())
         return response.content.decode(), response.status_code
 
     def delete_wms_layer(
@@ -252,16 +255,6 @@ class RestService:
         international_title: dict[str, str] | None = None,
         international_abstract: dict[str, str] | None = None,
     ) -> tuple[str, int]:
-        resource_path: str = self.rest_endpoints.wmtslayer(
-            workspace_name, wmts_store, published_layer
-        )
-        if self.resource_exists(resource_path):
-            self.rest_client.delete(
-                resource_path,
-                params={"recurse": "true"},
-            )
-            # Also delete the corresponding GWC layer (delete is not cascaded when using REST API)
-            self.delete_gwc_layer(workspace_name, published_layer)
         capabilities_url: str = (
             self.rest_client.get(
                 self.rest_endpoints.wmtsstore(workspace_name, wmts_store)
@@ -283,9 +276,16 @@ class RestService:
             international_abstract=international_abstract,
         )
 
-        response: Response = self.rest_client.post(
-            self.rest_endpoints.wmtslayers(workspace_name, wmts_store), json=payload
+        resource_path: str = self.rest_endpoints.wmtslayer(
+            workspace_name, wmts_store, published_layer
         )
+        response: Response
+        if not self.resource_exists(resource_path):
+            response = self.rest_client.post(
+                self.rest_endpoints.wmtslayers(workspace_name, wmts_store), json=payload
+            )
+        else:
+            response = self.rest_client.put(resource_path, json=payload)
         return response.content.decode(), response.status_code
 
     def get_gwc_layer(
