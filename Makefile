@@ -25,10 +25,10 @@ docs: ## Generate documentation with Sphinx in docs/build
 acceptance-tests: install acceptance-tests-setup acceptance-tests-up ## Run acceptance tests (starts GeoServer and DB via docker compose)
 	@echo "Running acceptance tests..."; \
 	GEOSERVER_ACCEPTANCE_CONFIG=geoserver_acceptance_tests/ci.config.yaml poetry run pytest --pyargs geoserver_acceptance_tests.tests -v; \
-	status=$$?; \
-	echo "Stopping docker compose services..."; \
-	cd geoserver_acceptance_tests/compose && docker compose -f ci.compose.yaml down -v; \
-	exit $$status
+	status=$$?; #\
+	#echo "Stopping docker compose services..."; \
+	#cd geoserver_acceptance_tests/compose && docker compose -f ci.compose.yaml down -v; \
+	#exit $$status
 
 .PHONY: acceptance-tests-setup
 acceptance-tests-setup: ## Setup acceptance test environment (extract sample data)
