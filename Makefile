@@ -26,9 +26,9 @@ acceptance-tests: install acceptance-tests-setup acceptance-tests-up ## Run acce
 	@echo "Running acceptance tests..."; \
 	GEOSERVER_ACCEPTANCE_CONFIG=geoserver_acceptance_tests/ci.config.yaml poetry run pytest --pyargs geoserver_acceptance_tests.tests -v; \
 	status=$$?; #\
-	#echo "Stopping docker compose services..."; \
-	#cd geoserver_acceptance_tests/compose && docker compose -f ci.compose.yaml down -v; \
-	#exit $$status
+	echo "Stopping docker compose services..."; \
+	cd geoserver_acceptance_tests/compose && docker compose -f ci.compose.yaml down -v; \
+	exit $$status
 
 .PHONY: acceptance-tests-setup
 acceptance-tests-setup: ## Setup acceptance test environment (extract sample data)
