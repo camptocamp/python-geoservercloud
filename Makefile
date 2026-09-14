@@ -38,6 +38,8 @@ acceptance-tests-setup: ## Setup acceptance test environment (extract sample dat
 acceptance-tests-up: ## Start acceptance test Docker services
 	@echo "Starting docker compose services..."
 	cd geoserver_acceptance_tests/compose && docker compose -f ci.compose.yaml up -d --wait
+	docker inspect compose-geoserver-1 --format 'Image ID: {{.Image}}'
+	docker image inspect docker.osgeo.org/geoserver:3.0-RC --format 'RepoDigests: {{json .RepoDigests}}'
 
 .PHONY: acceptance-tests-down
 acceptance-tests-down: ## Stop acceptance test Docker services
