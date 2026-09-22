@@ -1,3 +1,4 @@
+import re
 from typing import Any
 
 import requests
@@ -5,6 +6,13 @@ import requests
 from .restlogger import gs_logger
 
 TIMEOUT = 120
+
+# Depending on the order of the jars in WEB-INF/lib, vanilla GeoServer answers these
+# GWC "not found" errors with 500 instead of 404, keeping GWC's message as the
+# text/plain body.
+GWC_NOT_FOUND_MESSAGE = re.compile(
+    r'Unknown layer: .+|Failed to get GridSet\. A GridSet with name ".+" does not exist\.'
+)
 
 
 class RestClient:
@@ -46,6 +54,7 @@ class RestClient:
             full_url,
             extra={"response": response},
         )
+        self.restore_gwc_not_found_status(response)
         if response.status_code != 404:
             response.raise_for_status()
         return response
@@ -130,9 +139,21 @@ class RestClient:
             full_url,
             extra={"response": response},
         )
+        self.restore_gwc_not_found_status(response)
         if response.status_code != 404:
             response.raise_for_status()
         return response
+
+    def restore_gwc_not_found_status(self, response: requests.Response) -> None:
+        if response.status_code != 500:
+            return
+        if not GWC_NOT_FOUND_MESSAGE.fullmatch(response.text.strip()):
+            return
+        gs_logger.warning(
+            "GeoServer answered a GWC not found error with 500, treating it as 404: %s",
+            response.url,
+        )
+        response.status_code = 404
 
     def log_payload(
         self, method: str, json: dict | None, data: bytes | str | None
