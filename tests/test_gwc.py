@@ -1,3 +1,5 @@
+import pytest
+import requests
 import responses
 
 from geoservercloud import GeoServerCloud
@@ -133,6 +135,74 @@ def test_create_gridset(geoserver: GeoServerCloud) -> None:
         content, code = geoserver.create_gridset(EPSG)
         assert content == ""
         assert code == 201
+
+
+# Depending on the order of the jars in WEB-INF/lib, vanilla GeoServer answers GWC's
+# "not found" errors with a 500, keeping GWC's message as the text/plain body.
+
+
+def test_get_gwc_layer_not_found_answered_as_500(geoserver: GeoServerCloud) -> None:
+    with responses.RequestsMock() as rsps:
+        rsps.get(
+            url=f"{geoserver.url}/gwc/rest/layers/{WORKSPACE}:{LAYER}.json",
+            status=500,
+            body="Unknown layer: test_workspace:test_layer",
+            content_type="text/plain",
+        )
+
+        content, code = geoserver.get_gwc_layer(WORKSPACE, LAYER)
+        assert content == "Unknown layer: test_workspace:test_layer"
+        assert code == 404
+
+
+def test_delete_gwc_layer_not_found_answered_as_500(geoserver: GeoServerCloud) -> None:
+    with responses.RequestsMock() as rsps:
+        rsps.delete(
+            url=f"{geoserver.url}/gwc/rest/layers/{WORKSPACE}:{LAYER}.json",
+            status=500,
+            body="Unknown layer: test_workspace:test_layer",
+            content_type="text/plain",
+        )
+
+        content, code = geoserver.delete_gwc_layer(WORKSPACE, LAYER)
+        assert content == "Unknown layer: test_workspace:test_layer"
+        assert code == 404
+
+
+def test_create_gridset_not_found_answered_as_500(geoserver: GeoServerCloud) -> None:
+    with responses.RequestsMock() as rsps:
+        rsps.get(
+            url=f"{geoserver.url}/gwc/rest/gridsets/EPSG:{EPSG}.xml",
+            status=500,
+            body='Failed to get GridSet. A GridSet with name "EPSG:3857" does not exist.',
+            content_type="text/plain",
+        )
+        rsps.put(
+            url=f"{geoserver.url}/gwc/rest/gridsets/EPSG:{EPSG}.xml",
+            status=201,
+            body=b"",
+        )
+
+        content, code = geoserver.create_gridset(EPSG)
+        assert content == ""
+        assert code == 201
+
+
+def test_get_gwc_layer_internal_error_raises(geoserver: GeoServerCloud) -> None:
+    with responses.RequestsMock() as rsps:
+        rsps.get(
+            url=f"{geoserver.url}/gwc/rest/layers/{WORKSPACE}:{LAYER}.json",
+            status=500,
+            body=(
+                "Encountered error: Thread http-nio-8080-exec-3 Unknown layer"
+                " test_workspace:test_layer. Check the logfiles, it may not have"
+                " loaded properly."
+            ),
+            content_type="text/plain",
+        )
+
+        with pytest.raises(requests.exceptions.HTTPError):
+            geoserver.get_gwc_layer(WORKSPACE, LAYER)
 
 
 def test_create_gwc_blobstore(geoserver: GeoServerCloud) -> None:
