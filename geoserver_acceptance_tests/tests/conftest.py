@@ -70,7 +70,7 @@ def engine(config: dict) -> Generator[sqlalchemy.Engine, None, None]:
     password = config["db"]["pg_password"]
     database = config["db"]["pg_db"]
     yield sqlalchemy.create_engine(
-        f"postgresql://{user}:{password}@{host}:{port}/{database}",
+        f"postgresql+psycopg2://{user}:{password}@{host}:{port}/{database}",
     )
 
 
