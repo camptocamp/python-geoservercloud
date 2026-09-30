@@ -24,6 +24,10 @@
       ],
     },
   ],
+  /** Update Docker image tags in compose files **/
+  "docker-compose": {
+    fileMatch: ["(^|/)[^/]*compose[^/]*\\.ya?ml$"],
+  },
   packageRules: [
     /** Auto merge the dev dependency update */
     {
