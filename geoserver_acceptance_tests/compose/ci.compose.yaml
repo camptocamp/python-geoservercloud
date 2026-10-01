@@ -25,7 +25,7 @@ services:
       start_period: 60s
 
   geodatabase:
-    image: imresamu/postgis:15-3.4
+    image: imresamu/postgis:16-3.4
     environment:
       POSTGRES_DB: acceptance
       POSTGRES_USER: geoserver
