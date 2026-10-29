@@ -8,6 +8,9 @@ on:
       - "*"
   pull_request:
 
+permissions:
+  contents: read
+
 env:
   HAS_SECRETS: ${{ secrets.HAS_SECRETS }}
 
@@ -17,21 +20,19 @@ jobs:
     runs-on: ubuntu-26.04
     timeout-minutes: 15
     if: "!startsWith(github.event.head_commit.message, '[skip ci] ')"
+
+    outputs:
+      success: ${{ steps.success.outputs.success }}
+
     steps:
-      - uses: actions/checkout@v7
-      - uses: camptocamp/initialise-gopass-summon-action@v2
-        with:
-          ci-gpg-private-key: ${{secrets.CI_GPG_PRIVATE_KEY}}
-          github-gopass-ci-token: ${{secrets.GOPASS_CI_GITHUB_TOKEN}}
-          patterns: pypi docker
-        if: env.HAS_SECRETS == 'HAS_SECRETS'
-      - uses: actions/setup-python@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
         with:
           python-version: "3.14"
       - run: echo "${HOME}/.local/bin" >> ${GITHUB_PATH}
-      - run: python3 -m pip install --requirement=ci/requirements.txt
+      - run: python3 -m pip install '--only-binary=:all:' --requirement=ci/requirements.txt
         name: Install CI requirements
-      - uses: actions/cache@v6
+      - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
           path: ~/.cache/pre-commit
           key: pre-commit-${{ hashFiles('.pre-commit-config.yaml') }}
@@ -48,9 +49,9 @@ jobs:
       - name: Tests
         run: make tests
 
-      - name: Publish
-        run: c2cciutils-publish
-        if: env.HAS_SECRETS == 'HAS_SECRETS'
+      # Mark as success
+      - id: success
+        run: echo "success=true" >> $GITHUB_OUTPUT
 
   acceptance-tests:
     name: Run acceptance tests
@@ -80,15 +81,15 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: Setup Python
-        uses: actions/setup-python@v7
+        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
         with:
           python-version: "3.14"
 
       - run: echo "${HOME}/.local/bin" >> ${GITHUB_PATH}
-      - run: python3 -m pip install --requirement=ci/requirements.txt
+      - run: python3 -m pip install '--only-binary=:all:' --requirement=ci/requirements.txt
 
       - name: Install python-geoservercloud from source
         run: make install
@@ -124,3 +125,41 @@ jobs:
       - name: Shutdown Docker Compose
         if: always()
         run: make acceptance-tests-down
+
+  publish:
+    name: Publish
+    runs-on: ubuntu-26.04
+    timeout-minutes: 15
+    needs: build
+    if: always()
+
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - run: '[[ "${{ needs.build.outputs.success }}" == "true" ]]'
+
+      # The full history is required to compute the version from the tags.
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+
+      # Provides the pip, python3 and poetry that tag-publish calls to build the wheel.
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: "3.14"
+      - run: echo "${HOME}/.local/bin" >> ${GITHUB_PATH}
+      - run: python3 -m pip install '--only-binary=:all:' --requirement=ci/requirements.txt
+
+      - uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0
+        with:
+          version: latest-known
+          cache-python: true
+          python-version: "3.14"
+
+      # tag-publish connects itself to PyPI with OpenId Connect, and only when the context publishes.
+      - name: Publish
+        run: uv run --locked --isolated --no-build --project=.github/publish tag-publish
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
