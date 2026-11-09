@@ -1671,6 +1671,7 @@ class GeoServerCloud:
         style_name: str,
         style_string: str,
         workspace_name: str | None = None,
+        raw: bool = False,
     ) -> tuple[str, int]:
         """
         Create a style (SLD) from its definition as a string, or update it if it already exists.
@@ -1681,6 +1682,9 @@ class GeoServerCloud:
         :type style_string: str
         :param workspace_name: Name of the workspace, or None for a global style
         :type workspace_name: str, optional
+        :param raw: Store the SLD exactly as given instead of letting GeoServer parse and
+            re-encode it (which renames it "Default Styler" and reformats it)
+        :type raw: bool, optional
         :return: Tuple of (content, status_code)
         :rtype: tuple
         """
@@ -1690,7 +1694,11 @@ class GeoServerCloud:
         if code >= 400:
             return content, code
         return self.rest_service.create_style(
-            style_name, style_string.encode("utf-8"), workspace_name, format="sld"
+            style_name,
+            style_string.encode("utf-8"),
+            workspace_name,
+            format="sld",
+            raw=raw,
         )
 
     def create_style_from_file(
@@ -1698,6 +1706,7 @@ class GeoServerCloud:
         style_name: str,
         file: str,
         workspace_name: str | None = None,
+        raw: bool = False,
     ) -> tuple[str, int]:
         """
         Create a style from a file, or update it if it already exists.
@@ -1709,6 +1718,9 @@ class GeoServerCloud:
         :type file: str
         :param workspace_name: Name of the workspace, or None for a global style
         :type workspace_name: str, optional
+        :param raw: For .sld files, store the file exactly as given instead of letting
+            GeoServer parse and re-encode it. .mbstyle files are always stored as given.
+        :type raw: bool, optional
         :return: Tuple of (content, status_code)
         :rtype: tuple
         """
@@ -1738,7 +1750,7 @@ class GeoServerCloud:
         with open(f"{file}", "rb") as fs:
             style: bytes = fs.read()
         return self.rest_service.create_style(
-            style_name, style, workspace_name, format=file_format
+            style_name, style, workspace_name, format=file_format, raw=raw
         )
 
     def set_default_layer_style(

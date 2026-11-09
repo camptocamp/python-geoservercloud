@@ -611,6 +611,7 @@ class RestService:
         style: bytes,
         workspace_name: str | None = None,
         format: str = "sld",
+        raw: bool = False,
     ) -> tuple[str, int]:
         resource_path = self.rest_endpoints.style(
             workspace_name=workspace_name, style_name=style_name, format=format
@@ -618,6 +619,8 @@ class RestService:
         params = None
         if format == "sld":
             headers = {"Content-Type": "application/vnd.ogc.sld+xml"}
+            if raw:
+                params = {"raw": "true"}
         elif format == "zip":
             headers = {"Content-Type": "application/zip"}
         elif format == "mbstyle":
