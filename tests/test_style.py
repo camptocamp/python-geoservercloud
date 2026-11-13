@@ -229,6 +229,58 @@ def test_create_style_from_file(geoserver: GeoServerCloud) -> None:
         assert code == 201
 
 
+def mock_sld_upload(
+    rsps: responses.RequestsMock, geoserver: GeoServerCloud, query: dict
+):
+    """Mock the style definition check and update, and the SLD upload with the given query."""
+    rsps.get(url=f"{geoserver.url}/rest/styles/{STYLE}", status=200)
+    rsps.put(url=f"{geoserver.url}/rest/styles/{STYLE}", status=200)
+    rsps.put(
+        url=f"{geoserver.url}/rest/styles/{STYLE}.sld",
+        status=201,
+        body=b"test_style",
+        match=[
+            responses.matchers.header_matcher(
+                {"Content-Type": "application/vnd.ogc.sld+xml"}
+            ),
+            responses.matchers.query_param_matcher(query),
+        ],
+    )
+
+
+def test_create_style_from_file_not_raw_by_default(geoserver: GeoServerCloud) -> None:
+    file_path = (Path(__file__).parent / "resources/style.sld").resolve()
+    with responses.RequestsMock() as rsps:
+        mock_sld_upload(rsps, geoserver, query={})
+        content, code = geoserver.create_style_from_file(
+            style_name=STYLE, file=str(file_path)
+        )
+        assert content == STYLE
+        assert code == 201
+
+
+def test_create_style_from_file_raw(geoserver: GeoServerCloud) -> None:
+    file_path = (Path(__file__).parent / "resources/style.sld").resolve()
+    with responses.RequestsMock() as rsps:
+        mock_sld_upload(rsps, geoserver, query={"raw": "true"})
+        content, code = geoserver.create_style_from_file(
+            style_name=STYLE, file=str(file_path), raw=True
+        )
+        assert content == STYLE
+        assert code == 201
+
+
+def test_create_style_from_string_raw(geoserver: GeoServerCloud) -> None:
+    style_string = (Path(__file__).parent / "resources/style.sld").read_text()
+    with responses.RequestsMock() as rsps:
+        mock_sld_upload(rsps, geoserver, query={"raw": "true"})
+        content, code = geoserver.create_style_from_string(
+            style_name=STYLE, style_string=style_string, raw=True
+        )
+        assert content == STYLE
+        assert code == 201
+
+
 def test_update_style_from_file(geoserver: GeoServerCloud) -> None:
     file_path = (Path(__file__).parent / "resources/style.sld").resolve()
     with responses.RequestsMock() as rsps:
